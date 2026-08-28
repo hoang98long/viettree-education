@@ -12,10 +12,27 @@ class UserRole(str, enum.Enum):
     ADMIN = "admin"
 
 
+class UserStatus(str, enum.Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    SUSPENDED = "suspended"
+
+
 class User(Base, UUIDTimestampMixin):
     __tablename__ = "users"
     email: Mapped[str] = mapped_column(String(320), unique=True, index=True)
     full_name: Mapped[str] = mapped_column(String(120))
     password_hash: Mapped[str] = mapped_column(String(255))
-    role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.STUDENT)
-    is_active: Mapped[bool] = mapped_column(default=True)
+    role: Mapped[UserRole] = mapped_column(
+        Enum(UserRole, values_callable=lambda enum_cls: [member.value for member in enum_cls]),
+        default=UserRole.STUDENT,
+    )
+    status: Mapped[UserStatus] = mapped_column(
+        Enum(UserStatus, values_callable=lambda enum_cls: [member.value for member in enum_cls]),
+        default=UserStatus.ACTIVE,
+        nullable=False,
+    )
+
+    @property
+    def is_active(self) -> bool:
+        return self.status == UserStatus.ACTIVE

@@ -31,7 +31,10 @@ class Course(Base, UUIDTimestampMixin):
     subject_id: Mapped[UUID] = mapped_column(ForeignKey("subjects.id"), index=True)
     grade_id: Mapped[UUID] = mapped_column(ForeignKey("grades.id"), index=True)
     title: Mapped[str] = mapped_column(String(160))
-    status: Mapped[PublishStatus] = mapped_column(Enum(PublishStatus), default=PublishStatus.DRAFT)
+    status: Mapped[PublishStatus] = mapped_column(
+        Enum(PublishStatus, values_callable=lambda enum_cls: [member.value for member in enum_cls]),
+        default=PublishStatus.DRAFT,
+    )
     position: Mapped[int] = mapped_column(Integer, default=0)
 
 
@@ -41,7 +44,10 @@ class Lesson(Base, UUIDTimestampMixin):
     course_id: Mapped[UUID] = mapped_column(ForeignKey("courses.id"), index=True)
     title: Mapped[str] = mapped_column(String(160))
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    status: Mapped[PublishStatus] = mapped_column(Enum(PublishStatus), default=PublishStatus.DRAFT)
+    status: Mapped[PublishStatus] = mapped_column(
+        Enum(PublishStatus, values_callable=lambda enum_cls: [member.value for member in enum_cls]),
+        default=PublishStatus.DRAFT,
+    )
     position: Mapped[int] = mapped_column(Integer, default=0)
 
 
@@ -57,8 +63,27 @@ class LessonContent(Base, UUIDTimestampMixin):
 class Student(Base, UUIDTimestampMixin):
     __tablename__ = "students"
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), unique=True, index=True)
-    grade_id: Mapped[UUID | None] = mapped_column(ForeignKey("grades.id"), nullable=True, index=True)
-    total_xp: Mapped[int] = mapped_column(default=0)
-    stars: Mapped[int] = mapped_column(default=0)
+    date_of_birth: Mapped[str | None] = mapped_column(nullable=True)
+    grade: Mapped[int] = mapped_column(default=1)
+    school_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    xp: Mapped[int] = mapped_column(default=0)
     level: Mapped[int] = mapped_column(default=1)
-    streak_days: Mapped[int] = mapped_column(default=0)
+    current_streak: Mapped[int] = mapped_column(default=0)
+    longest_streak: Mapped[int] = mapped_column(default=0)
+    last_learning_date: Mapped[str | None] = mapped_column(nullable=True)
+
+    @property
+    def grade_id(self):
+        return self.grade
+
+    @property
+    def total_xp(self) -> int:
+        return self.xp
+
+    @property
+    def stars(self) -> int:
+        return 0
+
+    @property
+    def streak_days(self) -> int:
+        return self.current_streak

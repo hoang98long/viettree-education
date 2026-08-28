@@ -9,7 +9,7 @@ class StudentProfileResponse(BaseModel):
     full_name: str
     role: str
     student_id: UUID | None = None
-    grade_id: UUID | None = None
+    grade_id: int | None = None
     total_xp: int = 0
     stars: int = 0
     level: int = 1

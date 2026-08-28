@@ -16,8 +16,7 @@ router = APIRouter(prefix="/students", tags=["Học sinh"])
 @router.get("/me", response_model=StudentProfileResponse)
 def get_me(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     student = db.scalar(select(Student).where(Student.user_id == user.id))
-    grade_id = student.grade_id if student else None
-    grade_name = db.get(Grade, grade_id).name if grade_id and db.get(Grade, grade_id) else None
+    grade_value = student.grade if student else None
 
     return StudentProfileResponse(
         id=user.id,
@@ -25,7 +24,7 @@ def get_me(user: User = Depends(get_current_user), db: Session = Depends(get_db)
         full_name=user.full_name,
         role=user.role.value,
         student_id=student.id if student else None,
-        grade_id=grade_id,
+        grade_id=grade_value,
         total_xp=student.total_xp if student else 0,
         stars=student.stars if student else 0,
         level=student.level if student else 1,
