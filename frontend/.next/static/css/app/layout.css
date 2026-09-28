@@ -385,6 +385,288 @@ h2 {
   gap: 12px;
 }
 
+/* Learning flow */
+.learningPage {
+  max-width: 960px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 28px 24px 56px;
+}
+
+.learningHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 20px 0 34px;
+}
+
+.learningHeader.compact {
+  padding-bottom: 24px;
+}
+
+.learningHeader h1 {
+  margin: 10px 0 6px;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+}
+
+.pageIntro {
+  margin: 0;
+  color: #5f6f82;
+}
+
+.backLink,
+.learningLink {
+  color: var(--leaf);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: 22px;
+}
+
+.learningIcon {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 28px;
+  background: #dff7d7;
+  font-size: 3rem;
+}
+
+.subjectTabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.subjectTab {
+  width: auto;
+  min-width: 110px;
+  margin: 0;
+  background: white;
+  color: var(--ink);
+  border: 2px solid transparent;
+  box-shadow: 0 4px 16px #18315312;
+}
+
+.subjectTab.active {
+  color: white;
+  background: var(--leaf);
+}
+
+.courseList,
+.lessonList,
+.questionList {
+  margin-top: 28px;
+}
+
+.sectionHeading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.sectionHeading h2 {
+  margin: 4px 0 0;
+}
+
+.sectionHeading > span {
+  color: #6b7a8d;
+  font-weight: 700;
+}
+
+.courseRow,
+.lessonRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 12px 0;
+  padding: 18px;
+  color: var(--ink);
+  text-decoration: none;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px #18315312;
+}
+
+.courseRow:hover,
+.exerciseButton:hover {
+  transform: translateY(-2px);
+}
+
+.courseBadge,
+.lessonNumber {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  color: white;
+  background: var(--leaf);
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.courseInfo,
+.lessonInfo {
+  flex: 1 1;
+}
+
+.courseInfo strong,
+.courseInfo small,
+.lessonInfo strong,
+.lessonInfo p,
+.lessonInfo small {
+  display: block;
+}
+
+.courseInfo small,
+.lessonInfo p,
+.lessonInfo small {
+  margin-top: 5px;
+  color: #68788b;
+}
+
+.courseArrow {
+  color: var(--leaf);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.lessonRow {
+  align-items: flex-start;
+}
+
+.lessonNumber {
+  background: #ff9500;
+}
+
+.lessonInfo p {
+  margin-bottom: 8px;
+}
+
+.exerciseLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.exerciseButton,
+.secondaryButton {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  color: white;
+  background: var(--leaf);
+  text-decoration: none;
+  font-weight: 800;
+  transition: transform 0.2s;
+}
+
+.mutedText,
+.hintText {
+  color: #778597;
+  font-size: 0.85rem;
+}
+
+.emptyState,
+.resultPanel,
+.questionCard {
+  padding: 24px;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 8px 25px #18315312;
+}
+
+.questionCard {
+  margin: 14px 0;
+}
+
+.questionMeta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--leaf);
+  font-weight: 800;
+}
+
+.questionCard h2 {
+  margin: 14px 0 18px;
+  font-size: 1.25rem;
+}
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  gap: 10px;
+}
+
+.optionChoice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 12px;
+  border: 2px solid #e8edf2;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.optionChoice.selected {
+  border-color: var(--leaf);
+  background: #effaf2;
+}
+
+.optionChoice input {
+  accent-color: var(--leaf);
+}
+
+.hintText {
+  display: block;
+  margin-top: 14px;
+}
+
+.submitExercise {
+  max-width: 360px;
+  display: block;
+  margin: 24px auto 0;
+}
+
+.resultPanel {
+  text-align: center;
+  margin-top: 28px;
+}
+
+.resultPanel h2 {
+  font-size: 2.4rem;
+  margin: 10px 0;
+}
+
+.resultEmoji {
+  display: block;
+  font-size: 3.5rem;
+}
+
+.resultPanel button,
+.resultPanel .secondaryButton {
+  width: auto;
+  margin: 12px 6px 0;
+}
+
+.secondaryButton {
+  background: #5f6f82;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .authContainer {
@@ -411,6 +693,39 @@ h2 {
   .continueCard button {
     margin: 12px auto 0;
     width: 100%;
+  }
+
+  .learningPage {
+    padding: 18px 16px 40px;
+  }
+
+  .learningHeader {
+    align-items: flex-start;
+  }
+
+  .learningIcon {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    font-size: 2rem;
+  }
+
+  .lessonRow {
+    flex-wrap: wrap;
+  }
+
+  .exerciseLinks {
+    width: 100%;
+    align-items: stretch;
+    margin-left: 64px;
+  }
+
+  .exerciseButton {
+    text-align: center;
+  }
+
+  .optionGrid {
+    grid-template-columns: 1fr;
   }
 }
 

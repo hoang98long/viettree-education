@@ -242,7 +242,42 @@ Trước khi mở AI: age-appropriate policies, prompt-injection defenses, allow
 
 Chạy `docker compose up -d` cho infrastructure và chạy Alembic migration trước backend. Khi cần async, thêm worker/queue đơn giản trước. Chỉ tách module thành service khi có bằng chứng vận hành; lúc đó tách kèm ownership và database boundary, không chỉ tách code.
 
-## 15. Scope and roadmap
+## 15. Trạng thái thực hiện
+
+### Đã thực hiện và đã kiểm tra
+
+- **Kiến trúc:** modular monolith với FastAPI backend và Next.js App Router frontend.
+- **Môi trường:** backend có virtual environment riêng; frontend chạy được `npm run dev` và `npm run build`.
+- **Backend runtime:** FastAPI chạy trên port `8000`, có `/health`, `/docs` và OpenAPI.
+- **PostgreSQL:** kết nối được database `viettree` qua SQLAlchemy + psycopg; đã đồng bộ một phần model với schema PostgreSQL thực tế.
+- **Authentication:** đăng ký, đăng nhập, JWT access token và endpoint lấy user hiện tại.
+- **Student profile:** đăng ký student tạo User và Student profile 1:1.
+- **Catalog API:** đã có các endpoint đọc subjects, grades, courses và lessons ở mức MVP.
+- **Learning flow API:** đã có luồng published subject → course → lesson → exercise; exercise trả câu hỏi/options nhưng không trả đáp án đúng.
+- **Exercise MVP:** đã hỗ trợ bài tập single-choice, submit đáp án, chấm điểm server-side và lưu exercise attempt/submission.
+- **Mở rộng môn học:** đã có nội dung seed dùng chung cho Toán, Tiếng Việt và Tiếng Anh; mỗi môn có course, lesson và bài tập mẫu.
+- **Student dashboard API:** trả thông tin học sinh, XP, streak, level và danh sách môn học.
+- **Frontend public flow:** landing page, login, register và route dashboard.
+- **Frontend learning flow:** đã có trang môn học, khóa học, danh sách bài học và màn hình làm bài có kết quả.
+- **Frontend integration:** login/register lưu access token; dashboard gọi backend bằng Bearer token và redirect về login khi chưa xác thực.
+- **Seed data:** đã có dữ liệu mẫu cho grades, subjects, course, lessons và lesson contents.
+- **Verification:** đã kiểm tra thành công register → login → dashboard; frontend production build thành công.
+
+### Chưa hoàn thiện
+
+- Refresh token, logout, token rotation và session management chưa hoàn chỉnh.
+- RBAC mới ở mức nền tảng; chưa có policy service cho từng module và ownership.
+- Course/lesson model và API cần tiếp tục đồng bộ đầy đủ với schema PostgreSQL hiện tại.
+- Admin chưa có giao diện và CRUD/publish workflow.
+- Lesson detail/block renderer, quiz workflow, các loại câu hỏi nâng cao và progress sau submit chưa hoàn thiện.
+- Giao diện course hiện đã dùng dữ liệu động theo môn; vẫn cần bổ sung lesson content chi tiết và tiến độ từng bài.
+- Lesson block renderer, các loại câu hỏi ngoài single-choice, feedback chi tiết và progress sau khi nộp bài vẫn chưa hoàn thiện.
+- Learning session, progress, XP ledger, stars, achievement và streak mới là phần dữ liệu nền hoặc mock UI.
+- Parent dashboard, liên kết parent-child, teacher workflow và admin dashboard chưa triển khai.
+- Chưa có Alembic migration lifecycle hoàn chỉnh; app hiện vẫn gọi `Base.metadata.create_all` khi khởi động cho mục đích phát triển.
+- Chưa có bộ test unit/integration/e2e và chưa hoàn thiện structured logging, rate limiting, upload security.
+
+## 16. Scope and roadmap
 
 **MVP:** auth/RBAC; schema/migration; admin content CRUD/publish; lesson block renderer; six question types; deterministic scoring; attempts/progress/session; XP/stars/streak/badge; parent-child link/dashboard; MinIO upload; Docker, logs và tests.
 
@@ -250,18 +285,47 @@ Chạy `docker compose up -d` cho infrastructure và chạy Alembic migration tr
 
 **Phase 3:** safe AI tutor, adaptive path, reviewed AI question generation, pronunciation evaluation, coding/STEM/robotics, advanced observability; split service only as justified.
 
-## Recommended Implementation Order
+## Đề xuất công việc tiếp theo
 
-1. Khởi tạo `frontend/` + `backend/`, lint/format/test CI, `.env.example`, Compose và health endpoints.
-2. PostgreSQL + SQLAlchemy/Alembic, UUID/timestamps, seed Grade/Subject và config.
-3. Auth: User/profile, password hash, JWT access/refresh rotation, RBAC và audit.
-4. Admin CRUD/publish Subject, Grade, Course, Lesson, block, Exercise, Question, Quiz.
-5. MinIO/FileAsset và frontend LessonBlockRenderer.
-6. Student dashboard, course/lesson flow và LearningSession.
-7. Attempt/Submission, scorer registry sáu types, feedback và quiz rules.
-8. LearningProgress, XP ledger, stars/level/streak/achievement và UI tiến độ.
-9. Parent-child verification và read-only parent dashboard.
-10. Rate limit, upload security, structured logs, API/e2e/a11y tests, responsive polish và staging deploy.
+### Ưu tiên 1: ổn định nền tảng
+
+1. Chuẩn hóa toàn bộ model SQLAlchemy theo `database/init/001_initial_schema.sql`; không tiếp tục phát triển trên hai bộ tên cột khác nhau.
+2. Thiết lập Alembic, migration đầu tiên và quy trình migrate riêng cho development/staging/production.
+3. Tạo `.env.example`, kiểm tra cấu hình và cập nhật Docker Compose để một người mới có thể khởi động dự án bằng một quy trình thống nhất.
+4. Thêm test API cho register, login, `/auth/me`, student profile, dashboard và các trường hợp unauthorized/duplicate email.
+5. Hoàn thiện access/refresh token, logout, rotation, revoke và RBAC ở backend; frontend chỉ làm nhiệm vụ điều hướng.
+
+### Ưu tiên 2: hoàn thiện trải nghiệm học sinh
+
+6. Hoàn thiện catalog theo dữ liệu published: subject → course → lesson; thêm lesson detail API và frontend route.
+7. Xây dựng `LessonBlockRenderer` an toàn cho các block `explanation`, `image`, `example`, `audio`, `video`, `exercise`, `quiz`.
+8. Mở rộng exercise/question/quiz từ single-choice hiện tại sang sáu loại câu hỏi và scorer registry; đáp án đúng chỉ tồn tại ở backend.
+9. Implement attempt, submission, feedback và idempotency; kiểm tra transaction khi submit bài.
+10. Implement LearningSession, LearningProgress, XP ledger, stars, level, streak và achievement; thay toàn bộ mock metrics trên dashboard bằng dữ liệu API.
+
+### Ưu tiên 3: vận hành nội dung và phụ huynh
+
+11. Xây dựng admin CRUD/publish cho grade, subject, course, lesson, content block, exercise, question và quiz.
+12. Thêm MinIO/FileAsset, upload intent, signed URL, MIME allowlist, giới hạn kích thước và kiểm tra quyền truy cập.
+13. Implement parent-child linking có xác nhận và parent dashboard chỉ đọc: thời gian học, tiến độ, điểm mạnh/yếu và hoạt động gần đây.
+14. Bổ sung teacher workflow ở mức phù hợp MVP: tạo nội dung, preview, submit publish và xem lớp read-only.
+
+### Ưu tiên 4: chất lượng và mở rộng
+
+15. Thêm structured logs, request ID, error contract thống nhất, rate limit login/upload và monitoring health/dependency.
+16. Thiết lập CI chạy format, lint, typecheck, backend tests, frontend build, API integration tests và accessibility checks.
+17. Hoàn thiện responsive/mobile UX, loading/error/empty states, keyboard navigation và `prefers-reduced-motion`.
+18. Thêm Redis cho cache/rate limit và worker queue chỉ khi có use case thực tế.
+19. Chỉ mở AI Gateway sau khi có consent, age policy, allowlisted context, output validation, audit và cơ chế phụ huynh kiểm soát.
+20. Chỉ tách service khi có bằng chứng về ownership, scale hoặc release cadence; trước đó giữ modular monolith.
+
+### Definition of Done cho MVP
+
+- Một student mới có thể đăng ký, đăng nhập, mở course, học lesson, làm exercise/quiz và nhận kết quả từ backend.
+- Một parent có thể liên kết student đã xác nhận và xem dashboard read-only.
+- Admin có thể tạo, preview, publish và archive nội dung mà không sửa code frontend.
+- Attempt, progress và XP được ghi transactionally, không cấp thưởng trùng khi request retry.
+- Database được quản lý bằng migration; API, frontend build và test suite chạy được trong CI.
 
 ## License
 

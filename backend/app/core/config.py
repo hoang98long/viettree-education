@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     jwt_secret_key: str = "development-only-change-me"
     jwt_algorithm: str = "HS256"
     access_token_minutes: int = 15
+    refresh_token_days: int = 30
+    refresh_cookie_secure: bool = False
     cors_origins: str = "http://localhost:3000,http://localhost:8080,http://localhost:8000"
 
 

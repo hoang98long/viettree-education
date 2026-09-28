@@ -7,7 +7,9 @@ class SubjectOut(BaseModel):
     id: UUID
     code: str
     name: str
-    color: str
+    description: str | None = None
+    icon_url: str | None = None
+    display_order: int = 0
     is_active: bool
 
     model_config = ConfigDict(from_attributes=True)
@@ -16,12 +18,18 @@ class SubjectOut(BaseModel):
 class CourseOut(BaseModel):
     id: UUID
     subject_id: UUID
-    grade_id: UUID
+    grade: int
     title: str
-    status: str
-    position: int
+    description: str | None = None
+    thumbnail_url: str | None = None
+    display_order: int = 0
+    is_published: bool
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class CourseDetailOut(CourseOut):
+    subject_name: str
 
 
 class LessonOut(BaseModel):
@@ -29,7 +37,9 @@ class LessonOut(BaseModel):
     course_id: UUID
     title: str
     description: str | None = None
-    status: str
-    position: int
+    lesson_number: int
+    estimated_minutes: int | None = None
+    difficulty: str
+    is_published: bool
 
     model_config = ConfigDict(from_attributes=True)

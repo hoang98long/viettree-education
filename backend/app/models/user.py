@@ -1,4 +1,6 @@
 import enum
+from datetime import datetime
+from uuid import UUID
 from sqlalchemy import Enum, String
 from sqlalchemy.orm import Mapped, mapped_column
 from app.core.database import Base
@@ -36,3 +38,13 @@ class User(Base, UUIDTimestampMixin):
     @property
     def is_active(self) -> bool:
         return self.status == UserStatus.ACTIVE
+
+
+class RefreshToken(Base, UUIDTimestampMixin):
+    __tablename__ = "refresh_tokens"
+
+    user_id: Mapped[UUID] = mapped_column(index=True)
+    token_hash: Mapped[str] = mapped_column(String(64), unique=True, index=True)
+    expires_at: Mapped[datetime] = mapped_column(nullable=False, index=True)
+    revoked_at: Mapped[datetime | None] = mapped_column(nullable=True, index=True)
+    replaced_by_token_id: Mapped[UUID | None] = mapped_column(nullable=True)

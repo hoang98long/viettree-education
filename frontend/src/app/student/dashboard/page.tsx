@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 type DashboardResponse = {
   student_id: string | null;
@@ -129,6 +130,7 @@ export default function StudentDashboard() {
 
       <section>
         <h2>Môn học của em</h2>
+        <Link className="learningLink" href="/student/subjects">Xem tất cả môn học →</Link>
         <div className="subjectGrid">
           {subjectCards.map((subject) => (
             <article key={subject.name} className={`subjectCard ${subject.color}`}>
