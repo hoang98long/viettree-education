@@ -3,10 +3,12 @@ from uuid import NAMESPACE_URL, uuid5
 from sqlalchemy import func, select, text
 from sqlalchemy.dialects.postgresql import insert
 
+from app.advanced_curriculum import ADVANCED
 from app.core.config import settings
 from app.core.security import hasher, now
 from app.curriculum import CURRICULUM
 from app.db import db
+from app.expanded_curriculum import EXPANDED
 
 
 def stable_id(key):
@@ -175,6 +177,13 @@ def seed_content(conn):
                 versions.append(version)
                 ensure(
                     conn,
+                    "question_version_access_policies",
+                    {"question_version_id": version["id"]},
+                    {"minimum_plan_code": "free"},
+                    code + "/access",
+                )
+                ensure(
+                    conn,
                     "question_skills",
                     {"question_version_id": version["id"], "skill_id": skill["id"]},
                     {"is_primary": True, "weight": 1},
@@ -251,7 +260,175 @@ def seed(conn, reset=False):
     db.load(conn)
     seed_accounts(conn, reset)
     seed_content(conn)
+    seed_access_policies(conn)
+    seed_advanced_content(conn)
+    seed_advanced_content(conn, EXPANDED)
     return verify_seed(conn)
+
+
+def seed_access_policies(conn):
+    # Only the original, identified curriculum is initialized free, never arbitrary new content.
+    for subject, sources in CURRICULUM.items():
+        for source in sources:
+            prefix = f"VT4-{subject}-{source['code']}"
+            for kind, codes in (
+                ("lesson", [prefix + f"-lesson-{i}" for i in (1, 2)]),
+                ("assessment", [prefix + "-practice"]),
+            ):
+                table = db.table("lessons" if kind == "lesson" else "assessments")
+                for row in conn.execute(
+                    select(table.c.id, table.c.title).where(table.c.code.in_(codes))
+                ).mappings():
+                    ensure(
+                        conn,
+                        "content_access_policies",
+                        {f"{kind}_id": row["id"]},
+                        {"minimum_plan_code": "free", "learning_level": "basic"},
+                        f"policy/{row['id']}",
+                    )
+
+
+def seed_advanced_content(conn, curriculum=ADVANCED):
+    for subject_code, sources in curriculum.items():
+        subjects, topics = db.table("subjects"), db.table("topics")
+        subject_id = conn.execute(
+            select(subjects.c.id).where(subjects.c.code == subject_code)
+        ).scalar_one()
+        for index, source in enumerate(sources, 1):
+            minimum_plan = source.get("minimum_plan_code", "vip")
+            topic = (
+                conn.execute(
+                    select(topics).where(
+                        topics.c.code == f"VT4-{subject_code}-{source['topic']}",
+                        topics.c.grade == 4,
+                    )
+                )
+                .mappings()
+                .one()
+            )
+            code = f"VT4-{subject_code}-{source['code']}"
+            item, _ = ensure(
+                conn,
+                "lessons",
+                {"code": code + "-lesson", "topic_id": topic["id"]},
+                {
+                    **source["lesson"],
+                    "status": "published",
+                    "estimated_minutes": 18,
+                    "sort_order": 10 + index,
+                },
+                code + "/lesson",
+            )
+            skill = conn.execute(
+                select(db.table("skills").c.id).where(
+                    db.table("skills").c.code == f"VT4-{subject_code}-{source['topic']}-skill"
+                )
+            ).scalar_one()
+            ensure(
+                conn,
+                "lesson_skills",
+                {"lesson_id": item["id"], "skill_id": skill},
+                {"is_primary": True},
+                code + "/lesson-skill",
+            )
+            versions = []
+            for position, question in enumerate(source["questions"], 1):
+                qcode = code + f"-q-{position:02d}"
+                base, _ = ensure(
+                    conn,
+                    "questions",
+                    {"code": qcode},
+                    {"subject_id": subject_id, "topic_id": topic["id"], "grade": 4},
+                    qcode,
+                )
+                version, created = ensure(
+                    conn,
+                    "question_versions",
+                    {"question_id": base["id"], "version": 1},
+                    {**question, "status": "published", "published_at": now()},
+                    qcode + "/v1",
+                )
+                if not created and any(
+                    version[key] != question[key]
+                    for key in ("content", "grading", "explanation", "question_type", "difficulty")
+                ):
+                    raise RuntimeError(f"Seed conflict {qcode}: không sửa version đã xuất bản")
+                versions.append(version)
+                ensure(
+                    conn,
+                    "question_version_access_policies",
+                    {"question_version_id": version["id"]},
+                    {"minimum_plan_code": minimum_plan},
+                    qcode + "/access",
+                )
+                ensure(
+                    conn,
+                    "question_skills",
+                    {"question_version_id": version["id"], "skill_id": skill},
+                    {"is_primary": True, "weight": 1},
+                    qcode + "/skill",
+                )
+                ensure(
+                    conn,
+                    "lesson_questions",
+                    {"question_version_id": version["id"], "lesson_id": item["id"]},
+                    {"sort_order": position},
+                    qcode + "/lesson",
+                )
+            assessment, created = ensure(
+                conn,
+                "assessments",
+                {"code": code + "-practice"},
+                {
+                    "subject_id": subject_id,
+                    "topic_id": topic["id"],
+                    "lesson_id": item["id"],
+                    "grade": 4,
+                    "title": ("Thử thách: " if minimum_plan == "vip" else "Luyện tập: ")
+                    + source["title"],
+                    "description": f"{len(versions)} câu vận dụng. Đọc kỹ dữ kiện và xem lời giải sau khi nộp bài.",
+                    "assessment_type": "quiz" if minimum_plan == "vip" else "practice",
+                    "status": "published",
+                    "max_attempts": 5,
+                    "published_at": now(),
+                },
+                code + "/assessment",
+            )
+            if created:
+                for position, version in enumerate(versions, 1):
+                    ensure(
+                        conn,
+                        "assessment_items",
+                        {"assessment_id": assessment["id"], "position": position},
+                        {"question_version_id": version["id"], "points": 1},
+                        code + f"/item/{position}",
+                    )
+            else:
+                items = db.table("assessment_items")
+                actual = list(
+                    conn.execute(
+                        select(items.c.question_version_id)
+                        .where(items.c.assessment_id == assessment["id"])
+                        .order_by(items.c.position)
+                    ).scalars()
+                )
+                if actual != [version["id"] for version in versions]:
+                    raise RuntimeError(f"Seed conflict {code}: không sửa đề đã tồn tại")
+            for kind, target in (("lesson", item), ("assessment", assessment)):
+                ensure(
+                    conn,
+                    "content_access_policies",
+                    {f"{kind}_id": target["id"]},
+                    {
+                        "minimum_plan_code": minimum_plan,
+                        "learning_level": "advanced" if minimum_plan == "vip" else "reinforcement",
+                        "preview": {
+                            "summary": "Cùng vận dụng kiến thức đã học vào tình huống mới.",
+                            "goals": [source["title"], "Tìm bằng chứng và kiểm tra kết quả."],
+                        },
+                    },
+                    code + f"/policy/{kind}",
+                )
 
 
 def verify_seed(conn):

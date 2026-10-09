@@ -5,6 +5,7 @@ from sqlalchemy.dialects.postgresql import insert
 
 from app.core.security import now
 from app.db import db
+from app.services.access import eligible
 
 
 def evidence_update(state: dict, correct: bool, difficulty: int, weight: float, at, hint_count=0):
@@ -195,6 +196,8 @@ def recommendations(conn, student_id, grade):
         if row["id"] in used:
             continue
         used.add(row["id"])
+        if not eligible(conn, student_id, "assessment", row["id"], grade):
+            continue
         sparse = row["confidence"] is None or float(row["confidence"]) < 0.25
         reason = (
             "warmup"

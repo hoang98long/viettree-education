@@ -15,7 +15,11 @@ pytestmark = pytest.mark.integration
 
 
 def start(client):
-    assessment = client.get("/api/v1/assessments?grade=4&subject_code=MATH").json()[0]
+    assessment = next(
+        item
+        for item in client.get("/api/v1/assessments?grade=4&subject_code=MATH").json()
+        if item["code"] == "VT4-MATH-numbers-practice"
+    )
     assignment = client.post(
         f"/api/v1/students/me/assessments/{assessment['id']}/assign-self"
     ).json()
@@ -328,8 +332,14 @@ def test_wrong_answers_create_low_mastery_and_targeted_review(logged_student, co
         assert rec[0]["reason_code"] == "prerequisite"
         assert "Phép tính" in rec[0]["explanation"]
     else:
-        assert (
-            rec[0]["assessment_id"] == assessment["id"]
-            and rec[0]["reason_code"] == "practice_skill"
-        )
+        assert rec[0]["reason_code"] == "practice_skill"
+        items, links = db.table("assessment_items"), db.table("question_skills")
+        assert conn.execute(
+            select(links.c.skill_id)
+            .join(items, items.c.question_version_id == links.c.question_version_id)
+            .where(
+                items.c.assessment_id == rec[0]["assessment_id"],
+                links.c.skill_id == skills[0]["skill_id"],
+            )
+        ).first()
         assert skills[0]["name"] in rec[0]["explanation"]

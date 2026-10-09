@@ -10,8 +10,10 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.api import router
+from app.authoring_api import router as authoring_router
 from app.core.config import settings
 from app.db import db, engine
+from app.membership_api import router as membership_router
 
 logger = logging.getLogger("viettree")
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -21,9 +23,11 @@ app.add_middleware(
     allow_origins=settings().origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "PATCH"],
-    allow_headers=["Content-Type", "X-CSRF-Token"],
+    allow_headers=["Content-Type", "X-CSRF-Token", "Idempotency-Key"],
 )
 app.include_router(router)
+app.include_router(membership_router)
+app.include_router(authoring_router)
 
 
 @app.exception_handler(RequestValidationError)

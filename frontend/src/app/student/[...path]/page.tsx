@@ -13,6 +13,9 @@ import {
   SubjectPage,
 } from "@/features/student";
 import NotFound from "@/app/not-found";
+import { LearningPlanPage } from "@/features/learning-plan";
+import { MembershipPage } from "@/features/membership";
+import { PracticeLibrary } from "@/features/practice-library";
 export default function Page() {
   const { path } = useParams<{ path: string[] }>();
   if (path.length === 1)
@@ -27,6 +30,12 @@ export default function Page() {
         return <ProgressPage />;
       case "profile":
         return <ProfilePage />;
+      case "learning-plan":
+        return <LearningPlanPage />;
+      case "membership":
+        return <MembershipPage />;
+      case "practice":
+        return <PracticeLibrary />;
     }
   if (path.length === 2)
     switch (path[0]) {

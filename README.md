@@ -4,9 +4,70 @@
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+Khu vực học sinh dùng chữ mặc định 18 px, bài học 20 px, câu hỏi 22 px; các nút chính
+có chiều cao tối thiểu 48 px. Tại **Hồ sơ của em → Chữ dễ đọc cho em**, chọn
+**Chữ lớn hơn** để dùng chữ 22 px, bài học 24 px và câu hỏi 26 px. Lựa chọn được lưu
+theo tài khoản, áp dụng trên cả điện thoại và máy tính khi đăng nhập lại.
+
+Mục **Kế hoạch học** (`/student/learning-plan`) chuẩn bị tối đa 3 bài học chưa hoàn
+thành và bài luyện tập theo chủ đề trong 7 ngày. Chọn môn rồi bấm **Chuẩn bị kế hoạch**.
+Mỗi môn có một kế hoạch đang học; bấm lại sẽ mở kế hoạch đó. Dùng **Em đã đọc xong**
+ở cuối bài học để lưu tiến độ đọc; nộp bài luyện tập sẽ tự cập nhật bước luyện tập.
+Ngày trên kế hoạch là gợi ý, không khóa bài hay trừ điểm khi học muộn. Tiến độ đọc
+không được dùng làm bằng chứng năng lực; năng lực vẫn dựa vào câu trả lời đã chấm.
+
 **Giữ nguyên** `database/viettree_education_schema.sql` với 34 bảng gốc. Không reset,
 DROP hay TRUNCATE database học tập. Database mặc định có tên **`viettree-education`**,
-bao gồm dấu gạch ngang. Chỉ hai bảng auth được bổ sung bằng Alembic.
+bao gồm dấu gạch ngang. Alembic bổ sung hai bảng auth và sáu bảng gói học, revision
+`0005_authoring_revisions`.
+
+## Gói học Free / VIP
+
+30 bài học và 18 đề được học miễn phí. VIP mở thêm 12 bài nâng cao, 12 đề thử thách
+(48 câu mới) và kế hoạch theo kỹ năng cần ôn (`plan_v2`). Cách chấm điểm và quyền
+xem kết quả của chính học sinh giống nhau giữa hai gói.
+
+- Học sinh: **Gói học của em** (`/student/membership`) và **Hồ sơ của em** hiển thị
+  gói đang hiệu lực, thời hạn và quyền lợi. Bài bị khóa chỉ trả đoạn giới thiệu riêng.
+- Admin: **Học sinh → Quản lý gói học** để cấp/gia hạn 30, 90 hoặc 365 ngày hoặc thu
+  hồi; nhập lý do và xác nhận đúng tài khoản. Request lặp không cộng thời hạn lần hai.
+- Admin: **Quyền nội dung** (`/admin/content-access`) cấu hình Free/VIP, mức nội dung
+  và đoạn giới thiệu; thay đổi có audit.
+- Học sinh VIP: **Kế hoạch học → Kiểu kế hoạch → Theo kỹ năng cần ôn**. Thiếu bằng
+  chứng thì chọn bài nền tảng; chỉ chọn nâng cao khi kỹ năng đã vững.
+- Phụ huynh: `/guardian/dashboard` xem gói của các trẻ có liên kết đã xác minh.
+
+Hết hạn tự chuyển về quyền Free ở request tiếp theo; kết quả và tiến độ cũ được giữ.
+Attempt VIP đã bắt đầu hợp lệ được hoàn tất tối đa 60 phút sau hết hạn, trong hạn
+giao bài/thời lượng đề. Thu hồi VIP chặn ngay attempt đó, kể cả cấp lại VIP sau này.
+Kế hoạch VIP hết quyền chuyển tạm dừng; học sinh vẫn tạo được kế hoạch cơ bản.
+
+VIP hiện do admin cấp, chưa tích hợp thanh toán hoặc báo cáo phụ huynh/PDF. Bộ nội
+dung nâng cao được seed cho development; cần giáo viên rà soát trước sử dụng thực tế.
+Seed thường không tự nâng cấp học sinh. Lệnh riêng `seed-demo-learners` tạo bốn
+tài khoản demo theo yêu cầu, gồm hai Free và hai VIP 90 ngày.
+
+## Ngân hàng câu hỏi, bài tập và tài khoản demo
+
+Admin vào **Ngân hàng câu hỏi → Tạo câu hỏi** để soạn bốn loại câu, đặt đáp án/lời
+giải và xem trước. Lưu nháp, duyệt nội dung rồi xuất bản. Câu đã xuất bản được
+sửa qua phiên bản mới; đề và bài làm cũ vẫn dùng đáp án cũ.
+
+Vào **Tạo bài tập** để chọn câu đã xuất bản, sắp thứ tự, đặt điểm, thời gian,
+Free/VIP; duyệt/xuất bản và giao cho tối đa 50 học sinh. Học sinh dùng **Thư viện
+luyện tập** để tìm theo môn, gói, loại và từ khóa. Nội dung VIP được bảo vệ tại API.
+
+Sau migration và seed, tạo thêm tài khoản bằng `python -m app.cli seed-demo-learners`
+trong backend (chỉ development):
+
+| Tài khoản | Gói |
+| --- | --- |
+| free4_01, free4_02 | Free, lớp 4 |
+| vip4_01, vip4_02 | VIP 90 ngày từ lúc tạo, lớp 4 |
+
+Mật khẩu là `SEED_STUDENT_PASSWORD` trong `.env`. Chạy lại không đổi mật khẩu hoặc
+gia hạn/cấp lại VIP. Thiết kế, luồng sử dụng và đề xuất nâng cấp tiếp:
+[docs/authoring-design.md](docs/authoring-design.md).
 
 ## Chạy local development
 
@@ -51,7 +112,7 @@ Set-Location backend
 ```
 
 `alembic upgrade head` kiểm tra đủ bảng/cột gốc rồi thêm auth_sessions,
-auth_login_limits và bảng quản lý phiên bản alembic_version. Không tạo schema học
+auth_login_limits, sáu bảng gói học và bảng quản lý phiên bản alembic_version. Không tạo schema học
 tập khác. Thiếu bảng/cột sẽ báo lỗi và dừng. Khi schema chưa import, chạy **tùy chọn**:
 
 ```powershell
@@ -170,7 +231,7 @@ Remove-Item Env:DB_NAME
 ```
 
 Integration từ chối database `viettree-education` và tên không chứa `test`. Phần lớn
-tests dùng transaction + savepoint rollback. Hai tests concurrency dùng nhiều
+tests dùng transaction + savepoint rollback. Các tests concurrency dùng nhiều
 connection và ghi user/kết quả thực **chỉ trong test DB**, không xóa/reset dữ liệu.
 Mỗi test học sinh dùng user riêng để không phụ thuộc lịch sử longnh.
 
@@ -187,6 +248,11 @@ Browser E2E với Chrome trên máy (hoặc cài Chrome qua Playwright nếu ch�
 $env:DB_NAME = 'viettree-education-test'
 
 # Frontend terminal, server Next đang chạy:
+$env:DB_NAME = 'viettree-education-test'
+$env:E2E_STUDENT_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_VIP_STUDENT_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_VIP_MOBILE_STUDENT_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_AUTHORING_STUDENT_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
 $env:E2E_STUDENT_PASSWORD = $env:SEED_STUDENT_PASSWORD
 $env:E2E_ADMIN_PASSWORD = $env:SEED_ADMIN_PASSWORD
 # Nếu SEED_* chưa có trong terminal, đặt bằng giá trị trong .env local.
@@ -196,6 +262,9 @@ npm run test:e2e
 E2E ghi lịch sử vào test DB, có thể dùng hết 5 lượt của đề sau nhiều lần chạy. Không
 reset DB thật để chạy lại; dùng test DB mới hoặc dữ liệu test chuyên dụng. Ảnh desktop/
 mobile và trace khi fail nằm ở frontend/test-results (gitignored).
+Chạy pytest và browser E2E tuần tự khi dùng chung một test DB để tránh khóa giữa
+transaction rollback dài của pytest và request ghi của browser. Helper E2E tôn
+trọng Retry-After khi nhiều lượt đăng nhập dùng chung IP proxy.
 
 Để chạy lặp không hết lượt, tại terminal backend đã đặt DB_NAME=test:
 `python scripts/create_test_student.py` tạo một học sinh test mới và chỉ in username.
@@ -203,8 +272,8 @@ mobile và trace khi fail nằm ở frontend/test-results (gitignored).
 SEED_STUDENT_PASSWORD. Script từ chối database thật và không xóa học sinh cũ.
 
 SQL đối chiếu seed: `database/seeds/verify.sql`. Kết quả mặc định mỗi môn: 4 chủ đề,
-8 bài học, 32 published questions, 4 published assessments, mỗi đề 8 câu.
-Tổng: **12 chủ đề, 24 bài học, 96 câu hỏi, 12 đề**, 12 kỹ năng; câu hỏi được gắn
+14 bài học, 72 published questions, 10 published assessments; đề cũ 8 câu, đề mới 6 câu.
+Tổng: **12 chủ đề, 42 bài học, 216 câu hỏi, 30 đề**, 12 kỹ năng; câu hỏi được gắn
 lesson_questions, lesson_skills và question_skills đúng phiên bản.
 
 ## Phạm vi tính năng
@@ -221,20 +290,24 @@ lesson_questions, lesson_skills và question_skills đúng phiên bản.
   rebuild mastery và question/daily statistics: `python -m app.cli rebuild`.
 - Admin dashboard, danh sách/tìm kiếm/phân trang học sinh và câu hỏi, sửa hồ sơ tối
   thiểu có audit; chương trình, chi tiết đáp án admin-only, đề/lượt làm, analytics.
+- Admin biên soạn câu hỏi và ghép đề, nháp/duyệt/xuất bản/lưu trữ, tạo phiên bản
+  và sao chép đề; chống ghi đè bằng revision, giao bài hàng loạt theo lớp/gói.
+- Thư viện luyện tập học sinh lọc theo môn, Free/VIP, loại đề và từ khóa.
 - Responsive desktop/tablet/mobile, keyboard controls, reduced motion, loading/
   empty/error/retry; trang 403/404, chuyển login khi hết phiên.
 
 Được để chờ mở rộng theo phạm vi prompt:
 
-- Tạo/sửa/xóa/duyệt/xuất bản câu hỏi từ UI/API: **chỉ scaffold**, mọi nút ghi disabled.
-- Teacher/guardian có RBAC và layout; chưa quản lý lớp hoặc xem dữ liệu học sinh.
-  Quyền guardian_students phải được xác minh trước khi mở tính năng phụ huynh.
+- Teacher có RBAC/layout; quản lý lớp và giao bài chưa mở. Guardian chỉ xem gói
+  học của trẻ có guardian_students.verified_at; báo cáo kết quả và PDF chưa mở.
 - Lớp 1/2/3/5 và bốn môn khác: khung chương trình, trạng thái Đang xây dựng.
-- Không có public signup, editor, upload/media/audio, auto-grader tự luận, AI/ML,
+- Chưa có public signup, trình soạn bài học, upload/media/audio, auto-grader tự luận, AI/ML,
   email, thông báo, Redis/MinIO hay dịch vụ trả phí. Bài luyện viết là hướng dẫn tại
   lesson, không có quy trình nộp tự luận/giáo viên chấm trong MVP.
-- Chưa lập learning_plan_items tự động; lộ trình MVP thể hiện qua bài học, tiến độ và
-  gợi ý. Các bảng kế hoạch gốc được ánh xạ và giữ nguyên cho giai đoạn tiếp theo.
+- Kế hoạch cơ bản `plan_v1` và kế hoạch VIP `plan_v2` đã hoạt động. Gợi ý luyện tập
+  `rule_v1` vẫn hoạt động độc lập và chỉ chọn đề đủ quyền gói hiện tại.
+  Khi nội dung hoặc lượt làm bài thay đổi sau lúc lập kế hoạch, quy tắc truy cập
+  và giới hạn lượt vẫn được API thực thi; kế hoạch chưa tự thay thế bước bị đóng.
 
 ## Cấu trúc và tài liệu
 
@@ -250,7 +323,7 @@ backend/app/services/      Làm bài và graders
 backend/app/personalization/  rule_v1 và rebuild thống kê
 backend/app/curriculum.py  Nội dung tự biên soạn
 backend/app/seed.py        Seed an toàn, idempotent
-backend/alembic/           Baseline + migration auth có rollback
+backend/alembic/           Baseline + migrations auth/Free-VIP
 backend/tests/            Unit, integration, concurrency
 backend/scripts/smoke.py  Smoke transaction mặc định rollback
 database/                 SQL gốc và SQL đối chiếu seed
@@ -258,10 +331,13 @@ docs/                     Kiến trúc, API, RBAC, personalization, trạng thá
 ```
 
 Xem `docs/architecture.md`, `docs/api.md`, `docs/security.md`,
-`docs/personalization.md`, `docs/IMPLEMENTATION_STATUS.md`.
-Rollback chỉ migration bổ sung: `alembic downgrade 0001_baseline` sẽ xóa hai bảng
-auth và làm mọi phiên hết hiệu lực; đây là thao tác chủ động của người vận hành,
-không chạy tự động. Baseline downgrade không thay đổi bảng gốc.
+`docs/personalization.md`, `docs/IMPLEMENTATION_STATUS.md`, `docs/roadmap.md`.
+Thiết kế gói học miễn phí/VIP: [docs/free-vip-design.md](docs/free-vip-design.md)
+(thiết kế và trạng thái triển khai; thanh toán/báo cáo nâng cao là giai đoạn sau).
+Downgrade từ head về `0002_auth_sessions` sẽ xóa dữ liệu sáu bảng gói học. Cần
+backup và chuyển về phiên bản ứng dụng tương thích trước; không downgrade tự động.
+Downgrade về `0001_baseline` còn xóa auth và làm mọi phiên hết hiệu lực. Baseline
+downgrade không thay đổi bảng học tập gốc.
 
 ## Vận hành và xử lý lỗi
 

@@ -1,18 +1,5 @@
 import { test, expect } from "@playwright/test";
-
-async function login(
-  page: import("@playwright/test").Page,
-  username: string,
-  password: string,
-) {
-  await page.goto("/login");
-  await page.getByLabel("Tên đăng nhập", { exact: true }).fill(username);
-  await page.getByLabel("Mật khẩu", { exact: true }).fill(password);
-  await page.getByRole("button", { name: "Vào học thôi" }).click();
-  await expect(page).toHaveURL(
-    new RegExp(`/${username === "admin" ? "admin" : "student"}/dashboard`),
-  );
-}
+import { login } from "./helpers";
 
 test("học sinh: bài học → làm bài → lưu/reload → nộp → kết quả → lịch sử", async ({
   page,
@@ -74,7 +61,7 @@ test("học sinh: bài học → làm bài → lưu/reload → nộp → kết q
   await expect(page.getByRole("heading", { name: /403/ })).toBeVisible();
 });
 
-test("admin: thống kê, danh sách, đáp án chỉ quản trị và form chưa ghi dữ liệu", async ({
+test("admin: thống kê, danh sách, đáp án chỉ quản trị và trình soạn câu hỏi", async ({
   page,
 }, testInfo) => {
   const password = process.env.E2E_ADMIN_PASSWORD;
@@ -95,13 +82,13 @@ test("admin: thống kê, danh sách, đáp án chỉ quản trị và form chư
   ).toBeVisible();
   await page.getByRole("button", { name: "Đóng chi tiết" }).click();
   await page.goto("/admin/questions/new");
+  await expect(page.getByLabel("Mã câu hỏi")).toBeVisible();
   await expect(
-    page.getByText("Chức năng tạo bài tập đang được phát triển"),
-  ).toBeVisible();
-  await expect(page.getByRole("button", { name: "Lưu nháp" })).toBeDisabled();
+    page.getByRole("button", { name: "Lưu nháp câu hỏi" }),
+  ).toBeEnabled();
   await expect(
-    page.getByRole("button", { name: "Duyệt / Xuất bản" }),
-  ).toBeDisabled();
+    page.getByRole("button", { name: "Xem trước câu hỏi" }),
+  ).toBeEnabled();
   await page.screenshot({
     path: `test-results/authoring-${testInfo.project.name}.png`,
     fullPage: true,

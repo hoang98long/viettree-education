@@ -221,6 +221,8 @@ __marimo__/
 /frontend/.next/cache/webpack
 
 # VietTree local artifacts
+!frontend/src/lib/
+!frontend/src/lib/**
 .env
 .env.*
 !.env.example

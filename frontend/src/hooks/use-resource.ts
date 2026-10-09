@@ -1,13 +1,14 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 
-export function useResource<T>(path: string) {
+export function useResource<T>(path: string, keepPreviousOnRefresh = false) {
   const [state, setState] = useState<{
     data: T | null;
     error: string;
     loading: boolean;
     key: string;
+    errorCode?: string;
   }>({ data: null, error: "", loading: true, key: "" });
   const [version, setVersion] = useState(0);
   const retry = useCallback(() => setVersion((v) => v + 1), []);
@@ -21,11 +22,26 @@ export function useResource<T>(path: string) {
       })
       .catch((error: Error) => {
         if (!controller.signal.aborted)
-          setState({ data: null, error: error.message, loading: false, key });
+          setState({
+            data: null,
+            error: error.message,
+            errorCode: error instanceof ApiError ? error.code : undefined,
+            loading: false,
+            key,
+          });
       });
     return () => controller.abort();
   }, [path, version, key]);
   return state.key === key
     ? { ...state, retry }
-    : { data: null, error: "", loading: true, retry };
+    : {
+        data:
+          keepPreviousOnRefresh && state.key.startsWith(`${path}:`)
+            ? state.data
+            : null,
+        error: "",
+        errorCode: undefined,
+        loading: true,
+        retry,
+      };
 }

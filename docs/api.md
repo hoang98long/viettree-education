@@ -9,7 +9,7 @@ trước nộp. UUID không hợp lệ/extra fields đáp án → 422; không ph
 | Phương thức / đường dẫn | Quyền / hành vi |
 | --- | --- |
 | POST auth/login | JSON username/password, set hai cookie; Origin allowlist |
-| GET auth/me | User id, tên, roles; không hash/token |
+| GET auth/me | User id, tên, roles, text_size; không hash/token |
 | POST auth/logout | Session bị thu hồi; CSRF header |
 | GET grades | Khung 1–5 |
 | GET subjects?grade=4 | Tất cả môn, đếm chủ đề theo lớp |
@@ -17,6 +17,10 @@ trước nộp. UUID không hợp lệ/extra fields đáp án → 422; không ph
 | GET lessons?topic_id=UUID | Bài published |
 | GET lessons/{id} | Nội dung blocks, breadcrumb, các đề cùng chủ đề |
 | POST lessons/{id}/visit | Student đúng lớp; lưu tiến độ đọc, không tự ghi hoàn thành |
+| POST lessons/{id}/complete | Student đúng lớp; xác nhận đọc xong, cập nhật kế hoạch, bấm lặp không nhân đôi event |
+| PUT students/me/accessibility | JSON `{ "text_size": "comfortable" }` hoặc `"large"`; lưu lựa chọn của chính học sinh |
+| GET students/me/learning-plans | Tối đa 12 kế hoạch active/completed cùng lớp của chính học sinh, active trước |
+| POST students/me/learning-plans | JSON `{ "subject_code": "MATH" }`; chuẩn bị kế hoạch 7 ngày hoặc trả kế hoạch active hiện có |
 | GET assessments?grade=4&subject_code=MATH | Đề published, metadata/count |
 | GET assessments/{id} | Metadata, không gửi câu/đáp án |
 | GET students/me/dashboard | Hồ sơ/subjects/history/skills/tasks/recommendations thật |
@@ -59,3 +63,88 @@ fill blank NFC/casefold/trim/gộp whitespace, **giữ dấu**. Free text grader
 Đường dẫn frontend khớp prompt; App Router catch-all dispatch theo student/admin
 path, route không nhận diện hiển thị trang 404. Guards phía client bảo vệ màn hình;
 mọi quyền dữ liệu còn được kiểm tra độc lập tại API, không dựa vào UI.
+
+`lessons/{id}` trả thêm `progress_status` riêng theo người đang đăng nhập. Kế hoạch
+trả `completed_count`, `items` (id/position/lesson_id/assessment_id/title/status/
+due_at/completed_at). Không nhận student_id hoặc trạng thái hoàn thành kế hoạch
+từ client; tiến độ được cập nhật cùng transaction xác nhận đọc/nộp bài. Chỉ bắt đầu
+đọc chuyển bước sang in_progress. Không có bài học mới trả 409, môn không tồn tại
+trả 404. Ngày kế hoạch tính theo Asia/Bangkok; due_at là gợi ý, không thay thế hạn
+của assignment hoặc thời lượng đề.
+
+## Free / VIP
+
+`GET membership/plans` công khai trả quyền lợi đã phát hành. `GET students/me/membership`
+trả gói hiệu lực từ DB/thời gian server; hết hạn/thu hồi trả plan_code=free và
+subscription_plan_code=vip. Không nhận gói học qua API hồ sơ hoặc cookie do client đặt.
+
+| Phương thức / đường dẫn | Quyền / hành vi |
+| --- | --- |
+| GET students/me/membership | Gói, trạng thái, starts_at/ends_at, features của học sinh |
+| GET guardian/students | Chỉ trẻ có guardian_students.verified_at |
+| GET guardian/students/{id}/membership | Guardian có liên kết đã xác minh, ngoài liên kết trả 404 |
+| GET admin/students/{id}/summary | Danh tính học sinh để xác nhận thao tác |
+| GET admin/students/{id}/membership | Admin xem gói hiện tại |
+| GET admin/students/{id}/membership/history | 50 thao tác mới nhất |
+| POST admin/students/{id}/membership/grant | Admin, CSRF, Idempotency-Key UUID; cấp mới |
+| POST admin/students/{id}/membership/extend | Cùng quyền; gia hạn còn hiệu lực từ ends_at, hết hạn từ server_now |
+| POST admin/students/{id}/membership/revoke | Cùng quyền; thu hồi ngay và đánh dấu revoked_at trên grants |
+| GET lessons/{id}/preview | Metadata và preview.summary/goals riêng, không blocks |
+| GET admin/content-access | Chính sách cấu hình và gói hiệu lực sau kiểm tra nội dung dùng chung |
+| PUT admin/content/{lesson hoặc assessment}/{id}/policy | Admin, CSRF; minimum_plan_code, learning_level, preview, reason |
+
+Cấp/gia hạn nhận `{ "duration_days": 30, "reason": "Lý do cấp gói" }`; số ngày chỉ
+nhận 30/90/365, lý do 5–500 ký tự. Thu hồi chỉ nhận reason. Cùng actor/key/payload
+trả snapshot lần đầu; key đã dùng với payload/đích khác trả 409. Audit cùng transaction.
+
+Catalog thêm minimum_plan_code/learning_level/locked/lock_reason; danh sách và chi
+tiết đề chỉ trả metadata. Đọc bài/làm bài vẫn kiểm tra gói độc lập. Lỗi gói là 403
+với detail={code,message,required_plan}; code MEMBERSHIP_REQUIRED hoặc
+MEMBERSHIP_REVOKED. Thiếu chính sách trả POLICY_NOT_READY, không trả nội dung.
+
+POST students/me/learning-plans nhận thêm mode=basic/adaptive (mặc định basic).
+Adaptive yêu cầu learning_plan.adaptive; GET trả mode/explanation và trạng thái
+paused khi hết quyền, giữ các bước đã hoàn thành. Basic luôn chọn nội dung Free.
+
+Attempt VIP có grant riêng tối đa ends_at+60 phút, không vượt thời lượng/hạn giao
+bài. Hết VIP vẫn đọc/lưu/nộp chính attempt trong grant; không mở bài/attempt mới.
+Result graded vẫn theo owner và không yêu cầu VIP. Thu hồi chặn grant vĩnh viễn
+của attempt cũ; cấp lại VIP không khôi phục grant đã thu hồi.
+
+## Ngân hàng câu hỏi và bài tập
+
+Tất cả đường dẫn dưới đây có tiền tố `admin/authoring`, yêu cầu admin; mọi request
+ghi yêu cầu CSRF. UUID câu hỏi là **question_version_id**, không phải questions.id.
+
+| Phương thức / đường dẫn | Hành vi |
+| --- | --- |
+| GET options?grade=4 | Môn, chủ đề, kỹ năng active và bài học published |
+| POST questions | Tạo câu hỏi và phiên bản nháp đầu tiên |
+| GET questions/{id} | Chi tiết gồm đáp án, kỹ năng, policy và edit_revision |
+| PUT questions/{id} | Sửa nháp, gửi expected_revision; xóa dấu duyệt |
+| POST questions/{id}/revise | Sao chép thành phiên bản nháp mới; chỉ một nháp mỗi câu |
+| POST questions/{id}/{review,publish,archive} | JSON expected_revision và reason; audit |
+| POST assessments | Tạo nháp đề với 1–50 items, points, policy và preview |
+| GET assessments/{id} | Chi tiết items, trạng thái duyệt và quyền hiệu lực |
+| PUT assessments/{id} | Sửa nháp, gửi expected_revision; xóa dấu duyệt |
+| POST assessments/{id}/clone | JSON code mới; tạo nháp đề mới |
+| POST assessments/{id}/{review,publish,archive} | JSON expected_revision và reason; không archive khi có attempt đang làm |
+| POST assessments/{id}/assign | JSON student_ids, available_at/due_at tùy chọn (ISO có timezone); tối đa 50 em, kiểm tra cả nhóm và dùng lại nhiệm vụ đang hoạt động cùng lịch |
+
+`GET admin/questions` bổ sung bộ lọc `status`, `question_type`, `minimum_plan_code`,
+`topic_id`; search tìm mã hoặc nội dung. `GET admin/assessments` có metadata quyền.
+
+Input câu hỏi gồm code, grade, subject_id, topic_id, skill_ids, question_type,
+difficulty, content={prompt,options}, grading, explanation (chuỗi), minimum_plan_code.
+Grading: single dùng correct_option_id; multiple dùng correct_option_ids; fill_blank
+dùng accepted_answers/case_sensitive; ordering dùng ordered_ids. Các trường dư bị từ chối.
+Input đề gồm code/grade/subject_id/topic_id/title/assessment_type, lesson_id tùy chọn,
+description, time_limit_seconds, max_attempts, minimum_plan_code, learning_level,
+preview và items=[{question_version_id,points}]. Swagger có schema đầy đủ.
+
+409 cho revision cũ, mã trùng, sửa nội dung đã xuất bản hoặc thiếu bước duyệt;
+422 cho đáp án/cấu trúc sai, đề Free chứa câu VIP, thời gian không hợp lệ; 403 khi
+giao cho học sinh sai lớp/gói. Lỗi không trả đáp án nội bộ cho học sinh.
+Nội dung đã xuất bản giữ nguyên; đề cũ tiếp tục dùng phiên bản câu từng được xuất
+bản dù phiên bản đó chuyển archived. Luồng và giới hạn:
+[authoring-design.md](authoring-design.md).

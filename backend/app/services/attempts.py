@@ -8,7 +8,9 @@ from sqlalchemy.dialects.postgresql import insert
 from app.core.security import now
 from app.db import db
 from app.personalization.engine import rebuild_statistics, rebuild_student
+from app.services import access
 from app.services.grading import grade_answer, safe_content, validate_answer
+from app.services.learning import update_targets
 
 
 def lock_student(conn, student_id):
@@ -27,7 +29,9 @@ def published_assessment(conn, assessment_id, grade=None):
     table = db.table("assessments")
     row = (
         conn.execute(
-            select(table).where(table.c.id == assessment_id, table.c.status == "published")
+            select(table)
+            .where(table.c.id == assessment_id, table.c.status == "published")
+            .with_for_update(read=True)
         )
         .mappings()
         .first()
@@ -41,7 +45,10 @@ def published_assessment(conn, assessment_id, grade=None):
 
 def assign_self(conn, student_id, assessment_id):
     profile = lock_student(conn, student_id)
-    published_assessment(conn, assessment_id, profile["current_grade"])
+    assessment = published_assessment(conn, assessment_id, profile["current_grade"])
+    access.authorize_content(
+        conn, access.student_actor(student_id), "assessment", assessment_id, assessment["grade"]
+    )
     table = db.table("student_assignments")
     existing = (
         conn.execute(
@@ -109,7 +116,7 @@ def start_attempt(conn, student_id, assignment_id):
     check_window(assignment, assessment)
     existing = (
         conn.execute(
-            select(attempts.c.id, attempts.c.started_at).where(
+            select(attempts).where(
                 attempts.c.student_id == student_id,
                 attempts.c.assessment_id == assessment["id"],
                 attempts.c.status == "in_progress",
@@ -120,7 +127,12 @@ def start_attempt(conn, student_id, assignment_id):
     )
     if existing:
         check_window(assignment, assessment, existing["started_at"])
+        access.authorize_attempt(conn, existing)
+        update_targets(conn, student_id, assessment_id=assessment["id"], completed=False)
         return {"id": existing["id"], "resumed": True}
+    access.authorize_content(
+        conn, access.student_actor(student_id), "assessment", assessment["id"], assessment["grade"]
+    )
     count = conn.execute(
         select(func.count())
         .select_from(attempts)
@@ -133,6 +145,7 @@ def start_attempt(conn, student_id, assignment_id):
             select(
                 items.c.id,
                 versions.c.status,
+                versions.c.published_at,
                 versions.c.question_type,
                 questions.c.grade,
                 questions.c.subject_id,
@@ -145,7 +158,8 @@ def start_attempt(conn, student_id, assignment_id):
         .all()
     )
     if not configured or any(
-        row["status"] != "published"
+        row["status"] not in ("published", "archived")
+        or row["published_at"] is None
         or not row["is_active"]
         or row["grade"] != assessment["grade"]
         or row["subject_id"] != assessment["subject_id"]
@@ -159,6 +173,7 @@ def start_attempt(conn, student_id, assignment_id):
             attempts.c.assignment_id == assignment_id
         )
     ).scalar_one()
+    started_at = now()
     attempt_id = conn.execute(
         insert(attempts)
         .values(
@@ -166,9 +181,11 @@ def start_attempt(conn, student_id, assignment_id):
             student_id=student_id,
             assessment_id=assessment["id"],
             attempt_no=attempt_no,
+            started_at=started_at,
         )
         .returning(attempts.c.id)
     ).scalar_one()
+    access.grant_attempt(conn, student_id, attempt_id, assessment, assignment, started_at)
     conn.execute(
         assignments.update().where(assignments.c.id == assignment_id).values(status="in_progress")
     )
@@ -177,6 +194,7 @@ def start_attempt(conn, student_id, assignment_id):
             student_id=student_id, event_type="attempt_started", attempt_id=attempt_id
         )
     )
+    update_targets(conn, student_id, assessment_id=assessment["id"], completed=False)
     return {"id": attempt_id, "resumed": False}
 
 
@@ -218,6 +236,8 @@ def attempt_items(conn, assessment_id):
 
 def get_attempt(conn, user, attempt_id):
     attempt = owned_attempt(conn, user, attempt_id)
+    if "admin" not in user["roles"]:
+        access.authorize_attempt(conn, attempt)
     assessments, assignments, answers = (
         db.table(name) for name in ("assessments", "student_assignments", "attempt_answers")
     )
@@ -244,6 +264,15 @@ def get_attempt(conn, user, attempt_id):
             )
         ).mappings()
     }
+    grants = db.table("attempt_access_grants")
+    allowed_until = conn.execute(
+        select(grants.c.allowed_until).where(grants.c.attempt_id == attempt_id)
+    ).scalar()
+    if (
+        allowed_until
+        and access.resolve_membership(conn, attempt["student_id"])["plan_code"] != "vip"
+    ):
+        deadlines.append(allowed_until)
     return dict(
         id=attempt["id"],
         assignment_id=attempt["assignment_id"],
@@ -271,6 +300,7 @@ def writable_attempt(conn, user, attempt_id):
     attempt = owned_attempt(conn, user, attempt_id, write=True)
     if attempt["status"] != "in_progress":
         raise HTTPException(409, "Bài đã nộp, không thể thay đổi câu trả lời")
+    access.authorize_attempt(conn, attempt)
     assessment = published_assessment(conn, attempt["assessment_id"])
     assignments = db.table("student_assignments")
     assignment = (
@@ -463,6 +493,9 @@ def submit(conn, user, attempt_id):
             properties={"model_version": "rule_v1"},
         )
     )
+    update_targets(conn, user["id"], assessment_id=attempt["assessment_id"])
+    if assessment["lesson_id"]:
+        update_targets(conn, user["id"], lesson_id=assessment["lesson_id"])
     rebuild_student(conn, user["id"])
     rebuild_statistics(conn)
     return result(conn, user, attempt_id)

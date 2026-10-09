@@ -44,3 +44,21 @@ MVP rebuild toàn lịch sử mỗi nộp, ưu tiên đúng và đơn giản; c�
 và kiểm tra reconciliation khi dữ liệu lớn. Không xử lý xóa/sửa lịch sử gốc trong
 API MVP; rebuild upsert dựa trên lịch sử append-only, không phải công cụ dọn dữ liệu.
 Không lưu nhãn kỳ thị, dữ liệu nhạy cảm hay suy luận ngoài kết quả bài làm.
+
+## Kế hoạch và quyền gói học
+
+Gợi ý rule_v1 lọc đề theo quyền Free/VIP hiện tại trước khi chọn tối đa 5 đề.
+Kế hoạch cơ bản plan_v1 vẫn chỉ chọn tối đa 3 bài Free chưa hoàn thành, đúng lớp.
+
+Plan_v2 (mode=adaptive) yêu cầu feature learning_plan.adaptive. Chỉ dùng mastery
+khi có ít nhất 5 bằng chứng; ưu tiên prerequisite cần ôn, rồi kỹ năng yếu hoặc đến
+hạn ôn. Bài nâng cao chỉ được xét khi có bằng chứng, mastery >= 0.8 và confidence
+>= 0.25 cho mọi kỹ năng được liên kết. Thiếu dữ liệu chọn bài nền tảng theo thứ tự
+chương trình. Thực hiện theo quy tắc, không suy luận ngoài dữ liệu câu trả lời.
+
+Bài luyện đi kèm ưu tiên đúng lesson_id rồi đề cùng chủ đề, có quyền và còn lượt.
+Mỗi môn có một kế hoạch active; đổi kiểu sẽ archive kế hoạch trước và giữ lịch sử.
+Khi hết/thu hồi quyền adaptive, GET chuyển kế hoạch active sang paused, giữ tiến độ;
+cấp lại cho phép tạo kế hoạch adaptive mới, không tự khôi phục kế hoạch paused.
+Kế hoạch chưa tự thay bước sau khi đề bị đóng/hết lượt. Cách chấm/mastery không đổi
+theo gói. Bộ câu nâng cao dùng version riêng, không sửa bằng chứng lịch sử.

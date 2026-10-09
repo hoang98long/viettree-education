@@ -36,6 +36,16 @@ Cookie HttpOnly chứa phiên opaque, chỉ lưu SHA-256 token tại DB; CSRF to
 SameSite=Lax, kiểm tra Origin và header CSRF cho thao tác ghi. Migration Alembic bổ
 sung auth_sessions và auth_login_limits; baseline không import hay thay đổi bảng gốc.
 
+Migration 0003_memberships bổ sung membership_plans/membership_plan_features,
+student_memberships/membership_operations, content_access_policies và
+attempt_access_grants. Gói độc lập user_roles. access.py tập trung quyết định quyền;
+membership_api.py phục vụ quản lý gói, giới thiệu và chính sách nội dung. Không có
+cache quyền ở session; thời hạn được tính lại mỗi request.
+
+Đổi gói khóa theo actor/Idempotency-Key trước, rồi student_profiles; ghi membership,
+operation và audit cùng transaction. Bắt đầu/lưu/nộp bài cùng khóa học sinh để tuần
+tự hóa với thu hồi. Plan_v2 dùng bằng chứng mastery có sẵn, không thêm điểm giả.
+
 Khóa hàng student_profiles tuần tự hóa bắt đầu/nộp bài và đề xuất theo học sinh;
 khóa attempts bảo đảm nộp lại trả kết quả cũ. Điểm, mastery, sự kiện và tiến độ ghi
 trong một transaction. Chỉ trả whitelist nội dung public trước nộp. Admin đọc đáp án
@@ -43,3 +53,14 @@ qua API riêng. Free text không tự chấm. Seed không tạo lịch sử/đi�
 
 Checkpoint: schema → cấu hình/auth → seed → API bài làm → rule_v1 → UI → kiểm thử
 → tài liệu bàn giao. Tiến độ và chứng cứ cuối cùng ở IMPLEMENTATION_STATUS.md.
+
+## Biên soạn và giao bài
+
+`authoring_api.py` dùng `authoring_schemas.py` và `services/authoring.py`; thao tác
+ghi cùng transaction audit. Migration 0004 bổ sung policy từng phiên bản câu;
+0005 thêm revision tăng đơn điệu vào câu/đề để phát hiện nháp bị sửa đồng thời.
+Khóa questions trước question_versions khi biên soạn; khóa student_profiles theo
+thứ tự ID rồi assessment ở chế độ chia sẻ khi giao/bắt đầu. Archive đề khóa đề
+độc quyền và kiểm tra không còn lượt đang làm. Nội dung published được giữ nguyên;
+phiên bản cũ đã published vẫn dùng trong đề cũ sau khi archive. UI nằm ở
+`features/authoring.tsx` và `features/practice-library.tsx`.

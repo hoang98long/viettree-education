@@ -1,3 +1,4 @@
+from typing import Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
@@ -28,6 +29,7 @@ from app.schemas import (
     StudentUpdate,
     UserResponse,
 )
+from app.services import access, learning
 from app.services import attempts as service
 
 router = APIRouter(prefix="/api/v1")
@@ -60,8 +62,61 @@ def login(payload: LoginInput, request: Request, response: Response, conn=Depend
 
 
 @router.get("/auth/me", response_model=UserResponse, tags=["auth"])
-def me(user=Depends(current_user)):
-    return public_user(user)
+def me(user=Depends(current_user), conn=Depends(connection)):
+    result = public_user(user)
+    if "student" in user["roles"]:
+        profiles = db.table("student_profiles")
+        options = (
+            conn.execute(
+                select(profiles.c.accessibility_options).where(profiles.c.student_id == user["id"])
+            ).scalar()
+            or {}
+        )
+        result["text_size"] = "large" if options.get("text_size") == "large" else "comfortable"
+    return result
+
+
+@router.put("/students/me/accessibility", response_model=out.AccessibilityInput, tags=["student"])
+def accessibility(
+    payload: out.AccessibilityInput, user=Depends(student_user), conn=Depends(connection)
+):
+    profile = service.lock_student(conn, user["id"])
+    profiles = db.table("student_profiles")
+    conn.execute(
+        profiles.update()
+        .where(profiles.c.student_id == user["id"])
+        .values(
+            accessibility_options={
+                **profile["accessibility_options"],
+                "text_size": payload.text_size,
+            },
+            updated_at=now(),
+        )
+    )
+    return payload
+
+
+@router.get(
+    "/students/me/learning-plans", response_model=list[out.LearningPlanResponse], tags=["student"]
+)
+def learning_plans(user=Depends(student_user), conn=Depends(connection)):
+    profiles = db.table("student_profiles")
+    grade = conn.execute(
+        select(profiles.c.current_grade).where(profiles.c.student_id == user["id"])
+    ).scalar_one()
+    return learning.list_plans(conn, user["id"], grade)
+
+
+@router.post(
+    "/students/me/learning-plans", response_model=out.LearningPlanResponse, tags=["student"]
+)
+def create_learning_plan(
+    payload: out.LearningPlanInput, user=Depends(student_user), conn=Depends(connection)
+):
+    profile = service.lock_student(conn, user["id"])
+    return learning.create_plan(
+        conn, user["id"], profile["current_grade"], payload.subject_code, payload.mode
+    )
 
 
 @router.post("/auth/logout", response_model=dict[str, bool], tags=["auth"])
@@ -140,7 +195,9 @@ def topics(
 @router.get("/lessons", response_model=list[out.LessonSummaryResponse], tags=["curriculum"])
 def lessons(topic_id: UUID, user=Depends(current_user), conn=Depends(connection)):
     table = db.table("lessons")
-    return (
+    topics = db.table("topics")
+    grade = conn.execute(select(topics.c.grade).where(topics.c.id == topic_id)).scalar()
+    rows = (
         conn.execute(
             select(
                 table.c.id,
@@ -157,6 +214,10 @@ def lessons(topic_id: UUID, user=Depends(current_user), conn=Depends(connection)
         .mappings()
         .all()
     )
+    return [
+        {**dict(row), **access.content_access(conn, user, "lesson", row["id"], grade)}
+        for row in rows
+    ]
 
 
 @router.get("/lessons/{lesson_id}", response_model=out.LessonResponse, tags=["curriculum"])
@@ -183,6 +244,7 @@ def lesson(lesson_id: UUID, user=Depends(current_user), conn=Depends(connection)
     )
     if not row:
         raise HTTPException(404, "Không tìm thấy bài học")
+    gate = access.authorize_content(conn, user, "lesson", lesson_id, row["grade"])
     practice = (
         conn.execute(
             select(assessments.c.id, assessments.c.title).where(
@@ -192,7 +254,22 @@ def lesson(lesson_id: UUID, user=Depends(current_user), conn=Depends(connection)
         .mappings()
         .all()
     )
-    return {**dict(row), "practice": practice}
+    progress = db.table("student_lesson_progress")
+    progress_status = (
+        conn.execute(
+            select(progress.c.status).where(
+                progress.c.student_id == user["id"], progress.c.lesson_id == lesson_id
+            )
+        ).scalar()
+        or "not_started"
+    )
+    practice = [
+        dict(item)
+        for item in practice
+        if access.eligible(conn, user["id"], "assessment", item["id"], row["grade"])
+        or "admin" in user["roles"]
+    ]
+    return {**dict(row), **gate, "practice": practice, "progress_status": progress_status}
 
 
 @router.post("/lessons/{lesson_id}/visit", response_model=dict[str, bool], tags=["student"])
@@ -214,7 +291,51 @@ def visit_lesson(lesson_id: UUID, user=Depends(student_user), conn=Depends(conne
             index_elements=[table.c.student_id, table.c.lesson_id], set_={"last_accessed_at": now()}
         )
     )
+    learning.update_targets(conn, user["id"], lesson_id=lesson_id, completed=False)
     return {"visited": True}
+
+
+@router.post("/lessons/{lesson_id}/complete", response_model=dict[str, bool], tags=["student"])
+def complete_lesson(lesson_id: UUID, user=Depends(student_user), conn=Depends(connection)):
+    profile = service.lock_student(conn, user["id"])
+    record = lesson(lesson_id, user, conn)
+    if record["grade"] != profile["current_grade"]:
+        raise HTTPException(403, "Bài học không thuộc lớp của em")
+    progress = db.table("student_lesson_progress")
+    at = now()
+    statement = insert(progress).values(
+        student_id=user["id"],
+        lesson_id=lesson_id,
+        status="completed",
+        completion_ratio=1,
+        first_started_at=at,
+        completed_at=at,
+        last_accessed_at=at,
+    )
+    conn.execute(
+        statement.on_conflict_do_update(
+            index_elements=[progress.c.student_id, progress.c.lesson_id],
+            set_={
+                "status": "completed",
+                "completion_ratio": 1,
+                "completed_at": func.coalesce(progress.c.completed_at, at),
+                "last_accessed_at": at,
+                "updated_at": at,
+            },
+        )
+    )
+    if record["progress_status"] != "completed":
+        conn.execute(
+            db.table("learning_events")
+            .insert()
+            .values(
+                student_id=user["id"],
+                event_type="lesson_completed",
+                properties={"source": "student_read_confirmation", "lesson_id": str(lesson_id)},
+            )
+        )
+    learning.update_targets(conn, user["id"], lesson_id=lesson_id)
+    return {"completed": True}
 
 
 def assessment_list(conn, grade, subject_code=None, published_only=True):
@@ -232,6 +353,7 @@ def assessment_list(conn, grade, subject_code=None, published_only=True):
         table.c.topic_id,
         table.c.max_attempts,
         table.c.time_limit_seconds,
+        table.c.assessment_type,
         subjects.c.code.label("subject_code"),
         subjects.c.name_vi.label("subject_name"),
         select(func.count())
@@ -254,7 +376,10 @@ def assessments(
     user=Depends(current_user),
     conn=Depends(connection),
 ):
-    return assessment_list(conn, grade, subject_code)
+    return [
+        {**dict(row), **access.content_access(conn, user, "assessment", row["id"], grade)}
+        for row in assessment_list(conn, grade, subject_code)
+    ]
 
 
 @router.get(
@@ -263,7 +388,9 @@ def assessments(
 def assessment(assessment_id: UUID, user=Depends(current_user), conn=Depends(connection)):
     row = service.published_assessment(conn, assessment_id)
     return next(
-        dict(item) for item in assessment_list(conn, row["grade"]) if item["id"] == assessment_id
+        {**dict(item), **access.content_access(conn, user, "assessment", item["id"], row["grade"])}
+        for item in assessment_list(conn, row["grade"])
+        if item["id"] == assessment_id
     )
 
 
@@ -281,7 +408,7 @@ def assign(assessment_id: UUID, user=Depends(student_user), conn=Depends(connect
 )
 def assignments(user=Depends(student_user), conn=Depends(connection)):
     table, assessments = db.table("student_assignments"), db.table("assessments")
-    return (
+    rows = (
         conn.execute(
             select(table, assessments.c.title)
             .join(assessments)
@@ -291,6 +418,11 @@ def assignments(user=Depends(student_user), conn=Depends(connection)):
         .mappings()
         .all()
     )
+    return [
+        row
+        for row in rows
+        if access.eligible(conn, user["id"], "assessment", row["assessment_id"], None)
+    ]
 
 
 @router.post("/attempts", response_model=out.StartResponse, tags=["attempts"])
@@ -410,6 +542,10 @@ def dashboard(user=Depends(student_user), conn=Depends(connection)):
         .mappings()
         .first()
     )
+    if continue_lesson and not access.eligible(
+        conn, user["id"], "lesson", continue_lesson["id"], profile["current_grade"]
+    ):
+        continue_lesson = None
     return dict(
         user=public_user(user),
         grade=profile["current_grade"],
@@ -432,9 +568,9 @@ def profile(user=Depends(student_user), conn=Depends(connection)):
     table = db.table("student_profiles")
     row = (
         conn.execute(
-            select(table.c.current_grade, table.c.learning_preferences).where(
-                table.c.student_id == user["id"]
-            )
+            select(
+                table.c.current_grade, table.c.learning_preferences, table.c.accessibility_options
+            ).where(table.c.student_id == user["id"])
         )
         .mappings()
         .one()
@@ -487,6 +623,7 @@ def students(
     if search:
         statement = statement.where(
             users.c.display_name.ilike("%" + search.replace("%", "\\%").replace("_", "\\_") + "%")
+            | users.c.username.ilike("%" + search.replace("%", "\\%").replace("_", "\\_") + "%")
         )
     total = conn.execute(select(func.count()).select_from(statement.subquery())).scalar_one()
     return dict(
@@ -548,6 +685,11 @@ def questions(
     grade: Grade = 4,
     subject_code: str | None = None,
     search: str = "",
+    status: Literal["draft", "published", "archived"] | None = None,
+    question_type: Literal["single_choice", "multiple_choice", "fill_blank", "ordering"]
+    | None = None,
+    minimum_plan_code: Literal["free", "vip"] | None = None,
+    topic_id: UUID | None = None,
     page: int = Query(1, ge=1),
     user=Depends(admin_user),
     conn=Depends(connection),
@@ -555,23 +697,41 @@ def questions(
     questions, versions, subjects = (
         db.table(name) for name in ("questions", "question_versions", "subjects")
     )
+    policies = db.table("question_version_access_policies")
     statement = select(
         questions.c.code,
         questions.c.grade,
         versions.c.id,
+        versions.c.question_id,
+        versions.c.version,
+        versions.c.reviewed_by,
+        policies.c.minimum_plan_code,
         versions.c.question_type,
         versions.c.status,
         versions.c.difficulty,
         versions.c.content,
         subjects.c.name_vi.label("subject_name"),
     )
-    statement = statement.select_from(questions.join(versions).join(subjects)).where(
-        questions.c.grade == grade
-    )
+    statement = statement.select_from(
+        questions.join(versions)
+        .join(subjects)
+        .outerjoin(policies, policies.c.question_version_id == versions.c.id)
+    ).where(questions.c.grade == grade)
     if subject_code:
         statement = statement.where(subjects.c.code == subject_code)
     if search:
-        statement = statement.where(questions.c.code.ilike("%" + search + "%"))
+        statement = statement.where(
+            questions.c.code.ilike("%" + search + "%")
+            | versions.c.content["prompt"].as_string().ilike("%" + search + "%")
+        )
+    if status:
+        statement = statement.where(versions.c.status == status)
+    if question_type:
+        statement = statement.where(versions.c.question_type == question_type)
+    if minimum_plan_code:
+        statement = statement.where(policies.c.minimum_plan_code == minimum_plan_code)
+    if topic_id:
+        statement = statement.where(questions.c.topic_id == topic_id)
     total = conn.execute(select(func.count()).select_from(statement.subquery())).scalar_one()
     return dict(
         total=total,
@@ -584,11 +744,9 @@ def questions(
 
 @router.get("/admin/questions/{version_id}", response_model=dict, tags=["admin"])
 def question_detail(version_id: UUID, user=Depends(admin_user), conn=Depends(connection)):
-    table = db.table("question_versions")
-    row = conn.execute(select(table).where(table.c.id == version_id)).mappings().first()
-    if not row:
-        raise HTTPException(404, "Không tìm thấy câu hỏi")
-    return row
+    from app.services.authoring import question_detail
+
+    return question_detail(conn, version_id)
 
 
 @router.get("/admin/assessments", response_model=list[out.AssessmentResponse], tags=["admin"])
@@ -598,6 +756,7 @@ def admin_assessments(grade: Grade = 4, user=Depends(admin_user), conn=Depends(c
     return [
         {
             **dict(row),
+            **access.content_access(conn, user, "assessment", row["id"], grade),
             "attempt_count": conn.execute(
                 select(func.count())
                 .select_from(attempts)

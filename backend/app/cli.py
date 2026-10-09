@@ -15,7 +15,15 @@ def main():
         sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description="VietTree: thao tác rõ ràng, không reset database")
     parser.add_argument(
-        "command", choices=["check-schema", "import-schema", "seed", "verify-seed", "rebuild"]
+        "command",
+        choices=[
+            "check-schema",
+            "import-schema",
+            "seed",
+            "seed-demo-learners",
+            "verify-seed",
+            "rebuild",
+        ],
     )
     parser.add_argument("--reset-demo-passwords", action="store_true")
     args = parser.parse_args()
@@ -33,11 +41,18 @@ def main():
     with engine().begin() as conn:
         if args.command == "check-schema":
             db.validate(conn)
-            print("Schema đúng: 34 bảng gốc + 2 bảng auth; database=" + engine().url.database)
+            print(
+                "Schema đúng: 34 bảng gốc + 2 bảng auth + 6 bảng gói học + 1 bảng quyền câu hỏi; database="
+                + engine().url.database
+            )
         else:
             db.load(conn)
             if args.command == "seed":
                 print(json.dumps(seed(conn, args.reset_demo_passwords), ensure_ascii=False))
+            elif args.command == "seed-demo-learners":
+                from app.demo_learners import seed_demo_learners
+
+                print(json.dumps(seed_demo_learners(conn), ensure_ascii=False))
             elif args.command == "verify-seed":
                 print(json.dumps(verify_seed(conn), ensure_ascii=False))
             else:

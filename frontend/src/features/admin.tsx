@@ -243,7 +243,7 @@ export function StudentsPage() {
           Tìm theo tên
           <input
             value={search}
-            placeholder="Tên hiển thị của học sinh"
+            placeholder="Tên hiển thị hoặc tên đăng nhập"
             onChange={(e) => {
               setSearch(e.target.value);
               setPage(1);
@@ -284,6 +284,12 @@ export function StudentsPage() {
                           >
                             Xem / cập nhật
                           </button>
+                          <Link
+                            className="button secondary small"
+                            href={`/admin/students/${student.id}/membership`}
+                          >
+                            Quản lý gói học
+                          </Link>
                         </td>
                       </tr>
                     ))}
@@ -357,17 +363,20 @@ export function QuestionsPage() {
   const [grade, setGrade] = useState(4);
   const [search, setSearch] = useState("");
   const [detail, setDetail] = useState<string | null>(null);
-  const path = `/admin/questions?grade=${grade}&page=${page}&search=${encodeURIComponent(search)}${subject ? `&subject_code=${subject}` : ""}`;
+  const [status, setStatus] = useState("");
+  const [kind, setKind] = useState("");
+  const [plan, setPlan] = useState("");
+  const path = `/admin/questions?grade=${grade}&page=${page}&search=${encodeURIComponent(search)}${subject ? `&subject_code=${subject}` : ""}${status ? `&status=${status}` : ""}${kind ? `&question_type=${kind}` : ""}${plan ? `&minimum_plan_code=${plan}` : ""}`;
   return (
     <>
       <div className="section-heading">
         <PageTitle
           title="Ngân hàng câu hỏi"
-          description="Chế độ xem. Nội dung được quản lý bằng seed có phiên bản."
+          description="Soạn nháp, duyệt và xuất bản. Sửa câu đã xuất bản bằng một phiên bản mới."
         />
         <Link className="button" href="/admin/questions/new">
           <Plus size={18} />
-          Tạo bài tập
+          Tạo câu hỏi
         </Link>
       </div>
       <div className="filters">
@@ -412,6 +421,51 @@ export function QuestionsPage() {
             }}
           />
         </label>
+        <label>
+          Trạng thái
+          <select
+            value={status}
+            onChange={(e) => {
+              setStatus(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="">Tất cả</option>
+            <option value="draft">Nháp</option>
+            <option value="published">Đã xuất bản</option>
+            <option value="archived">Đã lưu trữ</option>
+          </select>
+        </label>
+        <label>
+          Dạng câu hỏi
+          <select
+            value={kind}
+            onChange={(e) => {
+              setKind(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="">Tất cả</option>
+            <option value="single_choice">Chọn một</option>
+            <option value="multiple_choice">Chọn nhiều</option>
+            <option value="fill_blank">Điền khuyết</option>
+            <option value="ordering">Sắp xếp</option>
+          </select>
+        </label>
+        <label>
+          Gói nội dung
+          <select
+            value={plan}
+            onChange={(e) => {
+              setPlan(e.target.value);
+              setPage(1);
+            }}
+          >
+            <option value="">Tất cả</option>
+            <option value="free">Miễn phí</option>
+            <option value="vip">VIP</option>
+          </select>
+        </label>
       </div>
       <Data<Page<Question>> key={path} path={path}>
         {(data) => (
@@ -432,7 +486,15 @@ export function QuestionsPage() {
                   <tbody>
                     {data.items.map((question) => (
                       <tr key={question.id}>
-                        <td className="mono">{question.code}</td>
+                        <td className="mono">
+                          {question.code}
+                          <small>
+                            Phiên bản {question.version} ·{" "}
+                            {question.minimum_plan_code === "vip"
+                              ? "VIP"
+                              : "Free"}
+                          </small>
+                        </td>
                         <td>
                           <small>{question.subject_name}</small>
                           <p className="truncate">{question.content.prompt}</p>
@@ -449,6 +511,12 @@ export function QuestionsPage() {
                           >
                             Xem
                           </button>
+                          <Link
+                            className="button secondary small"
+                            href={`/admin/questions/${question.id}/edit`}
+                          >
+                            Biên soạn
+                          </Link>
                         </td>
                       </tr>
                     ))}
@@ -598,13 +666,26 @@ export function CurriculumPage() {
 }
 export function AssessmentsPage() {
   const [grade, setGrade] = useState(4);
+  const [status, setStatus] = useState("");
   return (
     <>
       <PageTitle
         title="Bài luyện tập"
         description="Đề giữ cố định phiên bản câu hỏi để bảo toàn lịch sử học sinh."
       />
+      <Link className="button" href="/admin/assessments/new">
+        Tạo bài tập mới
+      </Link>
       <div className="filters">
+        <label>
+          Lọc trạng thái đề
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="">Tất cả</option>
+            <option value="draft">Nháp</option>
+            <option value="published">Đã xuất bản</option>
+            <option value="archived">Đã lưu trữ</option>
+          </select>
+        </label>
         <label>
           Lớp
           <select
@@ -635,21 +716,34 @@ export function AssessmentsPage() {
                     <th>Trạng thái</th>
                     <th>Lượt làm</th>
                     <th>Giới hạn</th>
+                    <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {items.map((item) => (
-                    <tr key={item.id}>
-                      <td>{item.title}</td>
-                      <td>{item.subject_name}</td>
-                      <td>{item.item_count}</td>
-                      <td>
-                        <span className="badge">{item.status}</span>
-                      </td>
-                      <td>{item.attempt_count}</td>
-                      <td>{item.max_attempts} lượt</td>
-                    </tr>
-                  ))}
+                  {items
+                    .filter((item) => !status || item.status === status)
+                    .map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.title}</td>
+                        <td>{item.subject_name}</td>
+                        <td>{item.item_count}</td>
+                        <td>
+                          <span className="badge">{item.status}</span>
+                        </td>
+                        <td>{item.attempt_count}</td>
+                        <td>{item.max_attempts} lượt</td>
+                        <td>
+                          <Link
+                            className="button secondary small"
+                            href={`/admin/assessments/${item.id}/edit`}
+                          >
+                            {item.status === "published"
+                              ? "Xem / Giao bài"
+                              : "Biên soạn"}
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

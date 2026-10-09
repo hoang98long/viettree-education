@@ -23,7 +23,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: "Segoe UI", system-ui, sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.65;
 }
 a {
@@ -1613,5 +1613,414 @@ tr:last-child td {
   *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Reading sizes are shared by all student screens, including small viewports. */
+.student {
+  --reading-body: 18px;
+  --reading-secondary: 16px;
+  --reading-meta: 15px;
+  --reading-lesson: 20px;
+  --reading-question: 22px;
+  --reading-heading: 26px;
+  font-size: var(--reading-body);
+  line-height: 1.75;
+}
+.student[data-text-size="large"] {
+  --reading-body: 22px;
+  --reading-secondary: 18px;
+  --reading-meta: 17px;
+  --reading-lesson: 24px;
+  --reading-question: 26px;
+  --reading-heading: 30px;
+}
+.student :is(.content, .sidebar-footer > div, .plan-steps li > div) {
+  min-width: 0;
+}
+.student :is(p, h1, h2, h3, .list-row, .option, .sidebar-footer strong) {
+  overflow-wrap: anywhere;
+}
+.student
+  :is(
+    h2,
+    .topic-heading,
+    .topic-panel h2,
+    .skill-card h2,
+    .lesson-block h2,
+    .panel .section-heading h2
+  ) {
+  font-size: var(--reading-heading);
+  line-height: 1.45;
+}
+.student :is(h3, .recommendation h3, .practice-card h3, .subject-card h3) {
+  font-size: var(--reading-body);
+  line-height: 1.6;
+}
+.student
+  :is(
+    .button,
+    .button.small,
+    .quiz-actions .button,
+    .question-nav > .button,
+    label,
+    input,
+    select,
+    textarea,
+    .list-row,
+    .list-row strong,
+    .sidebar nav a,
+    .ordering .order-item,
+    .option,
+    .grade-selector button
+  ) {
+  font-size: var(--reading-body);
+}
+.student :is(.button, input, select, .sidebar nav a, .order-item button) {
+  min-height: 48px;
+}
+.student :is(.order-item button, .sidebar-footer button) {
+  min-width: 44px;
+}
+.student
+  :is(
+    .welcome-card p,
+    .page-title > p,
+    .subject-card p,
+    .practice-card p,
+    .recommendation p,
+    .skill-card p,
+    .notice,
+    .empty,
+    .empty p,
+    .notice p,
+    .result-banner p,
+    .section-heading > a,
+    .intro-meta,
+    .intro-meta > span,
+    .quiz-header,
+    .result-item summary,
+    .explanation p,
+    .subject-card .card-link,
+    .card-link,
+    .question-nav p,
+    .sidebar-footer strong
+  ) {
+  font-size: var(--reading-secondary);
+  line-height: 1.75;
+}
+.student
+  :is(
+    small,
+    .list-row small,
+    .badge,
+    .result-item .badge,
+    .pill,
+    .eyebrow,
+    .sidebar-label,
+    .stat span:not(.stat-icon),
+    .save-message,
+    .options legend,
+    .option-letter,
+    .number-dot,
+    .app-footer,
+    .topbar,
+    .sidebar-footer small,
+    .grade-selector button small
+  ) {
+  font-size: var(--reading-meta);
+  line-height: 1.65;
+}
+.student .sidebar-label {
+  color: var(--muted);
+  letter-spacing: 0.4px;
+  margin-inline: 8px;
+}
+.student .sidebar {
+  overflow-y: auto;
+}
+.student .sidebar nav {
+  flex-shrink: 0;
+}
+.student :is(.lesson-block p, .reading-preview) {
+  font-size: var(--reading-lesson);
+  line-height: 1.9;
+}
+.student :is(.question-prompt, .blank-answer input) {
+  font-size: var(--reading-question);
+  line-height: 1.75;
+}
+.student .question-nav > div button {
+  font-size: var(--reading-body);
+  height: 48px;
+}
+.student .welcome-card h1 {
+  font-size: clamp(30px, 3vw, 40px);
+  line-height: 1.4;
+}
+.student .topbar {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.student .badge {
+  white-space: normal;
+}
+.student .option {
+  align-items: flex-start;
+  padding: 18px;
+}
+.student .option input {
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.student .option-letter {
+  height: 34px;
+  min-width: 34px;
+}
+.student .list-row {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.student .list-row > div {
+  flex: 1;
+  min-width: 140px;
+}
+.student .grade-selector {
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+.student
+  :is(.reading-settings, .lesson-completion, .learning-plan, .plan-builder) {
+  margin-top: 24px;
+}
+.reading-settings > p,
+.lesson-completion > p,
+.plan-builder p {
+  margin-top: 12px;
+}
+.text-size-choices,
+.plan-builder form {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+.plan-builder form > label {
+  flex: 1;
+  min-width: 180px;
+}
+.plan-builder form > .button {
+  margin-top: 0;
+}
+.reading-preview {
+  background: var(--light-green);
+  padding: 18px;
+  border-radius: 12px;
+}
+.lesson-completion > .button,
+.lesson-completion > .card-link {
+  margin-top: 18px;
+}
+.plan-progress {
+  appearance: none;
+  border: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--light-green);
+  width: 100%;
+  height: 14px;
+  accent-color: var(--green);
+  margin: 14px 0;
+}
+.plan-progress::-webkit-progress-bar {
+  background: var(--light-green);
+}
+.plan-progress::-webkit-progress-value {
+  background: var(--green);
+}
+.plan-progress::-moz-progress-bar {
+  background: var(--green);
+}
+.plan-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.plan-steps li {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 0;
+  border-top: 1px solid var(--border);
+}
+.plan-step-number {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: #edf2ee;
+  color: var(--ink);
+  font-weight: 700;
+  border-radius: 50%;
+}
+.vip-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: #fff1c9;
+  color: #694800;
+}
+.authoring-fields {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+  display: grid;
+  gap: 18px;
+}
+.authoring-actions,
+.author-preview {
+  margin-block: 24px;
+}
+.author-preview {
+  padding: 24px;
+  background: var(--light-green);
+  border-radius: 16px;
+}
+.answer-key {
+  display: grid;
+  gap: 12px;
+}
+.question-picker {
+  max-height: 460px;
+  overflow: auto;
+}
+.assessment-selection {
+  padding: 0;
+  list-style: none;
+}
+.assessment-selection li {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+.assessment-selection input {
+  max-width: 130px;
+}
+.clone-form {
+  margin-top: 24px;
+}
+.library-filters {
+  margin-block: 24px;
+}
+.membership-summary,
+.membership-plans,
+.locked-content {
+  margin-bottom: 24px;
+}
+.membership-plans li {
+  margin-bottom: 10px;
+}
+.membership-summary p,
+.locked-content p {
+  max-width: 65ch;
+}
+.content-filter {
+  display: grid;
+  gap: 8px;
+  max-width: 360px;
+  margin-bottom: 24px;
+}
+.confirmation-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  overflow-wrap: anywhere;
+}
+.confirmation-row input {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+}
+.plan-steps li[data-completed="true"] .plan-step-number {
+  background: var(--light-green);
+  color: var(--green);
+}
+.plan-step-kind {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: var(--reading-meta);
+  color: var(--muted);
+}
+.plan-steps h3 {
+  margin: 6px 0;
+}
+.student .plan-steps p {
+  font-size: var(--reading-secondary);
+}
+.plan-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.plan-shortcut > div {
+  flex: 1;
+  min-width: 180px;
+}
+.login-form :is(label, input, .button),
+.public-header .button {
+  font-size: 18px;
+}
+.login-form :is(.muted, .eyebrow),
+.hero-note,
+.public-header nav a {
+  font-size: 16px;
+}
+@media (min-width: 1101px) {
+  .student .sidebar {
+    width: 280px;
+    padding-inline: 16px;
+  }
+  .student .main-column {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+  }
+}
+@media (max-width: 1100px) {
+  .student .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .student .stat {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+}
+@media (max-width: 600px) {
+  .student .grade-selector {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .student .plan-steps li {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .plan-step-number {
+    width: 36px;
+    height: 36px;
+  }
+  .plan-steps li > .button {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .student .section-heading {
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }

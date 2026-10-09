@@ -13,7 +13,9 @@ import {
 import { api, dateLabel, percent } from "@/lib/api";
 import type {
   Answer,
+  ContentAccess,
   Assessment,
+  Assignment,
   Attempt,
   Dashboard,
   History,
@@ -35,6 +37,13 @@ import {
   TreeArt,
 } from "@/components/ui";
 import { QuestionInput } from "@/components/question-input";
+import { TextSizeControl } from "@/components/text-size-control";
+import {
+  AccessBadge,
+  LessonPreviewPanel,
+  LockedContent,
+  MembershipSummary,
+} from "@/features/membership";
 
 function Resource<T>({
   path,
@@ -127,7 +136,7 @@ export function StudentDashboard() {
                 </span>
                 <div>
                   <strong>{data.completed_lessons}</strong>
-                  <span>Bài học đã luyện tập</span>
+                  <span>Bài học đã hoàn thành</span>
                 </div>
               </div>
               <div className="stat">
@@ -140,6 +149,15 @@ export function StudentDashboard() {
                 </div>
               </div>
             </div>
+            <section className="panel plan-shortcut">
+              <div>
+                <h2>Từng bước nhỏ trong tuần này</h2>
+                <p>Chọn môn, đọc bài và luyện tập theo kế hoạch của em.</p>
+              </div>
+              <Link className="button" href="/student/learning-plan">
+                Kế hoạch học của em <ArrowRight size={18} />
+              </Link>
+            </section>
             <div className="section-heading">
               <div>
                 <span className="eyebrow">CHỌN ĐIỀU EM MUỐN HỌC</span>
@@ -178,7 +196,7 @@ export function StudentDashboard() {
                     <Link
                       className="list-row"
                       key={assignment.id}
-                      href={`/student/assessments/${assignment.assessment_id}`}
+                      href={`/student/assessments/${assignment.assessment_id}?assignment_id=${assignment.id}`}
                     >
                       {assignment.title}
                       <span className="badge">Được giao</span>
@@ -268,35 +286,56 @@ export function Grades() {
   );
 }
 
-function TopicPanel({ topic }: { topic: Topic }) {
+function matchesContent(item: ContentAccess, filter: string) {
+  return (
+    filter === "all" ||
+    (filter === "free"
+      ? item.minimum_plan_code === "free"
+      : item.learning_level === "advanced")
+  );
+}
+function TopicPanel({
+  topic,
+  filter = "all",
+}: {
+  topic: Topic;
+  filter?: string;
+}) {
   return (
     <article className="panel topic-panel">
       <span className="eyebrow">CHỦ ĐỀ {topic.sort_order}</span>
       <h2>{topic.title}</h2>
       <Resource<LessonSummary[]> path={`/lessons?topic_id=${topic.id}`}>
         {(lessons) =>
-          lessons.length ? (
+          lessons.some((lesson) => matchesContent(lesson, filter)) ? (
             <div>
-              {lessons.map((lesson, index) => (
-                <Link
-                  className="list-row"
-                  href={`/student/lessons/${lesson.id}`}
-                  key={lesson.id}
-                >
-                  <span className="number-dot">{index + 1}</span>
-                  <div>
-                    <strong>{lesson.title}</strong>
-                    <small>
-                      <Clock size={13} /> {lesson.estimated_minutes} phút · Bài
-                      học
-                    </small>
-                  </div>
-                  <ArrowRight size={18} />
-                </Link>
-              ))}
+              {lessons
+                .filter((lesson) => matchesContent(lesson, filter))
+                .map((lesson, index) => (
+                  <Link
+                    className="list-row"
+                    href={`/student/lessons/${lesson.id}`}
+                    key={lesson.id}
+                  >
+                    <span className="number-dot">{index + 1}</span>
+                    <div>
+                      <strong>{lesson.title}</strong>
+                      <AccessBadge item={lesson} />
+                      <small>
+                        <Clock size={13} /> {lesson.estimated_minutes} phút ·
+                        Bài học
+                      </small>
+                    </div>
+                    <ArrowRight size={18} />
+                  </Link>
+                ))}
             </div>
           ) : (
-            <Empty>Bài học đang được xây dựng.</Empty>
+            <Empty>
+              {filter === "all"
+                ? "Bài học đang được xây dựng."
+                : "Chưa có bài học phù hợp với bộ lọc này."}
+            </Empty>
           )
         }
       </Resource>
@@ -305,6 +344,7 @@ function TopicPanel({ topic }: { topic: Topic }) {
 }
 
 export function SubjectPage({ code }: { code: string }) {
+  const [filter, setFilter] = useState("all");
   const query = useSearchParams();
   const grade = Number(query.get("grade") || 4);
   const name =
@@ -322,6 +362,14 @@ export function SubjectPage({ code }: { code: string }) {
         title={`Cùng khám phá ${name}`}
         description="Đọc bài học, thử ví dụ rồi chọn bài luyện tập phù hợp."
       />
+      <label className="content-filter">
+        Loại nội dung
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="all">Tất cả</option>
+          <option value="free">Miễn phí</option>
+          <option value="advanced">Nâng cao</option>
+        </select>
+      </label>
       <Resource<Topic[]>
         path={`/topics?grade=${grade}&subject_code=${encodeURIComponent(code)}`}
       >
@@ -329,7 +377,7 @@ export function SubjectPage({ code }: { code: string }) {
           topics.length ? (
             <div className="two-columns">
               {topics.map((topic) => (
-                <TopicPanel key={topic.id} topic={topic} />
+                <TopicPanel key={topic.id} topic={topic} filter={filter} />
               ))}
             </div>
           ) : (
@@ -345,22 +393,25 @@ export function SubjectPage({ code }: { code: string }) {
         path={`/assessments?grade=${grade}&subject_code=${encodeURIComponent(code)}`}
       >
         {(assessments) =>
-          assessments.length ? (
+          assessments.some((item) => matchesContent(item, filter)) ? (
             <div className="two-columns">
-              {assessments.map((assessment) => (
-                <Link
-                  className="panel practice-card"
-                  key={assessment.id}
-                  href={`/student/assessments/${assessment.id}`}
-                >
-                  <span className="badge">{assessment.item_count} câu</span>
-                  <h3>{assessment.title}</h3>
-                  <p>{assessment.description}</p>
-                  <span className="card-link">
-                    Thử sức <ArrowRight size={17} />
-                  </span>
-                </Link>
-              ))}
+              {assessments
+                .filter((item) => matchesContent(item, filter))
+                .map((assessment) => (
+                  <Link
+                    className="panel practice-card"
+                    key={assessment.id}
+                    href={`/student/assessments/${assessment.id}`}
+                  >
+                    <span className="badge">{assessment.item_count} câu</span>
+                    <AccessBadge item={assessment} />
+                    <h3>{assessment.title}</h3>
+                    <p>{assessment.description}</p>
+                    <span className="card-link">
+                      Thử sức <ArrowRight size={17} />
+                    </span>
+                  </Link>
+                ))}
             </div>
           ) : (
             <Empty>Chưa có bài luyện tập cho lớp này.</Empty>
@@ -372,6 +423,11 @@ export function SubjectPage({ code }: { code: string }) {
 }
 
 function LessonContent({ data }: { data: Lesson }) {
+  const [completed, setCompleted] = useState(
+    data.progress_status === "completed",
+  );
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
   useEffect(() => {
     api(`/lessons/${data.id}/visit`, { method: "POST" }).catch(() => {});
   }, [data.id]);
@@ -390,6 +446,47 @@ function LessonContent({ data }: { data: Lesson }) {
           </section>
         ))}
       </div>
+      <section className="panel lesson-completion">
+        <h2>{completed ? "Em đã đọc xong bài này" : "Em đã đọc xong chưa?"}</h2>
+        <p>
+          Đánh dấu để lưu tiến độ đọc của em. Bài luyện tập sẽ giúp em kiểm tra
+          điều mình đã hiểu.
+        </p>
+        <button
+          className="button"
+          disabled={busy || completed}
+          onClick={async () => {
+            setBusy(true);
+            setError("");
+            try {
+              await api(`/lessons/${data.id}/complete`, { method: "POST" });
+              setCompleted(true);
+            } catch (e) {
+              setError((e as Error).message);
+            } finally {
+              setBusy(false);
+            }
+          }}
+        >
+          <Check size={20} />
+          {completed
+            ? "Đã đánh dấu đọc xong"
+            : busy
+              ? "Đang lưu…"
+              : "Em đã đọc xong"}
+        </button>
+        <p role="status" aria-live="polite">
+          {completed ? "Tiến độ đọc và kế hoạch học đã được cập nhật." : ""}
+        </p>
+        {error && (
+          <p className="error-text" role="alert">
+            {error}
+          </p>
+        )}
+        <Link className="card-link" href="/student/learning-plan">
+          Xem kế hoạch học <ArrowRight size={18} />
+        </Link>
+      </section>
       <section className="panel">
         <h2>Đến lượt em thử sức</h2>
         {data.practice.map((item) => (
@@ -407,17 +504,33 @@ function LessonContent({ data }: { data: Lesson }) {
   );
 }
 export function LessonPage({ id }: { id: string }) {
-  return (
-    <Resource<Lesson> path={`/lessons/${id}`}>
-      {(data) => <LessonContent data={data} />}
-    </Resource>
-  );
+  const resource = useResource<Lesson>(`/lessons/${id}`);
+  if (resource.loading) return <Loading />;
+  if (resource.errorCode === "MEMBERSHIP_REQUIRED")
+    return <LessonPreviewPanel id={id} />;
+  if (resource.error || !resource.data)
+    return <ErrorState message={resource.error} retry={resource.retry} />;
+  return <LessonContent data={resource.data} />;
 }
 
 function AssessmentIntro({ data }: { data: Assessment }) {
   const router = useRouter();
+  const search = useSearchParams();
+  const assignmentId = search.get("assignment_id");
+  const assignments = useResource<Assignment[]>("/students/me/assignments");
+  const task = assignments.data?.find(
+    (item) => item.id === assignmentId && item.assessment_id === data.id,
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  if (data.locked)
+    return (
+      <>
+        <PageTitle title={data.title} description={data.description} />
+        <AccessBadge item={data} />
+        <LockedContent code={data.lock_reason ?? undefined} />
+      </>
+    );
   return (
     <>
       <PageTitle
@@ -443,6 +556,15 @@ function AssessmentIntro({ data }: { data: Assessment }) {
           Em có thể lưu câu trả lời và quay lại. Sau khi nộp, mình cùng xem lời
           giải để hiểu bài hơn nhé.
         </p>
+        {assignmentId && (
+          <p>
+            {assignments.loading
+              ? "Đang kiểm tra bài được giao…"
+              : task
+                ? `Bài được giao · Mở: ${dateLabel(task.available_at)}${task.due_at ? ` · Hạn nộp: ${dateLabel(task.due_at)}` : ""}`
+                : "Chưa tìm thấy bài được giao cho em. Hãy quay lại góc học tập hoặc tải lại trang."}
+          </p>
+        )}
         {error && (
           <div className="notice error" role="alert">
             {error}
@@ -450,15 +572,19 @@ function AssessmentIntro({ data }: { data: Assessment }) {
         )}
         <button
           className="button"
-          disabled={busy}
+          disabled={busy || Boolean(assignmentId && !task)}
           onClick={async () => {
             setBusy(true);
             setError("");
             try {
-              const assignment = await api<{ id: string }>(
-                `/students/me/assessments/${data.id}/assign-self`,
-                { method: "POST" },
-              );
+              if (assignmentId && !task)
+                throw new Error("Bài được giao chưa khả dụng");
+              const assignment =
+                task ??
+                (await api<{ id: string }>(
+                  `/students/me/assessments/${data.id}/assign-self`,
+                  { method: "POST" },
+                ));
               const attempt = await api<{ id: string }>("/attempts", {
                 method: "POST",
                 body: JSON.stringify({ assignment_id: assignment.id }),
@@ -732,11 +858,16 @@ function Quiz({ data }: { data: Attempt }) {
   );
 }
 export function AttemptPage({ id }: { id: string }) {
-  return (
-    <Resource<Attempt> path={`/attempts/${id}`}>
-      {(data) => <Quiz key={id} data={data} />}
-    </Resource>
-  );
+  const resource = useResource<Attempt>(`/attempts/${id}`);
+  if (resource.loading) return <Loading />;
+  if (
+    resource.errorCode === "MEMBERSHIP_REQUIRED" ||
+    resource.errorCode === "MEMBERSHIP_REVOKED"
+  )
+    return <LockedContent message={resource.error} code={resource.errorCode} />;
+  if (resource.error || !resource.data)
+    return <ErrorState message={resource.error} retry={resource.retry} />;
+  return <Quiz key={id} data={resource.data} />;
 }
 
 function renderAnswer(
@@ -992,6 +1123,8 @@ export function ProfilePage() {
               cấp ngày sinh, địa chỉ hay số điện thoại.
             </p>
           </section>
+          <TextSizeControl />
+          <MembershipSummary />
         </>
       )}
     </Resource>

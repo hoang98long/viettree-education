@@ -13,7 +13,7 @@ WHERE s.code IN ('MATH','VIETNAMESE','ENGLISH') GROUP BY s.code;
 SELECT a.code, COUNT(ai.id) AS valid_items FROM assessments a
 JOIN assessment_items ai ON ai.assessment_id=a.id
 JOIN question_versions qv ON qv.id=ai.question_version_id
-WHERE a.grade=4 AND a.status='published' AND qv.status='published'
+WHERE a.grade=4 AND a.status='published' AND qv.published_at IS NOT NULL AND qv.status IN ('published','archived')
 GROUP BY a.code ORDER BY a.code;
 
 SELECT q.code AS missing_skill FROM questions q

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import {
   BookOpen,
   ChartNoAxesCombined,
@@ -14,9 +14,11 @@ import {
   ListChecks,
   Plus,
   UserRound,
+  Crown,
+  LockKeyhole,
 } from "lucide-react";
 import { api } from "@/lib/api";
-import type { User } from "@/lib/types";
+import type { TextSize, User } from "@/lib/types";
 import { useResource } from "@/hooks/use-resource";
 import { Brand, ErrorState, Loading } from "./ui";
 
@@ -24,19 +26,31 @@ const UserContext = createContext<User | null>(null);
 export function useUser() {
   return useContext(UserContext)!;
 }
+const AccessibilityContext = createContext<{
+  textSize: TextSize;
+  saveTextSize: (size: TextSize) => Promise<void>;
+} | null>(null);
+export function useAccessibility() {
+  return useContext(AccessibilityContext)!;
+}
 const studentMenu = [
   ["dashboard", "Góc học tập", Home],
+  ["learning-plan", "Kế hoạch học", ListChecks],
   ["grades", "Khám phá lớp học", GraduationCap],
+  ["practice", "Thư viện luyện tập", BookOpen],
   ["history", "Lịch sử luyện tập", Clock],
   ["progress", "Cây năng lực", ChartNoAxesCombined],
   ["profile", "Hồ sơ của em", UserRound],
+  ["membership", "Gói học của em", Crown],
 ] as const;
 const adminMenu = [
   ["dashboard", "Tổng quan", Home],
   ["students", "Học sinh", Users],
+  ["content-access", "Quyền nội dung", LockKeyhole],
   ["curriculum", "Chương trình", BookOpen],
   ["questions", "Ngân hàng câu hỏi", ListChecks],
-  ["questions/new", "Tạo bài tập", Plus],
+  ["questions/new", "Tạo câu hỏi", Plus],
+  ["assessments/new", "Tạo bài tập", Plus],
   ["assessments", "Bài luyện tập", GraduationCap],
   ["analytics", "Thống kê", ChartNoAxesCombined],
   ["settings", "Cài đặt", Settings],
@@ -51,6 +65,15 @@ export function Shell({
   const { data: user, error, loading, retry } = useResource<User>("/auth/me");
   const path = usePathname();
   const router = useRouter();
+  const [chosenSize, setChosenSize] = useState<TextSize | null>(null);
+  const textSize = chosenSize ?? user?.text_size ?? "comfortable";
+  async function saveTextSize(size: TextSize) {
+    await api("/students/me/accessibility", {
+      method: "PUT",
+      body: JSON.stringify({ text_size: size }),
+    });
+    setChosenSize(size);
+  }
   async function logout() {
     try {
       await api("/auth/logout", { method: "POST" });
@@ -92,74 +115,78 @@ export function Shell({
     role === "admin" ? adminMenu : role === "student" ? studentMenu : [];
   return (
     <UserContext.Provider value={user}>
-      <div className={`app-shell ${role}`}>
-        <aside className="sidebar">
-          <Brand />
-          <span className="sidebar-label">
-            {role === "admin" ? "KHÔNG GIAN QUẢN TRỊ" : "MỖI NGÀY MỘT KHÁM PHÁ"}
-          </span>
-          <nav aria-label="Điều hướng chính">
-            {menu.map(([href, label, Icon]) => (
-              <Link
-                key={href}
-                href={`/${role}/${href}`}
-                className={path === `/${role}/${href}` ? "active" : ""}
-              >
-                <Icon size={20} />
-                {label}
-              </Link>
-            ))}
-            {role === "teacher" && (
-              <Link href="/teacher/questions/new">
-                <Plus />
-                Tạo bài tập
-              </Link>
-            )}
-          </nav>
-          <div className="sidebar-footer">
-            <span className="avatar">{user.display_name.charAt(0)}</span>
-            <div>
-              <strong>{user.display_name}</strong>
-              <small>{user.username}</small>
-            </div>
-            <button aria-label="Đăng xuất" onClick={logout}>
-              <LogOut size={19} />
-            </button>
-          </div>
-        </aside>
-        <div className="main-column">
-          <header className="topbar">
-            <span>
-              VietTree Education{" "}
-              <span className="muted">
-                /{" "}
-                {role === "admin"
-                  ? "Quản trị"
-                  : role === "student"
-                    ? "Học sinh"
-                    : role === "teacher"
-                      ? "Giáo viên"
-                      : "Phụ huynh"}
-              </span>
+      <AccessibilityContext.Provider value={{ textSize, saveTextSize }}>
+        <div className={`app-shell ${role}`} data-text-size={textSize}>
+          <aside className="sidebar">
+            <Brand />
+            <span className="sidebar-label">
+              {role === "admin"
+                ? "KHÔNG GIAN QUẢN TRỊ"
+                : "MỖI NGÀY MỘT KHÁM PHÁ"}
             </span>
-            <span className="pill">Học điều hay, lớn mỗi ngày 🌱</span>
-            <button
-              className="button secondary small"
-              onClick={logout}
-              aria-label="Đăng xuất"
-            >
-              <LogOut size={17} />
-              <span>Đăng xuất</span>
-            </button>
-          </header>
-          <main id="main" className="content">
-            {children}
-          </main>
-          <footer className="app-footer">
-            VietTree Education · Không gian học tập an toàn và riêng tư
-          </footer>
+            <nav aria-label="Điều hướng chính">
+              {menu.map(([href, label, Icon]) => (
+                <Link
+                  key={href}
+                  href={`/${role}/${href}`}
+                  className={path === `/${role}/${href}` ? "active" : ""}
+                >
+                  <Icon size={20} />
+                  {label}
+                </Link>
+              ))}
+              {role === "teacher" && (
+                <Link href="/teacher/questions/new">
+                  <Plus />
+                  Tạo bài tập
+                </Link>
+              )}
+            </nav>
+            <div className="sidebar-footer">
+              <span className="avatar">{user.display_name.charAt(0)}</span>
+              <div>
+                <strong>{user.display_name}</strong>
+                <small>{user.username}</small>
+              </div>
+              <button aria-label="Đăng xuất" onClick={logout}>
+                <LogOut size={19} />
+              </button>
+            </div>
+          </aside>
+          <div className="main-column">
+            <header className="topbar">
+              <span>
+                VietTree Education{" "}
+                <span className="muted">
+                  /{" "}
+                  {role === "admin"
+                    ? "Quản trị"
+                    : role === "student"
+                      ? "Học sinh"
+                      : role === "teacher"
+                        ? "Giáo viên"
+                        : "Phụ huynh"}
+                </span>
+              </span>
+              <span className="pill">Học điều hay, lớn mỗi ngày 🌱</span>
+              <button
+                className="button secondary small"
+                onClick={logout}
+                aria-label="Đăng xuất"
+              >
+                <LogOut size={17} />
+                <span>Đăng xuất</span>
+              </button>
+            </header>
+            <main id="main" className="content">
+              {children}
+            </main>
+            <footer className="app-footer">
+              VietTree Education · Không gian học tập an toàn và riêng tư
+            </footer>
+          </div>
         </div>
-      </div>
+      </AccessibilityContext.Provider>
     </UserContext.Provider>
   );
 }
