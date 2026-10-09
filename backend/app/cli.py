@@ -1,0 +1,54 @@
+import argparse
+import json
+import sys
+
+from sqlalchemy import select
+
+from app.core.config import ROOT
+from app.db import db, engine
+from app.personalization.engine import rebuild_statistics, rebuild_student
+from app.seed import seed, verify_seed
+
+
+def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    parser = argparse.ArgumentParser(description="VietTree: thao tác rõ ràng, không reset database")
+    parser.add_argument(
+        "command", choices=["check-schema", "import-schema", "seed", "verify-seed", "rebuild"]
+    )
+    parser.add_argument("--reset-demo-passwords", action="store_true")
+    args = parser.parse_args()
+    if args.command == "import-schema":
+        # Import tùy chọn đúng file gốc, không tạo database thay thế.
+        raw = engine().raw_connection()
+        try:
+            raw.driver_connection.execute(
+                (ROOT / "database/viettree_education_schema.sql").read_text(encoding="utf-8")
+            )
+        finally:
+            raw.close()
+        print("Đã import SQL gốc. Tiếp theo: alembic upgrade head")
+        return
+    with engine().begin() as conn:
+        if args.command == "check-schema":
+            db.validate(conn)
+            print("Schema đúng: 34 bảng gốc + 2 bảng auth; database=" + engine().url.database)
+        else:
+            db.load(conn)
+            if args.command == "seed":
+                print(json.dumps(seed(conn, args.reset_demo_passwords), ensure_ascii=False))
+            elif args.command == "verify-seed":
+                print(json.dumps(verify_seed(conn), ensure_ascii=False))
+            else:
+                profiles = db.table("student_profiles")
+                for student_id in conn.execute(
+                    select(profiles.c.student_id).with_for_update()
+                ).scalars():
+                    rebuild_student(conn, student_id)
+                rebuild_statistics(conn)
+                print("Đã rebuild mastery và thống kê từ lịch sử gốc, không xóa lịch sử")
+
+
+if __name__ == "__main__":
+    main()

@@ -219,3 +219,16 @@ __marimo__/
 /frontend/node_modules
 /frontend/.next/cache
 /frontend/.next/cache/webpack
+
+# VietTree local artifacts
+.env
+.env.*
+!.env.example
+.venv/
+frontend/.next/
+frontend/out/
+frontend/tsconfig.tsbuildinfo
+frontend/playwright-report/
+frontend/test-results/
+*.log
+.tools/

@@ -1,0 +1,303 @@
+# MASTER PROMPT CHO CODEX — VIETTREE EDUCATION
+# Mục tiêu: Xây dựng một ứng dụng học trực tuyến có frontend + backend hoạt động thật, dùng database PostgreSQL đã có.
+# Ngôn ngữ giao diện: Tiếng Việt. Ngôn ngữ giải thích/comment tài liệu: ưu tiên Tiếng Việt, code naming bằng tiếng Anh.
+
+BẠN LÀ AI SOFTWARE ENGINEER / TECH LEAD CỦA DỰ ÁN VIETTREE EDUCATION.
+Hãy trực tiếp triển khai toàn bộ mã nguồn trong workspace hiện tại. Không chỉ viết hướng dẫn hay mô tả giải pháp; hãy tạo project, code, script seed, tests, Docker và README có khả năng chạy. Nếu thiếu một chi tiết không mang tính quyết định, tự chọn giải pháp hợp lý và ghi rõ trong README, không dừng lại để hỏi. Ưu tiên một phiên bản đầu tiên thực sự chạy được end-to-end hơn là các trang chỉ có giao diện giả.
+
+==============================================================
+A. NGỮ CẢNH, NGUỒN SỰ THẬT VÀ CÁC ĐIỀU KHÔNG ĐƯỢC LÀM
+==============================================================
+1. Tên hệ thống: VietTree Education — nền tảng học trực tuyến cho học sinh tiểu học Việt Nam.
+2. Database có sẵn: PostgreSQL, tên chính xác "viettree-education" (có dấu gạch ngang).
+3. File schema gốc: database/viettree_education_schema.sql. Tôi sẽ đặt file này trong workspace cùng với prompt. Trước khi code, BẮT BUỘC đọc file SQL và đối chiếu các tên bảng/cột/kiểu dữ liệu/ràng buộc/index/view thực tế. File schema là nguồn sự thật, không tự tưởng tượng schema mới thay thế nó.
+4. Schema gốc có 34 bảng, UUID làm khóa chính, JSONB dùng cho nội dung câu hỏi và đáp án. Có các bảng tiêu biểu: users, user_roles, student_profiles, classes, subjects, topics, lessons, skills, lesson_skills, questions, question_versions, question_skills, lesson_questions, assessments, assessment_items, student_assignments, attempts, attempt_answers, student_skill_mastery, student_lesson_progress, student_learning_plans, learning_plan_items, student_recommendations, learning_events, question_statistics, student_daily_statistics, media_assets, privacy_consents, audit_logs.
+5. Sử dụng đúng trạng thái, enum/check constraints và composite foreign keys trong SQL. Ví dụ: user_roles.role thuộc student/guardian/teacher/admin; question_versions.status thuộc draft/published/archived; attempts.status thuộc in_progress/submitted/graded/abandoned. Kiểm tra toàn bộ giá trị thật trong SQL trước khi viết các model/seed.
+6. TUYỆT ĐỐI KHÔNG DROP/TRUNCATE/XÓA database hoặc các bảng cũ, không sử dụng các thao tác migrate phá dữ liệu, không tự động reset môi trường, không sửa mất thông tin người dùng có sẵn.
+7. Nếu schema gốc chưa được import, cung cấp script setup tùy chọn để import đúng file SQL; mặc định coi database đã tồn tại và schema đã được import. Nếu thiếu bảng thì báo rõ và hướng dẫn import thay vì lặng lẽ tạo một schema khác.
+8. Các thay đổi schema thực sự cần thiết phải làm bằng Alembic migration có giải thích rõ và có rollback; không chỉnh trực tiếp SQL gốc theo kiểu phá tính tương thích. Có thể dùng schema gốc làm baseline cho Alembic.
+9. Không giả lập dữ liệu thống kê hoặc điểm số trên API. Giao diện có thể hiển thị minh họa ở màn giới thiệu, nhưng dashboard của tài khoản đang đăng nhập phải phản ánh dữ liệu database thật, hoặc trạng thái trống hữu ích.
+10. Không dùng AI bên ngoài, API trả phí, embedding/vector DB, Kafka/Kubernetes hoặc microservices trong bản đầu tiên. Phải có cơ chế cá nhân hóa rule-based chạy thật và có thể thay bằng ML/AI về sau.
+
+==============================================================
+B. CẤU HÌNH POSTGRESQL VÀ TÀI KHOẢN DEMO
+==============================================================
+THÔNG SỐ MÔI TRƯỜNG PHÁT TRIỂN LOCAL (NGƯỜI DÙNG YÊU CẦU):
+- DBMS: PostgreSQL 14+ (khuyến nghị 15/16).
+- DB_HOST: localhost khi backend chạy trên máy host, hoặc host.docker.internal khi backend chạy trong container và PostgreSQL nằm trên máy host.
+- DB_PORT: 5432.
+- DB_NAME: viettree-education.
+- DB_USER: postgres.
+- DB_PASSWORD: 123456.
+- SQLAlchemy URL ví dụ khi chạy trên host: postgresql+psycopg://postgres:123456@localhost:5432/viettree-education
+- VUI LÒNG không hard-code URL/password trong mã nguồn; đọc từ .env và sử dụng .env.example. Cấu hình ngoài production phải có bí mật mạnh, không dùng các giá trị demo ở trên.
+
+TẠO HOẶC CẬP NHẬT (IDEMPOTENT) HAI TÀI KHOẢN DEMO:
+1. Admin:
+   username = admin
+   password = Anhthuan33!
+   role = admin
+   display_name = Quản trị VietTree
+2. Học sinh:
+   username = longnh
+   password = Anhthuan33!
+   role = student
+   display_name = Học sinh Long (demo)
+   current_grade = 4
+   learning_preferences có giá trị JSON object hợp lệ.
+
+YÊU CẦU QUAN TRỌNG VỀ SEED USERS:
+- Password phải hash bằng Argon2id (ưu tiên) hoặc bcrypt chuẩn, không bao giờ lưu plaintext vào users.password_hash.
+- Seed script chạy nhiều lần không tạo trùng tài khoản/roles/profile. Không reset mật khẩu hoặc thay đổi tài khoản đã tồn tại ngoài ý muốn; nếu cần thay password demo thì có cơ chế explicit --reset-demo-passwords chỉ chạy khi được yêu cầu.
+- Không chứa mật khẩu plaintext trong frontend bundle, README public ngoài phần hướng dẫn DEV rõ ràng, log, API response, SQL migration hoặc dữ liệu sản phẩm.
+- DEV credentials có thể khai báo qua biến SEED_ADMIN_PASSWORD, SEED_STUDENT_PASSWORD trong .env local, với giá trị ví dụ theo yêu cầu. Không tự động thực thi seed tài khoản mặc định trong môi trường production.
+- Cho phép đăng nhập bằng username/password. Sinh access token ngắn hạn + refresh token có phương án thu hồi an toàn (hoặc session server-side an toàn), đăng xuất, /auth/me; lưu phiên phù hợp với Next.js và bảo vệ CSRF nếu dùng cookie; thêm rate limiting login ở mức hợp lý.
+- Không cho đăng ký công khai tài khoản trẻ em trong MVP; admin có thể tạo tài khoản học sinh (nếu triển khai chức năng này), bảo đảm phân quyền.
+
+==============================================================
+C. PHẠM VI SẢN PHẨM — FULL STACK MVP + PERSONALIZATION
+==============================================================
+Triển khai ứng dụng có thể dùng được với các vai trò:
+1. ADMIN (hoạt động thật): login/logout, dashboard tổng quan; danh sách người dùng/học sinh; quản lý cơ bản tài khoản demo và hồ sơ học sinh an toàn; xem danh mục lớp 1–5; xem môn học/chủ đề/bài học/kỹ năng; xem ngân hàng câu hỏi (CHỈ xem/chi tiết); xem bài kiểm tra, số lượt làm, thống kê tổng hợp. Có trang quản trị nội dung và trạng thái duyệt/published.
+2. STUDENT (hoạt động thật): login/logout; trang chủ thân thiện; chọn lớp/môn; xem các chủ đề, bài học xuất bản; đọc nội dung bài học; chọn bài luyện tập/đề được giao; làm bài, lưu bài làm, nộp bài, xem điểm và giải thích sau khi nộp; lịch sử; dashboard năng lực theo kỹ năng; lộ trình/đề xuất ôn tập. Tài khoản longnh phải dùng được xuyên suốt.
+3. TEACHER và GUARDIAN: chuẩn bị RBAC, route và layout chờ mở rộng; có thể có giao diện cơ bản hiển thị rõ trạng thái chưa triển khai. KHÔNG giả vờ đã có các chức năng quản lý phức tạp. Quyền phụ huynh chỉ được xem trẻ được liên kết bằng guardian_students khi tính năng hoàn thiện.
+4. Khung lớp 1–5 phải có trong UI, bộ lọc, dữ liệu chương trình và backend; LỚP 4 là lớp duy nhất cần có nội dung bài học/câu hỏi/đề phong phú trong bản này. Lớp 1, 2, 3, 5 hiển thị trạng thái 'Đang xây dựng', không sinh nội dung rỗng giả làm đã có.
+5. Chỉ ưu tiên 3 môn: Toán, Tiếng Việt, Tiếng Anh lớp 4. Các môn khác đã có trong bảng subjects của SQL vẫn giữ nguyên nhưng không cần seed nội dung. Không xóa những môn có sẵn.
+
+RẤT QUAN TRỌNG — GIỚI HẠN PHẦN SOẠN BÀI TẬP:
+- Phải tạo UI/route/menu KHUNG SẴN 'Tạo bài tập' cho admin/teacher với các trường dự kiến: lớp, môn, chủ đề, bài học, kỹ năng, loại câu hỏi, nội dung, lựa chọn, đáp án, lời giải, độ khó, xem trước, lưu nháp, duyệt/xuất bản.
+- NHƯNG CHƯA TRIỂN KHAI chức năng tạo/sửa/xóa/xuất bản câu hỏi từ UI, chưa làm API ghi CRUD bài tập, chưa làm rich-text editor hay drag-and-drop authoring. Hiển thị thông báo rõ 'Chức năng tạo bài tập đang được phát triển'. Các nút liên quan disabled hoặc chỉ mở giới thiệu tính năng, KHÔNG âm thầm lưu giả.
+- Ngân hàng câu hỏi được seed bằng script; học sinh vẫn phải làm bài và được chấm điểm thật. Có thể có trang admin xem danh sách/chi tiết câu hỏi ở chế độ read-only, với vùng đáp án admin-only.
+
+==============================================================
+D. STACK CÔNG NGHỆ VÀ CẤU TRÚC PROJECT
+==============================================================
+- Monorepo, frontend Next.js (App Router) + TypeScript, React, Tailwind CSS, shadcn/ui hoặc UI primitives tương đương, Lucide icons.
+- Backend FastAPI, Python 3.12+, SQLAlchemy 2.x, Pydantic 2.x, psycopg 3, Alembic, pytest.
+- DB PostgreSQL đã có. Redis tùy chọn cho cache/rate-limiting, không bắt buộc để chạy lõi. MinIO tùy chọn để upload media trong tương lai; MVP không được phụ thuộc media để nội dung hoạt động.
+- Docker Compose có frontend, backend; docker profile hoặc file override riêng cho Redis/MinIO và PostgreSQL local MỚI nếu thực sự cần. MẶC ĐỊNH không tạo database Postgres container cạnh tranh/trùng với database có sẵn trên host.
+- Docker trên Windows: hỗ trợ host.docker.internal. Linux: tài liệu hóa extra_hosts: host-gateway khi DB nằm ở host. Hướng dẫn cách thay DB_HOST.
+- Nginx chỉ khi cần ở compose production. Trong dev dùng hot reload (Next.js + uvicorn --reload).
+- Type-safe API client, chuẩn request validation, error handling rõ ràng; dùng react-hook-form/zod nếu hữu ích.
+- Cấu trúc đề nghị (có thể tối ưu nhưng giữ rõ ràng):
+  viettree-education/
+    frontend/ (src/app, components, features, lib/api, hooks, types, public)
+    backend/ (app/api, core, db, models, schemas, repositories, services, personalization, tests)
+    backend/alembic/
+    database/viettree_education_schema.sql
+    database/seeds/ (idempotent seed dữ liệu lớp 4)
+    docker-compose.yml
+    .env.example
+    README.md
+    docs/ (kiến trúc, API, mô hình dữ liệu, quyền truy cập)
+- Không cần giả tạo nhiều tầng repository nếu khiến code rối; ưu tiên dễ đọc, có typing, modular monolith.
+
+==============================================================
+E. THIẾT KẾ GIAO DIỆN CHO HỌC SINH TIỂU HỌC
+==============================================================
+Yêu cầu giao diện đẹp, hiện đại, hoạt bát nhưng không lòe loẹt; thương hiệu VietTree Education lấy cảm hứng từ cây tri thức, học tập và phát triển. Chủ đạo xanh lá cây, xanh trời, cam ấm, nền sáng, card bo tròn; hình minh họa SVG/illustration tự tạo, không phụ thuộc ảnh có bản quyền.
+- Ưu tiên thiết kế cho laptop/tablet/mobile, responsive thực tế.
+- Font hiển thị tiếng Việt rõ ràng, kích cỡ đủ lớn, khoảng cách thoáng; vùng bấm tối thiểu khoảng 44x44px.
+- Dashboard học sinh có lời chào, chọn môn, tiến độ, nút 'Học tiếp', nhiệm vụ hôm nay, hoạt động gần đây; không hiển thị thông tin giả nếu chưa làm bài.
+- Các môn có biểu tượng và màu nhận diện riêng: Toán, Tiếng Việt, Tiếng Anh.
+- Hiển thị đường dẫn: Lớp 4 > Môn > Chủ đề > Bài học > Luyện tập.
+- Trình làm bài: một câu mỗi màn hoặc từng bước dễ theo dõi; chỉ báo câu hiện tại, trạng thái đã trả lời, chuyển câu trước/sau, xem lại trước khi nộp, hộp xác nhận nộp bài, màn kết quả rõ ràng.
+- Có trạng thái loading, empty, error, retry; toast hoặc alert dễ hiểu cho trẻ; không dùng thiết kế gây áp lực/thao túng.
+- Animation nhẹ, hỗ trợ prefers-reduced-motion; điều hướng bằng bàn phím và biểu mẫu có nhãn truy cập.
+- Không quảng cáo, không chia sẻ dữ liệu học sinh công khai, không bảng xếp hạng công khai mặc định.
+- Admin có giao diện dashboard riêng mang tính công cụ, đơn giản, có sidebar, bảng dữ liệu lọc/tìm kiếm/phân trang.
+- Chế độ tiếng Việt là mặc định; bài Tiếng Anh có câu tiếng Anh và hướng dẫn tiếng Việt khi phù hợp.
+
+==============================================================
+F. DỮ LIỆU CHƯƠNG TRÌNH GIẢNG DẠY LỚP 1–5 / SEED LỚP 4
+==============================================================
+1. Dựng khung lớp 1–5 bằng mô hình hiện có (grade=1..5; không tự tạo bảng grades nếu không cần). Tạo bộ điều hướng theo lớp.
+2. Giai đoạn này sinh NỘI DUNG THẬT, có thể đọc và luyện tập cho lớp 4 với 3 môn MATH, VIETNAMESE, ENGLISH. Nội dung tiếng Việt đúng chính tả, phù hợp lứa tuổi 9–10, do dự án tự biên soạn; không sao chép nguyên văn sách giáo khoa/các tác phẩm có bản quyền.
+3. Mỗi môn tối thiểu:
+   - 4 chủ đề (topics) có mã duy nhất và thứ tự logic;
+   - mỗi chủ đề tối thiểu 2 bài học (lessons), tức >=8 bài học/môn, mỗi bài có nội dung hướng dẫn thực chất, ví dụ minh họa, phần ghi nhớ, bài luyện tập liên quan;
+   - >=30 câu hỏi được biên soạn cẩn thận/môn, tức tổng >=90 câu hỏi; mỗi câu có code ổn định, một phiên bản published, độ khó 1..5, đáp án và lời giải đúng, mapping ít nhất một skill;
+   - >=3 bài luyện tập/đề mẫu đã published/môn, mỗi đề 8–10 câu, sử dụng assessment_items trỏ đúng question_versions.id;
+   - các dạng câu hỏi tự động chấm điểm ưu tiên: single_choice, multiple_choice, fill_blank, ordering. Các loại còn lại trong DB vẫn chuẩn bị kiến trúc nhưng chưa phải làm tương tác/chấm điểm đầy đủ nếu chưa có câu tương ứng.
+   - Tạo kỹ năng (skills) rõ ràng và gắn với chủ đề/bài học/câu hỏi bằng question_skills và lesson_skills.
+   - Tạo câu hỏi đủ đa dạng, không chỉ đổi số máy móc, đáp án có kiểm tra chéo bằng test.
+4. Nội dung gợi ý TOÁN 4:
+   - Số tự nhiên, hàng và lớp, so sánh, làm tròn;
+   - Phép cộng/trừ/nhân/chia và bài toán nhiều bước;
+   - Phân số cơ bản, so sánh phân số đơn giản;
+   - Đơn vị đo (khối lượng, thời gian, độ dài/diện tích);
+   - Hình học: góc, vuông góc, song song, chu vi/diện tích và toán có lời văn.
+   Chọn 4–5 chủ đề hợp lý để đáp ứng mức tối thiểu trên; không cần tuyên bố tương ứng nguyên xi bộ sách cụ thể.
+5. Nội dung gợi ý TIẾNG VIỆT 4:
+   - Đọc hiểu đoạn văn ngắn tự sáng tác;
+   - Từ loại: danh từ, động từ, tính từ;
+   - Câu và dấu câu;
+   - Từ vựng, nghĩa của từ, lựa chọn từ ngữ phù hợp;
+   - Luyện viết câu/đoạn có hướng dẫn (bài tự luận chỉ hiển thị và lưu để giáo viên đánh giá, không tự động phán đúng/sai bằng heuristic thiếu tin cậy).
+   Câu hỏi tự chấm phải có đáp án khách quan, rõ ràng. Nếu dùng fill_blank, chỉ chấp nhận tập đáp án hợp lệ với quy tắc normalization được kiểm thử, không vô tình chấm sai dấu tiếng Việt.
+6. Nội dung gợi ý TIẾNG ANH 4:
+   - Greetings, introductions, family/friends;
+   - School subjects, classroom objects;
+   - Daily routines, days of week/time;
+   - Weather, hobbies, common verbs, basic sentence patterns;
+   - Từ vựng và cấu trúc đơn giản có dịch/chú giải tiếng Việt. Không giả lập file audio nếu chưa cung cấp file.
+7. Các câu hỏi cần rõ đáp án đúng, lời giải ngắn và mang tính khích lệ; không có dữ liệu rác dạng 'Câu hỏi 1, Câu hỏi 2' hoặc placeholder lorem ipsum.
+8. Seed dùng unique code + UPSERT/ON CONFLICT hoặc logic tương đương, chạy lặp lại an toàn; KHÔNG sửa phiên bản published đang được học sinh làm, không phá lịch sử đã phát sinh. Nếu chỉnh nội dung sau này thì tạo question_versions version mới theo quy tắc an toàn.
+9. Cho tài khoản longnh quyền xem nội dung lớp 4 và tự chọn bài luyện tập; có thể seed một số student_assignments (source='system') idempotent. Lịch sử học tập ban đầu phải sạch hoặc chỉ có dữ liệu demo nếu được tài liệu hóa rõ; ưu tiên không seed điểm/kết quả giả.
+
+==============================================================
+G. BACKEND API VÀ QUY TẮC CHẤM ĐIỂM
+==============================================================
+Triển khai các API tối thiểu có OpenAPI/Swagger và response schemas:
+- POST /api/v1/auth/login
+- POST /api/v1/auth/refresh (nếu dùng token)
+- POST /api/v1/auth/logout
+- GET  /api/v1/auth/me
+- GET  /api/v1/grades
+- GET  /api/v1/subjects?grade=4
+- GET  /api/v1/topics?grade=4&subject_code=MATH
+- GET  /api/v1/lessons?topic_id=...
+- GET  /api/v1/lessons/{id}
+- GET  /api/v1/assessments?grade=4&subject_code=MATH
+- GET  /api/v1/assessments/{id} (metadata; nội dung cho student không bao giờ có grading)
+- GET  /api/v1/students/me/dashboard
+- GET  /api/v1/students/me/assignments
+- POST /api/v1/students/me/assessments/{id}/assign-self hoặc chức năng tương đương để học sinh tự luyện tập hợp lệ
+- POST /api/v1/attempts (bắt đầu phiên; kiểm tra student_assignment, giới hạn lượt và quyền)
+- GET  /api/v1/attempts/{id} (chỉ chủ sở hữu/admin được phép)
+- PUT/PATCH /api/v1/attempts/{id}/answers/{assessment_item_id} (lưu đáp án nếu cần resume)
+- POST /api/v1/attempts/{id}/submit (chấm thật và ghi dữ liệu transaction)
+- GET  /api/v1/attempts/{id}/result (chỉ sau khi submit; xem điểm và lời giải)
+- GET  /api/v1/students/me/history
+- GET  /api/v1/students/me/skills
+- GET  /api/v1/students/me/recommendations
+- Admin read-only: /api/v1/admin/students, /api/v1/admin/questions, /api/v1/admin/assessments, /api/v1/admin/statistics và các endpoint tối thiểu để UI admin vận hành.
+Có thể thiết kế REST path tối ưu hơn, nhưng phải đồng nhất frontend/backend và ghi vào README.
+
+LUỒNG THẬT END-TO-END:
+- Student chọn đề published và được phép truy cập -> tự tạo assignment (source='self') nếu cần -> mở attempt in_progress -> tải các assessment_items và question_versions.content được lọc an toàn -> nhập câu trả lời -> backend validate đáp án -> nộp -> backend chấm điểm -> lưu attempt_answers + attempts -> cập nhật assignment, lesson progress (nếu phù hợp), learning_events và student_skill_mastery -> trả kết quả cho student -> dashboard và lịch sử phản ánh số liệu thật.
+
+BẢO MẬT ĐÁP ÁN:
+- Không bao giờ gửi question_versions.grading, correct_option_ids, answer_key, explanation chứa đáp án hay dữ liệu chỉ admin thấy trong API trước khi nộp.
+- Có thể dùng view v_published_question_content để lấy nội dung công khai; quyền student luôn được kiểm soát ở backend.
+- student gửi answer và backend xác định đúng/sai, KHÔNG tin vào trường is_correct/score do client gửi.
+- Mỗi assessment phải trỏ tới EXACT question_versions.id đã công bố; không đổi câu hỏi của attempt cũ.
+- Điểm từng item giới hạn bởi assessment_items.points, tổng điểm đúng, trạng thái chuyển hợp lệ; không chấm nhầm học sinh này sang người khác.
+- Nộp trùng request không tăng điểm hoặc phát sinh trùng lịch sử: có transaction, row locking hoặc xử lý idempotent, trả kết quả cũ khi nộp lại.
+- Validate thời gian, max_attempts, trạng thái published, available_at/due_at và input shape.
+- Multiple_choice so sánh tập đáp án; single_choice so sánh lựa chọn; fill_blank normalization kiểm soát; ordering so sánh thứ tự. Không chấm câu free_text thành đúng/sai tự động nếu chưa có rubric/grader hợp lệ.
+- Log và error response không rò rỉ password, đáp án, PII hoặc SQL details.
+
+==============================================================
+H. CÁ NHÂN HÓA HỌC TẬP BẢN ĐẦU, CÓ KẾT QUẢ THẬT
+==============================================================
+Xây Personalization Engine rule_v1 hoạt động trên backend, không cần gọi AI:
+1. Mỗi question_version được gắn với một hoặc nhiều skills qua question_skills (weight >0 <=1).
+2. Khi nộp bài, cập nhật student_skill_mastery (mastery_score 0..1, confidence 0..1, questions_attempted, correct_count, recent_accuracy, hint_usage_rate, last_practiced_at, next_review_at, model_version='rule_v1').
+3. Không tự nhận kết luận năng lực từ 1–2 câu. Có confidence dựa trên số lượng bằng chứng và hiển thị 'Cần luyện tập thêm để đánh giá' khi dữ liệu ít.
+4. Công thức MVP có thể là EWMA hoặc quy tắc có trọng số theo độ khó/độ chính xác, nhưng phải cố định, minh bạch, test được, và cập nhật một lần duy nhất cho mỗi attempt đã chấm. Tránh dùng tốc độ trả lời là thước đo duy nhất.
+5. Dựa trên recent performance, prerequisite skills và next_review_at, chọn kỹ năng cần luyện tập, lấy đề/câu phù hợp đã published, tránh đề đã làm quá thường xuyên; đưa giải thích lý do đề xuất dễ hiểu.
+6. Lưu gợi ý vào student_recommendations (chú ý CHECK bắt buộc CHÍNH XÁC một trong question_version_id hoặc assessment_id khác NULL); hiển thị tối đa 3–5 đề xuất hữu ích, không tạo trùng vô hạn sau mỗi lần tải dashboard.
+7. Khi chưa có dữ liệu, đưa ra bài luyện tập khởi động lớp 4, KHÔNG tạo số mastery giả để tô biểu đồ.
+8. Hỗ trợ ôn tập giãn cách cơ bản (thời gian ôn là heuristic khởi tạo và có giải thích trong docs).
+9. Dữ liệu gốc attempts + attempt_answers + learning_events là nguồn sự thật; số liệu tổng hợp phải có cách rebuild từ dữ liệu gốc và test tính nhất quán.
+10. Không lưu đánh giá mang tính kỳ thị hoặc suy luận về đặc điểm nhạy cảm của trẻ.
+
+==============================================================
+I. FRONTEND PAGES & USER JOURNEYS
+==============================================================
+PUBLIC:
+- / : Trang giới thiệu VietTree Education đẹp, có giới thiệu 3 môn lớp 4, nút Đăng nhập; không cần trang đăng ký công khai.
+- /login : Form username/password, hiển thị lỗi rõ ràng, đưa admin sang admin dashboard, student sang học sinh.
+
+STUDENT (authenticated):
+- /student/dashboard : dashboard học tập, môn học, nhiệm vụ, đề xuất.
+- /student/grades : danh mục lớp 1–5 (lớp 4 khả dụng; lớp còn lại 'Sắp ra mắt').
+- /student/subjects/[subject] : danh sách chủ đề.
+- /student/lessons/[id] : trình bày bài học có block văn bản, ví dụ và luyện tập liên quan.
+- /student/assessments/[id] : giới thiệu đề và nút bắt đầu.
+- /student/attempts/[id] : trình làm bài tương tác, lưu draft/resume khi có API; hỗ trợ single_choice, multiple_choice, fill_blank, ordering.
+- /student/results/[attemptId] : điểm, giải thích từng câu đúng/sai và nút luyện tiếp.
+- /student/history : lịch sử theo môn/ngày, xem lại kết quả.
+- /student/progress : kỹ năng, mức độ thành thạo, mức độ tin cậy, lịch ôn tập.
+- /student/profile : thông tin cá nhân tối thiểu, không show dữ liệu nhạy cảm.
+
+ADMIN:
+- /admin/dashboard
+- /admin/students : danh sách, tìm kiếm, thông tin cơ bản theo RBAC.
+- /admin/curriculum : môn/lớp/chủ đề/bài học/kỹ năng; chế độ xem.
+- /admin/questions : danh sách và xem chi tiết, có phân biệt nội dung và đáp án admin-only.
+- /admin/questions/new : KHUNG FORM SOẠN BÀI TẬP (chưa có logic lưu/CRUD). Hiển thị trạng thái 'Đang phát triển'.
+- /admin/assessments : danh sách đề, metadata, số câu.
+- /admin/analytics : thống kê thực từ DB, empty states khi chưa có lịch sử.
+- /admin/settings : cấu hình/hướng dẫn demo cơ bản, không đưa secrets vào UI.
+
+- Có menu điều hướng, breadcrumbs, route guards, skeleton/loading, 401 redirect login, 403 page, 404 page.
+- Các trang ở trên phải hoạt động, không render lỗi hay có links chết. Chỉ tính năng tạo/sửa bài tập được chủ động đánh dấu chưa triển khai.
+
+==============================================================
+J. PRIVACY, AUTHORIZATION, RELIABILITY VÀ CHẤT LƯỢNG
+==============================================================
+- Giáo dục tiểu học: minimization PII; không bắt buộc ngày sinh/địa chỉ/số điện thoại học sinh trong demo.
+- Không công khai lịch sử/tiến độ học của tài khoản longnh cho tài khoản khác.
+- Admin khác với student cả UI và API; chặn truy cập trái quyền (IDOR), không chỉ ẩn nút ở frontend.
+- Các cấu hình production secrets, CORS, cookie secure, HTTPS, backup, audit, retention cần tài liệu hóa. Dữ liệu demo không được thay thế cơ chế đồng ý pháp lý của phụ huynh trong vận hành thực tế.
+- SQL query parameterized và ORM an toàn; tránh XSS khi render nội dung bài học JSON; tránh render HTML chưa lọc.
+- Unique constraint/upsert bảo đảm seed idempotent; transaction có rollback khi lỗi.
+- Không dùng mật khẩu demo và postgres superuser trong production. Nên tạo DB role ít quyền để chạy ứng dụng trong production (không cần thực hiện thay đổi này tự động vào DB hiện có).
+- Cung cấp /health và /ready kiểm tra DB thật, structured logging tối thiểu.
+
+==============================================================
+K. TESTS, KIỂM CHỨNG VÀ TIÊU CHÍ HOÀN THÀNH
+==============================================================
+Phải tạo và (nếu môi trường hỗ trợ) thực sự chạy:
+1. Backend pytest: authentication (đúng/sai), seed idempotency, grade filter 1..5, bảo vệ grading, chấm điểm các dạng câu hỏi, giới hạn lượt làm, nộp lặp không nhân đôi, cross-student access denied, mastery update không trùng.
+2. Frontend: typecheck, lint, build; ít nhất một số component tests quan trọng nếu toolchain thuận tiện.
+3. Integration test dùng PostgreSQL test DB riêng/transaction; KHÔNG test bằng cách xóa dữ liệu DB viettree-education thật. Có thể dùng testcontainers/compose profile riêng hoặc ephemeral DB.
+4. Có script smoke test thể hiện: login admin; login longnh; lấy 3 môn lớp 4; chọn đề Toán; bắt đầu, trả lời, nộp; xem kết quả; xem history và skill mastery; admin xem thống kê.
+5. Số liệu seed phải được xác nhận bằng SQL/test: >=12 topics, >=24 lessons, >=90 published questions, >=9 published assessments cho lớp 4 tổng trên 3 môn; mỗi published assessment có >=8 valid items; mỗi câu có skill mapping và grading/explanation phù hợp; không duplicate unique keys.
+6. Docker Compose config phải validate được; backend hoạt động với DB Postgres chạy ở máy host; frontend gọi API qua URL cấu hình phù hợp cả browser và server-side (đừng dùng host.docker.internal trong URL bắt browser truy cập).
+7. Nếu môi trường Codex không có PostgreSQL hoặc Docker thực tế, vẫn tạo đầy đủ code, test, hướng dẫn chạy; nêu rõ phần chưa kiểm thử do thiếu hạ tầng, tuyệt đối không tuyên bố test pass giả.
+
+ACCEPTANCE SCENARIOS:
+- Khởi chạy ứng dụng, đăng nhập admin/Anhthuan33! -> vào /admin/dashboard với dữ liệu đúng.
+- Đăng nhập longnh/Anhthuan33! -> vào /student/dashboard với lớp 4 và 3 môn.
+- Chọn Toán > Chủ đề > Bài học > Làm đề -> nộp -> điểm do backend chấm -> xem lời giải -> reload vẫn có lịch sử.
+- Làm sai nhiều câu thuộc kỹ năng nào đó -> dashboard/progress/recommendations phản ánh nhu cầu ôn tập tương ứng.
+- Student không đọc được grading/đáp án trước nộp, không truy cập API admin hoặc bài của học sinh khác.
+- Truy cập khối 1/2/3/5 -> thấy khung chương trình 'Đang xây dựng', không bị 404.
+- Admin vào Tạo bài tập -> thấy khung form đúng yêu cầu, nhưng lưu/xuất bản chưa được triển khai và được thông báo minh bạch.
+- Chạy lại seed không nhân đôi nội dung hoặc làm mất kết quả học sinh.
+
+==============================================================
+L. HƯỚNG DẪN CODEX THỰC THI VÀ BÀN GIAO
+==============================================================
+Thực hiện theo các checkpoint sau, liên tục viết code và tiếp tục thực hiện thay vì dừng ở kế hoạch:
+CHECKPOINT 1: Đọc file SQL, ghi lại mapping models, constraints, kế hoạch tối thiểu trong docs/architecture.md. Xác minh tên database có dấu '-' và các composite FK quan trọng.
+CHECKPOINT 2: Tạo monorepo, cấu hình backend/frontend/.env.example/Docker Compose, auth + role guard + DB connection và migration baseline.
+CHECKPOINT 3: Tạo seed idempotent cho 2 tài khoản demo và nội dung bài học/skills/questions/assessments lớp 4 của 3 môn. Đảm bảo có thể sử dụng ngay, nội dung chuẩn xác.
+CHECKPOINT 4: Hoàn chỉnh API đọc nội dung, giao đề, làm bài, chấm, lưu lịch sử và phản hồi.
+CHECKPOINT 5: Hoàn chỉnh personalization engine rule_v1, thống kê và API progress.
+CHECKPOINT 6: Hoàn chỉnh frontend student/admin đúng phong cách, responsive; trang tạo bài tập chỉ là scaffold chưa triển khai ghi dữ liệu.
+CHECKPOINT 7: Chạy formatter, lint, typecheck, tests, build, smoke tests khi có thể; sửa toàn bộ lỗi do chính mã nguồn tạo ra.
+CHECKPOINT 8: Bàn giao README đầy đủ bằng tiếng Việt và danh sách file/tính năng thực tế.
+
+README PHẢI CÓ:
+- Yêu cầu hệ thống, cách tạo Python venv, cài pip/uv, Node.js/npm.
+- Cách tạo .env từ .env.example; giải thích DB_HOST=localhost vs host.docker.internal và tên DB "viettree-education".
+- Cách kiểm tra schema có sẵn và import đúng file SQL nếu thiếu (KHÔNG tự xóa DB).
+- Cách chạy scripts seed (accounts + nội dung lớp 4) idempotent.
+- Cách chạy backend/Next.js riêng lẻ, cách chạy Docker Compose với DB đang có, và cách mở URL.
+- Demo credentials: chỉ cho môi trường local development, ghi rõ phải đổi trước khi public Internet.
+- API docs URL, cấu trúc project, thay đổi schema (nếu có), cách chạy tests.
+- Danh sách tính năng hoàn thành và chưa triển khai, giới hạn MVP và hướng phát triển tương lai.
+- Hướng dẫn troubleshoot: kết nối PostgreSQL, CORS, seed conflict, docker networking.
+
+QUY ƯỚC KẾT QUẢ CUỐI CÙNG:
+1. Bạn phải tạo các file thật trong workspace; KHÔNG chỉ trả pseudo-code hoặc sơ đồ.
+2. Ưu tiên chức năng core hoạt động thay vì mock UI đẹp nhưng không kết nối DB.
+3. Không tự cho mình hoàn thành nếu chưa có demo login và luồng học sinh làm bài dùng DB thật.
+4. Nếu gặp giới hạn thời gian/ngữ cảnh, ghi progress vào docs/IMPLEMENTATION_STATUS.md và tiếp tục theo checklist, không lặng lẽ bỏ dở chức năng.
+5. Cuối cùng, báo cáo các lệnh đã chạy, kiểm thử pass/fail có bằng chứng, cách khởi động, demo accounts, và những điểm còn cần thực hiện nếu có.
+
+BẮT ĐẦU NGAY: trước hết đọc database/viettree_education_schema.sql và kiểm tra workspace, sau đó triển khai source code hoàn chỉnh theo các checkpoint trên.
