@@ -9,9 +9,13 @@ còn lượt luyện tập. Không gán điểm hoặc năng lực từ thao tá
 
 ## Các chức năng đề xuất tiếp theo
 
+VIP đã mở thêm Góc học VIP, sổ tay câu sai với tự ôn không đổi điểm và báo cáo
+7/30 ngày có thể in. Bộ lớp 4 hiện có 48 bài/264 câu/36 đề, gồm 18 bài/18 đề VIP.
+Chi tiết sử dụng và hướng mở rộng: [vip-expansion.md](vip-expansion.md).
+
 Thiết kế gói học Free/VIP, quyền nội dung và tính năng nâng cao được tách thành
 [free-vip-design.md](free-vip-design.md). Phần admin cấp/gia hạn/thu hồi, kiểm tra quyền,
-6 bài/6 đề nâng cao, plan_v2 và xem gói qua liên kết phụ huynh đã triển khai; VIP vẫn
+18 bài/18 đề nâng cao, plan_v2 và xem gói qua liên kết phụ huynh đã triển khai; VIP vẫn
 giữ nguyên vai trò student và không thay thế quyền quản trị hoặc liên kết phụ huynh.
 
 | Ưu tiên | Chức năng | Giá trị và tiêu chí nghiệm thu |

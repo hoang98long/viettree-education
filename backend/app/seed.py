@@ -9,6 +9,7 @@ from app.core.security import hasher, now
 from app.curriculum import CURRICULUM
 from app.db import db
 from app.expanded_curriculum import EXPANDED
+from app.vip_curriculum import VIP_EXTENSION
 
 
 def stable_id(key):
@@ -263,6 +264,7 @@ def seed(conn, reset=False):
     seed_access_policies(conn)
     seed_advanced_content(conn)
     seed_advanced_content(conn, EXPANDED)
+    seed_advanced_content(conn, VIP_EXTENSION)
     return verify_seed(conn)
 
 
@@ -315,7 +317,7 @@ def seed_advanced_content(conn, curriculum=ADVANCED):
                     **source["lesson"],
                     "status": "published",
                     "estimated_minutes": 18,
-                    "sort_order": 10 + index,
+                    "sort_order": source.get("sort_order", 10 + index),
                 },
                 code + "/lesson",
             )

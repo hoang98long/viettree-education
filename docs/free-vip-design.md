@@ -2,14 +2,17 @@
 
 Trạng thái: đã triển khai Free/VIP do admin cấp, chính sách nội dung, trang giới
 thiệu, thử thách và plan_v2. Migration `0003_memberships` bổ sung sáu bảng.
-Thanh toán, báo cáo phụ huynh/PDF và UI quản lý liên kết là giai đoạn tiếp theo.
+Thanh toán, báo cáo trong tài khoản phụ huynh và UI quản lý liên kết là giai đoạn tiếp theo.
 Nội dung nâng cao hiện là bộ mẫu development cần rà soát chuyên môn trước vận hành.
 Tài liệu bám theo FastAPI, Next.js và schema hiện có. Hai gói ban đầu là Free và
 VIP; gói học thuộc về từng học sinh. Hiện admin cấp gói theo yêu cầu; phụ huynh xem
 gói của trẻ có liên kết đã xác minh. Nâng cấp trực tuyến là phần sau. Tài khoản
 giáo viên và quản trị viên giữ cơ chế quyền riêng.
 
-Đợt mở rộng lớp 4: tổng 42 bài/216 câu/30 đề, gồm 30 bài/18 đề Free và 12 bài/12 đề VIP.
+Đợt mở rộng lớp 4 mới nhất: tổng 48 bài/264 câu/36 đề, gồm 30 bài/18 đề Free và
+18 bài/18 đề VIP. Đã có Góc học VIP, sổ tay ôn lỗi/tự luyện, báo cáo 7/30 ngày và
+in/lưu PDF qua trình duyệt trong tài khoản học sinh. Migration 0006 bổ sung ba
+feature; hướng dẫn và giới hạn tại [vip-expansion.md](vip-expansion.md).
 Admin đã có ngân hàng câu hỏi, ghép đề và giao bài; migration 0004/0005 bổ sung quyền
 từng phiên bản và chống ghi đè nháp. Thiết kế cùng hướng nâng cấp tiếp tại
 [authoring-design.md](authoring-design.md). Lệnh riêng `seed-demo-learners` tạo hai
@@ -35,14 +38,17 @@ Các lựa chọn về gói, thời hạn và trải nghiệm trong tài liệu 
 
 | Khả năng | Free | VIP | Tình trạng hiện tại |
 | --- | --- | --- | --- |
-| Bài học nền tảng được đánh dấu miễn phí | Có | Có | Đã gắn chính sách cho 24 bài/12 đề cũ |
+| Bài học nền tảng được đánh dấu miễn phí | Có | Có | 30 bài/18 đề Free, gồm bộ cũ và phần mở rộng |
 | Luyện tập đi kèm bài miễn phí, chấm và lời giải | Có | Có | Đã có |
 | Lịch sử, kết quả và cây năng lực của chính em | Có | Có | Đã có; tiếp tục xem khi hết VIP |
 | Kế hoạch học theo thứ tự chương trình | Tối đa 3 bài mới/kế hoạch, từng môn | Có | Đã có plan_v1 |
 | Cỡ chữ, hỗ trợ đọc và giao diện điện thoại | Đầy đủ | Đầy đủ | Đã có tùy chọn cỡ chữ; các hỗ trợ mới dùng chung |
-| Bài học nâng cao và luyện tập VIP | Xem giới thiệu, không mở nội dung đầy đủ | Có | 6 bài mới/48 câu development, cần rà soát chuyên môn |
-| Thử thách theo chủ đề, đề tổng hợp nâng cao | Không | Có | 6 đề thử thách theo chủ đề; đề tổng hợp là phần sau |
+| Bài học nâng cao và luyện tập VIP | Xem giới thiệu, không mở nội dung đầy đủ | Có | 18 bài/132 câu VIP development, cần rà soát chuyên môn |
+| Thử thách theo chủ đề, đề tổng hợp nâng cao | Không | Có | 18 đề thử thách theo chủ đề; đề tổng hợp là phần sau |
 | Kế hoạch cá nhân theo kỹ năng cần ôn | Không; vẫn có gợi ý luyện tập cơ bản | Có; phối hợp nền tảng, ôn và nâng cao | Đã triển khai plan_v2 |
+| Góc học VIP, lọc môn và bài chưa đọc | Không | Có | Đã triển khai |
+| Sổ tay ôn lỗi và tự luyện không đổi điểm | Không | Có | Câu sai gần nhất của chính em, lọc môn/phân trang |
+| Báo cáo cá nhân 7/30 ngày và in/lưu PDF | Không | Có | Trong tài khoản học sinh, xem cùng phụ huynh |
 | Báo cáo phụ huynh | Tiến độ và kết quả cơ bản của trẻ được liên kết | Thêm xu hướng theo tuần, kỹ năng cần ôn, hướng dẫn hỗ trợ và PDF | Báo cáo là giai đoạn sau; hiện chỉ xem gói của trẻ đã liên kết |
 
 Không giới hạn thêm số bài Free được đọc mỗi ngày. Số lượt làm từng đề vẫn theo

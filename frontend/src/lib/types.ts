@@ -183,6 +183,67 @@ export type Membership = {
   features: string[];
 };
 export type MembershipPlan = { code: string; name: string; features: string[] };
+export type VipLibrary = {
+  grade: number;
+  membership: Membership;
+  lessons: {
+    id: string;
+    title: string;
+    subject_code: string;
+    subject_name: string;
+    topic_title: string;
+    estimated_minutes: number;
+    progress_status: string;
+  }[];
+};
+export type VipMistakes = {
+  total: number;
+  page: number;
+  page_size: number;
+  items: {
+    id: string;
+    attempt_id: string;
+    question_version_id: string;
+    question_type: QuestionKind;
+    content: Content;
+    student_answer: Answer;
+    subject_name: string;
+    subject_code: string;
+    assessment_title: string;
+    graded_at: string;
+  }[];
+};
+export type VipReport = {
+  student_name: string;
+  grade: number;
+  days: number;
+  starts_at: string;
+  ends_at: string;
+  attempt_count: number;
+  score_percent: number | null;
+  completed_lessons: number;
+  active_days: number;
+  previous: { attempt_count: number; score_percent: number | null };
+  daily: {
+    date: string;
+    attempt_count: number;
+    score_percent: number | null;
+  }[];
+  subjects: {
+    subject_code: string;
+    subject_name: string;
+    attempt_count: number;
+    score_percent: number | null;
+  }[];
+  weak_skills: {
+    skill_id: string;
+    name: string;
+    subject_name: string;
+    mastery_score: number;
+    confidence: number;
+    questions_attempted: number;
+  }[];
+};
 export type LessonPreview = ContentAccess & {
   id: string;
   title: string;

@@ -30,12 +30,12 @@ không được dùng làm bằng chứng năng lực; năng lực vẫn dựa v
 **Giữ nguyên** `database/viettree_education_schema.sql` với 34 bảng gốc. Không reset,
 DROP hay TRUNCATE database học tập. Database mặc định có tên **`viettree-education`**,
 bao gồm dấu gạch ngang. Alembic bổ sung hai bảng auth và sáu bảng gói học, revision
-`0005_authoring_revisions`.
+`0006_vip_learning_tools`; revision mới bổ sung quyền lợi, không thêm bảng học tập.
 
 ## Gói học Free / VIP
 
-30 bài học và 18 đề được học miễn phí. VIP mở thêm 12 bài nâng cao, 12 đề thử thách
-(48 câu mới) và kế hoạch theo kỹ năng cần ôn (`plan_v2`). Cách chấm điểm và quyền
+30 bài học và 18 đề được học miễn phí. VIP mở thêm 18 bài nâng cao, 18 đề thử thách
+và kế hoạch theo kỹ năng cần ôn (`plan_v2`). Cách chấm điểm và quyền
 xem kết quả của chính học sinh giống nhau giữa hai gói.
 
 - Học sinh: **Gói học của em** (`/student/membership`) và **Hồ sơ của em** hiển thị
@@ -53,7 +53,11 @@ Attempt VIP đã bắt đầu hợp lệ được hoàn tất tối đa 60 phút
 giao bài/thời lượng đề. Thu hồi VIP chặn ngay attempt đó, kể cả cấp lại VIP sau này.
 Kế hoạch VIP hết quyền chuyển tạm dừng; học sinh vẫn tạo được kế hoạch cơ bản.
 
-VIP hiện do admin cấp, chưa tích hợp thanh toán hoặc báo cáo phụ huynh/PDF. Bộ nội
+VIP có **Góc học VIP**, **Sổ tay ôn lỗi** với tự luyện không đổi điểm, **Báo cáo
+7/30 ngày** và in/lưu PDF từ trình duyệt. Cách dùng, nội dung mới và nâng cấp:
+[docs/vip-expansion.md](docs/vip-expansion.md).
+
+VIP hiện do admin cấp, chưa tích hợp thanh toán hoặc báo cáo riêng trong tài khoản phụ huynh. Bộ nội
 dung nâng cao được seed cho development; cần giáo viên rà soát trước sử dụng thực tế.
 Seed thường không tự nâng cấp học sinh. Lệnh riêng `seed-demo-learners` tạo bốn
 tài khoản demo theo yêu cầu, gồm hai Free và hai VIP 90 ngày.
@@ -284,8 +288,9 @@ trọng Retry-After khi nhiều lượt đăng nhập dùng chung IP proxy.
 SEED_STUDENT_PASSWORD. Script từ chối database thật và không xóa học sinh cũ.
 
 SQL đối chiếu seed: `database/seeds/verify.sql`. Kết quả mặc định mỗi môn: 4 chủ đề,
-14 bài học, 72 published questions, 10 published assessments; đề cũ 8 câu, đề mới 6 câu.
-Tổng: **12 chủ đề, 42 bài học, 216 câu hỏi, 30 đề**, 12 kỹ năng; câu hỏi được gắn
+16 bài học, 88 published questions, 12 published assessments; đề nền tảng 8 câu,
+đề mở rộng trước 6 câu, đề VIP mới 8 câu.
+Tổng: **12 chủ đề, 48 bài học, 264 câu hỏi, 36 đề**, 12 kỹ năng; câu hỏi được gắn
 lesson_questions, lesson_skills và question_skills đúng phiên bản.
 
 ## Phạm vi tính năng
@@ -311,7 +316,8 @@ lesson_questions, lesson_skills và question_skills đúng phiên bản.
 Được để chờ mở rộng theo phạm vi prompt:
 
 - Teacher có RBAC/layout; quản lý lớp và giao bài chưa mở. Guardian chỉ xem gói
-  học của trẻ có guardian_students.verified_at; báo cáo kết quả và PDF chưa mở.
+  học của trẻ có guardian_students.verified_at; báo cáo trong tài khoản guardian chưa mở.
+  Học sinh VIP đã có báo cáo riêng và in/lưu PDF từ trình duyệt.
 - Lớp 1/2/3/5 và bốn môn khác: khung chương trình, trạng thái Đang xây dựng.
 - Chưa có public signup, trình soạn bài học, upload/media/audio, auto-grader tự luận, AI/ML,
   email, thông báo, Redis/MinIO hay dịch vụ trả phí. Bài luyện viết là hướng dẫn tại
@@ -345,7 +351,7 @@ docs/                     Kiến trúc, API, RBAC, personalization, trạng thá
 Xem `docs/architecture.md`, `docs/api.md`, `docs/security.md`,
 `docs/personalization.md`, `docs/IMPLEMENTATION_STATUS.md`, `docs/roadmap.md`.
 Thiết kế gói học miễn phí/VIP: [docs/free-vip-design.md](docs/free-vip-design.md)
-(thiết kế và trạng thái triển khai; thanh toán/báo cáo nâng cao là giai đoạn sau).
+(thiết kế và trạng thái triển khai; thanh toán và báo cáo trong tài khoản phụ huynh là giai đoạn sau).
 Downgrade từ head về `0002_auth_sessions` sẽ xóa dữ liệu sáu bảng gói học. Cần
 backup và chuyển về phiên bản ứng dụng tương thích trước; không downgrade tự động.
 Downgrade về `0001_baseline` còn xóa auth và làm mọi phiên hết hiệu lực. Baseline

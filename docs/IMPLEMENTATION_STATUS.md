@@ -3,8 +3,8 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: xem phần **Mở rộng nội dung và ngân hàng câu hỏi** và
-**Phiên đăng nhập và cache** cuối tài liệu.
+Trạng thái mới nhất: xem phần **Mở rộng VIP lớp 4** cuối tài liệu; phần phiên đăng
+nhập và ngân hàng câu hỏi ghi nhận các đợt trước.
 Các checkpoint và số lượng trong phần đầu ghi nhận mốc MVP trước khi mở rộng.
 
 | Checkpoint | Kết quả |
@@ -199,3 +199,33 @@ development tại http://localhost:3000 sau kiểm thử.
   theo [run-local.md](run-local.md).
 
 Thiết kế, TTL, cấu hình và giới hạn: [session-management.md](session-management.md).
+
+## Mở rộng VIP lớp 4 — 10/10/2026
+
+- Thêm sáu bài học nâng cao, 48 câu và sáu đề 8 câu cho Toán, Tiếng Việt, Tiếng Anh.
+  Tổng bộ seed **48 bài, 264 câu, 36 đề**: Free 30 bài/18 đề, VIP 18 bài/18 đề.
+  Nội dung mới có bốn loại câu, ví dụ và lời giải; cần giáo viên rà soát chuyên môn.
+- Góc học VIP gom bài nâng cao, lọc môn/bài chưa đọc, hiển thị tiến độ và liên kết
+  tới sổ tay, báo cáo, kế hoạch theo kỹ năng hiện có.
+- Sổ tay lấy câu sai/chưa trả lời ở lần chấm gần nhất từng phiên bản, của chính
+  học sinh và lớp hiện tại; không lấy nháp hoặc bài của người khác. Tự ôn và xem
+  lời giải không ghi điểm/lượt làm/mastery; đúng ở bài chính thức sẽ đưa câu ra khỏi sổ.
+- Báo cáo 7/30 ngày tổng hợp điểm/lượt đã chấm, bài đọc hoàn thành, kỳ trước,
+  nhịp theo ngày và kỹ năng cần ôn có đủ bằng chứng từ toàn bộ lịch sử. Không có
+  điểm hiển thị chưa có dữ liệu; không xếp hạng. In/lưu PDF qua trình duyệt trong
+  tài khoản học sinh; báo cáo riêng cho guardian vẫn là bước tiếp theo.
+- Migration `0006_vip_learning_tools` thêm ba feature, không thêm bảng. Mỗi API
+  kiểm tra quyền VIP hiện hành, chủ sở hữu và vai trò; tự ôn vẫn yêu cầu CSRF.
+  API giữ no-store; refresh gói hợp lệ giữ câu tự ôn đang nhập trên giao diện.
+- Đã nâng DB local lên head 0006 và chạy `seed-vip-content` hai lần. Đối chiếu
+  checksum tất cả hàng cũ trên mọi bảng trước/sau: dữ liệu cũ và SQL gốc không đổi,
+  gồm mật khẩu, gói/thời hạn, phiên và lịch sử. Hai attempts, một answer và năm
+  tiến độ đọc đã có vẫn giữ nguyên; không tạo dữ liệu học tập giả hoặc cấp lại VIP.
+- **222 backend tests**, **14 component tests**, **6 browser journeys** đạt trên
+  desktop/mobile Chrome. Browser kiểm tra Free bị chặn, VIP mở nội dung, tự ôn
+  không đổi điểm, báo cáo 7/30, in, thu hồi và giữ kết quả; luồng gói/cỡ chữ vẫn đạt.
+  Backend/browser chạy tuần tự trên DB test riêng. Ruff check/format, TypeScript,
+  ESLint, Prettier frontend và production build đạt; warning Starlette/httpx vẫn còn.
+- Đã dừng server test cổng 8001/3001. Chạy lại ứng dụng theo [run-local.md](run-local.md).
+
+Hướng dẫn sử dụng, nạp nội dung và giới hạn: [vip-expansion.md](vip-expansion.md).

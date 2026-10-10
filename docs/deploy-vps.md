@@ -533,6 +533,7 @@ dc run --rm -T --no-deps backend python - <<'PY'
 from sqlalchemy import text
 from app.db import db, engine
 from app.expanded_curriculum import EXPANDED
+from app.vip_curriculum import VIP_EXTENSION
 from app.seed import seed_content, seed_access_policies, seed_advanced_content, verify_seed
 
 with engine().begin() as conn:
@@ -542,13 +543,14 @@ with engine().begin() as conn:
     seed_access_policies(conn)
     seed_advanced_content(conn)
     seed_advanced_content(conn, EXPANDED)
+    seed_advanced_content(conn, VIP_EXTENSION)
     print(verify_seed(conn))
 PY
 ```
 
 Giữ `APP_ENV=production`; không đổi sang development để vượt chặn seed.
-Kết quả trên DB mới: mỗi môn Toán/Tiếng Việt/Tiếng Anh có 14 bài, 72 câu, 10 đề;
-tổng 42 bài/216 câu/30 đề. Bộ nội dung cần được giáo viên rà soát trước dùng thật.
+Kết quả trên DB mới: mỗi môn Toán/Tiếng Việt/Tiếng Anh có 16 bài, 88 câu, 12 đề;
+tổng 48 bài/264 câu/36 đề. Bộ nội dung cần được giáo viên rà soát trước dùng thật.
 Nếu muốn chương trình trống để tự biên soạn, bỏ qua khối nạp nội dung này.
 
 ## 8. Tạo hoặc đổi mật khẩu tài khoản thật
@@ -655,7 +657,7 @@ dc exec -T db psql -X -U viettree_app -d viettree-education < database/seeds/ver
 
 Thay tên miền trong các lệnh. HTTP chuyển sang HTTPS; login và health trả 200;
 readiness nội bộ báo DB/schema sẵn sàng. Head hiện tại là
-`0005_authoring_revisions`; khi có release mới, dùng head của release đó.
+`0006_vip_learning_tools`; khi có release mới, dùng head của release đó.
 
 Trên browser, kiểm tra thêm:
 

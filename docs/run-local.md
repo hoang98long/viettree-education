@@ -44,6 +44,9 @@ Phiên thường mặc định **8 giờ**. Học sinh có thể chọn **Ghi nh
 cá nhân** để giữ phiên **7 ngày**. Trong phiên, bấm biểu tượng VietTree sẽ về
 dashboard; mở `/login` tự chuyển tiếp. Xem [quản lý phiên](session-management.md).
 
+Học sinh VIP mở menu **Góc học VIP** để tìm bài nâng cao, ôn câu sai và xem/in báo
+cáo 7/30 ngày. Chi tiết: [mở rộng VIP](vip-expansion.md).
+
 Kiểm tra backend và kết nối database tại **http://localhost:8000/ready**.
 Tài liệu API: **http://localhost:8000/docs**.
 Dừng hệ thống bằng **Ctrl+C** ở cả hai terminal.

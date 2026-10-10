@@ -23,6 +23,9 @@ const featureLabels: Record<string, string> = {
   "practice.advanced": "Luyện tập nâng cao",
   "practice.challenge": "Thử thách theo chủ đề",
   "learning_plan.adaptive": "Kế hoạch theo kỹ năng cần ôn",
+  "vip.library": "Góc học VIP và theo dõi bài nâng cao",
+  "review.mistakes": "Sổ tay ôn lỗi và tự luyện câu đã sai",
+  "reports.personal": "Báo cáo 7/30 ngày, in hoặc lưu PDF từ trình duyệt",
 };
 export function membershipTime(value: string | null) {
   return value
@@ -34,7 +37,7 @@ export function membershipTime(value: string | null) {
     : "—";
 }
 export function useMembership() {
-  const resource = useResource<Membership>("/students/me/membership");
+  const resource = useResource<Membership>("/students/me/membership", true);
   const retry = resource.retry;
   const ends = resource.data?.ends_at;
   useEffect(() => {
@@ -100,6 +103,11 @@ export function MembershipSummary() {
       <Link className="button secondary" href="/student/membership">
         Xem quyền lợi gói học
       </Link>
+      {data.plan_code === "vip" && (
+        <Link className="button" href="/student/vip">
+          Mở Góc học VIP
+        </Link>
+      )}
     </section>
   );
 }

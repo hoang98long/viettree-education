@@ -11,6 +11,10 @@ trước nộp. UUID không hợp lệ/extra fields đáp án → 422; không ph
 | POST auth/login | JSON username/password/remember_me (tùy chọn, mặc định false), set hai cookie; trả session_expires_at; Origin allowlist |
 | GET auth/me | User id, tên, roles, text_size, session_expires_at; không hash/token |
 | POST auth/logout | Session bị thu hồi; CSRF header |
+| GET students/me/vip/library | Student có vip.library; metadata bài VIP published đúng lớp và tiến độ của chính em |
+| GET students/me/vip/mistakes?subject_code=MATH&page=1 | Student có review.mistakes; 20 câu/trang, lần chấm gần nhất từng phiên bản, không trả grading/lời giải |
+| POST students/me/vip/mistakes/{answer_id}/check | Student có review.mistakes, CSRF/owner; kiểm tra đáp án tự ôn, không ghi điểm/lượt làm |
+| GET students/me/vip/report?days=7 | Student có reports.personal; 7 hoặc 30 ngày, điểm/lượt/bài đọc, kỳ trước, nhịp theo ngày, snapshot kỹ năng |
 | GET grades | Khung 1–5 |
 | GET subjects?grade=4 | Tất cả môn, đếm chủ đề theo lớp |
 | GET topics?grade=4&subject_code=MATH | Chủ đề active |

@@ -21,6 +21,7 @@ def main():
             "import-schema",
             "seed",
             "seed-demo-learners",
+            "seed-vip-content",
             "verify-seed",
             "rebuild",
         ],
@@ -53,6 +54,18 @@ def main():
                 from app.demo_learners import seed_demo_learners
 
                 print(json.dumps(seed_demo_learners(conn), ensure_ascii=False))
+            elif args.command == "seed-vip-content":
+                from sqlalchemy import text
+
+                from app.core.config import settings
+                from app.seed import seed_advanced_content
+                from app.vip_curriculum import VIP_EXTENSION
+
+                if settings().app_env == "production":
+                    raise RuntimeError("Nội dung mẫu VIP cần rà soát trước khi nạp production")
+                conn.execute(text("SELECT pg_advisory_xact_lock(78249100)"))
+                seed_advanced_content(conn, VIP_EXTENSION)
+                print(json.dumps(verify_seed(conn), ensure_ascii=False))
             elif args.command == "verify-seed":
                 print(json.dumps(verify_seed(conn), ensure_ascii=False))
             else:

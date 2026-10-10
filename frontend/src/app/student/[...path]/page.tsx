@@ -16,6 +16,7 @@ import NotFound from "@/app/not-found";
 import { LearningPlanPage } from "@/features/learning-plan";
 import { MembershipPage } from "@/features/membership";
 import { PracticeLibrary } from "@/features/practice-library";
+import { VipLibraryPage, VipMistakesPage, VipReportPage } from "@/features/vip";
 export default function Page() {
   const { path } = useParams<{ path: string[] }>();
   if (path.length === 1)
@@ -36,9 +37,15 @@ export default function Page() {
         return <MembershipPage />;
       case "practice":
         return <PracticeLibrary />;
+      case "vip":
+        return <VipLibraryPage />;
     }
   if (path.length === 2)
     switch (path[0]) {
+      case "vip":
+        if (path[1] === "mistakes") return <VipMistakesPage />;
+        if (path[1] === "report") return <VipReportPage />;
+        return <NotFound />;
       case "subjects":
         return <SubjectPage key={path[1]} code={path[1]} />;
       case "lessons":

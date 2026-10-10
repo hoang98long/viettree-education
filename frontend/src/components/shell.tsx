@@ -42,6 +42,7 @@ const studentMenu = [
   ["progress", "Cây năng lực", ChartNoAxesCombined],
   ["profile", "Hồ sơ của em", UserRound],
   ["membership", "Gói học của em", Crown],
+  ["vip", "Góc học VIP", Crown],
 ] as const;
 const adminMenu = [
   ["dashboard", "Tổng quan", Home],
