@@ -3,7 +3,8 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: xem phần **Mở rộng nội dung và ngân hàng câu hỏi** cuối tài liệu.
+Trạng thái mới nhất: xem phần **Mở rộng nội dung và ngân hàng câu hỏi** và
+**Phiên đăng nhập và cache** cuối tài liệu.
 Các checkpoint và số lượng trong phần đầu ghi nhận mốc MVP trước khi mở rộng.
 
 | Checkpoint | Kết quả |
@@ -173,3 +174,28 @@ Kiểm chứng cuối đợt:
 
 Ứng dụng local được đưa về backend DB thật tại http://localhost:8000 và frontend
 development tại http://localhost:3000 sau kiểm thử.
+
+## Phiên đăng nhập và cache — 10/10/2026
+
+- Giữ phiên thường mặc định 8 giờ; học sinh có thể chọn ghi nhớ 7 ngày trên máy
+  cá nhân. Admin/teacher không được dùng phiên dài, kể cả khi thêm vai trò sau
+  khi phiên ghi nhớ đã được tạo. Cấu hình qua SESSION_HOURS/REMEMBER_SESSION_DAYS.
+- Logo trong giao diện ứng dụng về dashboard của vai trò hiện tại. Trang chủ có
+  nút tiếp tục theo phiên; `/login` chuyển tới dashboard nếu còn phiên hợp lệ.
+- Provider dùng chung trạng thái đăng nhập, cache bộ nhớ 30 giây và gộp request.
+  Kiểm tra lại khi quay về tab, Back/Forward, đến hạn phiên và theo chu kỳ khi
+  tab hiển thị. Đồng bộ đăng xuất giữa tab; chặn response cũ khôi phục cache.
+- PostgreSQL vẫn kiểm tra phiên/tài khoản/vai trò ở mỗi API bảo vệ; giữ no-store,
+  CSRF và cookie HttpOnly/SameSite/Secure. Không cần Redis hoặc migration mới.
+- Login trả cả thời điểm hết hạn và cỡ chữ đã lưu, để cache không làm mất lựa
+  chọn chữ lớn khi học sinh đăng nhập lại. Đăng nhập lại thay token/thu hồi phiên
+  cũ cùng trình duyệt, không đăng xuất các thiết bị khác.
+- **166 backend tests**, **14 component tests** pass. Browser: 8 luồng biên soạn,
+  học tập và Free/VIP đạt; 6 luồng cỡ chữ/phiên đạt ở đợt kiểm chứng cuối, tổng
+  14 luồng trên desktop/mobile. Backend/browser chạy tuần tự trên DB test riêng.
+  TypeScript, ESLint, Prettier, Ruff check/format và production build đạt.
+- Kiểm tra schema DB thật chỉ đọc, không đổi nội dung hoặc dữ liệu học tập.
+  Server test tại cổng 8001/3001 đã dừng sau kiểm chứng; chạy lại ứng dụng local
+  theo [run-local.md](run-local.md).
+
+Thiết kế, TTL, cấu hình và giới hạn: [session-management.md](session-management.md).

@@ -16,6 +16,10 @@ HttpOnly/SameSite=Lax; Cookie Secure bật qua môi trường production. CSRF h
 phải khớp hash của session cho mọi request ghi có đăng nhập. Login dùng JSON, kiểm
 tra Origin allowlist và Sec-Fetch-Site để tránh login CSRF; CORS cho origin cụ thể.
 Logout/reset password thu hồi phiên tại DB. Thời hạn phiên tuyệt đối, không refresh.
+Phiên thường mặc định 8 giờ; học sinh không có role admin/teacher có thể chọn ghi
+nhớ 7 ngày. API kiểm tra DB ở mỗi request bảo vệ, không cache quyền xác thực.
+Cache `/auth/me` 30 giây chỉ nằm trong bộ nhớ giao diện, có kiểm tra lại và đồng bộ
+đăng xuất giữa tab. Chi tiết: [quản lý phiên và cache](session-management.md).
 
 Argon2id lưu password_hash. Không serialize password/hash/session_hash. Validation
 errors không phản chiếu input. Structured log không chứa body/IP/user/đáp án/SQL.

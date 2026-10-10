@@ -11,8 +11,9 @@ export class ApiError extends Error {
 
 export async function api<T>(
   path: string,
-  options: RequestInit = {},
+  options: RequestInit & { redirectOnUnauthorized?: boolean } = {},
 ): Promise<T> {
+  const { redirectOnUnauthorized = true, ...requestOptions } = options;
   const csrf =
     typeof document === "undefined"
       ? ""
@@ -25,13 +26,13 @@ export async function api<T>(
   let response: Response;
   try {
     response = await fetch(`/api/v1${path}`, {
-      ...options,
+      ...requestOptions,
       credentials: "same-origin",
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
         "X-CSRF-Token": decodeURIComponent(csrf),
-        ...options.headers,
+        ...requestOptions.headers,
       },
     });
   } catch (error) {
@@ -46,9 +47,12 @@ export async function api<T>(
     if (
       response.status === 401 &&
       typeof window !== "undefined" &&
-      path !== "/auth/login"
-    )
+      path !== "/auth/login" &&
+      redirectOnUnauthorized
+    ) {
+      window.dispatchEvent(new Event("viettree:session-expired"));
       window.location.assign("/login");
+    }
     throw new ApiError(
       response.status,
       typeof body?.detail?.message === "string"

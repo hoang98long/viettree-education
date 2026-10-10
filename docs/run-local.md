@@ -20,10 +20,12 @@ Không cần import schema hoặc seed lại mỗi lần chạy.
 ```powershell
 Set-Location 'D:\01_viettree_code\viettree-education\frontend'
 $env:INTERNAL_API_URL = 'http://localhost:8000'
-npm run dev -- --port 3000
+$env:PORT = '3000'
+npm run dev
 ```
 
 Giữ terminal này mở. Truy cập **http://localhost:3000**.
+Đặt cổng qua biến `PORT` để tránh lỗi truyền tham số qua npm/PowerShell.
 
 ## 3. Đăng nhập và kiểm tra
 
@@ -38,12 +40,18 @@ Mật khẩu demo lấy từ `.env` ở thư mục gốc: `SEED_ADMIN_PASSWORD` 
 `SEED_STUDENT_PASSWORD` cho học sinh. Nếu đã đổi mật khẩu, dùng mật khẩu mới.
 Admin có thể cấp/gia hạn VIP tại **Học sinh → Quản lý gói học**.
 
+Phiên thường mặc định **8 giờ**. Học sinh có thể chọn **Ghi nhớ đăng nhập trên máy
+cá nhân** để giữ phiên **7 ngày**. Trong phiên, bấm biểu tượng VietTree sẽ về
+dashboard; mở `/login` tự chuyển tiếp. Xem [quản lý phiên](session-management.md).
+
 Kiểm tra backend và kết nối database tại **http://localhost:8000/ready**.
 Tài liệu API: **http://localhost:8000/docs**.
 Dừng hệ thống bằng **Ctrl+C** ở cả hai terminal.
 
 ## Khi gặp lỗi
 
+- **`Invalid project directory ... frontend\3000`:** chạy lại đúng lệnh
+  `npm run dev` ở trên; không thêm `3000` vào cuối lệnh.
 - **Cổng 8000/3000 đang dùng:** kiểm tra terminal cũ; nếu ứng dụng đã chạy thì mở
   trang web luôn. Muốn khởi động lại, dừng phiên cũ bằng Ctrl+C rồi chạy lại.
 - **Không kết nối database:** kiểm tra service `postgresql-x64-18` và các biến

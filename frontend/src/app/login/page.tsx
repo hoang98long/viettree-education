@@ -1,14 +1,34 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, ShieldCheck } from "lucide-react";
-import { Brand, TreeArt } from "@/components/ui";
+import { Brand, ErrorState, Loading, TreeArt } from "@/components/ui";
 import { api } from "@/lib/api";
 import type { User } from "@/lib/types";
+import { homeFor, useSession } from "@/lib/session";
 export default function Login() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const router = useRouter();
+  const session = useSession();
+  useEffect(() => {
+    if (session.user) router.replace(homeFor(session.user));
+  }, [session.user, router]);
+  if (session.loading || session.user)
+    return (
+      <main id="main" className="standalone">
+        <Loading />
+      </main>
+    );
+  if (session.error)
+    return (
+      <main id="main" className="standalone">
+        <ErrorState
+          message={session.error}
+          retry={() => void session.refresh(true)}
+        />
+      </main>
+    );
   return (
     <main id="main" className="login-page">
       <div className="login-story">
@@ -43,12 +63,11 @@ export default function Login() {
                 body: JSON.stringify({
                   username: fields.get("username"),
                   password: fields.get("password"),
+                  remember_me: fields.get("remember_me") === "on",
                 }),
               });
-              const role = ["admin", "student", "teacher", "guardian"].find(
-                (r) => user.roles.includes(r),
-              );
-              router.replace(role ? `/${role}/dashboard` : "/403");
+              session.setUser(user);
+              router.replace(homeFor(user));
             } catch (err) {
               setError((err as Error).message);
             } finally {
@@ -76,6 +95,15 @@ export default function Login() {
             maxLength={256}
             placeholder="Nhập mật khẩu"
           />
+          <label className="remember-session" htmlFor="remember_me">
+            <input id="remember_me" name="remember_me" type="checkbox" />
+            <span>Ghi nhớ đăng nhập trên máy cá nhân</span>
+          </label>
+          <p className="muted">
+            Mặc định: phiên thường có hiệu lực 8 giờ. Học sinh có thể ghi nhớ 7
+            ngày; không chọn khi dùng máy chung. Admin và giáo viên dùng phiên
+            thường.
+          </p>
           {error && (
             <div role="alert" className="notice error">
               {error}

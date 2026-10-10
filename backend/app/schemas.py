@@ -12,6 +12,7 @@ class StrictModel(BaseModel):
 class LoginInput(StrictModel):
     username: str = Field(min_length=3, max_length=80)
     password: str = Field(min_length=1, max_length=256)
+    remember_me: bool = False
 
 
 class UserResponse(BaseModel):
@@ -20,6 +21,7 @@ class UserResponse(BaseModel):
     display_name: str
     roles: list[str]
     text_size: Literal["comfortable", "large"] = "comfortable"
+    session_expires_at: datetime | None = None
 
 
 class AccessibilityInput(StrictModel):

@@ -67,15 +67,28 @@ def current_user(request: Request, conn: Connection = Depends(connection)):
     )
     if not user or not user["is_active"]:
         raise HTTPException(401, "Tài khoản không khả dụng")
+    role_names = list(
+        conn.execute(select(roles.c.role).where(roles.c.user_id == user["id"])).scalars()
+    )
+    expires_at = session["expires_at"]
+    if {"admin", "teacher"}.intersection(role_names):
+        # Vai trò có thể được cấp sau khi học sinh đã tạo phiên ghi nhớ.
+        expires_at = min(
+            expires_at, session["created_at"] + timedelta(hours=settings().session_hours)
+        )
+        if expires_at <= now():
+            raise HTTPException(401, "Phiên đã hết hạn. Hãy đăng nhập lại")
     if request.method not in ("GET", "HEAD", "OPTIONS"):
         verify_origin(request)
         csrf = request.headers.get("x-csrf-token", "")
         if not csrf or not hmac.compare_digest(digest(csrf), session["csrf_hash"]):
             raise HTTPException(403, "Phiên bảo mật không hợp lệ. Hãy tải lại trang")
-    role_names = list(
-        conn.execute(select(roles.c.role).where(roles.c.user_id == user["id"])).scalars()
-    )
-    return {**dict(user), "roles": role_names, "session_hash": session["token_hash"]}
+    return {
+        **dict(user),
+        "roles": role_names,
+        "session_hash": session["token_hash"],
+        "session_expires_at": expires_at,
+    }
 
 
 def require_role(role: str):
@@ -92,7 +105,10 @@ admin_user = require_role("admin")
 
 
 def public_user(user):
-    return {key: user[key] for key in ("id", "username", "display_name", "roles")}
+    return {
+        **{key: user[key] for key in ("id", "username", "display_name", "roles")},
+        "session_expires_at": user.get("session_expires_at"),
+    }
 
 
 def throttle_login(request: Request) -> bool:
@@ -116,24 +132,34 @@ def throttle_login(request: Request) -> bool:
         return conn.execute(statement).scalar_one() > 10
 
 
-def create_session(conn, user_id, response):
+def create_session(conn, user_id, response, roles=(), remember_me=False):
+    # Phiên dài chỉ dành cho học sinh không có vai trò quản trị/giáo viên.
+    remembered = remember_me and "student" in roles and not {"admin", "teacher"}.intersection(roles)
+    duration = (
+        timedelta(days=settings().remember_session_days)
+        if remembered
+        else timedelta(hours=settings().session_hours)
+    )
+    expires_at = now() + duration
     token, csrf = secrets.token_urlsafe(48), secrets.token_urlsafe(32)
     conn.execute(
         insert(db.table("auth_sessions")).values(
             token_hash=digest(token),
             csrf_hash=digest(csrf),
             user_id=user_id,
-            expires_at=now() + timedelta(hours=settings().session_hours),
+            expires_at=expires_at,
         )
     )
     cookie = dict(
         secure=settings().cookie_secure,
         samesite="lax",
         path="/",
-        max_age=settings().session_hours * 3600,
+        max_age=int(duration.total_seconds()),
+        expires=expires_at,
     )
     response.set_cookie("viettree_session", token, httponly=True, **cookie)
     response.set_cookie("viettree_csrf", csrf, httponly=False, **cookie)
+    return expires_at
 
 
 def revoke_session(conn, token_hash):

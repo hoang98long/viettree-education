@@ -10,6 +10,7 @@ from app.core.security import (
     admin_user,
     create_session,
     current_user,
+    digest,
     now,
     public_user,
     revoke_session,
@@ -35,6 +36,20 @@ from app.services import attempts as service
 router = APIRouter(prefix="/api/v1")
 
 
+def _user_response(user, conn):
+    result = public_user(user)
+    if "student" in user["roles"]:
+        profiles = db.table("student_profiles")
+        options = (
+            conn.execute(
+                select(profiles.c.accessibility_options).where(profiles.c.student_id == user["id"])
+            ).scalar()
+            or {}
+        )
+        result["text_size"] = "large" if options.get("text_size") == "large" else "comfortable"
+    return result
+
+
 @router.post("/auth/login", response_model=UserResponse, tags=["auth"])
 def login(payload: LoginInput, request: Request, response: Response, conn=Depends(connection)):
     verify_origin(request)
@@ -53,27 +68,23 @@ def login(payload: LoginInput, request: Request, response: Response, conn=Depend
     valid = verify_password(user["password_hash"] if user else None, payload.password)
     if not valid or not user["is_active"]:
         raise HTTPException(401, "Tên đăng nhập hoặc mật khẩu chưa đúng")
-    create_session(conn, user["id"], response)
     conn.execute(users.update().where(users.c.id == user["id"]).values(last_login_at=now()))
     role_names = list(
         conn.execute(select(roles.c.role).where(roles.c.user_id == user["id"])).scalars()
     )
-    return public_user({**dict(user), "roles": role_names})
+    expires_at = create_session(conn, user["id"], response, role_names, payload.remember_me)
+    # Thay phiên trên cùng trình duyệt sau khi xác thực thành công.
+    previous_token = request.cookies.get("viettree_session")
+    if previous_token:
+        revoke_session(conn, digest(previous_token))
+    return _user_response(
+        {**dict(user), "roles": role_names, "session_expires_at": expires_at}, conn
+    )
 
 
 @router.get("/auth/me", response_model=UserResponse, tags=["auth"])
 def me(user=Depends(current_user), conn=Depends(connection)):
-    result = public_user(user)
-    if "student" in user["roles"]:
-        profiles = db.table("student_profiles")
-        options = (
-            conn.execute(
-                select(profiles.c.accessibility_options).where(profiles.c.student_id == user["id"])
-            ).scalar()
-            or {}
-        )
-        result["text_size"] = "large" if options.get("text_size") == "large" else "comfortable"
-    return result
+    return _user_response(user, conn)
 
 
 @router.put("/students/me/accessibility", response_model=out.AccessibilityInput, tags=["student"])

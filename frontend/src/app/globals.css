@@ -452,6 +452,23 @@ dd {
 .login-form > .muted {
   font-size: 13px;
 }
+
+.login-form .remember-session {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  gap: 12px;
+  margin-top: 16px;
+  cursor: pointer;
+}
+.login-form .remember-session input {
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--green);
+}
 .app-shell {
   min-height: 100vh;
   display: flex;

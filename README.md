@@ -10,6 +10,11 @@ Compose production, HTTPS, chuyển dữ liệu, tài khoản thật, backup và
 **Chạy trên máy hiện tại:** xem [hướng dẫn local ngắn](docs/run-local.md) với hai
 terminal PowerShell cho backend và frontend.
 
+**Phiên đăng nhập:** mặc định 8 giờ; học sinh có thể chọn ghi nhớ 7 ngày trên máy
+cá nhân. Biểu tượng VietTree đưa về dashboard khi đã đăng nhập; mở `/login` trong
+phiên tự chuyển tiếp. Cache trạng thái giao diện 30 giây, quyền vẫn kiểm tra tại DB.
+Xem [thiết kế và vận hành phiên](docs/session-management.md).
+
 Khu vực học sinh dùng chữ mặc định 18 px, bài học 20 px, câu hỏi 22 px; các nút chính
 có chiều cao tối thiểu 48 px. Tại **Hồ sơ của em → Chữ dễ đọc cho em**, chọn
 **Chữ lớn hơn** để dùng chữ 22 px, bài học 24 px và câu hỏi 26 px. Lựa chọn được lưu
@@ -104,6 +109,7 @@ này. `DB_PASSWORD` được ghép vào SQLAlchemy URL bằng `URL.create`, hỗ
 | ALLOWED_ORIGINS | Danh sách origin chính xác, phân cách bằng dấu phẩy; mặc định `http://localhost:3000` |
 | COOKIE_SECURE | `false` cho HTTP local, `true` khi triển khai HTTPS |
 | SESSION_HOURS | Thời hạn tuyệt đối của phiên, mặc định 8 giờ |
+| REMEMBER_SESSION_DAYS | Phiên ghi nhớ cho học sinh không có role admin/teacher, mặc định 7 ngày |
 | SEED_ADMIN_PASSWORD / SEED_STUDENT_PASSWORD | Chỉ dùng khi chủ động seed demo |
 | INTERNAL_API_URL | Next server nối backend; mặc định `http://localhost:8000` |
 

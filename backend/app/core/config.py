@@ -1,7 +1,7 @@
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import model_validator
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
@@ -18,7 +18,8 @@ class Settings(BaseSettings):
     db_password: str = ""
     allowed_origins: str = "http://localhost:3000"
     cookie_secure: bool = False
-    session_hours: int = 8
+    session_hours: int = Field(default=8, ge=1, le=24)
+    remember_session_days: int = Field(default=7, ge=1, le=30)
     seed_admin_password: str = ""
     seed_student_password: str = ""
 

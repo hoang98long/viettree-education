@@ -1,9 +1,18 @@
 import { expect, type Page } from "@playwright/test";
 
-export async function login(page: Page, username: string, password: string) {
+export async function login(
+  page: Page,
+  username: string,
+  password: string,
+  remember = false,
+) {
   await page.goto("/login");
   await page.getByLabel("Tên đăng nhập", { exact: true }).fill(username);
   await page.getByLabel("Mật khẩu", { exact: true }).fill(password);
+  if (remember)
+    await page
+      .getByRole("checkbox", { name: "Ghi nhớ đăng nhập trên máy cá nhân" })
+      .check();
   const submit = () =>
     Promise.all([
       page.waitForResponse(
@@ -22,4 +31,5 @@ export async function login(page: Page, username: string, password: string) {
   }
   expect(response.status()).toBe(200);
   await expect(page).toHaveURL(/\/(student|admin)\/dashboard$/);
+  return response;
 }

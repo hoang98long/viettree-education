@@ -10,9 +10,9 @@ import {
 } from "lucide-react";
 import type { Subject } from "@/lib/types";
 
-export function Brand() {
+export function Brand({ href = "/" }: { href?: string }) {
   return (
-    <Link href="/" className="brand">
+    <Link href={href} className="brand" aria-label="VietTree · Về trang chủ">
       <span className="brand-icon">
         <Sprout size={25} />
       </span>

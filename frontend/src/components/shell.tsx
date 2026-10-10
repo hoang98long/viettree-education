@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   BookOpen,
   ChartNoAxesCombined,
@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { api } from "@/lib/api";
 import type { TextSize, User } from "@/lib/types";
-import { useResource } from "@/hooks/use-resource";
+import { homeFor, useSession } from "@/lib/session";
 import { Brand, ErrorState, Loading } from "./ui";
 
 const UserContext = createContext<User | null>(null);
@@ -62,10 +62,13 @@ export function Shell({
   role: "student" | "admin" | "teacher" | "guardian";
   children: React.ReactNode;
 }) {
-  const { data: user, error, loading, retry } = useResource<User>("/auth/me");
+  const { user, error, loading, refresh, clear } = useSession();
   const path = usePathname();
   const router = useRouter();
   const [chosenSize, setChosenSize] = useState<TextSize | null>(null);
+  useEffect(() => {
+    if (!loading && !user && !error) router.replace("/login");
+  }, [loading, user, error, router]);
   const textSize = chosenSize ?? user?.text_size ?? "comfortable";
   async function saveTextSize(size: TextSize) {
     await api("/students/me/accessibility", {
@@ -77,7 +80,9 @@ export function Shell({
   async function logout() {
     try {
       await api("/auth/logout", { method: "POST" });
-      router.push("/login");
+      clear();
+      router.replace("/login");
+      router.refresh();
     } catch (e) {
       window.alert((e as Error).message);
     }
@@ -91,7 +96,11 @@ export function Shell({
   if (error || !user)
     return (
       <main className="standalone">
-        <ErrorState message={error} retry={retry} />
+        {error ? (
+          <ErrorState message={error} retry={() => void refresh(true)} />
+        ) : (
+          <Loading />
+        )}
       </main>
     );
   if (!user.roles.includes(role))
@@ -99,14 +108,7 @@ export function Shell({
       <main className="standalone">
         <h1>403 · Chưa có quyền truy cập</h1>
         <p>Trang này dành cho vai trò {role}.</p>
-        <Link
-          className="button"
-          href={
-            user.roles.includes("admin")
-              ? "/admin/dashboard"
-              : "/student/dashboard"
-          }
-        >
+        <Link className="button" href={homeFor(user)}>
           Về trang của bạn
         </Link>
       </main>
@@ -118,7 +120,7 @@ export function Shell({
       <AccessibilityContext.Provider value={{ textSize, saveTextSize }}>
         <div className={`app-shell ${role}`} data-text-size={textSize}>
           <aside className="sidebar">
-            <Brand />
+            <Brand href={`/${role}/dashboard`} />
             <span className="sidebar-label">
               {role === "admin"
                 ? "KHÔNG GIAN QUẢN TRỊ"

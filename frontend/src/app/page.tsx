@@ -1,24 +1,15 @@
-import Link from "next/link";
-import {
-  ArrowRight,
-  BookOpen,
-  Calculator,
-  Globe,
-  ShieldCheck,
-  Sprout,
-} from "lucide-react";
-import { Brand, TreeArt } from "@/components/ui";
+import { BookOpen, Calculator, Globe, ShieldCheck, Sprout } from "lucide-react";
+import { TreeArt } from "@/components/ui";
+import { SessionBrand, SessionEntry } from "@/components/session-entry";
 export default function Landing() {
   return (
     <>
       <header className="public-header">
-        <Brand />
+        <SessionBrand />
         <nav>
           <a href="#subjects">Môn học</a>
           <a href="#approach">Cách học</a>
-          <Link className="button small" href="/login">
-            Đăng nhập <ArrowRight size={17} />
-          </Link>
+          <SessionEntry className="button small">Đăng nhập</SessionEntry>
         </nav>
       </header>
       <main id="main" className="landing">
@@ -36,9 +27,7 @@ export default function Landing() {
               Khám phá kiến thức, luyện tập từng bước và tìm thấy niềm vui học
               mỗi ngày. VietTree đồng hành cùng em trên hành trình trưởng thành.
             </p>
-            <Link className="button" href="/login">
-              Vào góc học tập <ArrowRight size={19} />
-            </Link>
+            <SessionEntry>Vào góc học tập</SessionEntry>
             <span className="hero-note">
               <ShieldCheck size={18} /> Không quảng cáo · Không gian riêng tư
             </span>
@@ -85,9 +74,9 @@ export default function Landing() {
                   </span>
                   <h3>{String(title)}</h3>
                   <p>{String(description)}</p>
-                  <Link href="/login" className="card-link">
-                    Cùng khám phá <ArrowRight size={17} />
-                  </Link>
+                  <SessionEntry className="card-link">
+                    Cùng khám phá
+                  </SessionEntry>
                 </article>
               );
             })}
@@ -128,9 +117,9 @@ export default function Landing() {
         </section>
       </main>
       <footer className="public-footer">
-        <Brand />
+        <SessionBrand />
         <span>Học điều hay, lớn mỗi ngày.</span>
-        <Link href="/login">Đăng nhập</Link>
+        <SessionEntry className="card-link">Đăng nhập</SessionEntry>
       </footer>
     </>
   );

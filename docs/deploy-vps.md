@@ -275,6 +275,7 @@ services:
       ALLOWED_ORIGINS: https://${DOMAIN:?Can ten mien}
       COOKIE_SECURE: "true"
       SESSION_HOURS: "8"
+      REMEMBER_SESSION_DAYS: "7"
     networks: [app]
     depends_on:
       db:

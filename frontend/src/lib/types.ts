@@ -5,6 +5,7 @@ export type User = {
   display_name: string;
   roles: string[];
   text_size: TextSize;
+  session_expires_at?: string | null;
 };
 export type Subject = {
   id: string;

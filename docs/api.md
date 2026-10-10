@@ -8,8 +8,8 @@ trước nộp. UUID không hợp lệ/extra fields đáp án → 422; không ph
 
 | Phương thức / đường dẫn | Quyền / hành vi |
 | --- | --- |
-| POST auth/login | JSON username/password, set hai cookie; Origin allowlist |
-| GET auth/me | User id, tên, roles, text_size; không hash/token |
+| POST auth/login | JSON username/password/remember_me (tùy chọn, mặc định false), set hai cookie; trả session_expires_at; Origin allowlist |
+| GET auth/me | User id, tên, roles, text_size, session_expires_at; không hash/token |
 | POST auth/logout | Session bị thu hồi; CSRF header |
 | GET grades | Khung 1–5 |
 | GET subjects?grade=4 | Tất cả môn, đếm chủ đề theo lớp |
@@ -44,9 +44,11 @@ trước nộp. UUID không hợp lệ/extra fields đáp án → 422; không ph
 | GET admin/assessments?grade=4 | Trạng thái, count items và số lượt |
 | GET admin/curriculum?grade=4 | Subjects/topics/lessons/skills, read-only |
 
-Không có auth/refresh: dùng session server-side thời hạn tuyệt đối 8 giờ; hết hạn
-đăng nhập lại. Không có write API câu hỏi hay public signup. Endpoint student yêu
-cầu role student, guardian không tự đọc dữ liệu của trẻ.
+Không có auth/refresh: session server-side có thời hạn tuyệt đối mặc định 8 giờ;
+học sinh không có role admin/teacher chọn remember_me được 7 ngày. Hết hạn đăng nhập
+lại. Cache giao diện không gia hạn phiên. Chi tiết: [quản lý phiên](session-management.md).
+Không có public signup. Endpoint student yêu cầu role student, guardian không tự
+đọc dữ liệu của trẻ. API biên soạn câu hỏi được mô tả ở phần mở rộng bên dưới.
 
 Đáp án single: `{ "answer": { "option_id": "a" } }`; multiple:
 `{ "answer": { "option_ids": ["a", "c"] } }`; fill blank:
