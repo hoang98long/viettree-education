@@ -534,7 +534,7 @@ from sqlalchemy import text
 from app.db import db, engine
 from app.expanded_curriculum import EXPANDED
 from app.vip_curriculum import VIP_EXTENSION
-from app.seed import seed_content, seed_access_policies, seed_advanced_content, verify_seed
+from app.seed import seed_content, seed_access_policies, seed_advanced_content, seed_grade4_content, verify_seed
 
 with engine().begin() as conn:
     db.load(conn)
@@ -544,14 +544,19 @@ with engine().begin() as conn:
     seed_advanced_content(conn)
     seed_advanced_content(conn, EXPANDED)
     seed_advanced_content(conn, VIP_EXTENSION)
+    seed_grade4_content(conn)
     print(verify_seed(conn))
 PY
 ```
 
 Giữ `APP_ENV=production`; không đổi sang development để vượt chặn seed.
-Kết quả trên DB mới: mỗi môn Toán/Tiếng Việt/Tiếng Anh có 16 bài, 88 câu, 12 đề;
-tổng 48 bài/264 câu/36 đề. Bộ nội dung cần được giáo viên rà soát trước dùng thật.
+Kết quả trên DB mới: tổng 68 bài/384 câu/56 đề, 21 chủ đề/kỹ năng của 3 môn lớp 4.
+Bộ nội dung cần được giáo viên rà soát trước dùng thật; xem [đối chiếu lớp 4](grade4-curriculum.md).
 Nếu muốn chương trình trống để tự biên soạn, bỏ qua khối nạp nội dung này.
+
+VPS đã có bộ nền tảng: sau khi backup và rà soát bộ bổ sung, nạp riêng bằng
+`dc run --rm -T --no-deps backend python -m app.cli seed-grade4-content`.
+Lệnh này không cấp gói hay tạo tài khoản. Không cần migration mới ngoài head hiện tại.
 
 ## 8. Tạo hoặc đổi mật khẩu tài khoản thật
 

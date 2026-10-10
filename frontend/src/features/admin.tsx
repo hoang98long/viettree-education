@@ -14,6 +14,7 @@ import type {
 } from "@/lib/types";
 import { useResource } from "@/hooks/use-resource";
 import { Empty, ErrorState, Loading, PageTitle } from "@/components/ui";
+import { CurriculumMapPanel } from "@/features/curriculum-extension";
 
 function Data<T>({
   path,
@@ -610,6 +611,7 @@ export function CurriculumPage() {
         title="Chương trình học"
         description="Xem môn học, chủ đề, bài học và kỹ năng. Nội dung lớp 4 đã xuất bản."
       />
+      {grade === 4 && <CurriculumMapPanel />}
       <div className="filters">
         <label>
           Lớp

@@ -151,7 +151,7 @@ export type Lesson = LessonSummary & {
   next_lessons: { id: string; title: string; reason: string }[];
 };
 export type LessonIllustration = {
-  kind: "fraction" | "garden" | "reading" | "clock";
+  kind: "fraction" | "garden" | "reading" | "clock" | "bars" | "angles";
   caption: string;
   numerator: number;
   denominator: number;
@@ -159,8 +159,13 @@ export type LessonIllustration = {
   columns: number;
   hour: number;
   minute: number;
+  angle?: number;
+  tick?: number;
+  labels?: string[];
+  values?: number[];
 };
 export type LessonContent = {
+  category?: "core" | "thinking";
   blocks: {
     type: "text" | "example" | "remember" | "practice";
     title: string;

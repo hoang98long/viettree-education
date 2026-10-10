@@ -18,6 +18,16 @@ export function LessonFigure({ value }: { value: LessonIllustration }) {
   });
   const short = hand(((hour + minute / 60) * Math.PI) / 6, 55);
   const long = hand((minute * Math.PI) / 30, 80);
+  const angle = Math.max(1, Math.min(value.angle ?? 60, 180));
+  const ax = 200 + 160 * Math.cos((angle * Math.PI) / 180);
+  const ay = 210 - 160 * Math.sin((angle * Math.PI) / 180);
+  const bars = (value.values || [12, 16, 20])
+    .slice(0, 6)
+    .map((n) => Math.max(0, Math.min(n, 100)));
+  const tick = Math.max(1, Math.min(value.tick ?? 4, 20));
+  const maximum = Math.max(tick, Math.ceil(Math.max(...bars, 0) / tick) * tick);
+  // Keep at most six labelled ticks, even for a manually entered fine scale.
+  const stride = Math.ceil(maximum / tick / 5);
   return (
     <figure className="lesson-figure">
       <svg viewBox="0 0 600 260" role="img" aria-labelledby={label}>
@@ -30,6 +40,102 @@ export function LessonFigure({ value }: { value: LessonIllustration }) {
           stroke="#86bca0"
           strokeWidth="5"
         />
+        {value.kind === "angles" && (
+          <>
+            <path
+              d={`M${ax} ${ay}L200 210L400 210`}
+              fill="none"
+              stroke="#23805b"
+              strokeWidth="6"
+            />
+            <path
+              d={`M260 210A60 60 0 0 0 ${200 + 60 * Math.cos((angle * Math.PI) / 180)} ${210 - 60 * Math.sin((angle * Math.PI) / 180)}`}
+              fill="none"
+              stroke="#c68132"
+              strokeWidth="4"
+            />
+            <circle cx="200" cy="210" r="5" fill="#203d34" />
+            <text x="420" y="125" fontSize="30" fill="#203d34">
+              {angle}°
+            </text>
+            <text x="420" y="160" fontSize="23" fill="#203d34">
+              {angle < 90
+                ? "Góc nhọn"
+                : angle === 90
+                  ? "Góc vuông"
+                  : angle < 180
+                    ? "Góc tù"
+                    : "Góc bẹt"}
+            </text>
+          </>
+        )}
+        {value.kind === "bars" && (
+          <>
+            {Array.from(
+              { length: Math.floor(maximum / (tick * stride)) + 1 },
+              (_, i) => {
+                const number = i * tick * stride,
+                  y = 215 - (number / maximum) * 165;
+                return (
+                  <g key={number}>
+                    <path d={`M65 ${y}H560`} stroke="#c2daca" />
+                    <text
+                      x="55"
+                      y={y + 7}
+                      textAnchor="end"
+                      fontSize="20"
+                      fill="#203d34"
+                    >
+                      {number}
+                    </text>
+                  </g>
+                );
+              },
+            )}
+            {bars.map((number, i) => {
+              const label = (value.labels || ["Tổ 1", "Tổ 2", "Tổ 3"])[i] || "";
+              const limit = bars.length > 4 ? 7 : 12;
+              const spacing = 490 / bars.length,
+                x = 70 + spacing * i + spacing * 0.2,
+                width = spacing * 0.6;
+              return (
+                <g key={i}>
+                  <title>
+                    {label}: {number}
+                  </title>
+                  <rect
+                    x={x}
+                    y={215 - (number / maximum) * 165}
+                    width={width}
+                    height={(number / maximum) * 165}
+                    rx="4"
+                    fill="#2d9167"
+                  />
+                  <text
+                    x={x + width / 2}
+                    y={205 - (number / maximum) * 165}
+                    textAnchor="middle"
+                    fontSize="22"
+                    fill="#203d34"
+                  >
+                    {number}
+                  </text>
+                  <text
+                    x={x + width / 2}
+                    y="245"
+                    textAnchor="middle"
+                    fontSize="19"
+                    fill="#203d34"
+                  >
+                    {label.length > limit
+                      ? `${label.slice(0, limit - 1)}…`
+                      : label}
+                  </text>
+                </g>
+              );
+            })}
+          </>
+        )}
         {value.kind === "fraction" && (
           <>
             <text

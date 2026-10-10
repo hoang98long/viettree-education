@@ -14,12 +14,12 @@ Các bài hiện có thêm minh họa, mục tiêu, gợi ý từng bước và 
 Hướng dẫn và phần mở rộng chưa triển khai: [lesson-studio.md](lesson-studio.md).
 
 VIP đã mở thêm Góc học VIP, sổ tay câu sai với tự ôn không đổi điểm và báo cáo
-7/30 ngày có thể in. Bộ lớp 4 hiện có 48 bài/264 câu/36 đề, gồm 18 bài/18 đề VIP.
+7/30 ngày có thể in. Bộ lớp 4 hiện có 68 bài/384 câu/56 đề, gồm 22 bài/22 đề VIP.
 Chi tiết sử dụng và hướng mở rộng: [vip-expansion.md](vip-expansion.md).
 
 Thiết kế gói học Free/VIP, quyền nội dung và tính năng nâng cao được tách thành
 [free-vip-design.md](free-vip-design.md). Phần admin cấp/gia hạn/thu hồi, kiểm tra quyền,
-18 bài/18 đề nâng cao, plan_v2 và xem gói qua liên kết phụ huynh đã triển khai; VIP vẫn
+22 bài/22 đề nâng cao, plan_v2 và xem gói qua liên kết phụ huynh đã triển khai; VIP vẫn
 giữ nguyên vai trò student và không thay thế quyền quản trị hoặc liên kết phụ huynh.
 
 | Ưu tiên | Chức năng | Giá trị và tiêu chí nghiệm thu |
@@ -31,6 +31,11 @@ giữ nguyên vai trò student và không thay thế quyền quản trị hoặc
 | 5 | Đọc hướng dẫn bằng âm thanh | Nút nghe/dừng, không tự phát; dùng âm thanh đã được rà soát cho tiếng Việt/tiếng Anh. Bài kiểm tra đọc hiểu cần quy tắc riêng để âm thanh không làm thay phần cần đánh giá. |
 
 ## Thứ tự thực hiện đề nghị
+
+Đợt lớp 4 có thêm Góc tư duy, bảng học liệu admin, góc và biểu đồ SVG. Trước khi
+mở thêm khối lớp, bổ sung các mảng lớp 4 còn thiếu đã ghi trong
+[grade4-curriculum.md](grade4-curriculum.md), đặc biệt nghe/nói có âm thanh và
+bài viết được giáo viên nhận xét. Bảng hiện tại theo mạch, chưa đánh giá đạt yêu cầu.
 
 Hoàn thiện giao bài cho lớp trước để giáo viên đưa hệ thống vào hoạt động hằng ngày.
 Tiếp đó làm báo cáo phụ huynh từ dữ liệu thật; sau khi có đủ lịch sử mới cải tiến

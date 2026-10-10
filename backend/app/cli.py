@@ -22,6 +22,7 @@ def main():
             "seed",
             "seed-demo-learners",
             "seed-vip-content",
+            "seed-grade4-content",
             "verify-seed",
             "rebuild",
         ],
@@ -65,6 +66,11 @@ def main():
                     raise RuntimeError("Nội dung mẫu VIP cần rà soát trước khi nạp production")
                 conn.execute(text("SELECT pg_advisory_xact_lock(78249100)"))
                 seed_advanced_content(conn, VIP_EXTENSION)
+                print(json.dumps(verify_seed(conn), ensure_ascii=False))
+            elif args.command == "seed-grade4-content":
+                from app.seed import seed_grade4_content
+
+                seed_grade4_content(conn)
                 print(json.dumps(verify_seed(conn), ensure_ascii=False))
             elif args.command == "verify-seed":
                 print(json.dumps(verify_seed(conn), ensure_ascii=False))

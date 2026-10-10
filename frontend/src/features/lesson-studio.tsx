@@ -246,6 +246,8 @@ const illustrations: Record<LessonIllustration["kind"], string> = {
   garden: "Luống rau và diện tích",
   reading: "Hành trình đọc hiểu",
   clock: "Đồng hồ",
+  bars: "Biểu đồ cột",
+  angles: "Góc và số đo",
 };
 
 function LessonForm({
@@ -405,6 +407,19 @@ function LessonForm({
       >
         <fieldset disabled={busy}>
           <legend>Thông tin bài học</legend>
+          <label htmlFor="lesson-category">
+            Nhóm bài học
+            <select
+              id="lesson-category"
+              value={form.content.category || "core"}
+              onChange={(e) =>
+                content({ category: e.target.value as "core" | "thinking" })
+              }
+            >
+              <option value="core">Bài học theo chủ đề</option>
+              <option value="thinking">Góc tư duy và đố mẹo</option>
+            </select>
+          </label>
           <div className="two-columns">
             <label htmlFor="lesson-code">
               Mã bài học
@@ -693,6 +708,10 @@ function LessonForm({
                         columns: 4,
                         hour: 8,
                         minute: 0,
+                        angle: 60,
+                        tick: 4,
+                        labels: ["Tổ 1", "Tổ 2", "Tổ 3"],
+                        values: [12, 16, 20],
                       }
                     : null,
                 })
@@ -742,7 +761,11 @@ function LessonForm({
                           ["hour", "Giờ (0–23)", 0, 23],
                           ["minute", "Phút", 0, 59],
                         ]
-                      : []
+                      : form.content.illustration.kind === "angles"
+                        ? [["angle", "Số đo góc (độ)", 1, 180]]
+                        : form.content.illustration.kind === "bars"
+                          ? [["tick", "Số đơn vị mỗi vạch", 1, 20]]
+                          : []
                 ).map(([key, label, min, max]) => (
                   <label key={key} htmlFor={`figure-${key}`}>
                     {label}
@@ -752,11 +775,11 @@ function LessonForm({
                       required
                       min={Number(min)}
                       max={Number(max)}
-                      value={
+                      value={Number(
                         form.content.illustration![
                           key as keyof LessonIllustration
-                        ]
-                      }
+                        ] ?? 0,
+                      )}
                       onChange={(e) =>
                         content({
                           illustration: {
@@ -769,6 +792,133 @@ function LessonForm({
                   </label>
                 ))}
               </div>
+              {form.content.illustration.kind === "bars" && (
+                <fieldset>
+                  <legend>Số liệu biểu đồ (1–6 cột)</legend>
+                  {(form.content.illustration.values || [12, 16, 20]).map(
+                    (number, i) => (
+                      <div className="two-columns" key={i}>
+                        <label htmlFor={`bar-label-${i}`}>
+                          Nhãn cột {i + 1}
+                          <input
+                            id={`bar-label-${i}`}
+                            required
+                            maxLength={18}
+                            value={
+                              (form.content.illustration!.labels || [
+                                "Tổ 1",
+                                "Tổ 2",
+                                "Tổ 3",
+                              ])[i]
+                            }
+                            onChange={(e) => {
+                              const labels = [
+                                ...(form.content.illustration!.labels || [
+                                  "Tổ 1",
+                                  "Tổ 2",
+                                  "Tổ 3",
+                                ]),
+                              ];
+                              labels[i] = e.target.value;
+                              content({
+                                illustration: {
+                                  ...form.content.illustration!,
+                                  labels,
+                                },
+                              });
+                            }}
+                          />
+                        </label>
+                        <label htmlFor={`bar-value-${i}`}>
+                          Giá trị cột {i + 1}
+                          <input
+                            id={`bar-value-${i}`}
+                            type="number"
+                            min={0}
+                            max={100}
+                            required
+                            value={number}
+                            onChange={(e) => {
+                              const values = [
+                                ...(form.content.illustration!.values || [
+                                  12, 16, 20,
+                                ]),
+                              ];
+                              values[i] = Number(e.target.value);
+                              content({
+                                illustration: {
+                                  ...form.content.illustration!,
+                                  values,
+                                },
+                              });
+                            }}
+                          />
+                        </label>
+                      </div>
+                    ),
+                  )}
+                  <div className="actions">
+                    <button
+                      type="button"
+                      className="button secondary"
+                      disabled={
+                        (form.content.illustration.values || [12, 16, 20])
+                          .length >= 6
+                      }
+                      onClick={() =>
+                        content({
+                          illustration: {
+                            ...form.content.illustration!,
+                            labels: [
+                              ...(form.content.illustration!.labels || [
+                                "Tổ 1",
+                                "Tổ 2",
+                                "Tổ 3",
+                              ]),
+                              "Cột mới",
+                            ],
+                            values: [
+                              ...(form.content.illustration!.values || [
+                                12, 16, 20,
+                              ]),
+                              0,
+                            ],
+                          },
+                        })
+                      }
+                    >
+                      Thêm cột
+                    </button>
+                    <button
+                      type="button"
+                      className="button secondary"
+                      disabled={
+                        (form.content.illustration.values || [12, 16, 20])
+                          .length <= 1
+                      }
+                      onClick={() =>
+                        content({
+                          illustration: {
+                            ...form.content.illustration!,
+                            labels: (
+                              form.content.illustration!.labels || [
+                                "Tổ 1",
+                                "Tổ 2",
+                                "Tổ 3",
+                              ]
+                            ).slice(0, -1),
+                            values: (
+                              form.content.illustration!.values || [12, 16, 20]
+                            ).slice(0, -1),
+                          },
+                        })
+                      }
+                    >
+                      Bỏ cột cuối
+                    </button>
+                  </div>
+                </fieldset>
+              )}
             </>
           )}
         </fieldset>

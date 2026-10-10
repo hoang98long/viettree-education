@@ -3,7 +3,7 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: xem phần **Biên soạn bài học, minh họa và gợi ý** cuối tài liệu;
+Trạng thái mới nhất: xem phần **Học liệu lớp 4 và Góc tư duy** cuối tài liệu;
 phần VIP, phiên đăng nhập và ngân hàng câu hỏi ghi nhận các đợt trước.
 Các checkpoint và số lượng trong phần đầu ghi nhận mốc MVP trước khi mở rộng.
 
@@ -267,3 +267,47 @@ Hướng dẫn sử dụng, nạp nội dung và giới hạn: [vip-expansion.md
 
 Hướng dẫn, schema/API, quy tắc sửa/xuất bản và phần chưa triển khai:
 [lesson-studio.md](lesson-studio.md). Nội dung cần giáo viên rà soát trước vận hành.
+
+## Học liệu lớp 4 và Góc tư duy — 10/10/2026
+
+- Đối chiếu chương trình chính thức của Bộ GDĐT cho Toán, Tiếng Việt và Tiếng Anh
+  lớp 4; ghi nguồn, phạm vi và phần còn thiếu trong [grade4-curriculum.md](grade4-curriculum.md).
+  Nội dung tự biên soạn, chưa bao phủ toàn bộ chương trình hoặc mọi môn lớp 4.
+- Thêm **20 bài, 120 câu và 20 đề luyện tập**: 16 bộ Free, 4 bộ VIP; thêm chín
+  chủ đề/kỹ năng. Tổng bộ mẫu **21 chủ đề, 68 bài, 384 câu, 56 đề**. Free có
+  46 bài/34 đề/228 câu; VIP có 22 bài/22 đề/156 câu.
+- Bổ sung số đến lớp triệu, góc/đường thẳng, dữ liệu, khả năng qua thực nghiệm,
+  tổng–hiệu, đơn vị, nhân/chia phân số; viết miêu tả/thuật việc, nói/nghe, trạng
+  ngữ, văn bản thông tin; can/can't, chỉ đường và sở thích bằng tiếng Anh.
+  Có mục tiêu, ví dụ, ba gợi ý, lời giải và câu hỏi tự giải thích.
+- **Góc tư duy** cho học sinh có bộ lọc môn, phân trang, tiến độ của chính mình
+  và quyền Free/VIP hiện hành. Bốn bài đếm khoảng, loại trừ, tìm bằng chứng và
+  đọc lịch hướng dẫn kiểm tra đủ điều kiện; không dùng câu đố mơ hồ. Danh mục
+  VIP bị khóa chỉ trả metadata, không trả nội dung/gợi ý/đáp án.
+- Admin có bảng **Theo dõi học liệu lớp 4**, số liệu xuất bản thực tế, liên kết
+  nguồn, ghi chú thiếu nội dung và bộ lọc mạch chưa có bài Free. Bảng theo mạch
+  chủ đề, không chứng nhận học sinh đạt yêu cầu hoặc chương trình đã đầy đủ.
+  Editor chọn nhóm bài thường/tư duy, thêm SVG biểu đồ cột và góc có kiểm tra
+  dữ liệu; nháp tiếp tục tách biệt với bản học sinh đọc.
+- **267 backend tests** đạt toàn bộ; sau điều chỉnh phạm vi/hoạt động chủ đề của
+  bảng admin, **30 tests** cho đợt mở rộng đã chạy lại đạt. Bao gồm 120 đáp án
+  kiểm tra độc lập, chấm/nộp đủ 20 đề mới, RBAC, Free/VIP, chủ sở hữu tiến độ,
+  grade hiện hành, dữ liệu minh họa sai và seed lặp không sửa bài admin.
+- **18 component tests**, **20 browser journeys** đạt trên desktop/mobile Chrome:
+  18 luồng cũ đạt trong lượt toàn bộ; hai luồng mới sửa selector kiểm thử và chạy
+  lại đạt trên production preview. Kiểm tra học bài, hint/tiến độ, khóa/mở VIP,
+  bảng admin, lưu/xem trước nháp biểu đồ và giữ bản xuất bản; minh họa không gây
+  tràn trang ở 320/768/1280 px. Ruff check/format, TypeScript, ESLint, Prettier
+  frontend và production build đạt. Warning deprecation Starlette/httpx còn tồn tại.
+- Đã chạy `seed-grade4-content` hai lần trên DB local, số lượng không tăng ở lần
+  thứ hai. So sánh checksum mọi hàng cũ của mọi bảng và SQL gốc đều giữ nguyên:
+  sáu tài khoản, gói/thời hạn, 22 phiên, năm attempts, một answer và tám tiến độ
+  đọc vẫn nguyên trạng. Không tạo kết quả học tập giả, đặt lại mật khẩu hay cấp
+  lại VIP. Không cần migration mới; head vẫn `0007_lesson_studio`.
+- Smoke chỉ đọc trên DB local kiểm tra schema nội dung của cả 68 bài, quyền
+  Free với 20 bài mới, bốn bài tư duy, 24 dòng bảng admin và hai VIP còn hiệu lực.
+  Backend/browser dùng database test riêng và chạy tuần tự. Server test 8001/3001
+  đã dừng; khởi động lại backend/frontend theo [run-local.md](run-local.md).
+
+Ưu tiên tiếp theo: lấp các mạch còn thiếu, giáo viên rà soát/nhận xét bài viết,
+nghe/phát âm có âm thanh và các môn khác. Chưa triển khai chấm tự luận hoặc audio.

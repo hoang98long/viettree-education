@@ -34,7 +34,7 @@ bao gồm dấu gạch ngang. Alembic bổ sung hai bảng auth và sáu bảng 
 
 ## Gói học Free / VIP
 
-30 bài học và 18 đề được học miễn phí. VIP mở thêm 18 bài nâng cao, 18 đề thử thách
+46 bài học và 34 đề được học miễn phí. VIP mở thêm 22 bài nâng cao, 22 đề thử thách
 và kế hoạch theo kỹ năng cần ôn (`plan_v2`). Cách chấm điểm và quyền
 xem kết quả của chính học sinh giống nhau giữa hai gói.
 
@@ -63,6 +63,12 @@ Seed thường không tự nâng cấp học sinh. Lệnh riêng `seed-demo-lear
 tài khoản demo theo yêu cầu, gồm hai Free và hai VIP 90 ngày.
 
 ## Ngân hàng câu hỏi, bài tập và tài khoản demo
+
+Đợt mở rộng chương trình lớp 4 thêm **20 bài/120 câu/20 đề**: Toán, Tiếng Việt,
+Tiếng Anh, có bài nền tảng Free và bài tư duy VIP. Học sinh dùng **Góc tư duy**;
+admin xem **Chương trình → Lớp 4 → Theo dõi học liệu**. Thêm SVG góc/biểu đồ và
+nhóm bài tư duy trong editor. Căn cứ chương trình, giới hạn và cách nạp riêng:
+[docs/grade4-curriculum.md](docs/grade4-curriculum.md).
 
 Admin có **Quản lý bài học**: tạo/biên soạn, xem trước, lưu nháp, duyệt và xuất bản;
 kiểm tra revision tránh ghi đè, lưu lịch sử thao tác. Học sinh có mục tiêu, mục lục,
@@ -278,6 +284,8 @@ $env:E2E_VIP_TOOLS_USERNAME = & '../.venv/Scripts/python.exe' '../backend/script
 $env:E2E_VIP_TOOLS_MOBILE_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
 $env:E2E_LESSON_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
 $env:E2E_LESSON_MOBILE_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_CURRICULUM_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_CURRICULUM_MOBILE_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
 $env:E2E_STUDENT_PASSWORD = $env:SEED_STUDENT_PASSWORD
 $env:E2E_ADMIN_PASSWORD = $env:SEED_ADMIN_PASSWORD
 # Nếu SEED_* chưa có trong terminal, đặt bằng giá trị trong .env local.
@@ -296,10 +304,9 @@ trọng Retry-After khi nhiều lượt đăng nhập dùng chung IP proxy.
 Đặt username đó vào `E2E_STUDENT_USERNAME` ở terminal frontend; password vẫn từ
 SEED_STUDENT_PASSWORD. Script từ chối database thật và không xóa học sinh cũ.
 
-SQL đối chiếu seed: `database/seeds/verify.sql`. Kết quả mặc định mỗi môn: 4 chủ đề,
-16 bài học, 88 published questions, 12 published assessments; đề nền tảng 8 câu,
-đề mở rộng trước 6 câu, đề VIP mới 8 câu.
-Tổng: **12 chủ đề, 48 bài học, 264 câu hỏi, 36 đề**, 12 kỹ năng; câu hỏi được gắn
+SQL đối chiếu seed: `database/seeds/verify.sql`. Kết quả bộ mẫu lớp 4: Toán có
+25 bài/142 câu/21 đề; Tiếng Việt 23/130/19; Tiếng Anh 20/112/16. Đề có 6 hoặc 8 câu.
+Tổng: **21 chủ đề, 68 bài học, 384 câu hỏi, 56 đề**, 21 kỹ năng; câu hỏi được gắn
 lesson_questions, lesson_skills và question_skills đúng phiên bản.
 
 ## Phạm vi tính năng

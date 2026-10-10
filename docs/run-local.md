@@ -29,6 +29,16 @@ Giữ terminal này mở. Truy cập **http://localhost:3000**.
 
 ## 3. Đăng nhập và kiểm tra
 
+Nội dung lớp 4 mới: mở **Góc tư duy** ở tài khoản học sinh; admin xem
+**Chương trình → Lớp 4 → Theo dõi học liệu**. Nạp riêng nếu DB chưa có đợt mở rộng:
+
+```powershell
+# Chạy trong backend, một lần; không đổi tài khoản hay tiến độ cũ.
+../.venv/Scripts/python.exe -m app.cli seed-grade4-content
+```
+
+Khởi động lại hai server sau khi cập nhật code. Xem [học liệu lớp 4](grade4-curriculum.md).
+
 | Tài khoản              | Mục đích                                          |
 | ---------------------- | ------------------------------------------------- |
 | `admin`                | Quản trị, ngân hàng câu hỏi, tạo bài tập, cấp VIP |

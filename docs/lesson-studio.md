@@ -7,10 +7,11 @@ tên/mã. Bộ lọc **Có nháp cần xử lý** gom bài đang soạn và bài
 Trong **Chương trình**, liên kết **Biên soạn** mở trực tiếp từng bài.
 
 1. Bấm **Tạo bài học**, chọn môn/chủ đề/kỹ năng trong lớp đã có chương trình.
-   Nhập mã, tên, thời lượng dự kiến, thứ tự, Free/VIP và mức nội dung.
+   Nhập mã, tên, thời lượng dự kiến, thứ tự, Free/VIP, mức nội dung và nhóm bài.
+   Nhóm **Góc tư duy và đố mẹo** đưa bài vào Góc tư duy sau khi xuất bản.
 2. Soạn 3–12 phần; cần ít nhất một ví dụ. Thêm mục tiêu, tối đa năm gợi ý và ba
    câu hỏi tự suy ngẫm. Các ô nhập là văn bản thuần, không nhận HTML hoặc script.
-3. Chọn minh họa phân số, luống rau, hành trình đọc hoặc đồng hồ; nhập số liệu và
+3. Chọn minh họa phân số, luống rau, hành trình đọc, đồng hồ, góc hoặc biểu đồ cột; nhập số liệu và
    chú thích phù hợp. Không cần tải ảnh lên hoặc kết nối dịch vụ ngoài.
 4. Bấm **Xem trước bài học** để đọc và thử mở gợi ý như học sinh, rồi **Lưu nháp
    bài học**. Xem trước không ghi tiến độ hoặc điểm.
@@ -70,8 +71,8 @@ seed để có minh họa/gợi ý cho 48 bài hiện có: backend bổ sung n�
 sau khi kiểm tra quyền đọc, không ghi lại hàng bài học. Trên VPS cũng chạy migration
 trước khi khởi động release mới, theo [deploy-vps.md](deploy-vps.md).
 
-Seed bảo vệ bài mẫu đã thay đổi bằng báo xung đột, không ghi đè nội dung admin
-đã biên soạn. Dùng migration để cập nhật hệ thống đang vận hành. Downgrade 0007
+Seed giữ bài học đã tồn tại, không ghi đè nội dung admin đã biên soạn; với câu hỏi
+và cấu trúc đề mẫu bị sửa, seed báo xung đột. Dùng migration để cập nhật hệ thống đang vận hành. Downgrade 0007
 xóa các bản nháp, giữ bài đã xuất bản và audit; sao lưu trước khi downgrade.
 
 ## API
@@ -94,3 +95,6 @@ trả nội dung, minh họa, gợi ý hoặc bài tiếp theo. API giữ no-sto
 Hướng nâng cấp tiếp: quản lý chủ đề/kỹ năng; ảnh do giáo viên duyệt và tải lên;
 lưu ghi chú theo bài; khôi phục phiên bản và nhận xét của người duyệt. Các mục
 này chưa được đưa vào chức năng đang hoạt động.
+
+Hai minh họa và nhóm tư duy mới không cần migration; giới hạn số liệu và bộ nội
+dung lớp 4 tại [grade4-curriculum.md](grade4-curriculum.md).

@@ -9,6 +9,7 @@ from app.core.security import hasher, now
 from app.curriculum import CURRICULUM
 from app.db import db
 from app.expanded_curriculum import EXPANDED
+from app.grade4_curriculum import GRADE4, NEW_TOPICS
 from app.vip_curriculum import VIP_EXTENSION
 
 
@@ -265,6 +266,7 @@ def seed(conn, reset=False):
     seed_advanced_content(conn)
     seed_advanced_content(conn, EXPANDED)
     seed_advanced_content(conn, VIP_EXTENSION)
+    seed_grade4_content(conn)
     return verify_seed(conn)
 
 
@@ -423,7 +425,10 @@ def seed_advanced_content(conn, curriculum=ADVANCED):
                     {f"{kind}_id": target["id"]},
                     {
                         "minimum_plan_code": minimum_plan,
-                        "learning_level": "advanced" if minimum_plan == "vip" else "reinforcement",
+                        "learning_level": source.get(
+                            "learning_level",
+                            "advanced" if minimum_plan == "vip" else "reinforcement",
+                        ),
                         "preview": {
                             "summary": "Cùng vận dụng kiến thức đã học vào tình huống mới.",
                             "goals": [source["title"], "Tìm bằng chứng và kiểm tra kết quả."],
@@ -431,6 +436,38 @@ def seed_advanced_content(conn, curriculum=ADVANCED):
                     },
                     code + f"/policy/{kind}",
                 )
+
+
+def seed_grade4_content(conn):
+    """Content only: caller owns transaction; serialized with other seed commands."""
+    conn.execute(text("SELECT pg_advisory_xact_lock(78249100)"))
+    for subject_code, sources in NEW_TOPICS.items():
+        subject_id = conn.execute(
+            select(db.table("subjects").c.id).where(db.table("subjects").c.code == subject_code)
+        ).scalar_one()
+        for index, (key, title) in enumerate(sources.items(), 10):
+            code = f"VT4-{subject_code}-{key}"
+            topic, _ = ensure(
+                conn,
+                "topics",
+                {"subject_id": subject_id, "grade": 4, "code": code},
+                {"title": title, "sort_order": index},
+                code,
+            )
+            ensure(
+                conn,
+                "skills",
+                {"code": code + "-skill"},
+                {
+                    "subject_id": subject_id,
+                    "topic_id": topic["id"],
+                    "grade": 4,
+                    "name": title,
+                    "sort_order": index,
+                },
+                code + "/skill",
+            )
+    seed_advanced_content(conn, GRADE4)
 
 
 def verify_seed(conn):

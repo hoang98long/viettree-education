@@ -51,3 +51,10 @@ Ngoại lệ hoàn tất 60 phút chỉ dùng grant gắn chính attempt/chủ s
 thu hồi đánh dấu tất cả grant, không khôi phục khi cấp lại. Kết quả đã chấm vẫn theo
 owner. Idempotency-Key UUID + fingerprint + khóa DB ngăn cấp/gia hạn lặp; input
 không cho client quyết định ends_at, nguồn thanh toán hay đích học sinh của attempt.
+
+Góc tư duy trả metadata của bài published ở môn/chủ đề hoạt động, đúng lớp lấy
+từ hồ sơ; không nhận student_id hoặc grade do client chọn. Tiến độ join theo chính
+user. Nội dung/gợi ý bài VIP vẫn được bảo vệ ở endpoint bài học. Bảng học liệu
+chỉ admin; số liệu nội dung không được dùng để suy ra năng lực học sinh.
+Nhóm bài và số liệu SVG đi qua schema biên soạn, giới hạn kích thước/giá trị;
+không nhận HTML, JavaScript hay URL hình ngoài từ nội dung này.

@@ -17,6 +17,7 @@ import { LearningPlanPage } from "@/features/learning-plan";
 import { MembershipPage } from "@/features/membership";
 import { PracticeLibrary } from "@/features/practice-library";
 import { VipLibraryPage, VipMistakesPage, VipReportPage } from "@/features/vip";
+import { ThinkingPage } from "@/features/curriculum-extension";
 export default function Page() {
   const { path } = useParams<{ path: string[] }>();
   if (path.length === 1)
@@ -39,6 +40,8 @@ export default function Page() {
         return <PracticeLibrary />;
       case "vip":
         return <VipLibraryPage />;
+      case "thinking":
+        return <ThinkingPage />;
     }
   if (path.length === 2)
     switch (path[0]) {

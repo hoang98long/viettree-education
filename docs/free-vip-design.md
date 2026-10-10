@@ -9,8 +9,10 @@ VIP; gói học thuộc về từng học sinh. Hiện admin cấp gói theo yê
 gói của trẻ có liên kết đã xác minh. Nâng cấp trực tuyến là phần sau. Tài khoản
 giáo viên và quản trị viên giữ cơ chế quyền riêng.
 
-Đợt mở rộng lớp 4 mới nhất: tổng 48 bài/264 câu/36 đề, gồm 30 bài/18 đề Free và
-18 bài/18 đề VIP. Đã có Góc học VIP, sổ tay ôn lỗi/tự luyện, báo cáo 7/30 ngày và
+Đợt mở rộng lớp 4 mới nhất: tổng 68 bài/384 câu/56 đề, gồm 46 bài/34 đề Free và
+22 bài/22 đề VIP. Góc tư duy có bài Free và VIP; bảng học liệu admin theo dõi các
+mạch của 3 môn, chưa chứng nhận phủ đủ chương trình. Xem [grade4-curriculum.md](grade4-curriculum.md).
+Đã có Góc học VIP, sổ tay ôn lỗi/tự luyện, báo cáo 7/30 ngày và
 in/lưu PDF qua trình duyệt trong tài khoản học sinh. Migration 0006 bổ sung ba
 feature; hướng dẫn và giới hạn tại [vip-expansion.md](vip-expansion.md).
 Admin đã có ngân hàng câu hỏi, ghép đề và giao bài; migration 0004/0005 bổ sung quyền
@@ -38,13 +40,13 @@ Các lựa chọn về gói, thời hạn và trải nghiệm trong tài liệu 
 
 | Khả năng | Free | VIP | Tình trạng hiện tại |
 | --- | --- | --- | --- |
-| Bài học nền tảng được đánh dấu miễn phí | Có | Có | 30 bài/18 đề Free, gồm bộ cũ và phần mở rộng |
+| Bài học nền tảng được đánh dấu miễn phí | Có | Có | 46 bài/34 đề Free, gồm bộ cũ và phần mở rộng |
 | Luyện tập đi kèm bài miễn phí, chấm và lời giải | Có | Có | Đã có |
 | Lịch sử, kết quả và cây năng lực của chính em | Có | Có | Đã có; tiếp tục xem khi hết VIP |
 | Kế hoạch học theo thứ tự chương trình | Tối đa 3 bài mới/kế hoạch, từng môn | Có | Đã có plan_v1 |
 | Cỡ chữ, hỗ trợ đọc và giao diện điện thoại | Đầy đủ | Đầy đủ | Đã có tùy chọn cỡ chữ; các hỗ trợ mới dùng chung |
-| Bài học nâng cao và luyện tập VIP | Xem giới thiệu, không mở nội dung đầy đủ | Có | 18 bài/132 câu VIP development, cần rà soát chuyên môn |
-| Thử thách theo chủ đề, đề tổng hợp nâng cao | Không | Có | 18 đề thử thách theo chủ đề; đề tổng hợp là phần sau |
+| Bài học nâng cao và luyện tập VIP | Xem giới thiệu, không mở nội dung đầy đủ | Có | 22 bài/156 câu VIP development, cần rà soát chuyên môn |
+| Thử thách theo chủ đề, đề tổng hợp nâng cao | Không | Có | 22 đề thử thách theo chủ đề; đề tổng hợp là phần sau |
 | Kế hoạch cá nhân theo kỹ năng cần ôn | Không; vẫn có gợi ý luyện tập cơ bản | Có; phối hợp nền tảng, ôn và nâng cao | Đã triển khai plan_v2 |
 | Góc học VIP, lọc môn và bài chưa đọc | Không | Có | Đã triển khai |
 | Sổ tay ôn lỗi và tự luyện không đổi điểm | Không | Có | Câu sai gần nhất của chính em, lọc môn/phân trang |

@@ -168,3 +168,21 @@ atomic. Mỗi lần lưu làm mất trạng thái đã duyệt; revision hoặc 
 GET `lessons/{id}` bổ sung content.goals/hints/reflection/illustration và
 next_lessons có kiểm tra quyền, không trả nháp cho học sinh. Giới hạn và schema:
 [lesson-studio.md](lesson-studio.md), Swagger.
+
+## Mở rộng lớp 4
+
+- `GET /api/v1/students/me/thinking?subject_code=MATH&page=1`: chỉ student, lớp lấy
+  từ hồ sơ, mỗi trang 20 bài tư duy đã xuất bản ở môn/chủ đề đang hoạt động.
+  Trả `grade`, `items`, `total`, `page`; item gồm `id`, `title`, `subject_code`,
+  `subject_name`, `estimated_minutes`, `progress_status` của chính học sinh và
+  chính sách truy cập. Danh mục không trả lesson content, hints hoặc đáp án.
+  Nội dung được mở bằng endpoint bài học có kiểm tra quyền trực tiếp.
+- `GET /api/v1/admin/curriculum-map`: chỉ admin, bảng biên tập của 3 môn lớp 4.
+  Trả `grade`, `rows`; mỗi mạch có nguồn tham khảo, ghi chú bổ sung, chủ đề hoạt
+  động hay chưa, số bài Free/VIP/chưa có chính sách, câu hỏi riêng biệt đang hoạt
+  động có phiên bản xuất bản và đề xuất bản. Không tính bản nháp. Bảng không là
+  tỷ lệ hoàn thành hay chứng nhận đạt chương trình.
+- Lesson studio hỗ trợ `content.category = core | thinking` (mặc định `core` khi
+  thiếu). SVG thêm `angles` với `angle` 1–180 và `bars` với `labels`/`values` cùng
+  độ dài 1–6, nhãn 1–18 ký tự, giá trị 0–100, `tick` 1–20. Metadata lưu trong
+  JSONB hiện có; quy trình duyệt/xuất bản, revision và CSRF giữ nguyên.

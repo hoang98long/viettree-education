@@ -1416,6 +1416,20 @@ tr:last-child td {
 .curriculum-subject {
   margin-bottom: 22px;
 }
+.thinking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 20px;
+}
+.thinking-grid .panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.thinking-grid .panel .button {
+  margin-top: auto;
+}
 .curriculum-subject > h2 {
   margin-bottom: 15px;
 }

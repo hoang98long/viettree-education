@@ -171,7 +171,9 @@ def test_all_seeded_lessons_have_valid_support_and_followups_are_eligible(logged
     lessons, topics = db.table("lessons"), db.table("topics")
     records = (
         conn.execute(
-            select(lessons.c.id, lessons.c.content, topics.c.code)
+            select(
+                lessons.c.id, lessons.c.content, topics.c.code, lessons.c.code.label("lesson_code")
+            )
             .select_from(lessons.join(topics))
             .where(lessons.c.code.like("VT4-%"), lessons.c.status == "published")
         )
@@ -181,7 +183,9 @@ def test_all_seeded_lessons_have_valid_support_and_followups_are_eligible(logged
     original = deepcopy(records[0]["content"])
     for item in records:
         content = LessonContent.model_validate(enrich(item["content"], item["code"]))
-        assert content.illustration is not None and len(content.hints) == 3
+        assert len(content.hints) == 3
+        if "-g4-" not in item["lesson_code"]:
+            assert content.illustration is not None
     assert records[0]["content"] == original
     first = client.get("/api/v1/topics?grade=4&subject_code=MATH").json()[0]
     free = next(

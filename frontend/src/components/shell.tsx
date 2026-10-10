@@ -16,6 +16,7 @@ import {
   UserRound,
   Crown,
   LockKeyhole,
+  Lightbulb,
 } from "lucide-react";
 import { api } from "@/lib/api";
 import type { TextSize, User } from "@/lib/types";
@@ -38,6 +39,7 @@ const studentMenu = [
   ["learning-plan", "Kế hoạch học", ListChecks],
   ["grades", "Khám phá lớp học", GraduationCap],
   ["practice", "Thư viện luyện tập", BookOpen],
+  ["thinking", "Góc tư duy", Lightbulb],
   ["history", "Lịch sử luyện tập", Clock],
   ["progress", "Cây năng lực", ChartNoAxesCombined],
   ["profile", "Hồ sơ của em", UserRound],

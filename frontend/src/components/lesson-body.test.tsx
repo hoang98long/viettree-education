@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { LessonBody } from "./lesson-body";
+import { LessonBody, LessonFigure } from "./lesson-body";
 import type { LessonContent } from "@/lib/types";
 
 const content: LessonContent = {
@@ -27,6 +27,39 @@ const content: LessonContent = {
 };
 
 describe("Bài học có minh họa và hướng dẫn", () => {
+  it("biểu đồ có số liệu, nhãn và thang; góc được phân loại theo số đo", () => {
+    const figure = {
+      ...content.illustration!,
+      kind: "bars" as const,
+      values: [12, 16, 20],
+      labels: ["A", "B", "C"],
+      tick: 4,
+      caption: "Số cây ba tổ trồng được",
+    };
+    const { container, rerender } = render(<LessonFigure value={figure} />);
+    expect(screen.getByRole("img", { name: figure.caption })).toBeVisible();
+    expect(screen.getByText("A")).toBeVisible();
+    const svgText = Array.from(container.querySelectorAll("svg text")).map(
+      (el) => el.textContent,
+    );
+    expect(svgText).toEqual(
+      expect.arrayContaining(["0", "4", "8", "12", "16", "20"]),
+    );
+    rerender(
+      <LessonFigure
+        value={{
+          ...figure,
+          kind: "angles",
+          angle: 120,
+          caption: "Góc tù 120 độ",
+        }}
+      />,
+    );
+    expect(screen.getByText("120°")).toBeVisible();
+    expect(screen.getByText("Góc tù")).toBeVisible();
+    rerender(<LessonFigure value={{ ...figure, kind: "angles", angle: 90 }} />);
+    expect(screen.getByText("Góc vuông")).toBeVisible();
+  });
   it("mở gợi ý từng bước, chặn vượt số bước và giữ ghi chú khi mở thêm", () => {
     render(<LessonBody content={content} />);
     expect(screen.queryByText(content.hints![0])).not.toBeInTheDocument();
