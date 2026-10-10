@@ -4,6 +4,12 @@
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**Deploy lên VPS:** xem [hướng dẫn riêng](docs/deploy-vps.md) cho Ubuntu + Docker
+Compose production, HTTPS, chuyển dữ liệu, tài khoản thật, backup và cập nhật.
+
+**Chạy trên máy hiện tại:** xem [hướng dẫn local ngắn](docs/run-local.md) với hai
+terminal PowerShell cho backend và frontend.
+
 Khu vực học sinh dùng chữ mặc định 18 px, bài học 20 px, câu hỏi 22 px; các nút chính
 có chiều cao tối thiểu 48 px. Tại **Hồ sơ của em → Chữ dễ đọc cho em**, chọn
 **Chữ lớn hơn** để dùng chữ 22 px, bài học 24 px và câu hỏi 26 px. Lựa chọn được lưu
