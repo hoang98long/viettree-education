@@ -49,6 +49,7 @@ const adminMenu = [
   ["students", "Học sinh", Users],
   ["content-access", "Quyền nội dung", LockKeyhole],
   ["curriculum", "Chương trình", BookOpen],
+  ["lessons", "Quản lý bài học", BookOpen],
   ["questions", "Ngân hàng câu hỏi", ListChecks],
   ["questions/new", "Tạo câu hỏi", Plus],
   ["assessments/new", "Tạo bài tập", Plus],

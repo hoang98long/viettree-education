@@ -13,6 +13,7 @@ from app.api import router
 from app.authoring_api import router as authoring_router
 from app.core.config import settings
 from app.db import db, engine
+from app.lesson_api import router as lesson_router
 from app.membership_api import router as membership_router
 from app.vip_api import router as vip_router
 
@@ -30,6 +31,7 @@ app.include_router(router)
 app.include_router(membership_router)
 app.include_router(authoring_router)
 app.include_router(vip_router)
+app.include_router(lesson_router)
 
 
 @app.exception_handler(RequestValidationError)

@@ -3,8 +3,8 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: xem phần **Mở rộng VIP lớp 4** cuối tài liệu; phần phiên đăng
-nhập và ngân hàng câu hỏi ghi nhận các đợt trước.
+Trạng thái mới nhất: xem phần **Biên soạn bài học, minh họa và gợi ý** cuối tài liệu;
+phần VIP, phiên đăng nhập và ngân hàng câu hỏi ghi nhận các đợt trước.
 Các checkpoint và số lượng trong phần đầu ghi nhận mốc MVP trước khi mở rộng.
 
 | Checkpoint | Kết quả |
@@ -229,3 +229,41 @@ Thiết kế, TTL, cấu hình và giới hạn: [session-management.md](session
 - Đã dừng server test cổng 8001/3001. Chạy lại ứng dụng theo [run-local.md](run-local.md).
 
 Hướng dẫn sử dụng, nạp nội dung và giới hạn: [vip-expansion.md](vip-expansion.md).
+
+## Biên soạn bài học, minh họa và gợi ý — 10/10/2026
+
+- Admin có **Quản lý bài học**: lọc/tìm kiếm/phân trang, tạo bài, biên soạn theo
+  khối, mục tiêu, gợi ý, câu tự suy ngẫm và minh họa. Xem trước dùng cùng thành
+  phần đọc bài của học sinh; không ghi tiến độ khi xem trước.
+- Nháp lưu riêng trong `lesson_drafts`; học sinh tiếp tục đọc bản đang xuất bản.
+  Lưu nháp → duyệt → xuất bản. Sửa làm mất trạng thái duyệt; revision và khóa hàng
+  ngăn ghi đè khi sửa đồng thời. Fingerprint kiểm tra bài/quyền/kỹ năng nguồn;
+  đổi policy ở nơi khác chặn duyệt/xuất bản nháp cũ. Tạo lại nháp có xác nhận.
+- Xuất bản cập nhật bài, kỹ năng và policy trong cùng transaction; lưu audit
+  trước/sau và hiển thị 20 thao tác gần nhất. Admin API có RBAC/CSRF; học sinh
+  không đọc được payload nháp. Mã/lớp/môn/chủ đề cố định sau khi tạo.
+- 48 bài hiện có được bổ sung mục tiêu, mục lục, ba gợi ý theo chủ đề, câu hỏi
+  tự suy ngẫm và minh họa SVG phân số/luống rau/đọc hiểu/đồng hồ. Nội dung mặc định
+  bổ sung sau kiểm tra quyền, không ghi đè hàng bài cũ. Nội dung riêng do admin
+  xuất bản thay thế các mặc định này.
+- Gợi ý học tiếp tối đa ba bài cùng chủ đề, đã xuất bản, chưa đọc xong và đủ quyền.
+  Ghi chú tự suy ngẫm chỉ ở trang hiện tại, không chấm/lưu server. Chuyển bài đặt
+  lại trạng thái hoàn thành đúng bài mới; tiến độ và kết quả cũ giữ nguyên.
+- Sửa lỗi thanh bên admin dài làm nút đăng xuất ra ngoài viewport: thanh bên
+  cuộn được và menu giữ kích thước. Kiểm thử luồng biên soạn/giao bài/đăng xuất
+  desktop đã chạy lại thành công sau sửa lỗi.
+- **237 backend tests**, **17 component tests** đạt; **18 browser journeys** đã
+  kiểm chứng trên desktop/mobile Chrome (17 đạt trong lượt toàn bộ; luồng desktop
+  gặp lỗi thanh bên đã được sửa và chạy lại đạt). Gồm cả biên soạn câu/đề/giao bài,
+  bài học mới, hint/reflection, VIP, kế hoạch, cỡ chữ, cookie và phiên đa tab.
+  Bài học/danh sách admin không tràn ngang ở 320/768/1280 px. Đã xem minh họa desktop.
+- DB local đã lên head `0007_lesson_studio`, chỉ thêm bảng nháp rỗng. Checksum
+  mọi hàng đã có và SQL gốc trước/sau đều giữ nguyên. Smoke chỉ đọc xác thực
+  nội dung bổ sung của 48 bài, Free bị chặn bài VIP và VIP đọc được; không tạo
+  tài khoản, bài làm, điểm, tiến độ hoặc thay thời hạn gói trên DB local.
+- Ruff check/format, TypeScript, ESLint, Prettier frontend và production build
+  đạt. Warning deprecation Starlette/httpx vẫn còn. Test dùng database riêng;
+  server test 8001/3001 đã dừng. Khởi động lại theo [run-local.md](run-local.md).
+
+Hướng dẫn, schema/API, quy tắc sửa/xuất bản và phần chưa triển khai:
+[lesson-studio.md](lesson-studio.md). Nội dung cần giáo viên rà soát trước vận hành.

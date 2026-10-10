@@ -20,6 +20,7 @@ from app.core.security import (
     verify_password,
 )
 from app.db import connection, db
+from app.lesson_support import enrich
 from app.personalization.engine import recommendations
 from app.schemas import (
     AnswerInput,
@@ -280,7 +281,48 @@ def lesson(lesson_id: UUID, user=Depends(current_user), conn=Depends(connection)
         if access.eligible(conn, user["id"], "assessment", item["id"], row["grade"])
         or "admin" in user["roles"]
     ]
-    return {**dict(row), **gate, "practice": practice, "progress_status": progress_status}
+    topic_code = conn.execute(
+        select(topics.c.code).where(topics.c.id == row["topic_id"])
+    ).scalar_one()
+    candidates = conn.execute(
+        select(table.c.id, table.c.title, progress.c.status.label("progress_status"))
+        .select_from(
+            table.outerjoin(
+                progress,
+                (progress.c.lesson_id == table.c.id) & (progress.c.student_id == user["id"]),
+            )
+        )
+        .where(
+            table.c.topic_id == row["topic_id"],
+            table.c.status == "published",
+            table.c.id != lesson_id,
+            (progress.c.status.is_(None) | (progress.c.status != "completed")),
+        )
+        .order_by(table.c.sort_order, table.c.id)
+    ).mappings()
+    membership = access.resolve_membership(conn, user["id"]) if "student" in user["roles"] else None
+    next_lessons = []
+    for candidate in candidates:
+        if not access.content_access(
+            conn, user, "lesson", candidate["id"], row["grade"], membership
+        )["locked"]:
+            next_lessons.append(
+                {
+                    "id": candidate["id"],
+                    "title": candidate["title"],
+                    "reason": "Cùng chủ đề, em chưa đánh dấu đọc xong.",
+                }
+            )
+        if len(next_lessons) == 3:
+            break
+    return {
+        **dict(row),
+        **gate,
+        "content": enrich(row["content"], topic_code),
+        "practice": practice,
+        "progress_status": progress_status,
+        "next_lessons": next_lessons,
+    }
 
 
 @router.post("/lessons/{lesson_id}/visit", response_model=dict[str, bool], tags=["student"])

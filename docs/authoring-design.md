@@ -2,6 +2,9 @@
 
 ## Phạm vi đã triển khai
 
+Trình biên soạn bài học, minh họa và gợi ý đã có ở **Quản lý bài học**. Luồng nháp
+riêng, kiểm tra revision, duyệt/xuất bản và giới hạn tại [lesson-studio.md](lesson-studio.md).
+
 Admin có thể biên soạn câu hỏi, xem trước, duyệt, xuất bản và lưu trữ; ghép đề từ
 câu hỏi đã xuất bản và giao bài cho học sinh. Học sinh tìm đề trong **Thư viện
 luyện tập**, làm bài và xem kết quả theo quyền Free/VIP hiện có.
@@ -99,7 +102,7 @@ gói hay vai trò tài khoản đã có.
 
 | Ưu tiên | Admin | Học sinh / phụ huynh | Điều kiện nghiệm thu |
 | --- | --- | --- | --- |
-| 1 | Trình soạn bài học theo khối nội dung và phiên bản | Bài học có hình và hướng dẫn từng bước | Duyệt chuyên môn, giữ phiên bản cho lịch sử |
+| 1 | Khôi phục phiên bản bài học và nhận xét duyệt | Trình soạn theo khối, minh họa/gợi ý và nháp riêng đã có | Bổ sung nút khôi phục, nhận xét và tiến độ đọc theo phiên bản |
 | 2 | Nhập CSV câu hỏi có màn hình kiểm tra lỗi và xem trước | Ngân hàng nội dung phong phú hơn | Không ghi từng phần khi file lỗi; không sửa câu đã xuất bản |
 | 3 | Giáo viên giao bài theo lớp, quản lý lịch và theo dõi chưa nộp | Nhiệm vụ theo lớp, nhắc hạn trong ứng dụng | Kiểm tra quan hệ giáo viên–lớp ở API, giao lặp không trùng |
 | 4 | Phân tích câu quá dễ/khó từ tỷ lệ đúng và số lượt | Sổ câu cần ôn, luyện lại kỹ năng yếu | Dữ liệu đủ mẫu, phân biệt thiếu bằng chứng với yếu kỹ năng |

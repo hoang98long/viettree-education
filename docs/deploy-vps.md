@@ -657,7 +657,7 @@ dc exec -T db psql -X -U viettree_app -d viettree-education < database/seeds/ver
 
 Thay tên miền trong các lệnh. HTTP chuyển sang HTTPS; login và health trả 200;
 readiness nội bộ báo DB/schema sẵn sàng. Head hiện tại là
-`0006_vip_learning_tools`; khi có release mới, dùng head của release đó.
+`0007_lesson_studio`; khi có release mới, dùng head của release đó.
 
 Trên browser, kiểm tra thêm:
 

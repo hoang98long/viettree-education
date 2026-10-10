@@ -142,12 +142,34 @@ export type Result = {
 };
 export type Lesson = LessonSummary & {
   progress_status: "not_started" | "in_progress" | "completed";
-  content: { blocks: { type: string; title: string; text: string }[] };
+  content: LessonContent;
   grade: number;
   subject_code: string;
   subject_name: string;
   topic_title: string;
   practice: { id: string; title: string }[];
+  next_lessons: { id: string; title: string; reason: string }[];
+};
+export type LessonIllustration = {
+  kind: "fraction" | "garden" | "reading" | "clock";
+  caption: string;
+  numerator: number;
+  denominator: number;
+  rows: number;
+  columns: number;
+  hour: number;
+  minute: number;
+};
+export type LessonContent = {
+  blocks: {
+    type: "text" | "example" | "remember" | "practice";
+    title: string;
+    text: string;
+  }[];
+  goals?: string[];
+  hints?: string[];
+  reflection?: string[];
+  illustration?: LessonIllustration | null;
 };
 export type LearningPlan = {
   id: string;

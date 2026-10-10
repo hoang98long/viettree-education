@@ -213,6 +213,7 @@ class LessonResponse(LessonSummaryResponse):
     subject_name: str
     practice: list[dict]
     progress_status: Literal["not_started", "in_progress", "completed"] = "not_started"
+    next_lessons: list[dict] = Field(default_factory=list)
 
 
 class AssessmentResponse(CatalogAccess):

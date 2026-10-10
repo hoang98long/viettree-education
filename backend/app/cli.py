@@ -43,7 +43,7 @@ def main():
         if args.command == "check-schema":
             db.validate(conn)
             print(
-                "Schema đúng: 34 bảng gốc + 2 bảng auth + 6 bảng gói học + 1 bảng quyền câu hỏi; database="
+                "Schema đúng: 34 bảng gốc + 2 bảng auth + 6 bảng gói học + 1 bảng quyền câu hỏi + 1 bảng nháp bài học; database="
                 + engine().url.database
             )
         else:

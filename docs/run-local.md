@@ -53,6 +53,10 @@ Dừng hệ thống bằng **Ctrl+C** ở cả hai terminal.
 
 ## Khi gặp lỗi
 
+Sau nâng cấp bài học, chạy `../.venv/Scripts/python.exe -m alembic upgrade head`
+trong `backend`, rồi khởi động lại hai server. Admin dùng **Quản lý bài học**;
+học sinh mở bài để xem minh họa và gợi ý. [Hướng dẫn](lesson-studio.md).
+
 - **`Invalid project directory ... frontend\3000`:** chạy lại đúng lệnh
   `npm run dev` ở trên; không thêm `3000` vào cuối lệnh.
 - **Cổng 8000/3000 đang dùng:** kiểm tra terminal cũ; nếu ứng dụng đã chạy thì mở

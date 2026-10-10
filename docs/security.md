@@ -10,6 +10,7 @@
 | Form tạo bài | Không | Ghép đề, duyệt, xuất bản và giao cho học sinh | Teacher scaffold disabled |
 | Gói học | Xem gói của mình | Cấp/gia hạn/thu hồi và audit | Guardian chỉ xem gói trẻ có liên kết verified_at |
 | Chính sách Free/VIP | Không sửa | Sửa nhãn/preview, CSRF và audit | Không sửa |
+| Nháp và biên soạn bài học | Không đọc/ghi | Nháp riêng, review/publish, revision/fingerprint, CSRF/audit | Chưa mở |
 
 Phiên opaque ngẫu nhiên 48 bytes, DB chỉ giữ SHA-256 token và CSRF token. Cookie
 HttpOnly/SameSite=Lax; Cookie Secure bật qua môi trường production. CSRF header

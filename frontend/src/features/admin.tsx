@@ -644,6 +644,12 @@ export function CurriculumPage() {
                         .map((lesson) => (
                           <div className="list-row" key={lesson.id}>
                             <span>{lesson.title}</span>
+                            <Link
+                              className="card-link"
+                              href={`/admin/lessons/${lesson.id}/edit`}
+                            >
+                              Biên soạn
+                            </Link>
                             <span className="badge">{lesson.status}</span>
                           </div>
                         ))}

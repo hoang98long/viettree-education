@@ -38,6 +38,7 @@ import {
 } from "@/components/ui";
 import { QuestionInput } from "@/components/question-input";
 import { TextSizeControl } from "@/components/text-size-control";
+import { LessonBody } from "@/components/lesson-body";
 import {
   AccessBadge,
   LessonPreviewPanel,
@@ -438,14 +439,7 @@ function LessonContent({ data }: { data: Lesson }) {
         title={data.title}
         description={`${data.estimated_minutes} phút · Đọc chậm rãi theo nhịp của em`}
       />
-      <div className="lesson-blocks">
-        {data.content.blocks.map((block, index) => (
-          <section className={`lesson-block ${block.type}`} key={index}>
-            <h2>{block.title}</h2>
-            <p>{block.text}</p>
-          </section>
-        ))}
-      </div>
+      <LessonBody content={data.content} />
       <section className="panel lesson-completion">
         <h2>{completed ? "Em đã đọc xong bài này" : "Em đã đọc xong chưa?"}</h2>
         <p>
@@ -489,6 +483,12 @@ function LessonContent({ data }: { data: Lesson }) {
       </section>
       <section className="panel">
         <h2>Đến lượt em thử sức</h2>
+        {!data.practice.length && (
+          <p>
+            Chưa có bài luyện đã xuất bản cho chủ đề này. Em có thể ôn lại ví dụ
+            và trao đổi với người thân.
+          </p>
+        )}
         {data.practice.map((item) => (
           <Link
             className="list-row"
@@ -500,6 +500,22 @@ function LessonContent({ data }: { data: Lesson }) {
           </Link>
         ))}
       </section>
+      {!!data.next_lessons?.length && (
+        <section className="panel lesson-next">
+          <h2>Em có thể khám phá tiếp</h2>
+          <p>Gợi ý từ bài cùng chủ đề mà em chưa đánh dấu đọc xong.</p>
+          {data.next_lessons.map((item) => (
+            <Link
+              className="list-row"
+              key={item.id}
+              href={`/student/lessons/${item.id}`}
+            >
+              <span>{item.title}</span>
+              <ArrowRight size={18} />
+            </Link>
+          ))}
+        </section>
+      )}
     </>
   );
 }
@@ -510,7 +526,7 @@ export function LessonPage({ id }: { id: string }) {
     return <LessonPreviewPanel id={id} />;
   if (resource.error || !resource.data)
     return <ErrorState message={resource.error} retry={resource.retry} />;
-  return <LessonContent data={resource.data} />;
+  return <LessonContent key={resource.data.id} data={resource.data} />;
 }
 
 function AssessmentIntro({ data }: { data: Assessment }) {

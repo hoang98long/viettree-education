@@ -30,7 +30,7 @@ không được dùng làm bằng chứng năng lực; năng lực vẫn dựa v
 **Giữ nguyên** `database/viettree_education_schema.sql` với 34 bảng gốc. Không reset,
 DROP hay TRUNCATE database học tập. Database mặc định có tên **`viettree-education`**,
 bao gồm dấu gạch ngang. Alembic bổ sung hai bảng auth và sáu bảng gói học, revision
-`0006_vip_learning_tools`; revision mới bổ sung quyền lợi, không thêm bảng học tập.
+`0007_lesson_studio`; revision mới thêm bảng nháp bài học, giữ nội dung đang xuất bản.
 
 ## Gói học Free / VIP
 
@@ -63,6 +63,11 @@ Seed thường không tự nâng cấp học sinh. Lệnh riêng `seed-demo-lear
 tài khoản demo theo yêu cầu, gồm hai Free và hai VIP 90 ngày.
 
 ## Ngân hàng câu hỏi, bài tập và tài khoản demo
+
+Admin có **Quản lý bài học**: tạo/biên soạn, xem trước, lưu nháp, duyệt và xuất bản;
+kiểm tra revision tránh ghi đè, lưu lịch sử thao tác. Học sinh có mục tiêu, mục lục,
+minh họa SVG, gợi ý từng bước, câu hỏi tự suy ngẫm và gợi ý bài tiếp theo có kiểm tra
+quyền. Chi tiết: [docs/lesson-studio.md](docs/lesson-studio.md).
 
 Admin vào **Ngân hàng câu hỏi → Tạo câu hỏi** để soạn bốn loại câu, đặt đáp án/lời
 giải và xem trước. Lưu nháp, duyệt nội dung rồi xuất bản. Câu đã xuất bản được
@@ -269,6 +274,10 @@ $env:E2E_STUDENT_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/
 $env:E2E_VIP_STUDENT_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
 $env:E2E_VIP_MOBILE_STUDENT_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
 $env:E2E_AUTHORING_STUDENT_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_VIP_TOOLS_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_VIP_TOOLS_MOBILE_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_LESSON_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
+$env:E2E_LESSON_MOBILE_USERNAME = & '../.venv/Scripts/python.exe' '../backend/scripts/create_test_student.py'
 $env:E2E_STUDENT_PASSWORD = $env:SEED_STUDENT_PASSWORD
 $env:E2E_ADMIN_PASSWORD = $env:SEED_ADMIN_PASSWORD
 # Nếu SEED_* chưa có trong terminal, đặt bằng giá trị trong .env local.
@@ -319,7 +328,7 @@ lesson_questions, lesson_skills và question_skills đúng phiên bản.
   học của trẻ có guardian_students.verified_at; báo cáo trong tài khoản guardian chưa mở.
   Học sinh VIP đã có báo cáo riêng và in/lưu PDF từ trình duyệt.
 - Lớp 1/2/3/5 và bốn môn khác: khung chương trình, trạng thái Đang xây dựng.
-- Chưa có public signup, trình soạn bài học, upload/media/audio, auto-grader tự luận, AI/ML,
+- Chưa có public signup, upload/media/audio, auto-grader tự luận, AI/ML,
   email, thông báo, Redis/MinIO hay dịch vụ trả phí. Bài luyện viết là hướng dẫn tại
   lesson, không có quy trình nộp tự luận/giáo viên chấm trong MVP.
 - Kế hoạch cơ bản `plan_v1` và kế hoạch VIP `plan_v2` đã hoạt động. Gợi ý luyện tập

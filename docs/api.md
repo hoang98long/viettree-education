@@ -154,3 +154,17 @@ giao cho học sinh sai lớp/gói. Lỗi không trả đáp án nội bộ cho 
 Nội dung đã xuất bản giữ nguyên; đề cũ tiếp tục dùng phiên bản câu từng được xuất
 bản dù phiên bản đó chuyển archived. Luồng và giới hạn:
 [authoring-design.md](authoring-design.md).
+
+## Biên soạn bài học
+
+Admin có GET/POST `admin/lessons`, GET/PUT `admin/lessons/{id}` và POST
+`admin/lessons/{id}/{review,publish,reset}`. Danh sách lọc grade/subject_code/status
+(`pending` để xem nháp cần xử lý)/search/page; chi tiết trả payload, revision,
+source_fingerprint, source_changed và lịch sử. Request ghi yêu cầu CSRF.
+PUT kiểm tra expected_revision và source_fingerprint; action kiểm tra revision
+và reason. Nháp tách khỏi bài đang xuất bản; publish cập nhật bài/kỹ năng/policy
+atomic. Mỗi lần lưu làm mất trạng thái đã duyệt; revision hoặc nguồn cũ trả 409.
+
+GET `lessons/{id}` bổ sung content.goals/hints/reflection/illustration và
+next_lessons có kiểm tra quyền, không trả nháp cho học sinh. Giới hạn và schema:
+[lesson-studio.md](lesson-studio.md), Swagger.

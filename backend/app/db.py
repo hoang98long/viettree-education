@@ -62,6 +62,17 @@ MEMBERSHIP_COLUMNS["question_version_access_policies"] = {
 }
 MEMBERSHIP_COLUMNS["question_versions"] = {"edit_revision"}
 MEMBERSHIP_COLUMNS["assessments"] = {"edit_revision"}
+MEMBERSHIP_COLUMNS["lesson_drafts"] = {
+    "lesson_id",
+    "payload",
+    "source_fingerprint",
+    "edit_revision",
+    "status",
+    "updated_by",
+    "reviewed_by",
+    "reviewed_at",
+    "updated_at",
+}
 EXTRA_TABLES = AUTH_TABLES + [name for name in MEMBERSHIP_COLUMNS if name not in TABLE_NAMES]
 
 
