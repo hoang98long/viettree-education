@@ -99,8 +99,8 @@ def seed_accounts(conn, reset=False):
             )
 
 
-def seed_content(conn):
-    for subject_code, topics in CURRICULUM.items():
+def seed_content(conn, curriculum=CURRICULUM, grade=4):
+    for subject_code, topics in curriculum.items():
         subjects = db.table("subjects")
         subject_id = conn.execute(
             select(subjects.c.id).where(subjects.c.code == subject_code)
@@ -108,11 +108,11 @@ def seed_content(conn):
         if subject_id is None:
             raise RuntimeError(f"Thiếu môn {subject_code}; kiểm tra import SQL gốc")
         for topic_order, source in enumerate(topics, 1):
-            prefix = f"VT4-{subject_code}-{source['code']}"
+            prefix = f"VT{grade}-{subject_code}-{source['code']}"
             topic, _ = ensure(
                 conn,
                 "topics",
-                {"subject_id": subject_id, "grade": 4, "code": prefix},
+                {"subject_id": subject_id, "grade": grade, "code": prefix},
                 {"title": source["title"], "sort_order": topic_order},
                 prefix,
             )
@@ -123,7 +123,7 @@ def seed_content(conn):
                 {
                     "subject_id": subject_id,
                     "topic_id": topic["id"],
-                    "grade": 4,
+                    "grade": grade,
                     "name": source["title"],
                     "sort_order": topic_order,
                 },
@@ -159,7 +159,7 @@ def seed_content(conn):
                     conn,
                     "questions",
                     {"code": code},
-                    {"subject_id": subject_id, "topic_id": topic["id"], "grade": 4},
+                    {"subject_id": subject_id, "topic_id": topic["id"], "grade": grade},
                     code,
                 )
                 version, created = ensure(
@@ -208,7 +208,7 @@ def seed_content(conn):
                     "subject_id": subject_id,
                     "topic_id": topic["id"],
                     "lesson_id": lessons[-1]["id"],
-                    "grade": 4,
+                    "grade": grade,
                     "title": "Luyện tập: " + source["title"],
                     "status": "published",
                     "description": "8 câu ngắn. Em có thể lưu bài rồi quay lại; đọc lời giải sau khi nộp.",
@@ -238,7 +238,7 @@ def seed_content(conn):
                 if existing != [version["id"] for version in versions]:
                     raise RuntimeError(f"Seed conflict {code}: không sửa đề đã tồn tại")
         # Kỹ năng phân số dựa trên phép tính; những môn khác không ép prerequisite giả.
-        if subject_code == "MATH":
+        if subject_code == "MATH" and grade == 4:
             skill_table = db.table("skills")
             ids = {
                 row.code: row.id
@@ -267,14 +267,15 @@ def seed(conn, reset=False):
     seed_advanced_content(conn, EXPANDED)
     seed_advanced_content(conn, VIP_EXTENSION)
     seed_grade4_content(conn)
+    seed_grade3_content(conn)
     return verify_seed(conn)
 
 
-def seed_access_policies(conn):
+def seed_access_policies(conn, curriculum=CURRICULUM, grade=4):
     # Only the original, identified curriculum is initialized free, never arbitrary new content.
-    for subject, sources in CURRICULUM.items():
+    for subject, sources in curriculum.items():
         for source in sources:
-            prefix = f"VT4-{subject}-{source['code']}"
+            prefix = f"VT{grade}-{subject}-{source['code']}"
             for kind, codes in (
                 ("lesson", [prefix + f"-lesson-{i}" for i in (1, 2)]),
                 ("assessment", [prefix + "-practice"]),
@@ -292,7 +293,7 @@ def seed_access_policies(conn):
                     )
 
 
-def seed_advanced_content(conn, curriculum=ADVANCED):
+def seed_advanced_content(conn, curriculum=ADVANCED, grade=4):
     for subject_code, sources in curriculum.items():
         subjects, topics = db.table("subjects"), db.table("topics")
         subject_id = conn.execute(
@@ -303,14 +304,14 @@ def seed_advanced_content(conn, curriculum=ADVANCED):
             topic = (
                 conn.execute(
                     select(topics).where(
-                        topics.c.code == f"VT4-{subject_code}-{source['topic']}",
-                        topics.c.grade == 4,
+                        topics.c.code == f"VT{grade}-{subject_code}-{source['topic']}",
+                        topics.c.grade == grade,
                     )
                 )
                 .mappings()
                 .one()
             )
-            code = f"VT4-{subject_code}-{source['code']}"
+            code = f"VT{grade}-{subject_code}-{source['code']}"
             item, _ = ensure(
                 conn,
                 "lessons",
@@ -325,7 +326,7 @@ def seed_advanced_content(conn, curriculum=ADVANCED):
             )
             skill = conn.execute(
                 select(db.table("skills").c.id).where(
-                    db.table("skills").c.code == f"VT4-{subject_code}-{source['topic']}-skill"
+                    db.table("skills").c.code == f"VT{grade}-{subject_code}-{source['topic']}-skill"
                 )
             ).scalar_one()
             ensure(
@@ -342,7 +343,7 @@ def seed_advanced_content(conn, curriculum=ADVANCED):
                     conn,
                     "questions",
                     {"code": qcode},
-                    {"subject_id": subject_id, "topic_id": topic["id"], "grade": 4},
+                    {"subject_id": subject_id, "topic_id": topic["id"], "grade": grade},
                     qcode,
                 )
                 version, created = ensure(
@@ -387,7 +388,7 @@ def seed_advanced_content(conn, curriculum=ADVANCED):
                     "subject_id": subject_id,
                     "topic_id": topic["id"],
                     "lesson_id": item["id"],
-                    "grade": 4,
+                    "grade": grade,
                     "title": ("Thử thách: " if minimum_plan == "vip" else "Luyện tập: ")
                     + source["title"],
                     "description": f"{len(versions)} câu vận dụng. Đọc kỹ dữ kiện và xem lời giải sau khi nộp bài.",
@@ -470,7 +471,43 @@ def seed_grade4_content(conn):
     seed_advanced_content(conn, GRADE4)
 
 
-def verify_seed(conn):
+def seed_grade3_content(conn):
+    """Add original grade-three resources without changing accounts or published content."""
+    from app.grade3_curriculum import CORE, EXTENSION, TOPICS
+
+    conn.execute(text("SELECT pg_advisory_xact_lock(78249100)"))
+    for subject_code, sources in TOPICS.items():
+        subject_id = conn.execute(
+            select(db.table("subjects").c.id).where(db.table("subjects").c.code == subject_code)
+        ).scalar_one()
+        for index, (key, title) in enumerate(sources.items(), 1):
+            code = f"VT3-{subject_code}-{key}"
+            topic, _ = ensure(
+                conn,
+                "topics",
+                {"subject_id": subject_id, "grade": 3, "code": code},
+                {"title": title, "sort_order": index},
+                code,
+            )
+            ensure(
+                conn,
+                "skills",
+                {"code": code + "-skill"},
+                {
+                    "subject_id": subject_id,
+                    "topic_id": topic["id"],
+                    "grade": 3,
+                    "name": title,
+                    "sort_order": index,
+                },
+                code + "/skill",
+            )
+    seed_content(conn, CORE, grade=3)
+    seed_access_policies(conn, CORE, grade=3)
+    seed_advanced_content(conn, EXTENSION, grade=3)
+
+
+def verify_seed(conn, grade=4):
     report = {}
     for subject_code in CURRICULUM:
         subject_id = conn.execute(
@@ -486,7 +523,7 @@ def verify_seed(conn):
                     .select_from(table.join(topics))
                     .where(
                         topics.c.subject_id == subject_id,
-                        topics.c.grade == 4,
+                        topics.c.grade == grade,
                         table.c.status == "published",
                     )
                 )
@@ -494,11 +531,15 @@ def verify_seed(conn):
                 statement = (
                     select(func.count())
                     .select_from(table)
-                    .where(table.c.subject_id == subject_id, table.c.grade == 4)
+                    .where(table.c.subject_id == subject_id, table.c.grade == grade)
                 )
                 if name == "questions":
                     versions = db.table("question_versions")
-                    statement = statement.join(versions).where(versions.c.status == "published")
+                    statement = (
+                        statement.with_only_columns(func.count(func.distinct(table.c.id)))
+                        .join(versions)
+                        .where(versions.c.status == "published")
+                    )
                 elif name == "assessments":
                     statement = statement.where(table.c.status == "published")
             counts[name] = conn.execute(statement).scalar_one()

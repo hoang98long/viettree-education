@@ -47,7 +47,8 @@ def change_membership(conn, actor_id, student_id, operation, payload, key):
     if previous:
         if previous["request_fingerprint"] != fingerprint:
             raise HTTPException(409, "Mã thao tác đã được dùng cho yêu cầu khác")
-        return previous["response_snapshot"]
+        # A retry must never display an old active plan after a later revocation.
+        return jsonable_encoder(resolve_membership(conn, student_id))
     table = db.table("student_memberships")
     old = conn.execute(select(table).where(table.c.student_id == student_id)).mappings().first()
     at = now()
@@ -72,6 +73,23 @@ def change_membership(conn, actor_id, student_id, operation, payload, key):
             .values(revoked_at=at)
         )
     else:
+        plans, users, roles = (db.table(n) for n in ("membership_plans", "users", "user_roles"))
+        if not conn.execute(
+            select(plans.c.code).where(plans.c.code == "vip", plans.c.is_active.is_(True))
+        ).first():
+            raise HTTPException(409, "Gói VIP đang tạm ngừng cấp/gia hạn")
+        if not conn.execute(
+            select(users.c.id)
+            .join(roles)
+            .where(users.c.id == student_id, users.c.is_active.is_(True), roles.c.role == "student")
+        ).first():
+            raise HTTPException(422, "Chỉ cấp VIP cho học sinh đang hoạt động")
+        if (
+            operation == "extend"
+            and old
+            and (old["status"] == "revoked" or old["plan_code"] != "vip")
+        ):
+            raise HTTPException(409, "Gói đã thu hồi; dùng Cấp VIP để bắt đầu kỳ mới")
         active = bool(old and old["status"] == "active" and old["starts_at"] <= at < old["ends_at"])
         if operation == "grant" and active:
             raise HTTPException(409, "Học sinh đã có VIP. Hãy dùng chức năng gia hạn")

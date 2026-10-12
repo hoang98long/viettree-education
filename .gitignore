@@ -226,6 +226,7 @@ __marimo__/
 .env
 .env.*
 !.env.example
+!.env.production.example
 .venv/
 frontend/.next/
 frontend/out/
@@ -234,3 +235,4 @@ frontend/playwright-report/
 frontend/test-results/
 *.log
 .tools/
+var/ai-media/

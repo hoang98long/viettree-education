@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import Link from "next/link";
 import { BookOpen, Lightbulb, MessageCircle } from "lucide-react";
 import type { LessonContent, LessonIllustration } from "@/lib/types";
 
@@ -332,7 +333,13 @@ export function LessonFigure({ value }: { value: LessonIllustration }) {
   );
 }
 
-export function LessonBody({ content }: { content: LessonContent }) {
+export function LessonBody({
+  content,
+  hintAccess,
+}: {
+  content: LessonContent;
+  hintAccess?: { available: number; total: number; vip_locked: number };
+}) {
   const [revealed, setRevealed] = useState(0);
   const prefix = useId();
   const hints = content.hints || [];
@@ -399,6 +406,18 @@ export function LessonBody({ content }: { content: LessonContent }) {
           <p role="status" aria-live="polite">
             Đã mở {revealed}/{hints.length} gợi ý.
           </p>
+          {!!hintAccess?.vip_locked && (
+            <div className="notice">
+              <p>
+                Em có {hints.length} gợi ý định hướng miễn phí. VIP có thêm{" "}
+                {hintAccess.vip_locked} gợi ý về cách làm và kiểm tra, mở từng
+                bước khi cần.
+              </p>
+              <Link className="button secondary" href="/student/membership">
+                Tìm hiểu gợi ý VIP
+              </Link>
+            </div>
+          )}
         </section>
       )}
       {!!content.reflection?.length && (

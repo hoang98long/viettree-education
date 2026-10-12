@@ -6,6 +6,7 @@ export type User = {
   roles: string[];
   text_size: TextSize;
   session_expires_at?: string | null;
+  must_change_password?: boolean;
 };
 export type Subject = {
   id: string;
@@ -143,6 +144,7 @@ export type Result = {
 export type Lesson = LessonSummary & {
   progress_status: "not_started" | "in_progress" | "completed";
   content: LessonContent;
+  hint_access?: { available: number; total: number; vip_locked: number };
   grade: number;
   subject_code: string;
   subject_name: string;
@@ -173,6 +175,7 @@ export type LessonContent = {
   }[];
   goals?: string[];
   hints?: string[];
+  free_hint_count?: number | null;
   reflection?: string[];
   illustration?: LessonIllustration | null;
 };

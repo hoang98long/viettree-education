@@ -5,8 +5,8 @@ một tên miền và dữ liệu hiện tại của dự án. Các khối `bash
 khối `powershell` chạy trên máy Windows đang chứa source code.
 
 Phương án sử dụng Docker Compose, PostgreSQL 18, backend FastAPI, frontend Next.js
-production và Caddy cấp/gia hạn HTTPS. Compose và Dockerfile hiện có trong repo
-phục vụ development; hướng dẫn này tạo bộ cấu hình riêng, không sửa chúng.
+production và Caddy cấp/gia hạn HTTPS. Bộ cấu hình production đã có trong repo;
+`docker-compose.yml` và Dockerfile trong backend/frontend vẫn phục vụ development.
 
 Tài liệu đã được đối chiếu với code và tài liệu chính thức. Chưa chạy triển khai
 trên VPS thực tế của bạn; cần thực hiện các bước kiểm tra ở mục 10 trước khi mở
@@ -147,268 +147,55 @@ trong thư mục con cũng không được đưa vào image:
 
 ### 5.1. Biến môi trường
 
-Tạo thư mục cấu hình và file env chỉ root đọc được:
-
 ```bash
-mkdir -p deploy
 umask 077
-touch .env.production
+cp .env.production.example .env.production
 chmod 600 .env.production
 openssl rand -hex 32
 openssl rand -hex 32
+openssl rand -hex 32
 ```
 
-Hai kết quả cuối là hai mật khẩu độc lập: cho superuser PostgreSQL và cho
-`viettree_app`. Điền vào `.env.production` bằng editor, không dùng mật khẩu demo:
+Điền tên miền/email thật và ba mật khẩu độc lập vào `.env.production` bằng editor:
+`POSTGRES_ADMIN_PASSWORD` cho quản trị PostgreSQL, `DB_OWNER_PASSWORD` cho role
+migration `viettree_owner`, `DB_PASSWORD` cho ứng dụng `viettree_app`. Thay toàn bộ
+giá trị `CHANGE_ME`; giữ `DB_USER=viettree_app`. Không dùng mật khẩu demo.
+Giá trị hex thuận tiện khi Compose đọc env; không chạy `source .env.production`.
+File env thật đã được ignore và loại khỏi Docker build context.
 
-```dotenv
-DOMAIN=hoc.example.com
-ACME_EMAIL=your-email@example.com
-POSTGRES_ADMIN_PASSWORD=THAY_BANG_MAT_KHAU_NGAU_NHIEN_THU_NHAT
-DB_NAME=viettree-education
-DB_USER=viettree_app
-DB_PASSWORD=THAY_BANG_MAT_KHAU_NGAU_NHIEN_THU_HAI
-```
+Đặt `RELEASE` theo release để giữ image cũ cho phục hồi; thời hạn phiên mặc định
+8 giờ, ghi nhớ học sinh 7 ngày. Compose đặt `APP_ENV=production`, HTTPS origins
+và cookie Secure. Backend từ chối origin rỗng, wildcard, URL có đường dẫn và
+tên môi trường không hợp lệ.
 
-Thay tên miền/email và cả hai mật khẩu. Giá trị hex không cần xử lý ký tự `$`
-khi Compose đọc env. `.env.production` đã thuộc mẫu ignore `.env.*` của repo;
-không commit hoặc đưa file này vào image. Không chạy `source .env.production`.
+### 5.2. Các file cấu hình có sẵn
 
-`APP_ENV=production`, `COOKIE_SECURE=true`, DB host và HTTPS origins sẽ được
-đặt cố định trong Compose. Backend hiện kiểm tra các điều kiện này khi khởi động.
+Không cần chép lại Dockerfile hay YAML từ tài liệu:
 
-### 5.2. Backend — `deploy/backend.production.Dockerfile`
+- [docker-compose.production.yml](../docker-compose.production.yml): PostgreSQL,
+  backend, frontend, Caddy; chỉ publish 80/443, healthcheck, giới hạn log.
+- [backend.production.Dockerfile](../deploy/backend.production.Dockerfile): dùng
+  dependency lock, hai worker Uvicorn, user không phải root, không hot reload.
+- [frontend.production.Dockerfile](../deploy/frontend.production.Dockerfile):
+  build Next.js standalone, chạy user không phải root.
+- [Caddyfile](../deploy/Caddyfile): HTTPS, API trực tiếp đến backend, ghi đè
+  X-Forwarded-For bằng IP kết nối, chặn docs/readiness bên ngoài, body tối đa 1 MB.
+- [grant-runtime.sql](../deploy/grant-runtime.sql): cấp quyền dữ liệu cho ứng dụng;
+  role migration sở hữu cấu trúc, ứng dụng không có quyền CREATE trên public.
+- [backup.sh](../deploy/backup.sh): backup custom archive, quyền file riêng,
+  kiểm tra archive trước khi đổi thành tên bản sao lưu hoàn chỉnh.
 
-Lưu nguyên khối sau vào file được nêu:
+Caddy có IP cố định `172.30.40.2` trên mạng `172.30.40.0/24`; Uvicorn chỉ tin
+forwarded headers từ IP này. Nếu subnet trùng mạng VPS, sửa đồng thời subnet,
+IP Caddy và `--forwarded-allow-ips` trong Dockerfile rồi build lại.
+Không dùng `*` cho proxy trust. Cấu hình này giả định không có CDN đứng trước VPS.
 
-```dockerfile
-FROM python:3.12-slim
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
-WORKDIR /workspace
-COPY backend /workspace/backend
-COPY database /workspace/database
-RUN pip install --no-cache-dir -r /workspace/backend/requirements-lock.txt \
-    && pip install --no-cache-dir --no-deps -e /workspace/backend \
-    && useradd --system --uid 10001 --create-home app
-WORKDIR /workspace/backend
-USER app
-EXPOSE 8000
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2", "--proxy-headers", "--forwarded-allow-ips", "172.30.40.2", "--no-access-log"]
-```
-
-Editable install trong image giữ đúng đường dẫn source mà `app.db` dùng để đọc
-`database/viettree_education_schema.sql`. Image không mount source và không bật
-`--reload`; tiến trình ứng dụng chạy bằng user riêng.
-
-### 5.3. Frontend — `deploy/frontend.production.Dockerfile`
-
-```dockerfile
-FROM node:22-alpine AS builder
-WORKDIR /app
-COPY frontend/package*.json ./
-RUN npm ci
-COPY frontend .
-ARG INTERNAL_API_URL=http://backend:8000
-ENV INTERNAL_API_URL=$INTERNAL_API_URL NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
-
-FROM node:22-alpine AS runner
-WORKDIR /app
-ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=3000 HOSTNAME=0.0.0.0
-RUN addgroup -S -g 10001 app && adduser -S -u 10001 -G app app
-COPY --from=builder --chown=app:app /app/.next/standalone ./
-COPY --from=builder --chown=app:app /app/.next/static ./.next/static
-COPY --from=builder --chown=app:app /app/public ./public
-USER app
-EXPOSE 3000
-CMD ["node", "server.js"]
-```
-
-Project đã có `output: "standalone"`. URL rewrite được chốt lúc build; đổi URL
-backend thì build lại frontend. Chỉ URL nội bộ được truyền khi build, không có
-mật khẩu DB. Không thêm secrets vào biến `NEXT_PUBLIC_*`.
-
-### 5.4. Compose — `docker-compose.production.yml`
-
-Đây là file độc lập; **không ghép** với `docker-compose.yml` development:
-
-```yaml
-name: viettree
-
-x-logging: &logging
-  driver: json-file
-  options:
-    max-size: "10m"
-    max-file: "3"
-
-services:
-  db:
-    image: postgres:18-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Can mat khau PostgreSQL}
-      POSTGRES_DB: ${DB_NAME:-viettree-education}
-    volumes:
-      - postgres_data:/var/lib/postgresql
-    networks: [app]
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d $${POSTGRES_DB}"]
-      interval: 10s
-      timeout: 5s
-      retries: 12
-    logging: *logging
-
-  backend:
-    image: viettree-backend:${RELEASE:-local}
-    build:
-      context: .
-      dockerfile: deploy/backend.production.Dockerfile
-    restart: unless-stopped
-    environment:
-      APP_ENV: production
-      DB_HOST: db
-      DB_PORT: "5432"
-      DB_NAME: ${DB_NAME:-viettree-education}
-      DB_USER: ${DB_USER:-viettree_app}
-      DB_PASSWORD: ${DB_PASSWORD:?Can mat khau ung dung}
-      ALLOWED_ORIGINS: https://${DOMAIN:?Can ten mien}
-      COOKIE_SECURE: "true"
-      SESSION_HOURS: "8"
-      REMEMBER_SESSION_DAYS: "7"
-    networks: [app]
-    depends_on:
-      db:
-        condition: service_healthy
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "python",
-          "-c",
-          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=5)",
-        ]
-      interval: 15s
-      timeout: 10s
-      retries: 6
-      start_period: 20s
-    logging: *logging
-
-  frontend:
-    image: viettree-frontend:${RELEASE:-local}
-    build:
-      context: .
-      dockerfile: deploy/frontend.production.Dockerfile
-      args:
-        INTERNAL_API_URL: http://backend:8000
-    restart: unless-stopped
-    environment:
-      NODE_ENV: production
-      HOSTNAME: 0.0.0.0
-      PORT: "3000"
-      NEXT_TELEMETRY_DISABLED: "1"
-    networks: [app]
-    depends_on:
-      backend:
-        condition: service_healthy
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
-        ]
-      interval: 15s
-      timeout: 10s
-      retries: 6
-      start_period: 20s
-    logging: *logging
-
-  caddy:
-    image: caddy:2-alpine
-    restart: unless-stopped
-    environment:
-      DOMAIN: ${DOMAIN:?Can ten mien}
-      ACME_EMAIL: ${ACME_EMAIL:?Can email quan ly HTTPS}
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    networks:
-      app:
-        ipv4_address: 172.30.40.2
-    depends_on:
-      frontend:
-        condition: service_healthy
-    logging: *logging
-
-networks:
-  app:
-    ipam:
-      config:
-        - subnet: 172.30.40.0/24
-
-volumes:
-  postgres_data:
-  caddy_data:
-  caddy_config:
-```
-
-PostgreSQL **18** dùng volume tại `/var/lib/postgresql`; không đổi sang đường
-dẫn volume của image phiên bản cũ. Không đổi major PostgreSQL chỉ bằng cách
-thay tag image trên volume đang có dữ liệu.
-[Tài liệu image PostgreSQL](https://github.com/docker-library/docs/tree/master/postgres).
-
-Hai role DB tách biệt: `postgres` dùng khi khởi tạo/quản trị; `viettree_app` dùng
-bởi backend. Phương án đơn VPS này cho app sở hữu schema để chạy migration;
-nếu cần giới hạn DDL chặt hơn, tách thêm role migration trong bước vận hành sau.
-
-### 5.5. HTTPS và proxy — `deploy/Caddyfile`
-
-```caddyfile
-{
-    email {$ACME_EMAIL}
-}
-
-{$DOMAIN} {
-    encode zstd gzip
-
-    @private path /docs /docs/* /redoc /redoc/* /openapi.json /ready
-    handle @private {
-        respond "Not found" 404
-    }
-
-    handle /api/v1/* {
-        reverse_proxy backend:8000 {
-            header_up X-Forwarded-For {http.request.remote.host}
-        }
-    }
-
-    handle /health {
-        reverse_proxy backend:8000
-    }
-
-    handle {
-        reverse_proxy frontend:3000
-    }
-}
-```
-
-Caddy tự cấp/gia hạn chứng chỉ và chuyển HTTP sang HTTPS khi DNS/cổng đã đúng.
-Volume `/data` giữ trạng thái chứng chỉ qua các lần thay container.
-[Caddy Automatic HTTPS](https://caddyserver.com/docs/automatic-https).
-
-`handle` giữ nguyên `/api/v1`; không dùng `handle_path` để bỏ tiền tố. Caddy ghi
-đè header IP từ kết nối thật; Uvicorn chỉ tin proxy `172.30.40.2`, không tin `*`.
-Nhờ đó giới hạn login dùng IP người dùng. Nếu subnet trùng mạng có sẵn, đổi subnet,
-IP Caddy và `--forwarded-allow-ips` đồng bộ. Thêm CDN cần thiết kế lại chuỗi proxy
-tin cậy, không chỉ mở tin cậy toàn bộ header client.
-[Caddy reverse proxy](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy),
-[Uvicorn proxy settings](https://uvicorn.dev/settings/).
+Backend giới hạn mặc định 120 lượt đăng nhập/IP/phút và 10 lượt/tên đăng nhập/phút,
+đếm chung trong PostgreSQL giữa worker. Nhiều học sinh dùng chung mạng có thể
+đăng nhập; thử sai liên tục cùng tài khoản nhận 429 với Retry-After 60 giây.
+Các mốc này là cấu hình ban đầu; đo tải thực tế trước khi tăng.
+Body limit theo [Caddy request_body](https://caddyserver.com/docs/caddyfile/directives/request_body);
+thứ tự khởi động theo [Compose healthchecks](https://docs.docker.com/compose/how-tos/startup-order/).
 
 ### 5.6. Kiểm tra và build
 
@@ -431,9 +218,9 @@ build từng service hoặc dùng VPS/build runner có nhiều RAM hơn.
 Ghi lại nhãn image/tag hoặc digest đã triển khai để dùng cùng phiên bản khi
 khôi phục. Các tag major trong ví dụ nhận bản vá mới khi pull/build lại.
 
-## 6. Khởi tạo PostgreSQL và role ứng dụng
+## 6. Khởi tạo PostgreSQL và tách role migration/ứng dụng
 
-Chưa khởi động backend/frontend/Caddy ở bước này:
+Chưa khởi động ứng dụng ở bước này:
 
 ```bash
 dc up -d db
@@ -441,22 +228,26 @@ dc ps
 dc exec db psql -U postgres -d postgres
 ```
 
-Đợi `db` healthy. Trong `psql`, chạy **một lần trên database mới**:
+Trong psql, chạy một lần trên VPS mới:
 
 ```sql
+CREATE ROLE viettree_owner LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE;
+\password viettree_owner
 CREATE ROLE viettree_app LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE;
 \password viettree_app
-ALTER DATABASE "viettree-education" OWNER TO viettree_app;
+ALTER DATABASE "viettree-education" OWNER TO viettree_owner;
 \connect "viettree-education"
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
-GRANT USAGE, CREATE ON SCHEMA public TO viettree_app;
+GRANT USAGE, CREATE ON SCHEMA public TO viettree_owner;
 \q
 ```
 
-Lệnh `\password` hỏi mật khẩu hai lần: nhập đúng `DB_PASSWORD` trong env.
-Superuser password là biến khác, không dùng cho backend. Khi làm lại trên DB đã
-khởi tạo, kiểm tra `\du` thay vì chạy lại `CREATE ROLE`. Đổi mật khẩu trong env
-không tự đổi mật khẩu DB đã nằm trong volume; cần `\password` rồi recreate backend.
+Nhập đúng `DB_OWNER_PASSWORD` và `DB_PASSWORD` ở các lời nhắc tương ứng.
+Superuser password chỉ dành cho quản trị PostgreSQL. Nếu role đã có, kiểm tra
+`\du`; không tạo lại, không tự thay quyền/owner của DB đang được sử dụng.
+Đổi env không tự đổi mật khẩu nằm trong volume; dùng `\password` rồi recreate.
+Nếu VPS cũ dùng `viettree_app` làm owner, cần kế hoạch chuyển ownership riêng
+hoặc restore sang DB mới; chạy grant script không xóa quyền sở hữu cũ.
 
 ## 7. Nạp dữ liệu — chọn một trong hai nhánh
 
@@ -488,8 +279,9 @@ Trên VPS, **chỉ restore vào database mới và trống**:
 
 ```bash
 chmod 600 /root/viettree-local.dump
-dc exec -T db pg_restore --exit-on-error --single-transaction --no-owner --no-privileges -U viettree_app -d viettree-education < /root/viettree-local.dump
-dc run --rm --no-deps backend python -m alembic upgrade head
+dc exec -T db pg_restore --exit-on-error --single-transaction --no-owner --no-privileges -U viettree_owner -d viettree-education < /root/viettree-local.dump
+dc run --rm --no-deps migrate
+dc exec -T db psql -X -v ON_ERROR_STOP=1 -U viettree_owner -d viettree-education < deploy/grant-runtime.sql
 dc run --rm --no-deps backend python -m app.cli check-schema
 ```
 
@@ -520,13 +312,14 @@ khẩu từ `.env.example` trên Internet.
 Nếu chưa có dữ liệu cần chuyển:
 
 ```bash
-dc exec -T db psql -X -v ON_ERROR_STOP=1 -U viettree_app -d viettree-education < database/viettree_education_schema.sql
-dc run --rm --no-deps backend python -m alembic upgrade head
+dc exec -T db psql -X -v ON_ERROR_STOP=1 -U viettree_owner -d viettree-education < database/viettree_education_schema.sql
+dc run --rm --no-deps migrate
+dc exec -T db psql -X -v ON_ERROR_STOP=1 -U viettree_owner -d viettree-education < deploy/grant-runtime.sql
 dc run --rm --no-deps backend python -m app.cli check-schema
 ```
 
 `app.cli seed` bị chặn ở production vì tạo tài khoản demo. Muốn nạp bộ nội dung
-lớp 4 mà không tạo demo, chạy riêng các hàm nội dung trong một transaction:
+lớp 3 và 4 mà không tạo demo, chạy riêng các hàm nội dung trong một transaction:
 
 ```bash
 dc run --rm -T --no-deps backend python - <<'PY'
@@ -534,7 +327,7 @@ from sqlalchemy import text
 from app.db import db, engine
 from app.expanded_curriculum import EXPANDED
 from app.vip_curriculum import VIP_EXTENSION
-from app.seed import seed_content, seed_access_policies, seed_advanced_content, seed_grade4_content, verify_seed
+from app.seed import seed_content, seed_access_policies, seed_advanced_content, seed_grade4_content, seed_grade3_content, verify_seed
 
 with engine().begin() as conn:
     db.load(conn)
@@ -545,93 +338,46 @@ with engine().begin() as conn:
     seed_advanced_content(conn, EXPANDED)
     seed_advanced_content(conn, VIP_EXTENSION)
     seed_grade4_content(conn)
+    seed_grade3_content(conn)
     print(verify_seed(conn))
+    print(verify_seed(conn, grade=3))
 PY
 ```
 
 Giữ `APP_ENV=production`; không đổi sang development để vượt chặn seed.
-Kết quả trên DB mới: tổng 68 bài/384 câu/56 đề, 21 chủ đề/kỹ năng của 3 môn lớp 4.
+Kết quả trên DB mới: mỗi lớp 68 bài/384 câu/56 đề, 21 chủ đề/kỹ năng của 3 môn;
+hai lớp tổng 136 bài/768 câu/112 đề. Lớp 3 có gợi ý Free/VIP theo bước;
+xem [học liệu lớp 3](grade3-curriculum.md).
 Bộ nội dung cần được giáo viên rà soát trước dùng thật; xem [đối chiếu lớp 4](grade4-curriculum.md).
 Nếu muốn chương trình trống để tự biên soạn, bỏ qua khối nạp nội dung này.
 
 VPS đã có bộ nền tảng: sau khi backup và rà soát bộ bổ sung, nạp riêng bằng
 `dc run --rm -T --no-deps backend python -m app.cli seed-grade4-content`.
+Để thêm lớp 3: `dc run --rm -T --no-deps backend python -m app.cli seed-grade3-content`.
 Lệnh này không cấp gói hay tạo tài khoản. Không cần migration mới ngoài head hiện tại.
 
-## 8. Tạo hoặc đổi mật khẩu tài khoản thật
+## 8. Quản trị đầu tiên và tài khoản thật
 
-Hiện chưa có public signup hoặc UI tạo tài khoản đầy đủ. Script vận hành dưới đây
-tạo admin/student, hoặc đổi mật khẩu account đã có **đúng vai trò** và thu hồi
-phiên của account đó. Script hỏi mật khẩu trực tiếp, không dùng biến seed.
-
-Tạo `deploy/provision_user.py` với nội dung:
-
-```python
-from getpass import getpass
-from sqlalchemy import func, select, text
-from app.core.security import hasher, now
-from app.db import db, engine
-
-username = input("Username: ").strip().lower()
-role = input("Role (admin/student): ").strip()
-display_name = input("Display name: ").strip()
-if not 3 <= len(username) <= 80 or role not in {"admin", "student"}:
-    raise SystemExit("Invalid username or role")
-if not 1 <= len(display_name) <= 160:
-    raise SystemExit("Invalid display name")
-password = getpass("New password (at least 16 characters): ")
-if not 16 <= len(password) <= 200 or password != getpass("Repeat password: "):
-    raise SystemExit("Password too short/long or does not match")
-
-with engine().begin() as conn:
-    db.load(conn)
-    conn.execute(text("SELECT pg_advisory_xact_lock(hashtextextended(:key, 0))"),
-                 {"key": "provision-user:" + username})
-    users, roles = db.table("users"), db.table("user_roles")
-    user = conn.execute(select(users).where(
-        func.lower(users.c.username) == username
-    ).with_for_update()).mappings().first()
-    if user:
-        present_roles = set(conn.execute(select(roles.c.role).where(
-            roles.c.user_id == user["id"]
-        )).scalars())
-        if present_roles != {role}:
-            raise SystemExit("Existing account has different roles; no automatic role change")
-        identifier = user["id"]
-        conn.execute(users.update().where(users.c.id == identifier).values(
-            display_name=display_name, password_hash=hasher.hash(password), is_active=True
-        ))
-        sessions = db.table("auth_sessions")
-        conn.execute(sessions.update().where(sessions.c.user_id == identifier).values(revoked_at=now()))
-    else:
-        identifier = conn.execute(users.insert().values(
-            username=username, display_name=display_name, password_hash=hasher.hash(password)
-        ).returning(users.c.id)).scalar_one()
-        conn.execute(roles.insert().values(user_id=identifier, role=role))
-    if role == "student":
-        profiles = db.table("student_profiles")
-        if not conn.execute(select(profiles.c.student_id).where(
-            profiles.c.student_id == identifier
-        )).first():
-            conn.execute(profiles.insert().values(student_id=identifier, current_grade=4))
-    conn.execute(db.table("audit_logs").insert().values(
-        action="deployment.provision_user", entity_type="user", entity_id=identifier,
-        old_values={}, new_values={"username": username, "role": role}
-    ))
-print("Account ready; password is not printed")
-```
-
-Chạy bằng terminal SSH tương tác, không thêm `-T`:
+Database mới chưa có admin: dùng terminal SSH tương tác, không thêm `-T`:
 
 ```bash
-chmod 644 deploy/provision_user.py
-dc run --rm --no-deps -v "$PWD/deploy/provision_user.py:/tmp/provision_user.py:ro" backend python /tmp/provision_user.py
+dc run --rm --no-deps backend python -m app.cli bootstrap-admin --username admin --display-name "Quản trị VietTree"
 ```
 
-Lần đầu nhập username `admin`, role `admin`, tên quản trị và mật khẩu mạnh mới.
-Nếu restore từ local, script đổi mật khẩu admin cũ. Chạy lại để tạo học sinh thật
-với role `student`; hồ sơ mới ở lớp 4, mặc định Free. Cấp VIP qua admin sau đăng
-nhập. Không dùng `seed-demo-learners` trên production.
+Nhập mật khẩu ít nhất 15 ký tự hai lần; mật khẩu không nằm trong lệnh, log hay
+file cấu hình. Công cụ chỉ tạo quản trị đầu tiên khi chưa có admin hoạt động,
+không đổi mật khẩu/vai trò của username có sẵn. Có audit cho thao tác tạo.
+
+Nếu đã restore DB có admin, đăng nhập bằng tài khoản đó rồi vào **Bảo mật tài
+khoản** để đổi mật khẩu trước khi mở truy cập cho học sinh. Luồng này thu hồi
+toàn bộ phiên cũ. Khi kiểm tra mật khẩu cũ qua web, giới hạn truy cập Caddy bằng
+firewall nhà cung cấp cho IP người vận hành; mở rộng sau khi hoàn tất mục 10.
+Không chạy bootstrap để ghi đè admin cũ. Nếu mất mật khẩu admin, cần quy trình
+khôi phục có xác minh người vận hành; công cụ này không tự reset.
+
+Tạo học sinh thật qua **Quản trị tài khoản**, chọn lớp 3/4, mật khẩu tạm và yêu
+cầu đổi trước khi học. Mặc định Free; cấp/gia hạn/thu hồi VIP qua quản trị.
+Không dùng `seed-demo-learners` trên production.
 
 ## 9. Khởi động và HTTPS
 
@@ -657,16 +403,23 @@ curl -fsS https://hoc.example.com/health
 dc exec backend python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:8000/ready').read().decode())"
 dc run --rm --no-deps backend python -m alembic current
 dc run --rm --no-deps backend python -m app.cli check-schema
+dc run --rm --no-deps backend python -m app.cli check-system
 dc exec -T db psql -X -U viettree_app -d viettree-education < database/seeds/verify.sql
 ```
 
 Thay tên miền trong các lệnh. HTTP chuyển sang HTTPS; login và health trả 200;
 readiness nội bộ báo DB/schema sẵn sàng. Head hiện tại là
-`0007_lesson_studio`; khi có release mới, dùng head của release đó.
+`0009_guided_hints`; khi có release mới, dùng head của release đó.
+Revision 0008 thêm ba cột quản trị tài khoản; 0009 bổ sung quyền gợi ý VIP.
+Các migration giữ mật khẩu/phiên/gói/lịch sử cũ;
+không seed/reset tài khoản khi nâng cấp. Mở **Quản trị tài khoản** để cấp tài
+khoản thật, dùng mật khẩu tạm và yêu cầu đổi trước khi học. Chi tiết và giới hạn:
+[account-management.md](account-management.md).
 
 Trên browser, kiểm tra thêm:
 
-- Admin đăng nhập/đăng xuất, xem chương trình, ngân hàng câu hỏi và bài tập.
+- Admin đăng nhập/đăng xuất, mở **Kiểm tra hệ thống** (`/admin/system`): các
+  kiểm tra migration/quyền nội dung/đề đều đạt; xem chương trình và bài tập.
 - Tài khoản học sinh thật mở được bài Free; bài VIP hiện giới thiệu khi chưa nâng cấp.
 - Admin cấp VIP cho account thử riêng rồi kiểm tra bài nâng cao và thu hồi.
 - Tạo một bài thử riêng, giao đúng học sinh; học sinh lưu, tải lại, nộp, xem kết quả.
@@ -681,66 +434,37 @@ Không chạy pytest/browser E2E của repo vào database production.
 
 ### 11.1. Backup mỗi ngày
 
-Tạo `/usr/local/sbin/viettree-backup`:
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-umask 077
-cd /opt/viettree-education
-backup_root=/var/backups/viettree
-install -d -m 700 "$backup_root"
-temporary_dump=$(mktemp "$backup_root/.dump.XXXXXX")
-trap 'rm -f -- "$temporary_dump"' EXIT
-dc() {
-  docker compose --project-name viettree --env-file .env.production -f docker-compose.production.yml "$@"
-}
-dc exec -T db pg_dump -U viettree_app -d viettree-education -Fc > "$temporary_dump"
-dc exec -T db pg_restore --list < "$temporary_dump" > /dev/null
-destination="$backup_root/viettree-$(date -u +%Y%m%dT%H%M%SZ).dump"
-mv -- "$temporary_dump" "$destination"
-printf 'Backup ready: %s\n' "$destination"
-```
-
-Cấp quyền và chạy thử:
+Script đã có trong repo; chạy thử trước khi đặt lịch:
 
 ```bash
 apt-get install -y cron
-chmod 700 /usr/local/sbin/viettree-backup
-/usr/local/sbin/viettree-backup
+bash deploy/backup.sh
 ls -lh /var/backups/viettree
 cat > /etc/cron.d/viettree-backup <<'CRON'
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-15 2 * * * root /usr/local/sbin/viettree-backup >> /var/log/viettree-backup.log 2>&1
+15 2 * * * root bash /opt/viettree-education/deploy/backup.sh >> /var/log/viettree-backup.log 2>&1
 CRON
 chmod 644 /etc/cron.d/viettree-backup
 systemctl enable --now cron
 ```
 
-Lịch là **02:15 mỗi ngày, Asia/Bangkok** theo timezone đã đặt; tên file dùng UTC. Theo dõi log và dung
-lượng, đặt retention theo nhu cầu, không để backup làm đầy ổ đĩa.
-
-Backup trên cùng VPS không bảo vệ được khi mất VPS. Sao chép định kỳ sang máy
-khác hoặc kho backup riêng có mã hóa và giới hạn truy cập. File dump chứa dữ liệu
-tài khoản/học tập; không đặt vào thư mục public. Ví dụ tải một bản về Windows:
-
-```powershell
-scp root@VPS_IP:/var/backups/viettree/TEN_FILE_BACKUP.dump "$env:USERPROFILE/Downloads/"
-```
-
-Giữ riêng bản sao an toàn của `.env.production`, cấu hình deploy và mã release.
-Lưu trữ thư mục volume chứng chỉ Caddy nếu cần chuyển nguyên trạng; Caddy có thể
-cấp lại chứng chỉ khi dựng VPS mới và DNS đã đúng. Không sao chép thư mục PostgreSQL
-đang chạy như một bản backup thay cho `pg_dump`.
+Lịch 02:15 Asia/Bangkok; tên dump dùng UTC. Script dùng DB_NAME của container,
+không nạp env bằng source; file 600, thư mục 700. Chỉ công bố file sau khi
+`pg_dump` và `pg_restore --list` thành công; không tự xóa backup cũ.
+Đặt `VIETTREE_BACKUP_DIR` nếu cần thư mục khác, theo dõi log/dung lượng và đặt
+retention phù hợp. Backup cùng VPS cần được sao chép sang kho riêng có mã hóa,
+quyền truy cập hạn chế; giữ bản env an toàn và release đã triển khai.
+Không chép trực tiếp thư mục dữ liệu PostgreSQL đang chạy để làm backup.
 
 ### 11.2. Thử restore vào database riêng
 
 Chọn một backup thật, tạo DB **mới** `viettree-restore-check` trên VPS:
 
 ```bash
-dc exec -T db createdb -U postgres -O viettree_app viettree-restore-check
-dc exec -T db pg_restore --exit-on-error --single-transaction --no-owner --no-privileges -U viettree_app -d viettree-restore-check < /var/backups/viettree/TEN_FILE_BACKUP.dump
+dc exec -T db createdb -U postgres -O viettree_owner viettree-restore-check
+dc exec -T db pg_restore --exit-on-error --single-transaction --no-owner --no-privileges -U viettree_owner -d viettree-restore-check < /var/backups/viettree/TEN_FILE_BACKUP.dump
+dc exec -T db psql -X -v ON_ERROR_STOP=1 -U viettree_owner -d viettree-restore-check < deploy/grant-runtime.sql
 dc run --rm --no-deps -e DB_NAME=viettree-restore-check backend python -m app.cli check-schema
 dc exec -T db psql -X -U viettree_app -d viettree-restore-check -c 'SELECT COUNT(*) FROM users; SELECT COUNT(*) FROM attempts;'
 ```
@@ -757,7 +481,7 @@ Trước cập nhật, ghi lại commit/tag hoặc bản source hiện tại và
 
 ```bash
 dc images
-/usr/local/sbin/viettree-backup
+bash /opt/viettree-education/deploy/backup.sh
 ```
 
 Chọn cửa sổ bảo trì ít người dùng. Nếu deployment từ Git, kiểm tra worktree và
@@ -771,7 +495,8 @@ Có thể gắn nhãn image ứng dụng để giữ release cũ:
 export RELEASE=2026-10-10-v1
 dc build backend frontend
 dc stop caddy frontend backend
-dc run --rm --no-deps backend python -m alembic upgrade head
+dc run --rm --no-deps migrate
+dc exec -T db psql -X -v ON_ERROR_STOP=1 -U viettree_owner -d viettree-education < deploy/grant-runtime.sql
 dc run --rm --no-deps backend python -m app.cli check-schema
 dc up -d backend frontend caddy
 ```
@@ -784,7 +509,9 @@ Muốn bổ sung bộ nội dung mới, review script nội dung và chạy ch�
 Mở shell mới cần đặt lại nhãn `RELEASE` đang sử dụng, hoặc ghi nhãn vào
 `.env.production`; nếu không, Compose sẽ mặc định tag `local`.
 
-Rollback **code** khi schema mới vẫn tương thích với code cũ:
+Rollback **code** chỉ khi image cũ chấp nhận revision DB hiện tại và schema
+vẫn tương thích. Readiness của release mới yêu cầu đúng migration head; không
+downgrade chỉ để làm healthcheck xanh. Thử trên staging trước:
 
 ```bash
 export RELEASE=NHAN_RELEASE_CU
@@ -832,3 +559,29 @@ báo ngoài VPS; `restart` xử lý trường hợp tiến trình/container tho�
 Sau khi hệ thống chạy ổn, cố định image bằng tag/digest đã kiểm thử, cập nhật bản
 vá trong cửa sổ bảo trì và thử restore định kỳ. VPS đơn là điểm lỗi chung của cả
 web và DB; backup ngoài VPS là phần bắt buộc để phục hồi khi mất máy.
+
+## 14. Bảo trì auth và kiểm tra định kỳ
+
+```bash
+dc run --rm --no-deps backend python -m app.cli check-system
+dc run --rm --no-deps backend python -m app.cli cleanup-auth --retention-days 30
+```
+
+Lệnh đầu chỉ đọc và exit 1 nếu có kiểm tra không đạt. Lệnh thứ hai mặc định
+dry-run: chỉ đếm phiên đã hết hạn/thu hồi và cửa sổ login cũ hơn 30 ngày.
+Sau khi đối chiếu chính sách lưu trữ, thực hiện bằng thêm `--apply`; không chạm
+phiên sống, account, gói học, audit hay lịch sử học tập. Có thể đặt cron hàng
+ngày sau backup cho lệnh apply này. Quyền auth vẫn kiểm tra DB mỗi request.
+
+Đối chiếu [bản kiểm tra trước triển khai](production-readiness.md) để biết các
+kiểm chứng local đã chạy và những kiểm tra cần hoàn thành trên server thật.
+
+# Bổ sung AI Academy · 12/10/2026
+
+Head mới `0010_ai_academy`, sau migration/grant chạy
+`python -m app.cli seed-ai-academy`, rồi `verify-ai-academy`.
+Production Compose có volume riêng `academy_media`; script backup tạo cặp
+database dump và `media.tar.gz`, cần giữ/phục hồi cả hai. Các hướng dẫn cũ về
+head 0009 là mốc trước module; luôn dùng `alembic upgrade head` cho bản hiện tại.
+Xem [triển khai AI Academy](ai-academy/deployment.md) cho local, Docker, model
+mặc định tắt, quyền teacher/guardian, backup và xử lý lỗi.

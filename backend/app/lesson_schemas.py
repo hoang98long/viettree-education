@@ -47,11 +47,14 @@ class LessonContent(StrictModel):
     blocks: list[LessonBlock] = Field(min_length=3, max_length=12)
     goals: list[str] = Field(min_length=1, max_length=5)
     hints: list[str] = Field(default_factory=list, max_length=5)
+    free_hint_count: int | None = Field(default=None, ge=1, le=5)
     reflection: list[str] = Field(default_factory=list, max_length=3)
     illustration: Illustration | None = None
 
     @model_validator(mode="after")
     def text_lists(self):
+        if self.free_hint_count is not None and self.free_hint_count > len(self.hints):
+            raise ValueError("Số gợi ý miễn phí không vượt tổng gợi ý và phải có ít nhất một")
         for values in (self.goals, self.hints, self.reflection):
             if any(not value.strip() or len(value) > 600 for value in values):
                 raise ValueError("Mỗi gợi ý/mục tiêu cần 1–600 ký tự")

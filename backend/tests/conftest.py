@@ -43,6 +43,13 @@ def client(conn, test_engine, monkeypatch):
 
     app.dependency_overrides[connection] = override
     host = "test-" + str(uuid4())
+    # Account limit shared across IPs in production; isolate each test's namespace.
+    from app.core import security
+
+    throttle = security._throttle
+    monkeypatch.setattr(
+        security, "_throttle", lambda identity, maximum: throttle(host + ":" + identity, maximum)
+    )
     with TestClient(app, client=(host, 12345)) as client:
         yield client
     app.dependency_overrides.clear()

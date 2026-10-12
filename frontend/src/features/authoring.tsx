@@ -639,7 +639,7 @@ export function QuestionEditorPage({ id }: { id?: string }) {
         title={
           initial
             ? `${initial.code} · Phiên bản ${initial.version}`
-            : "Tạo câu hỏi lớp 4"
+            : "Tạo câu hỏi"
         }
         description="Lưu nháp, xem trước, duyệt rồi xuất bản. Bản đã xuất bản giữ nguyên để bảo toàn bài làm."
       />
@@ -1213,7 +1213,7 @@ export function AssessmentEditorPage({ id }: { id?: string }) {
   return (
     <>
       <PageTitle
-        title={initial ? initial.title : "Tạo bài tập lớp 4"}
+        title={initial ? initial.title : "Tạo bài tập"}
         description="Chọn câu hỏi, sắp thứ tự, đặt điểm và thời gian; duyệt trước khi xuất bản."
       />
       <AssessmentForm

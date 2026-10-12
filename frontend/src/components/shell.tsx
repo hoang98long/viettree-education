@@ -17,6 +17,8 @@ import {
   Crown,
   LockKeyhole,
   Lightbulb,
+  ShieldCheck,
+  Trophy,
 } from "lucide-react";
 import { api } from "@/lib/api";
 import type { TextSize, User } from "@/lib/types";
@@ -44,11 +46,15 @@ const studentMenu = [
   ["progress", "Cây năng lực", ChartNoAxesCombined],
   ["profile", "Hồ sơ của em", UserRound],
   ["membership", "Gói học của em", Crown],
+  ["classroom", "Lớp và thành tích", Trophy],
   ["vip", "Góc học VIP", Crown],
 ] as const;
 const adminMenu = [
   ["dashboard", "Tổng quan", Home],
+  ["accounts", "Quản trị tài khoản", UserRound],
   ["students", "Học sinh", Users],
+  ["classes", "Lớp và giao bài", GraduationCap],
+  ["vip-pricing", "Giá VIP và ưu đãi", Crown],
   ["content-access", "Quyền nội dung", LockKeyhole],
   ["curriculum", "Chương trình", BookOpen],
   ["lessons", "Quản lý bài học", BookOpen],
@@ -58,6 +64,8 @@ const adminMenu = [
   ["assessments", "Bài luyện tập", GraduationCap],
   ["analytics", "Thống kê", ChartNoAxesCombined],
   ["settings", "Cài đặt", Settings],
+  ["system", "Kiểm tra hệ thống", ShieldCheck],
+  ["ai-academy", "AI Academy", Lightbulb],
 ] as const;
 export function Shell({
   role,
@@ -72,6 +80,7 @@ export function Shell({
   const [chosenSize, setChosenSize] = useState<TextSize | null>(null);
   useEffect(() => {
     if (!loading && !user && !error) router.replace("/login");
+    if (user?.must_change_password) router.replace("/account/security");
   }, [loading, user, error, router]);
   const textSize = chosenSize ?? user?.text_size ?? "comfortable";
   async function saveTextSize(size: TextSize) {
@@ -91,7 +100,7 @@ export function Shell({
       window.alert((e as Error).message);
     }
   }
-  if (loading)
+  if (loading || user?.must_change_password)
     return (
       <main className="standalone">
         <Loading />
@@ -131,6 +140,24 @@ export function Shell({
                 : "MỖI NGÀY MỘT KHÁM PHÁ"}
             </span>
             <nav aria-label="Điều hướng chính">
+              {role === "student" && (
+                <Link href="/ai-academy">
+                  <Lightbulb />
+                  AI Academy
+                </Link>
+              )}
+              {role === "teacher" && (
+                <Link href="/teacher/ai-academy">
+                  <Lightbulb />
+                  AI Academy
+                </Link>
+              )}
+              {role === "guardian" && (
+                <Link href="/guardian/ai-academy">
+                  <Lightbulb />
+                  AI Academy
+                </Link>
+              )}
               {menu.map(([href, label, Icon]) => (
                 <Link
                   key={href}
@@ -142,12 +169,20 @@ export function Shell({
                 </Link>
               ))}
               {role === "teacher" && (
+                <Link href="/teacher/classes">
+                  <GraduationCap /> Lớp và thành tích
+                </Link>
+              )}
+              {role === "teacher" && (
                 <Link href="/teacher/questions/new">
                   <Plus />
                   Tạo bài tập
                 </Link>
               )}
             </nav>
+            <Link className="button secondary small" href="/account/security">
+              Bảo mật tài khoản
+            </Link>
             <div className="sidebar-footer">
               <span className="avatar">{user.display_name.charAt(0)}</span>
               <div>

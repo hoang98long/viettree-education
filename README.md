@@ -4,8 +4,21 @@
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**AI Academy đã được tích hợp:** lớp 4 có **9 chủ đề / 36 tiết**, lớp 1/2/3/5
+có 3 bài mẫu mỗi khối, tổng 48 bài và 315 SVG minh họa thật. Học nhiều bước,
+game/lab, Prompt Builder, trợ giảng an toàn, xưởng sáng tạo, sản phẩm riêng,
+giao bài/chấm rubric và CMS/media theo quyền. Dùng cùng tài khoản hiện có;
+mặc định mô phỏng nội bộ, không cần dịch vụ AI trả phí.
+Xem [hướng dẫn đầy đủ AI Academy](docs/ai-academy/README.md).
+
 **Deploy lên VPS:** xem [hướng dẫn riêng](docs/deploy-vps.md) cho Ubuntu + Docker
 Compose production, HTTPS, chuyển dữ liệu, tài khoản thật, backup và cập nhật.
+
+**Kiểm tra trước triển khai:** [bản rà soát và các bước xác nhận](docs/production-readiness.md).
+Admin có mục **Kiểm tra hệ thống** (`/admin/system`). Bộ production đã có trong
+`docker-compose.production.yml` và `deploy/`; local tiếp tục dùng cấu hình development.
+CLI `check-system` chỉ đọc, `cleanup-auth` mặc định dry-run. Head hiện tại
+`0010_ai_academy`; nạp module lần đầu bằng `seed-ai-academy`.
 
 **Chạy trên máy hiện tại:** xem [hướng dẫn local ngắn](docs/run-local.md) với hai
 terminal PowerShell cho backend và frontend.
@@ -30,11 +43,21 @@ không được dùng làm bằng chứng năng lực; năng lực vẫn dựa v
 **Giữ nguyên** `database/viettree_education_schema.sql` với 34 bảng gốc. Không reset,
 DROP hay TRUNCATE database học tập. Database mặc định có tên **`viettree-education`**,
 bao gồm dấu gạch ngang. Alembic bổ sung hai bảng auth và sáu bảng gói học, revision
-`0007_lesson_studio`; revision mới thêm bảng nháp bài học, giữ nội dung đang xuất bản.
+`0009_guided_hints` thêm quyền gợi ý theo bước cho VIP; `0010_ai_academy`
+thêm 29 bảng riêng và tái sử dụng tài khoản/lớp/media/consent. Migration tài khoản thêm vòng đời mật khẩu tạm và revision tài khoản,
+giữ mật khẩu, phiên và lịch sử cũ. Bảng nháp bài học tiếp tục tách bản xuất bản.
+
+## Quản trị tài khoản
+
+Admin có **Quản trị tài khoản**: tạo/sửa, phân vai trò, khóa/mở, đặt lại mật khẩu,
+thu hồi phiên và nhật ký. Mọi người dùng có **Bảo mật tài khoản** để tự đổi mật
+khẩu, đăng xuất phiên khác. Mật khẩu tạm bắt buộc đổi trước khi sử dụng. Nâng cấp
+chạy `alembic upgrade head` (head `0010_ai_academy`), khởi động lại server;
+không cần seed/reset tài khoản. Xem [quản trị tài khoản](docs/account-management.md).
 
 ## Gói học Free / VIP
 
-46 bài học và 34 đề được học miễn phí. VIP mở thêm 22 bài nâng cao, 22 đề thử thách
+Mỗi lớp 3 hoặc 4 có 46 bài học và 34 đề miễn phí. VIP mở thêm 22 bài nâng cao, 22 đề thử thách mỗi lớp
 và kế hoạch theo kỹ năng cần ôn (`plan_v2`). Cách chấm điểm và quyền
 xem kết quả của chính học sinh giống nhau giữa hai gói.
 
@@ -64,6 +87,12 @@ tài khoản demo theo yêu cầu, gồm hai Free và hai VIP 90 ngày.
 
 ## Ngân hàng câu hỏi, bài tập và tài khoản demo
 
+**Lớp 3** đã có 68 bài/384 câu/56 đề, bằng quy mô lớp 4 cho từng môn: Toán
+25/142/21, Tiếng Việt 23/130/19, Tiếng Anh 20/112/16. Mỗi bài lớp 3 có 1 gợi ý
+định hướng cho Free, 3 gợi ý theo bước cho VIP; backend lọc gợi ý theo quyền.
+Admin chọn **Lớp 3** trong quản trị học liệu và hồ sơ học sinh. Xem nội dung,
+nguồn chương trình và cách nạp riêng tại [học liệu lớp 3](docs/grade3-curriculum.md).
+
 Đợt mở rộng chương trình lớp 4 thêm **20 bài/120 câu/20 đề**: Toán, Tiếng Việt,
 Tiếng Anh, có bài nền tảng Free và bài tư duy VIP. Học sinh dùng **Góc tư duy**;
 admin xem **Chương trình → Lớp 4 → Theo dõi học liệu**. Thêm SVG góc/biểu đồ và
@@ -86,10 +115,10 @@ luyện tập** để tìm theo môn, gói, loại và từ khóa. Nội dung VI
 Sau migration và seed, tạo thêm tài khoản bằng `python -m app.cli seed-demo-learners`
 trong backend (chỉ development):
 
-| Tài khoản | Gói |
-| --- | --- |
-| free4_01, free4_02 | Free, lớp 4 |
-| vip4_01, vip4_02 | VIP 90 ngày từ lúc tạo, lớp 4 |
+| Tài khoản          | Gói                           |
+| ------------------ | ----------------------------- |
+| free4_01, free4_02 | Free, lớp 4                   |
+| vip4_01, vip4_02   | VIP 90 ngày từ lúc tạo, lớp 4 |
 
 Mật khẩu là `SEED_STUDENT_PASSWORD` trong `.env`. Chạy lại không đổi mật khẩu hoặc
 gia hạn/cấp lại VIP. Thiết kế, luồng sử dụng và đề xuất nâng cấp tiếp:
@@ -116,17 +145,17 @@ copy env. Không bắt buộc activate venv; lệnh trên chỉ rõ Python của
 `.env` nằm tại root, được backend đọc dù chạy từ thư mục backend. Không commit file
 này. `DB_PASSWORD` được ghép vào SQLAlchemy URL bằng `URL.create`, hỗ trợ ký tự đặc biệt.
 
-| Biến | Cách sử dụng |
-| --- | --- |
-| DB_HOST | `localhost` khi chạy backend trên host |
-| DB_PORT / DB_NAME | `5432` / `viettree-education` |
-| DB_USER / DB_PASSWORD | Cấu hình local do bạn cung cấp trong `.env` |
-| ALLOWED_ORIGINS | Danh sách origin chính xác, phân cách bằng dấu phẩy; mặc định `http://localhost:3000` |
-| COOKIE_SECURE | `false` cho HTTP local, `true` khi triển khai HTTPS |
-| SESSION_HOURS | Thời hạn tuyệt đối của phiên, mặc định 8 giờ |
-| REMEMBER_SESSION_DAYS | Phiên ghi nhớ cho học sinh không có role admin/teacher, mặc định 7 ngày |
-| SEED_ADMIN_PASSWORD / SEED_STUDENT_PASSWORD | Chỉ dùng khi chủ động seed demo |
-| INTERNAL_API_URL | Next server nối backend; mặc định `http://localhost:8000` |
+| Biến                                        | Cách sử dụng                                                                          |
+| ------------------------------------------- | ------------------------------------------------------------------------------------- |
+| DB_HOST                                     | `localhost` khi chạy backend trên host                                                |
+| DB_PORT / DB_NAME                           | `5432` / `viettree-education`                                                         |
+| DB_USER / DB_PASSWORD                       | Cấu hình local do bạn cung cấp trong `.env`                                           |
+| ALLOWED_ORIGINS                             | Danh sách origin chính xác, phân cách bằng dấu phẩy; mặc định `http://localhost:3000` |
+| COOKIE_SECURE                               | `false` cho HTTP local, `true` khi triển khai HTTPS                                   |
+| SESSION_HOURS                               | Thời hạn tuyệt đối của phiên, mặc định 8 giờ                                          |
+| REMEMBER_SESSION_DAYS                       | Phiên ghi nhớ cho học sinh không có role admin/teacher, mặc định 7 ngày               |
+| SEED_ADMIN_PASSWORD / SEED_STUDENT_PASSWORD | Chỉ dùng khi chủ động seed demo                                                       |
+| INTERNAL_API_URL                            | Next server nối backend; mặc định `http://localhost:8000`                             |
 
 Kiểm tra schema và áp dụng migration:
 
@@ -136,6 +165,7 @@ Set-Location backend
 ../.venv/Scripts/python.exe -m app.cli check-schema
 ../.venv/Scripts/python.exe -m app.cli seed
 ../.venv/Scripts/python.exe -m app.cli verify-seed
+../.venv/Scripts/python.exe -m app.cli verify-seed --grade 3
 ```
 
 `alembic upgrade head` kiểm tra đủ bảng/cột gốc rồi thêm auth_sessions,
@@ -168,10 +198,10 @@ Seed bị chặn khi APP_ENV=production; ứng dụng không tự seed lúc kh�
 
 **Tài khoản DEV, chỉ dùng local:**
 
-| Tên đăng nhập | Mật khẩu ví dụ trong .env.example | Vai trò |
-| --- | --- | --- |
-| admin | Anhthuan33! | Quản trị |
-| longnh | Anhthuan33! | Học sinh, lớp 4 |
+| Tên đăng nhập | Mật khẩu ví dụ trong .env.example | Vai trò         |
+| ------------- | --------------------------------- | --------------- |
+| admin         | Anhthuan33!                       | Quản trị        |
+| longnh        | Anhthuan33!                       | Học sinh, lớp 4 |
 
 Postgres local trong `.env.example` dùng user `postgres`, password `123456` đúng
 cấu hình yêu cầu. Đổi toàn bộ thông tin demo và dùng DB role riêng trước khi đưa
@@ -304,9 +334,9 @@ trọng Retry-After khi nhiều lượt đăng nhập dùng chung IP proxy.
 Đặt username đó vào `E2E_STUDENT_USERNAME` ở terminal frontend; password vẫn từ
 SEED_STUDENT_PASSWORD. Script từ chối database thật và không xóa học sinh cũ.
 
-SQL đối chiếu seed: `database/seeds/verify.sql`. Kết quả bộ mẫu lớp 4: Toán có
+SQL đối chiếu seed: `database/seeds/verify.sql`. Mỗi bộ mẫu lớp 3 hoặc lớp 4: Toán có
 25 bài/142 câu/21 đề; Tiếng Việt 23/130/19; Tiếng Anh 20/112/16. Đề có 6 hoặc 8 câu.
-Tổng: **21 chủ đề, 68 bài học, 384 câu hỏi, 56 đề**, 21 kỹ năng; câu hỏi được gắn
+Tổng mỗi lớp: **21 chủ đề, 68 bài học, 384 câu hỏi, 56 đề**, 21 kỹ năng; hai lớp có 136 bài/768 câu/112 đề. Câu hỏi được gắn
 lesson_questions, lesson_skills và question_skills đúng phiên bản.
 
 ## Phạm vi tính năng
@@ -315,7 +345,7 @@ lesson_questions, lesson_skills và question_skills đúng phiên bản.
 
 - Session server-side có thu hồi, cookie HttpOnly, CSRF/Origin, giới hạn login 10
   requests/phút/IP backend dùng chung giữa worker; login/logout/me và RBAC thật.
-- Khung lớp 1–5, giữ toàn bộ môn trong schema; nội dung thực lớp 4 cho ba môn chính.
+- Khung lớp 1–5, giữ toàn bộ môn trong schema; nội dung thực lớp 3 và 4 cho ba môn chính.
 - Lesson blocks an toàn, tự luyện tập, assignment self idempotent, resume draft.
 - Single choice, multiple choice, fill blank giữ dấu Việt, ordering; điểm theo item.
 - Transaction nộp bài, khóa hàng, nộp lại trả kết quả cũ; giới hạn lượt/thời gian/IDOR.
@@ -334,7 +364,7 @@ lesson_questions, lesson_skills và question_skills đúng phiên bản.
 - Teacher có RBAC/layout; quản lý lớp và giao bài chưa mở. Guardian chỉ xem gói
   học của trẻ có guardian_students.verified_at; báo cáo trong tài khoản guardian chưa mở.
   Học sinh VIP đã có báo cáo riêng và in/lưu PDF từ trình duyệt.
-- Lớp 1/2/3/5 và bốn môn khác: khung chương trình, trạng thái Đang xây dựng.
+- Lớp 1/2/5 và bốn môn khác: khung chương trình, trạng thái Đang xây dựng.
 - Chưa có public signup, upload/media/audio, auto-grader tự luận, AI/ML,
   email, thông báo, Redis/MinIO hay dịch vụ trả phí. Bài luyện viết là hướng dẫn tại
   lesson, không có quy trình nộp tự luận/giáo viên chấm trong MVP.

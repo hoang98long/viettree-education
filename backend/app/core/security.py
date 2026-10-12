@@ -58,9 +58,13 @@ def current_user(request: Request, conn: Connection = Depends(connection)):
         raise HTTPException(401, "Em hãy đăng nhập để tiếp tục nhé")
     user = (
         conn.execute(
-            select(users.c.id, users.c.username, users.c.display_name, users.c.is_active).where(
-                users.c.id == session["user_id"]
-            )
+            select(
+                users.c.id,
+                users.c.username,
+                users.c.display_name,
+                users.c.is_active,
+                users.c.must_change_password,
+            ).where(users.c.id == session["user_id"])
         )
         .mappings()
         .first()
@@ -83,6 +87,19 @@ def current_user(request: Request, conn: Connection = Depends(connection)):
         csrf = request.headers.get("x-csrf-token", "")
         if not csrf or not hmac.compare_digest(digest(csrf), session["csrf_hash"]):
             raise HTTPException(403, "Phiên bảo mật không hợp lệ. Hãy tải lại trang")
+    if user["must_change_password"] and request.url.path not in {
+        "/api/v1/auth/me",
+        "/api/v1/auth/logout",
+        "/api/v1/auth/password",
+        "/api/v1/auth/security",
+    }:
+        raise HTTPException(
+            403,
+            {
+                "code": "PASSWORD_CHANGE_REQUIRED",
+                "message": "Hãy đổi mật khẩu tạm trước khi sử dụng",
+            },
+        )
     return {
         **dict(user),
         "roles": role_names,
@@ -108,13 +125,27 @@ def public_user(user):
     return {
         **{key: user[key] for key in ("id", "username", "display_name", "roles")},
         "session_expires_at": user.get("session_expires_at"),
+        "must_change_password": user.get("must_change_password", False),
     }
 
 
-def throttle_login(request: Request) -> bool:
+def throttle_login(request: Request, username: str) -> bool:
+    config = settings()
+    client_ip = request.client.host if request.client else "unknown"
+    # Chặn IP trước để không tạo vô hạn khóa username khi IP đã vượt ngưỡng.
+    if _throttle("login-ip:" + client_ip, config.login_ip_limit):
+        return True
+    return _throttle("login-account:" + username.strip().lower(), config.login_account_limit)
+
+
+def throttle_sensitive(user_id) -> bool:
+    return _throttle("account-confirm:" + str(user_id), 10)
+
+
+def _throttle(identity, maximum) -> bool:
     table = db.table("auth_login_limits")
     # Không lưu IP plaintext; không tin X-Forwarded-For từ client.
-    key = digest("login:" + (request.client.host if request.client else "unknown"))
+    key = digest(identity)
     start = now()
     statement = insert(table).values(key_hash=key, window_start=start, failures=1)
     from sqlalchemy import case
@@ -129,7 +160,7 @@ def throttle_login(request: Request) -> bool:
     ).returning(table.c.failures)
     # Transaction riêng để login sai vẫn tăng giới hạn, không commit transaction API.
     with engine().begin() as conn:
-        return conn.execute(statement).scalar_one() > 10
+        return conn.execute(statement).scalar_one() > maximum
 
 
 def create_session(conn, user_id, response, roles=(), remember_me=False):

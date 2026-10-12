@@ -338,9 +338,11 @@ dd {
   padding: 12px;
   background: white;
   z-index: 100;
+  clip-path: inset(50%);
 }
 .skip-link:focus {
   top: 10px;
+  clip-path: none;
 }
 .brand {
   display: flex;
@@ -2236,5 +2238,57 @@ tr:last-child td {
   .student .section-heading {
     flex-wrap: wrap;
     gap: 12px;
+  }
+}
+.account-form fieldset {
+  border: 0;
+  padding: 0;
+  margin: 1rem 0;
+  min-width: 0;
+}
+.account-form label {
+  display: block;
+  margin: 1rem 0;
+}
+.account-form .check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin: 0;
+  flex: 0 0 auto;
+}
+.account-form .check-label input {
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  margin: 0;
+  flex: 0 0 auto;
+  accent-color: var(--green);
+}
+.account-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+}
+.account-layout > div > .panel + .panel {
+  margin-top: 1.5rem;
+}
+.account-security {
+  max-width: 900px;
+}
+.account-history {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.account-history pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .account-layout {
+    grid-template-columns: 1fr;
   }
 }

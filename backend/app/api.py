@@ -20,7 +20,7 @@ from app.core.security import (
     verify_password,
 )
 from app.db import connection, db
-from app.lesson_support import enrich
+from app.lesson_support import distribute_hints, enrich
 from app.personalization.engine import recommendations
 from app.schemas import (
     AnswerInput,
@@ -54,14 +54,16 @@ def _user_response(user, conn):
 @router.post("/auth/login", response_model=UserResponse, tags=["auth"])
 def login(payload: LoginInput, request: Request, response: Response, conn=Depends(connection)):
     verify_origin(request)
-    if throttle_login(request):
+    if throttle_login(request, payload.username):
         raise HTTPException(
             429, "Em hãy đợi một phút rồi thử lại nhé", headers={"Retry-After": "60"}
         )
     users, roles = db.table("users"), db.table("user_roles")
     user = (
         conn.execute(
-            select(users).where(func.lower(users.c.username) == payload.username.strip().lower())
+            select(users)
+            .where(func.lower(users.c.username) == payload.username.strip().lower())
+            .with_for_update(key_share=True)
         )
         .mappings()
         .first()
@@ -140,12 +142,25 @@ def logout(response: Response, user=Depends(current_user), conn=Depends(connecti
 
 
 @router.get("/grades", response_model=list[out.GradeResponse], tags=["curriculum"])
-def grades(user=Depends(current_user)):
+def grades(user=Depends(current_user), conn=Depends(connection)):
+    topics, lessons, subjects = (db.table(name) for name in ("topics", "lessons", "subjects"))
+    available = set(
+        conn.execute(
+            select(topics.c.grade)
+            .distinct()
+            .select_from(topics.join(lessons).join(subjects))
+            .where(
+                topics.c.is_active.is_(True),
+                subjects.c.is_active.is_(True),
+                lessons.c.status == "published",
+            )
+        ).scalars()
+    )
     return [
         {
             "grade": grade,
-            "status": "available" if grade == 4 else "building",
-            "label": "Có thể học ngay" if grade == 4 else "Đang xây dựng",
+            "status": "available" if grade in available else "building",
+            "label": "Có thể học ngay" if grade in available else "Đang xây dựng",
         }
         for grade in range(1, 6)
     ]
@@ -315,10 +330,12 @@ def lesson(lesson_id: UUID, user=Depends(current_user), conn=Depends(connection)
             )
         if len(next_lessons) == 3:
             break
+    content, hint_access = distribute_hints(enrich(row["content"], topic_code), user, membership)
     return {
         **dict(row),
         **gate,
-        "content": enrich(row["content"], topic_code),
+        "content": content,
+        "hint_access": hint_access,
         "practice": practice,
         "progress_status": progress_status,
         "next_lessons": next_lessons,
@@ -634,9 +651,16 @@ def profile(user=Depends(student_user), conn=Depends(connection)):
 @router.get("/admin/statistics", response_model=out.StatisticsResponse, tags=["admin"])
 def statistics(user=Depends(admin_user), conn=Depends(connection)):
     attempts, answers = db.table("attempts"), db.table("attempt_answers")
+    profiles, roles = db.table("student_profiles"), db.table("user_roles")
     stats = {
         "students": conn.execute(
-            select(func.count()).select_from(db.table("student_profiles"))
+            select(func.count())
+            .select_from(profiles)
+            .where(
+                select(roles.c.user_id)
+                .where(roles.c.user_id == profiles.c.student_id, roles.c.role == "student")
+                .exists()
+            )
         ).scalar_one()
     }
     for name in ("users", "lessons", "question_versions", "assessments"):
@@ -665,14 +689,22 @@ def statistics(user=Depends(admin_user), conn=Depends(connection)):
 def students(
     search: str = "", page: int = Query(1, ge=1), user=Depends(admin_user), conn=Depends(connection)
 ):
-    users, profiles = db.table("users"), db.table("student_profiles")
-    statement = select(
-        users.c.id,
-        users.c.username,
-        users.c.display_name,
-        users.c.is_active,
-        profiles.c.current_grade,
-    ).join(profiles, profiles.c.student_id == users.c.id)
+    users, profiles, roles = db.table("users"), db.table("student_profiles"), db.table("user_roles")
+    statement = (
+        select(
+            users.c.id,
+            users.c.username,
+            users.c.display_name,
+            users.c.is_active,
+            profiles.c.current_grade,
+        )
+        .join(profiles, profiles.c.student_id == users.c.id)
+        .where(
+            select(roles.c.user_id)
+            .where(roles.c.user_id == users.c.id, roles.c.role == "student")
+            .exists()
+        )
+    )
     if search:
         statement = statement.where(
             users.c.display_name.ilike("%" + search.replace("%", "\\%").replace("_", "\\_") + "%")
@@ -692,6 +724,10 @@ def students(
 def update_student(
     student_id: UUID, payload: StudentUpdate, user=Depends(admin_user), conn=Depends(connection)
 ):
+    users = db.table("users")
+    conn.execute(
+        select(users.c.id).where(users.c.id == student_id).with_for_update(key_share=True)
+    ).first()
     service.lock_student(conn, student_id)
     if not payload.display_name.strip():
         raise HTTPException(422, "Tên hiển thị không được để trống")
@@ -699,12 +735,16 @@ def update_student(
     conn.execute(
         users.update()
         .where(users.c.id == student_id)
-        .values(display_name=payload.display_name.strip())
+        .values(
+            display_name=payload.display_name.strip(),
+            updated_at=now(),
+            account_revision=users.c.account_revision + 1,
+        )
     )
     conn.execute(
         profiles.update()
         .where(profiles.c.student_id == student_id)
-        .values(current_grade=payload.current_grade)
+        .values(current_grade=payload.current_grade, updated_at=now())
     )
     conn.execute(
         insert(db.table("audit_logs")).values(

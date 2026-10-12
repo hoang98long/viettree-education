@@ -1,5 +1,12 @@
 # Thiết kế gói học miễn phí và VIP cho VietTree Education
 
+Cập nhật lớp 3: cùng quy mô và tỷ lệ nội dung như lớp 4; 46 bài/34 đề Free,
+22 bài/22 đề VIP. Mỗi bài lớp 3 có 3 gợi ý: Free xem 1 ý định hướng, VIP xem
+thêm cách làm và tự kiểm tra. Tính năng `learning.guided_hints` được thêm bởi
+`0009_guided_hints`; backend lọc văn bản trước khi trả JSON. Admin cấu hình
+`free_hint_count` trong editor, tối thiểu 1 khi phân bổ. Bài lớp 4 cũ giữ phân
+bổ trước đây. Chi tiết: [học liệu lớp 3](grade3-curriculum.md).
+
 Trạng thái: đã triển khai Free/VIP do admin cấp, chính sách nội dung, trang giới
 thiệu, thử thách và plan_v2. Migration `0003_memberships` bổ sung sáu bảng.
 Thanh toán, báo cáo trong tài khoản phụ huynh và UI quản lý liên kết là giai đoạn tiếp theo.

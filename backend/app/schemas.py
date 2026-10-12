@@ -22,6 +22,7 @@ class UserResponse(BaseModel):
     roles: list[str]
     text_size: Literal["comfortable", "large"] = "comfortable"
     session_expires_at: datetime | None = None
+    must_change_password: bool = False
 
 
 class AccessibilityInput(StrictModel):
@@ -207,6 +208,7 @@ class LessonSummaryResponse(CatalogAccess):
 
 class LessonResponse(LessonSummaryResponse):
     content: dict
+    hint_access: dict[str, int] = Field(default_factory=dict)
     grade: Grade
     topic_title: str
     subject_code: str

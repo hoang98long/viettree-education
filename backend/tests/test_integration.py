@@ -120,7 +120,7 @@ def test_grade_filters(logged_student, grade):
     assert response.status_code == 200
     assert all(row["grade"] == grade for row in response.json())
     topics = logged_student.get(f"/api/v1/topics?grade={grade}&subject_code=MATH").json()
-    assert (len(topics) >= 4) if grade == 4 else (len(topics) == 0)
+    assert (len(topics) >= 4) if grade in (3, 4) else (len(topics) == 0)
     assert logged_student.get("/api/v1/subjects?grade=6").status_code == 422
 
 

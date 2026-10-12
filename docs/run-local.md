@@ -9,11 +9,31 @@ Máy Windows hiện có `.env`, `.venv`, `frontend/node_modules` và PostgreSQL 
 Set-Location 'D:\01_viettree_code\viettree-education\backend'
 ../.venv/Scripts/python.exe -m alembic upgrade head
 ../.venv/Scripts/python.exe -m app.cli check-schema
+../.venv/Scripts/python.exe -m app.cli check-system
 ../.venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload --no-access-log
 ```
 
 Giữ terminal này mở. Migration cập nhật cấu trúc nếu cần, giữ dữ liệu học tập.
 Không cần import schema hoặc seed lại mỗi lần chạy.
+
+Nâng cấp lớp 3 lần đầu: trước khi mở backend, chạy thêm
+`../.venv/Scripts/python.exe -m app.cli seed-grade3-content`.
+Head hiện tại `0010_ai_academy`, bao gồm gợi ý VIP từ 0009. Admin tạo/chỉnh hồ sơ học sinh
+**Lớp 3**, rồi chọn lớp 3 trong học liệu. Mỗi bài lớp 3: Free 1 gợi ý, VIP 3;
+xem [học liệu lớp 3](grade3-curriculum.md). Không đổi tài khoản lớp 4 tự động.
+
+AI Academy trên máy hiện tại đã được migrate và nạp 48 bài/315 hình. Với máy
+khác hoặc lần nâng cấp đầu, cài thêm dependencies và nạp module trước khi chạy:
+
+```powershell
+../.venv/Scripts/python.exe -m pip install -r requirements-lock.txt
+../.venv/Scripts/python.exe -m app.cli seed-ai-academy
+../.venv/Scripts/python.exe -m app.cli verify-ai-academy
+```
+
+Đăng nhập → **AI Academy** (`/ai-academy`); admin `/admin/ai-academy`.
+Mặc định mô phỏng, không cần khóa AI. Chi tiết [AI Academy](ai-academy/README.md).
+Giữ `.env` hiện có; file `.env.example` dùng placeholder, không chép đè mật khẩu.
 
 ## 2. Mở frontend — terminal thứ hai
 
@@ -28,6 +48,16 @@ Giữ terminal này mở. Truy cập **http://localhost:3000**.
 Đặt cổng qua biến `PORT` để tránh lỗi truyền tham số qua npm/PowerShell.
 
 ## 3. Đăng nhập và kiểm tra
+
+Admin mở **Kiểm tra hệ thống** để xem migration, quyền Free/VIP, đề và phiên cũ;
+bấm **Kiểm tra lại** để cập nhật số liệu. Chỉ đọc, không tự dọn dữ liệu.
+Xem [kiểm tra trước triển khai](production-readiness.md) cho bảo trì/backup.
+
+Admin mở **Quản trị tài khoản** để tạo/sửa, khóa/mở, đặt lại mật khẩu hoặc thu hồi
+phiên. Mọi tài khoản mở **Bảo mật tài khoản** để tự đổi mật khẩu. Tài khoản mới
+dùng mật khẩu tạm được dẫn tới trang đổi mật khẩu trước khi sử dụng. Đợt này cần
+migration `0008_account_management` (đã bao gồm trong lệnh bước 1), không cần seed lại tài khoản.
+Chi tiết: [quản trị tài khoản](account-management.md).
 
 Nội dung lớp 4 mới: mở **Góc tư duy** ở tài khoản học sinh; admin xem
 **Chương trình → Lớp 4 → Theo dõi học liệu**. Nạp riêng nếu DB chưa có đợt mở rộng:

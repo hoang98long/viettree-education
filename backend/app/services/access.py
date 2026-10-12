@@ -20,6 +20,7 @@ def resolve_membership(conn, student_id):
     vip_enabled = conn.execute(select(plans.c.is_active).where(plans.c.code == "vip")).scalar()
     active = bool(
         row
+        and row["plan_code"] == "vip"
         and row["status"] == "active"
         and row["starts_at"] <= at < row["ends_at"]
         and vip_enabled

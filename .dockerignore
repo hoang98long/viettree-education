@@ -11,3 +11,6 @@
 **/playwright-report
 .tools
 *.log
+var
+backend/build
+backend/*.egg-info

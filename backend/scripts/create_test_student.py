@@ -1,5 +1,6 @@
 """Tạo học sinh browser test mới; chỉ cho phép database test riêng."""
 
+import argparse
 from uuid import uuid4
 
 from app.core.config import settings
@@ -8,6 +9,9 @@ from app.db import db, engine
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Tạo học sinh mới trong database test riêng")
+    parser.add_argument("--grade", type=int, choices=range(1, 6), default=4)
+    args = parser.parse_args()
     name = engine().url.database
     if name == "viettree-education" or "test" not in name.lower():
         raise RuntimeError("Chỉ được tạo browser test user trong database test riêng")
@@ -32,7 +36,11 @@ def main():
         conn.execute(
             db.table("student_profiles")
             .insert()
-            .values(student_id=user_id, current_grade=4, learning_preferences={"language": "vi"})
+            .values(
+                student_id=user_id,
+                current_grade=args.grade,
+                learning_preferences={"language": "vi"},
+            )
         )
     # Chỉ in username, không in password hay URL kết nối.
     print(username)

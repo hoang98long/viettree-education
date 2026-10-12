@@ -2,6 +2,21 @@
 
 from copy import deepcopy
 
+
+def distribute_hints(content, user, membership):
+    """Filter premium text before serialization; old lessons retain their original support."""
+    result = deepcopy(content)
+    free_count = result.pop("free_hint_count", None)
+    hints = result.get("hints", [])
+    total = len(hints)
+    premium = "admin" in user["roles"] or (
+        membership is not None and "learning.guided_hints" in membership["features"]
+    )
+    available = total if premium or free_count is None else min(total, free_count)
+    result["hints"] = hints[:available]
+    return result, {"available": available, "total": total, "vip_locked": total - available}
+
+
 SUPPORT = {
     "wordtypes": (
         "Phân biệt danh từ, động từ và tính từ trong câu.",

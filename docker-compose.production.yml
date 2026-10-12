@@ -1,0 +1,152 @@
+name: viettree
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Can mat khau PostgreSQL}
+      POSTGRES_DB: ${DB_NAME:-viettree-education}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks: [app]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    logging: *logging
+
+  migrate:
+    image: viettree-backend:${RELEASE:-local}
+    profiles: [operations]
+    environment:
+      APP_ENV: production
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:-viettree-education}
+      DB_USER: viettree_owner
+      DB_PASSWORD: ${DB_OWNER_PASSWORD:?Can mat khau migration}
+      ALLOWED_ORIGINS: https://${DOMAIN:?Can ten mien}
+      COOKIE_SECURE: "true"
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    networks: [app]
+    depends_on:
+      db:
+        condition: service_healthy
+    logging: *logging
+
+  backend:
+    image: viettree-backend:${RELEASE:-local}
+    build:
+      context: .
+      dockerfile: deploy/backend.production.Dockerfile
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      DB_HOST: db
+      DB_PORT: "5432"
+      DB_NAME: ${DB_NAME:-viettree-education}
+      DB_USER: ${DB_USER:-viettree_app}
+      DB_PASSWORD: ${DB_PASSWORD:?Can mat khau ung dung}
+      ALLOWED_ORIGINS: https://${DOMAIN:?Can ten mien}
+      COOKIE_SECURE: "true"
+      SESSION_HOURS: ${SESSION_HOURS:-8}
+      REMEMBER_SESSION_DAYS: ${REMEMBER_SESSION_DAYS:-7}
+      AI_PROVIDER: ${AI_PROVIDER:-simulation}
+      AI_OLLAMA_URL: ${AI_OLLAMA_URL:-http://127.0.0.1:11434}
+      AI_OLLAMA_MODEL: ${AI_OLLAMA_MODEL:-}
+      AI_MEDIA_ROOT: /workspace/var/ai-media
+    volumes:
+      - academy_media:/workspace/var/ai-media
+    networks: [app]
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/ready', timeout=5)",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 6
+      start_period: 20s
+    logging: *logging
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+
+  frontend:
+    image: viettree-frontend:${RELEASE:-local}
+    build:
+      context: .
+      dockerfile: deploy/frontend.production.Dockerfile
+      args:
+        INTERNAL_API_URL: http://backend:8000
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+      NEXT_TELEMETRY_DISABLED: "1"
+    networks: [app]
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 6
+      start_period: 20s
+    logging: *logging
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?Can ten mien}
+      ACME_EMAIL: ${ACME_EMAIL:?Can email quan ly HTTPS}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      app:
+        ipv4_address: 172.30.40.2
+    depends_on:
+      frontend:
+        condition: service_healthy
+    logging: *logging
+
+networks:
+  app:
+    ipam:
+      config:
+        - subnet: 172.30.40.0/24
+
+volumes:
+  academy_media:
+  postgres_data:
+  caddy_data:
+  caddy_config:

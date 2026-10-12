@@ -4,6 +4,7 @@ export class ApiError extends Error {
     message: string,
     public code?: string,
     public requiredPlan?: string,
+    public requestId?: string,
   ) {
     super(message);
   }
@@ -45,6 +46,12 @@ export async function api<T>(
   if (!response.ok) {
     const body = await response.json().catch(() => null);
     if (
+      body?.detail?.code === "PASSWORD_CHANGE_REQUIRED" &&
+      typeof window !== "undefined"
+    ) {
+      window.location.assign("/account/security");
+    }
+    if (
       response.status === 401 &&
       typeof window !== "undefined" &&
       path !== "/auth/login" &&
@@ -62,6 +69,7 @@ export async function api<T>(
           : "Yêu cầu chưa thành công. Hãy thử lại nhé.",
       body?.detail?.code,
       body?.detail?.required_plan,
+      response.headers.get("x-request-id") || undefined,
     );
   }
   return response.json() as Promise<T>;
@@ -71,6 +79,16 @@ export function dateLabel(value: string | null) {
   return value
     ? new Intl.DateTimeFormat("vi-VN", {
         dateStyle: "medium",
+        timeZone: "Asia/Bangkok",
+      }).format(new Date(value))
+    : "—";
+}
+
+export function dateTimeLabel(value: string | null) {
+  return value
+    ? new Intl.DateTimeFormat("vi-VN", {
+        dateStyle: "medium",
+        timeStyle: "short",
         timeZone: "Asia/Bangkok",
       }).format(new Date(value))
     : "—";

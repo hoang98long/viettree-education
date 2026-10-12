@@ -76,7 +76,11 @@ class QuestionInput(StrictModel):
             if (
                 len(ids) < 2
                 or len(set(ids)) != len(ids)
-                or len({normalize(option.text) for option in self.content.options}) != len(ids)
+                # Capitalization can be the skill assessed in a spelling exercise.
+                or len(
+                    {normalize(option.text, case_sensitive=True) for option in self.content.options}
+                )
+                != len(ids)
             ):
                 raise ValueError("Cần ít nhất hai lựa chọn khác nhau")
             values = (

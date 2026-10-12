@@ -40,7 +40,7 @@ def premium(conn, name="assessments"):
         conn.execute(
             select(table.c.id)
             .join(policies, policies.c[f"{kind}_id"] == table.c.id)
-            .where(policies.c.minimum_plan_code == "vip")
+            .where(policies.c.minimum_plan_code == "vip", table.c.code.like("VT4-%"))
             .order_by(table.c.code)
         )
         .scalars()

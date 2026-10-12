@@ -13,32 +13,46 @@ router = APIRouter(prefix="/api/v1", tags=["curriculum-extension"])
 
 
 @router.get("/admin/curriculum-map", response_model=dict)
-def curriculum_map(user=Depends(admin_user), conn=Depends(connection)):
+def curriculum_map(
+    grade: int = Query(4, ge=3, le=4), user=Depends(admin_user), conn=Depends(connection)
+):
+    from app.grade3_curriculum import FOCUS, TOPICS
+
+    topic_map = (
+        TOPIC_MAP
+        if grade == 4
+        else {
+            subject: {key: (title, FOCUS[subject][key]) for key, title in source.items()}
+            for subject, source in TOPICS.items()
+        }
+    )
     topics, subjects, lessons, policies = (
         db.table(name) for name in ("topics", "subjects", "lessons", "content_access_policies")
     )
     topic_rows = {
         (row["subject_id"], row["code"]): dict(row)
-        for row in conn.execute(select(topics).where(topics.c.grade == 4)).mappings()
+        for row in conn.execute(select(topics).where(topics.c.grade == grade)).mappings()
     }
     counts = {}
     for row in conn.execute(
         select(lessons.c.topic_id, policies.c.minimum_plan_code, func.count().label("total"))
         .select_from(lessons.join(topics).outerjoin(policies, policies.c.lesson_id == lessons.c.id))
-        .where(topics.c.grade == 4, lessons.c.status == "published")
+        .where(topics.c.grade == grade, lessons.c.status == "published")
         .group_by(lessons.c.topic_id, policies.c.minimum_plan_code)
     ).mappings():
         counts.setdefault(row["topic_id"], {})[row["minimum_plan_code"]] = row["total"]
     resources = {}
     for name in ("assessments", "questions"):
         table = db.table(name)
-        query = select(table.c.topic_id, func.count().label("total")).where(table.c.grade == 4)
+        query = select(table.c.topic_id, func.count().label("total")).where(table.c.grade == grade)
         if name == "questions":
             versions = db.table("question_versions")
             # Count distinct questions, not every published revision of the same question.
             query = select(table.c.topic_id, func.count(func.distinct(table.c.id)).label("total"))
             query = query.join(versions).where(
-                table.c.grade == 4, table.c.is_active.is_(True), versions.c.status == "published"
+                table.c.grade == grade,
+                table.c.is_active.is_(True),
+                versions.c.status == "published",
             )
         else:
             query = query.where(table.c.status == "published")
@@ -47,17 +61,19 @@ def curriculum_map(user=Depends(admin_user), conn=Depends(connection)):
         }
     subject_rows = {r["code"]: dict(r) for r in conn.execute(select(subjects)).mappings()}
     rows = []
-    for subject_code, source in TOPIC_MAP.items():
+    for subject_code, source in topic_map.items():
         for key, (title, focus) in source.items():
             subject = subject_rows.get(subject_code)
             topic = (
-                topic_rows.get((subject["id"], f"VT4-{subject_code}-{key}")) if subject else None
+                topic_rows.get((subject["id"], f"VT{grade}-{subject_code}-{key}"))
+                if subject
+                else None
             )
             topic_id = topic["id"] if topic else None
             numbers = counts.get(topic_id, {})
             rows.append(
                 dict(
-                    code=f"VT4-{subject_code}-{key}",
+                    code=f"VT{grade}-{subject_code}-{key}",
                     subject_code=subject_code,
                     subject_name=subject["name_vi"] if subject else subject_code,
                     title=title,
@@ -72,7 +88,7 @@ def curriculum_map(user=Depends(admin_user), conn=Depends(connection)):
                     source_url=SOURCES[subject_code],
                 )
             )
-    return {"grade": 4, "rows": rows}
+    return {"grade": grade, "rows": rows}
 
 
 @router.get("/students/me/thinking", response_model=dict)

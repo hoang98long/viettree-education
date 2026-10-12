@@ -27,6 +27,22 @@ const content: LessonContent = {
 };
 
 describe("Bài học có minh họa và hướng dẫn", () => {
+  it("chỉ mở gợi ý backend đã cấp và hiển thị quyền lợi VIP", () => {
+    render(
+      <LessonBody
+        content={{ ...content, hints: [content.hints![0]] }}
+        hintAccess={{ available: 1, total: 3, vip_locked: 2 }}
+      />,
+    );
+    expect(
+      screen.getByRole("link", { name: "Tìm hiểu gợi ý VIP" }),
+    ).toHaveAttribute("href", "/student/membership");
+    fireEvent.click(screen.getByRole("button", { name: "Mở gợi ý 1" }));
+    expect(
+      screen.getByRole("button", { name: "Đã mở hết gợi ý" }),
+    ).toBeDisabled();
+    expect(screen.queryByText(content.hints![1])).not.toBeInTheDocument();
+  });
   it("biểu đồ có số liệu, nhãn và thang; góc được phân loại theo số đo", () => {
     const figure = {
       ...content.illustration!,

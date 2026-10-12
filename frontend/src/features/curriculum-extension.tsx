@@ -165,15 +165,15 @@ export function ThinkingPage() {
   );
 }
 
-export function CurriculumMapPanel() {
+export function CurriculumMapPanel({ grade = 4 }: { grade?: number }) {
   const [subject, setSubject] = useState(""),
     [gaps, setGaps] = useState(false);
   const resource = useResource<{ grade: number; rows: MapRow[] }>(
-    "/admin/curriculum-map",
+    `/admin/curriculum-map?grade=${grade}`,
   );
   return (
     <section className="panel section-title">
-      <h2>Theo dõi học liệu lớp 4</h2>
+      <h2>Theo dõi học liệu lớp {grade}</h2>
       <p>
         Số liệu bài đã xuất bản theo mạch nội dung của 3 môn đang triển khai. Có
         bài trong một mạch chưa có nghĩa đã đáp ứng toàn bộ yêu cầu chương

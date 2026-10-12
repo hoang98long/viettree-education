@@ -9,6 +9,11 @@ còn lượt luyện tập. Không gán điểm hoặc năng lực từ thao tá
 
 ## Các chức năng đề xuất tiếp theo
 
+Quản trị tài khoản đã có tạo/sửa, vai trò, khóa/mở, mật khẩu tạm, thu hồi phiên,
+nhật ký và bảo mật cá nhân. Ưu tiên tiếp cho vận hành: MFA admin, xác minh email/
+khôi phục bằng token, nhập hàng loạt và quyền theo lớp/quan hệ phụ huynh đã xác minh.
+Chính sách và giới hạn: [account-management.md](account-management.md).
+
 Admin đã có trình biên soạn bài học theo khối, nháp riêng, duyệt/xuất bản và audit.
 Các bài hiện có thêm minh họa, mục tiêu, gợi ý từng bước và bài học tiếp theo.
 Hướng dẫn và phần mở rộng chưa triển khai: [lesson-studio.md](lesson-studio.md).

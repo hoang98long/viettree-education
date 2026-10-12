@@ -11,6 +11,7 @@ import type {
   MembershipPlan,
   LessonPreview,
 } from "@/lib/types";
+import { VipPricing } from "./vip-pricing";
 
 const featureLabels: Record<string, string> = {
   "learning.basic": "Bài học nền tảng",
@@ -20,12 +21,17 @@ const featureLabels: Record<string, string> = {
   "learning_plan.basic": "Kế hoạch học 7 ngày",
   "accessibility.text_size": "Cỡ chữ dễ đọc",
   "learning.advanced": "Bài học nâng cao",
+  "learning.guided_hints":
+    "Gợi ý học bài theo bước: định hướng, cách làm, kiểm tra",
   "practice.advanced": "Luyện tập nâng cao",
   "practice.challenge": "Thử thách theo chủ đề",
   "learning_plan.adaptive": "Kế hoạch theo kỹ năng cần ôn",
   "vip.library": "Góc học VIP và theo dõi bài nâng cao",
   "review.mistakes": "Sổ tay ôn lỗi và tự luyện câu đã sai",
   "reports.personal": "Báo cáo 7/30 ngày, in hoặc lưu PDF từ trình duyệt",
+  "academy.full": "AI Academy: lý thuyết, câu hỏi và bài thực hành đầy đủ",
+  "academy.lab": "Phòng thực hành dữ liệu mô phỏng và luyện viết yêu cầu",
+  "academy.studio": "Xưởng sáng tạo và dự án từ mẫu, không cần gọi mô hình AI",
 };
 export function membershipTime(value: string | null) {
   return value
@@ -149,6 +155,7 @@ export function MembershipPage() {
           Tiếp tục học miễn phí
         </Link>
       </section>
+      <VipPricing />
     </>
   );
 }

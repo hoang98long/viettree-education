@@ -239,6 +239,14 @@ export function StudentsPage() {
         title="Học sinh"
         description="Chỉ quản lý thông tin cần thiết cho học tập."
       />
+      <div className="actions">
+        <Link className="button" href="/admin/accounts/new">
+          Tạo tài khoản học sinh
+        </Link>
+        <Link className="button secondary" href="/admin/accounts">
+          Quản trị mọi tài khoản
+        </Link>
+      </div>
       <div className="filters">
         <label>
           Tìm theo tên
@@ -285,6 +293,12 @@ export function StudentsPage() {
                           >
                             Xem / cập nhật
                           </button>
+                          <Link
+                            className="button secondary small"
+                            href={`/admin/accounts/${student.id}/edit`}
+                          >
+                            Quản lý tài khoản
+                          </Link>
                           <Link
                             className="button secondary small"
                             href={`/admin/students/${student.id}/membership`}
@@ -609,9 +623,11 @@ export function CurriculumPage() {
     <>
       <PageTitle
         title="Chương trình học"
-        description="Xem môn học, chủ đề, bài học và kỹ năng. Nội dung lớp 4 đã xuất bản."
+        description="Xem môn học, chủ đề, bài học và kỹ năng. Nội dung lớp 3 và lớp 4 đã xuất bản."
       />
-      {grade === 4 && <CurriculumMapPanel />}
+      {[3, 4].includes(grade) && (
+        <CurriculumMapPanel key={grade} grade={grade} />
+      )}
       <div className="filters">
         <label>
           Lớp
@@ -767,10 +783,13 @@ export function SettingsPage() {
   return (
     <>
       <PageTitle title="Cài đặt và vận hành" />
+      <Link className="button secondary" href="/admin/system">
+        Kiểm tra hệ thống
+      </Link>
       <section className="panel">
         <h2>Thông tin phiên bản MVP</h2>
         <p>
-          Giao diện tiếng Việt · Chương trình lớp 1–5 · Nội dung lớp 4: Toán,
+          Giao diện tiếng Việt · Chương trình lớp 1–5 · Nội dung lớp 3–4: Toán,
           Tiếng Việt, Tiếng Anh.
         </p>
         <p>
@@ -788,6 +807,12 @@ export function SettingsPage() {
       </section>
       <section className="panel section-title">
         <h2>Tài khoản hệ thống</h2>
+        <Link className="button" href="/admin/accounts">
+          Mở quản trị tài khoản
+        </Link>
+        <Link className="button secondary" href="/account/security">
+          Bảo mật tài khoản của tôi
+        </Link>
         <Data<User[]> path="/admin/users">
           {(users) =>
             users.map((user) => (

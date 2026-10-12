@@ -127,7 +127,9 @@ def test_thinking_catalog_metadata_only_live_access_own_progress_and_grade(logge
         .where(db.table("student_profiles").c.student_id == student)
         .values(current_grade=3)
     )
-    assert client.get("/api/v1/students/me/thinking").json()["total"] == 0
+    grade3 = client.get("/api/v1/students/me/thinking").json()
+    assert grade3["grade"] == 3 and grade3["total"] > 0
+    assert all(item["id"] not in (free, vip) for item in grade3["items"])
 
 
 @pytest.mark.integration

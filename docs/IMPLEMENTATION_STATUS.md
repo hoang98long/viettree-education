@@ -3,42 +3,42 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: xem phần **Học liệu lớp 4 và Góc tư duy** cuối tài liệu;
+Trạng thái mới nhất: xem phần **Phân hệ lớp 3 và gợi ý VIP** cuối tài liệu;
 phần VIP, phiên đăng nhập và ngân hàng câu hỏi ghi nhận các đợt trước.
 Các checkpoint và số lượng trong phần đầu ghi nhận mốc MVP trước khi mở rộng.
 
-| Checkpoint | Kết quả |
-| --- | --- |
-| 1 · Đọc SQL, mapping constraints | Hoàn thành: 34 bảng, UUID/JSONB/checks/composite FK; SQL gốc giữ nguyên |
-| 2 · Cấu hình, auth, migration | Hoàn thành: FastAPI/Next, root env, session/CSRF/RBAC/rate limit, baseline + 2 bảng auth |
-| 3 · Seed | Hoàn thành: admin/longnh; 12 topics, 24 lessons, 96 questions, 12 assessments, 12 skills |
-| 4 · API làm bài | Hoàn thành: assignment self, exact version, start/resume/save/submit/result/history |
-| 5 · Personalization | Hoàn thành: rule_v1, confidence, ôn 1/3/7 ngày, prerequisite/weak skills, rebuild statistics |
-| 6 · Frontend | Hoàn thành: public/login, mọi route student/admin yêu cầu, responsive; teacher/guardian layout |
-| 7 · Kiểm chứng | Pass backend/unit/integration/concurrency, frontend component/type/lint/build/format, browser desktop/mobile, smoke PostgreSQL |
-| 8 · Tài liệu | README tiếng Việt, architecture/API/security/personalization, SQL kiểm chứng seed |
+| Checkpoint                       | Kết quả                                                                                                                        |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 1 · Đọc SQL, mapping constraints | Hoàn thành: 34 bảng, UUID/JSONB/checks/composite FK; SQL gốc giữ nguyên                                                        |
+| 2 · Cấu hình, auth, migration    | Hoàn thành: FastAPI/Next, root env, session/CSRF/RBAC/rate limit, baseline + 2 bảng auth                                       |
+| 3 · Seed                         | Hoàn thành: admin/longnh; 12 topics, 24 lessons, 96 questions, 12 assessments, 12 skills                                       |
+| 4 · API làm bài                  | Hoàn thành: assignment self, exact version, start/resume/save/submit/result/history                                            |
+| 5 · Personalization              | Hoàn thành: rule_v1, confidence, ôn 1/3/7 ngày, prerequisite/weak skills, rebuild statistics                                   |
+| 6 · Frontend                     | Hoàn thành: public/login, mọi route student/admin yêu cầu, responsive; teacher/guardian layout                                 |
+| 7 · Kiểm chứng                   | Pass backend/unit/integration/concurrency, frontend component/type/lint/build/format, browser desktop/mobile, smoke PostgreSQL |
+| 8 · Tài liệu                     | README tiếng Việt, architecture/API/security/personalization, SQL kiểm chứng seed                                              |
 
 ## Chứng cứ đã chạy
 
-| Lệnh/kiểm chứng | Kết quả |
-| --- | --- |
-| `alembic upgrade head` trên DB thật/test | Pass; revision 0002_auth_sessions; không import lại DB thật |
-| `python -m app.cli check-schema` | Pass, đối chiếu đủ bảng và cột |
-| `python -m app.cli seed` chạy lặp | Pass; cùng số lượng, không reset password/kết quả |
-| `python -m app.cli import-schema` trên DB test | Pass, dùng nguyên SQL gốc, không reset |
-| `pytest -q` + TEST_DATABASE_URL riêng | **121 passed**, 1 warning deprecation từ Starlette/httpx |
-| `ruff check` / `ruff format --check` | Pass sau formatter |
-| `python scripts/smoke.py` trên DB thật | **SMOKE PASS** toàn luồng admin/longnh/chấm/kết quả/history/mastery/stats, rollback |
-| `npm run typecheck`, `npm run lint` | Pass |
-| `npm test` | **4 passed**, bốn dạng input |
-| `npm run build` | Pass, Next.js 16.4.0 production build |
-| `npm run format:check` | Pass |
-| `npm audit` | **0 vulnerabilities** sau cập nhật toolchain |
-| `npm run test:e2e` | **4 passed**: student/admin trên desktop/mobile Chrome, sau reload và route guard |
-| `docker compose config --quiet` | Pass |
-| SQL `database/seeds/verify.sql` | Mỗi môn 4/8/32/4; 12 đề đều 8 items; 0 câu thiếu skill |
-| SQL count attempts DB thật sau smoke | **0**; lịch sử/điểm demo vẫn sạch |
-| Browser với backend nối DB thật sau kiểm thử | Pass login/dashboard/logout admin và longnh, history=0; `/ready` trả ready |
+| Lệnh/kiểm chứng                                | Kết quả                                                                             |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `alembic upgrade head` trên DB thật/test       | Pass; revision 0002_auth_sessions; không import lại DB thật                         |
+| `python -m app.cli check-schema`               | Pass, đối chiếu đủ bảng và cột                                                      |
+| `python -m app.cli seed` chạy lặp              | Pass; cùng số lượng, không reset password/kết quả                                   |
+| `python -m app.cli import-schema` trên DB test | Pass, dùng nguyên SQL gốc, không reset                                              |
+| `pytest -q` + TEST_DATABASE_URL riêng          | **121 passed**, 1 warning deprecation từ Starlette/httpx                            |
+| `ruff check` / `ruff format --check`           | Pass sau formatter                                                                  |
+| `python scripts/smoke.py` trên DB thật         | **SMOKE PASS** toàn luồng admin/longnh/chấm/kết quả/history/mastery/stats, rollback |
+| `npm run typecheck`, `npm run lint`            | Pass                                                                                |
+| `npm test`                                     | **4 passed**, bốn dạng input                                                        |
+| `npm run build`                                | Pass, Next.js 16.4.0 production build                                               |
+| `npm run format:check`                         | Pass                                                                                |
+| `npm audit`                                    | **0 vulnerabilities** sau cập nhật toolchain                                        |
+| `npm run test:e2e`                             | **4 passed**: student/admin trên desktop/mobile Chrome, sau reload và route guard   |
+| `docker compose config --quiet`                | Pass                                                                                |
+| SQL `database/seeds/verify.sql`                | Mỗi môn 4/8/32/4; 12 đề đều 8 items; 0 câu thiếu skill                              |
+| SQL count attempts DB thật sau smoke           | **0**; lịch sử/điểm demo vẫn sạch                                                   |
+| Browser với backend nối DB thật sau kiểm thử   | Pass login/dashboard/logout admin và longnh, history=0; `/ready` trả ready          |
 
 Integration từ chối DB thật. Các test concurrency và browser có dữ liệu ghi thật
 trong viettree-education-test; không xóa/reset cả database test. Browser lần đầu dùng
@@ -311,3 +311,181 @@ Hướng dẫn, schema/API, quy tắc sửa/xuất bản và phần chưa triể
 
 Ưu tiên tiếp theo: lấp các mạch còn thiếu, giáo viên rà soát/nhận xét bài viết,
 nghe/phát âm có âm thanh và các môn khác. Chưa triển khai chấm tự luận hoặc audio.
+
+## Quản trị tài khoản và bảo mật cá nhân — 10/10/2026
+
+- Admin có trang **Quản trị tài khoản**: tạo, tìm kiếm/lọc/phân trang, sửa tên
+  đăng nhập/tên hiển thị/email tùy chọn, một hoặc nhiều vai trò, trạng thái,
+  lớp/cỡ chữ học sinh; liên kết gói Free/VIP. Thêm khóa/mở, đặt lại mật khẩu,
+  thu hồi phiên và 20 dòng nhật ký gần nhất với chi tiết thay đổi tiếng Việt.
+- Mọi vai trò có **Bảo mật tài khoản**: xác nhận mật khẩu hiện tại để đổi mật
+  khẩu, xem phiên và đăng xuất phiên khác. Đổi mật khẩu thay token/CSRF, thu hồi
+  các phiên cũ và cấp phiên thường mới. Cache/tab khác kiểm tra lại.
+- Mật khẩu mới 15–256 ký tự, cho Unicode/khoảng trắng, chặn một số mật khẩu phổ
+  biến, trùng tên đăng nhập hoặc mật khẩu cũ. Tài khoản do admin tạo/đặt lại dùng
+  mật khẩu tạm phải đổi trước khi học/quản trị; backend chặn API khi cờ bật.
+  Không reset hoặc ép đổi tài khoản cũ sau migration.
+- Thao tác accounts có RBAC/CSRF, lý do và xác nhận mật khẩu admin, giới hạn xác
+  nhận 10 lượt/phút/tài khoản dùng chung PostgreSQL. Không tự khóa/thay vai trò,
+  bảo vệ admin cuối cùng. Revision/khóa transaction ngăn ghi đè, kiểm tra lại
+  actor và không cho hai admin đồng thời khóa nhau. Login khóa hàng tài khoản
+  để phiên từ mật khẩu cũ không sống sót sau reset đồng thời.
+- Khóa user FOR NO KEY UPDATE tương thích khóa ngoại của nhật ký/phiên, tránh
+  vòng chờ với thao tác khóa hồ sơ trước. Có kiểm thử đồng thời tái hiện tình
+  huống hồ sơ đang khóa, thao tác sửa tài khoản đang chờ và ghi audit vẫn hoàn tất.
+- Đổi lớp/gỡ vai trò học sinh giữ hồ sơ, membership, attempts/answers và tiến độ.
+  Danh sách/thống kê học sinh chỉ tính người còn vai trò student. Sửa hồ sơ cũ
+  tăng account_revision để màn hình mới phát hiện xung đột. Nhật ký không chứa
+  password/hash, token/CSRF hoặc email plaintext; log lỗi DB chỉ tên constraint,
+  không SQL/parameters. Không có API xóa tài khoản.
+- **299 backend tests**, **18 component tests**, **22 browser journeys** đạt.
+  Browser bao gồm tạo/sửa, mật khẩu tạm, thay token, khóa/mở, reset, tự đổi mật
+  khẩu, phiên khác và các luồng biên soạn/học tập/VIP/phiên cũ trên desktop/mobile.
+  Kiểm tra form không tràn trang ở 320/768/1280 px. Ruff check/format, TypeScript,
+  ESLint, Prettier và production build đạt. Warning Starlette/httpx còn tồn tại.
+  Sau điều chỉnh khóa user và checkbox vai trò, bộ 299 backend tests đạt lại;
+  hai luồng tài khoản chạy lại đạt trên Next standalone với static assets,
+  đã xem ảnh chụp giao diện điện thoại. Docker/container runtime chưa kiểm thử.
+- DB local đã lên **0008_account_management**, thêm ba cột trên users, không
+  thêm bảng hoặc seed tài khoản. Đối chiếu mọi cột/hàng đã có trên mọi bảng trước/
+  sau và checksum SQL gốc giữ nguyên: sáu tài khoản, 23 phiên, hai membership,
+  năm attempts, một answer, tám tiến độ đọc và toàn bộ học liệu vẫn nguyên trạng.
+  Smoke chỉ đọc sáu hồ sơ admin mới xác nhận revision/cờ mặc định và payload an toàn.
+- Kiểm thử backend/browser dùng DB test riêng và chạy tuần tự. Server kiểm thử
+  8001/3001 đã dừng; khởi động backend/frontend theo [run-local.md](run-local.md).
+
+Hướng dẫn sử dụng, chính sách và phần cần phát triển tiếp:
+[account-management.md](account-management.md). Chưa có MFA, email xác minh/
+khôi phục tự động, nhập hàng loạt hoặc quyền phụ huynh/giáo viên theo lớp.
+
+## Phân hệ lớp 3 và gợi ý VIP — 10/10/2026
+
+- Bổ sung 21 chủ đề/kỹ năng, 68 bài học, 384 câu hỏi riêng biệt và 56 đề lớp 3.
+  Số lượng từng môn và tỷ lệ Free/VIP bằng bộ mẫu lớp 4: Toán 25/142/21,
+  Tiếng Việt 23/130/19, Tiếng Anh 20/112/16. Free 46 bài/228 câu/34 đề;
+  VIP 22 bài/156 câu/22 đề. Ngữ liệu tự biên soạn, có mục tiêu, ví dụ, ghi nhớ,
+  gợi ý, tự giải thích và một số minh họa SVG. Các câu đọc kèm ngữ liệu độc lập.
+- Lớp 3 tích hợp danh mục môn/chủ đề, học bài, bài tập, kế hoạch, Góc tư duy,
+  công cụ VIP và quản trị hiện có. Chọn lớp mặc định theo hồ sơ; chọn bộ lọc
+  không tự thay đổi lớp/quyền học. Admin lọc lớp 3 và xem bảng học liệu thực tế,
+  phần còn thiếu và nguồn chương trình. Không tuyên bố hoàn thành cả chương trình.
+- Gợi ý lớp 3: Free 1 định hướng, VIP 3 theo bước định hướng/cách làm/kiểm tra.
+  Backend cắt văn bản VIP trước khi trả JSON, kiểm tra tính năng gói live,
+  `hint_access` giải thích số gợi ý và `no-store` tránh lưu quyền/nội dung.
+  Mục tiêu/ví dụ và lời giải sau nộp vẫn đầy đủ cho Free. Admin xem toàn bộ và
+  cấu hình số gợi ý Free trong editor; bài cũ không có chính sách giữ cách cũ.
+- Migration **0009_guided_hints** thêm `learning.guided_hints` cho gói VIP;
+  không đổi membership/thời hạn hay bảng học tập. Lệnh `seed-grade3-content`
+  chỉ nạp nội dung, có advisory lock/transaction/ID ổn định. Full seed development
+  nạp cả hai lớp, giữ tương thích các hàm/lệnh lớp 4; verify hỗ trợ `--grade 3`
+  và đếm câu riêng biệt qua các phiên bản.
+- Trình soạn câu hỏi hỗ trợ các lựa chọn chỉ khác chữ hoa cho bài chính tả;
+  vẫn chuẩn hóa NFC/whitespace và chặn lựa chọn trùng hệt nhau. Chấm vẫn theo
+  id lựa chọn, không suy ra đáp án từ chữ hoa.
+- Đã qua **377 backend tests**, gồm kiểm tra đáp án độc lập theo văn bản/phép tính
+  của toàn bộ 384 câu lớp 3, schema editor, số lượng/gói, seed lặp giữ bản sửa,
+  quyền theo lớp, hết hạn/thu hồi/tắt tính năng gợi ý, admin và làm/nộp/chấm bài
+  thật ở cả ba môn. **19 component tests**, typecheck/lint/format và production
+  build frontend đã qua. Backend/browser dùng database test riêng, chạy tuần tự.
+- DB local hiện tại đã có cả hai lớp, mỗi lớp đúng 68/384/56; head mới đã áp dụng.
+  Seed lớp 3 lặp hai lần: snapshot mọi hàng/cột/số lượng hiện tại trước/sau giữ
+  nguyên. Đối chiếu snapshot trước đợt tài khoản xác nhận học liệu lớp 4, attempts,
+  answers và tiến độ cũ giữ nguyên; SQL schema gốc không đổi. Snapshot lịch sử
+  khác một số dữ liệu vận hành tài khoản/phiên/recommendations; không khôi phục
+  hoặc ghi đè các dữ liệu đó.
+
+Nguồn chương trình, giới hạn học liệu và cách nạp/vận hành:
+[grade3-curriculum.md](grade3-curriculum.md). Local/VPS và README đã cập nhật.
+
+Browser: **22 kịch bản hồi quy** và **2 kịch bản lớp 3 desktop/mobile** đã qua
+trên bản production preview. Kịch bản mới kiểm tra ba môn, lớp theo hồ sơ,
+bảng quản trị/editor, gợi ý Free 1 → cấp VIP 3 → thu hồi còn 1, không lộ văn bản
+VIP trong JSON/DOM Free và không tràn trang ở 320/768/1280 px. Lượt đầu bộ
+chọn nhãn `Lớp` của test quá chặt; sửa selector và chạy lại cả hai project lớp 3
+đã qua. Đã xem ảnh bài học. Sau chỉnh bộ đếm CLI, chạy lại 79 kiểm thử liên quan
+(78 qua và kiểm thử inventory qua khi sửa fixture dùng bản nháp đúng constraint).
+Không chạy kiểm thử ghi trên DB thật. Server kiểm thử 8001/3001 đã dừng;
+khởi động bản local theo [run-local.md](run-local.md).
+
+## Rà soát sẵn sàng triển khai · 10/10/2026
+
+Đã bổ sung bộ production có sẵn trong repo, tách role migration/runtime, Caddy
+HTTPS/trusted proxy/body limit, Dockerfile không hot reload và user không phải
+root; backup script và bootstrap admin đầu tiên không ghi đè tài khoản.
+Admin có **Kiểm tra hệ thống**; CLI check-system chỉ đọc và cleanup-auth mặc định
+dry-run. Readiness đối chiếu DB/head trực tiếp, cache cấu trúc 60 giây;
+auth/quyền tiếp tục kiểm tra DB. Cấu hình chặt hơn, có timeout DB, mã tra cứu lỗi
+và giới hạn login từng account/IP để nhiều học sinh dùng chung mạng.
+
+| Kiểm chứng lần này                                                | Kết quả                                                                                                   |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Backend toàn bộ unit/integration/concurrency trên DB test riêng   | **402 passed**, 332.77 giây; 1 deprecation warning Starlette/httpx                                        |
+| Cấu hình và phản hồi lỗi sau tinh chỉnh cuối                      | **15 passed**; không in secret cấu hình, từ chối placeholder production, mã hỗ trợ khớp log               |
+| Frontend component tests                                          | **19 passed**                                                                                             |
+| Playwright desktop/mobile, không skip                             | **26 passed**, 2.2 phút; accounts, authoring, lớp 3–4, Free/VIP, hints, sessions, learning, system status |
+| Ruff check/format, ESLint, TypeScript, Prettier, production build | Pass                                                                                                      |
+| Npm audit và pip-audit requirements-lock                          | Không ghi nhận lỗ hổng đã biết tại thời điểm kiểm tra                                                     |
+| Production config riêng: docs/OpenAPI tắt, health                 | Pass bằng TestClient; không truy cập/ghi DB thật                                                          |
+| Docker Compose production config --quiet                          | Pass; không in secrets; chưa build/run container                                                          |
+| Caddyfile validate bằng Caddy 2.11.7 chính thức                   | Pass; checksum release đã đối chiếu; chưa chạy HTTPS/cấp chứng chỉ thật                                   |
+| Backup và restore rehearsal bằng PostgreSQL 18 local              | Pass: pg_dump DB test, pg_restore vào DB test mới, schema/head/system checks đều đạt                      |
+| Check-system và cleanup-auth dry-run trên DB local đang sử dụng   | Pass; head 0009, không thiếu policy/đề lỗi theo tiêu chí kiểm tra; không dọn dữ liệu                      |
+
+Không thêm migration trong đợt vận hành này, không thay SQL gốc, mật khẩu/gói học
+hay lịch sử ở database hiện tại. Database phục hồi thử được giữ riêng
+`viettree-restore-test-2d8276df8ae8`, không nối dịch vụ học sinh vào DB này.
+Không reset/drop database test hoặc database đang sử dụng. Server kiểm thử
+8001/3001 đã dừng sau kiểm thử; khởi động local theo hướng dẫn để tải code mới.
+
+Docker Engine trên máy chưa chạy: chưa chứng minh image chạy trên Linux/VPS.
+Cần kiểm tra HTTPS, role DB đích, backup/restore trên server, tải dự kiến và quy
+trình dữ liệu học sinh trước mở truy cập. Chi tiết:
+[production-readiness.md](production-readiness.md), [deploy-vps.md](deploy-vps.md).
+
+## AI Academy · 12/10/2026
+
+Đã triển khai module dùng cùng auth/FreeVIP/profile/class/guardian/media/consent,
+không ứng dụng thứ hai. Migration `0010_ai_academy` thêm 29 bảng riêng, JSONB
+version và FK giữ lịch sử. DB local đã backup trước, migrate/seed thành công;
+hash mọi hàng cũ đối chiếu lại vẫn nguyên vẹn. Mật khẩu/gói học không đổi.
+
+48 bài/336 bước/144 câu checkpoint: lớp 4 là 36 tiết/9 chủ đề, các khối
+1/2/3/5 có khung năm và 3 mẫu mỗi khối. 10 loại hoạt động + lab 24 mẫu + Prompt
+Builder, 5 dự án, 12 huy hiệu. 315 SVG file thật: 8 mascot/19 cover/48 hero/
+144 minh họa/72 thẻ/12 badge/12 UI; manifest/hash/alt/mapping kiểm thành công.
+AI4-12 có phiên bản 2 sửa mapping ảnh giải thích 3/8, giữ bản 1 và tiến độ đã ghim.
+
+Player chấm/resume/ghi điểm, Free 1/VIP 3 mức gợi ý, tutor simulation và Ollama
+adapter có policy/consent/quotas; xưởng sáng tạo 4 loại mẫu, nháp/nộp riêng;
+teacher giao bài/CSV/rubric, guardian xác minh/chấp thuận/export/yêu cầu gỡ text;
+CMS nháp/duyệt/xuất bản/ẩn/nhân bản/chủ đề mới/upload và duyệt ảnh/job SVG;
+admin lớp/ghi danh/liên kết phụ huynh/quyền/chính sách/mẫu hướng dẫn/cảnh báo/yêu cầu riêng tư.
+
+Browser chạy toàn bộ 32: 30 qua trong lượt 2,8 phút; hai teacher/guardian fail do
+selector getByLabel trên textarea sau remount. Đổi sang role textbox, chọn nút
+logout đầu tiên (Shell có hai nút), chạy lại cả desktop/mobile: **2 passed**,
+8,6 giây, không skip. Như vậy 32 kịch bản đã qua, bao gồm 26 hồi quy LMS cũ.
+Visual smoke desktop/mobile không overflow, không ảnh hỏng hoặc pageerror/5xx;
+hình phân số khác dữ kiện được phát hiện và sửa bằng phiên bản mới.
+
+19 frontend components, ESLint/TypeScript/Prettier và build production qua.
+Ruff app/tests/scripts/migration 0010 qua; migrations 0001/0002/env cũ có style
+khác baseline, không chỉnh lại chúng trong đợt này. Pip-audit lock với metadata
+PyPI: không lỗ hổng đã biết. Compose production config --quiet, Caddy validate
+và bash syntax backup qua; Docker Engine chưa chạy nên chưa run image/HTTPS.
+Backup script đã mở rộng cặp dump+media archive, chưa chạy cặp này trên Docker.
+
+Backend hồi quy toàn bộ **468 passed**, 379,55 giây; sau bổ sung chất lượng/mục
+bài được giao **67 kiểm thử Academy passed**, 39,45 giây. Tập 67 là phần kiểm
+lại module và một test mới, không cộng dồn vào 468. Một warning Starlette/httpx
+về deprecated adapter test, không lỗi chức năng.
+Admin Tổng quan có độ phủ 48/48 và cảnh báo cấu trúc/đáp án/media approved/rubric;
+chỉ đọc, không tự sửa nội dung của giáo viên. Wheel được kiểm chứa 315 SVG cùng
+schema và manifest. Tài liệu [AI Academy](ai-academy/README.md),
+[báo cáo đầy đủ](ai-academy/completion-report.md) nêu phạm vi đã làm và còn thiếu;
+không coi adapter mock là model đã chạy, hoặc simulation là nhận dạng ảnh thật.
+
+Smoke cuối trên 4 trang xác nhận mapping 3/8 đúng trên desktop/mobile, bài được
+giao hiện ở Hành trình, admin có độ phủ 48/48 và không cảnh báo chất lượng.
+Server kiểm thử 8001/3001 đã dừng. Build local được trả về backend 8000;
+dùng run-local để mở lại.

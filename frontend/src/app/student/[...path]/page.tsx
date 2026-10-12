@@ -18,10 +18,13 @@ import { MembershipPage } from "@/features/membership";
 import { PracticeLibrary } from "@/features/practice-library";
 import { VipLibraryPage, VipMistakesPage, VipReportPage } from "@/features/vip";
 import { ThinkingPage } from "@/features/curriculum-extension";
+import { StudentClassroom } from "@/features/classrooms";
 export default function Page() {
   const { path } = useParams<{ path: string[] }>();
   if (path.length === 1)
     switch (path[0]) {
+      case "classroom":
+        return <StudentClassroom />;
       case "dashboard":
         return <StudentDashboard />;
       case "grades":

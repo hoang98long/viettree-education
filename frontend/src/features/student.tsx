@@ -244,16 +244,26 @@ export function StudentDashboard() {
 
 export function Grades() {
   const search = useSearchParams();
-  const initial = Number(search.get("grade") || "4");
-  const [grade, setGrade] = useState(
-    initial >= 1 && initial <= 5 ? initial : 4,
+  const initial = Number(search.get("grade"));
+  const profile = useResource<{ current_grade: number }>(
+    "/students/me/profile",
   );
+  const availability =
+    useResource<{ grade: number; status: string }[]>("/grades");
+  const [selectedGrade, setGrade] = useState<number | null>(
+    initial >= 1 && initial <= 5 ? initial : null,
+  );
+  const grade = selectedGrade ?? profile.data?.current_grade ?? 4;
+  const isAvailable = (value: number) =>
+    availability.data?.some(
+      (item) => item.grade === value && item.status === "available",
+    ) ?? false;
   return (
     <>
       <PageTitle
         eyebrow="KHÁM PHÁ CHƯƠNG TRÌNH"
         title="Chọn lớp học của em"
-        description="Lớp 4 đã có bài học và luyện tập. Những lớp khác đang được xây dựng."
+        description="Lớp 3 và lớp 4 đã có bài học, luyện tập và bài tư duy cho ba môn."
       />
       <div className="grade-selector">
         {[1, 2, 3, 4, 5].map((value) => (
@@ -264,11 +274,11 @@ export function Grades() {
             key={value}
           >
             Lớp {value}
-            <small>{value === 4 ? "Học ngay" : "Sắp ra mắt"}</small>
+            <small>{isAvailable(value) ? "Học ngay" : "Đang chuẩn bị"}</small>
           </button>
         ))}
       </div>
-      {grade !== 4 && (
+      {availability.data && !isAvailable(grade) && (
         <div className="notice">
           <Sprout />
           <div>
@@ -280,6 +290,15 @@ export function Grades() {
           </div>
         </div>
       )}
+      {profile.data &&
+        profile.data.current_grade !== grade &&
+        isAvailable(grade) && (
+          <p className="notice">
+            Hồ sơ của em đang ở lớp {profile.data.current_grade}. Em có thể xem
+            danh mục lớp {grade}; nhờ quản trị viên đổi lớp trong hồ sơ để học
+            và luyện tập lớp này.
+          </p>
+        )}
       <Resource<Subject[]> key={grade} path={`/subjects?grade=${grade}`}>
         {(data) => <SubjectCards subjects={data} />}
       </Resource>
@@ -384,7 +403,7 @@ export function SubjectPage({ code }: { code: string }) {
           ) : (
             <Empty>
               Chương trình lớp {grade} · {name} đang xây dựng. Em hãy quay lại
-              lớp 4 để bắt đầu học nhé.
+              lớp 3 hoặc lớp 4 để khám phá học liệu nhé.
             </Empty>
           )
         }
@@ -439,7 +458,7 @@ function LessonContent({ data }: { data: Lesson }) {
         title={data.title}
         description={`${data.estimated_minutes} phút · Đọc chậm rãi theo nhịp của em`}
       />
-      <LessonBody content={data.content} />
+      <LessonBody content={data.content} hintAccess={data.hint_access} />
       <section className="panel lesson-completion">
         <h2>{completed ? "Em đã đọc xong bài này" : "Em đã đọc xong chưa?"}</h2>
         <p>

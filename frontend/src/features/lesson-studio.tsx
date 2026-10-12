@@ -678,6 +678,30 @@ function LessonForm({
               onChange={(e) => content({ hints: e.target.value.split("\n") })}
             />
           </label>
+          <label htmlFor="lesson-free-hints">
+            Số gợi ý miễn phí
+            <select
+              id="lesson-free-hints"
+              value={form.content.free_hint_count ?? "all"}
+              onChange={(e) =>
+                content({
+                  free_hint_count:
+                    e.target.value === "all" ? null : Number(e.target.value),
+                })
+              }
+            >
+              <option value="all">Tất cả gợi ý hiện có</option>
+              {[1, 2, 3, 4, 5].map((count) => (
+                <option key={count} value={count}>
+                  {count} gợi ý đầu
+                </option>
+              ))}
+            </select>
+            <small>
+              Ít nhất 1 gợi ý cơ bản khi phân bổ. Các gợi ý còn lại dành cho
+              VIP; số miễn phí không được vượt tổng gợi ý đã nhập.
+            </small>
+          </label>
           <label htmlFor="lesson-reflection">
             Câu hỏi tự suy ngẫm (mỗi dòng một ý, tối đa 3)
             <textarea
@@ -1105,7 +1129,8 @@ function WithOptions({ original }: { original?: Draft }) {
         <ErrorState message={options.error} retry={options.retry} />
       ) : !options.data.topics.length ? (
         <Empty>
-          Lớp này chưa có chủ đề để biên soạn. Chọn lớp 4 để tiếp tục.
+          Lớp này chưa có chủ đề để biên soạn. Chọn lớp 3 hoặc lớp 4 để tiếp
+          tục.
         </Empty>
       ) : (
         <LessonForm

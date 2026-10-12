@@ -5,6 +5,8 @@ from threading import Lock
 from sqlalchemy import MetaData, create_engine, inspect
 from sqlalchemy.engine import Connection
 
+from app.academy.tables import TABLES as AI_TABLES
+from app.classroom.tables import TABLES as CLASSROOM_TABLES
 from app.core.config import ROOT, settings
 
 SCHEMA = ROOT / "database/viettree_education_schema.sql"
@@ -73,12 +75,33 @@ MEMBERSHIP_COLUMNS["lesson_drafts"] = {
     "reviewed_at",
     "updated_at",
 }
+MEMBERSHIP_COLUMNS["users"] = {"account_revision", "must_change_password", "password_changed_at"}
 EXTRA_TABLES = AUTH_TABLES + [name for name in MEMBERSHIP_COLUMNS if name not in TABLE_NAMES]
+EXTRA_TABLES += AI_TABLES + CLASSROOM_TABLES
+MEMBERSHIP_COLUMNS["classes"] = {"edit_revision"}
+MEMBERSHIP_COLUMNS["class_enrollments"] = {"recognition_alias"}
+MEMBERSHIP_COLUMNS["ai_lessons"] = {"minimum_plan_code"}
 
 
 @lru_cache
 def engine():
-    return create_engine(settings().database_url, pool_pre_ping=True, hide_parameters=True)
+    config = settings()
+    return create_engine(
+        config.database_url,
+        pool_pre_ping=True,
+        hide_parameters=True,
+        pool_size=config.db_pool_size,
+        max_overflow=config.db_pool_max_overflow,
+        pool_timeout=config.db_pool_timeout,
+        connect_args={
+            "connect_timeout": config.db_connect_timeout,
+            "options": f"-c statement_timeout={config.db_statement_timeout_ms}",
+        },
+    )
+
+
+class SchemaNotReady(RuntimeError):
+    """Schema hoặc migration chưa tương thích với release đang chạy."""
 
 
 class Database:
@@ -91,7 +114,7 @@ class Database:
         needed = TABLE_NAMES + (EXTRA_TABLES if include_auth else [])
         missing = sorted(set(needed) - set(inspector.get_table_names(schema="public")))
         if missing:
-            raise RuntimeError(
+            raise SchemaNotReady(
                 "Thiếu bảng: "
                 + ", ".join(missing)
                 + ". Import SQL gốc / chạy alembic upgrade head."
@@ -109,14 +132,14 @@ class Database:
             )
             actual = {column["name"] for column in inspector.get_columns(name, schema="public")}
             if required - actual:
-                raise RuntimeError(
+                raise SchemaNotReady(
                     f"Schema không khớp: {name}, thiếu cột {sorted(required - actual)}"
                 )
         if include_auth:
             for name, required in MEMBERSHIP_COLUMNS.items():
                 actual = {column["name"] for column in inspector.get_columns(name, schema="public")}
                 if required - actual:
-                    raise RuntimeError(
+                    raise SchemaNotReady(
                         f"Schema không khớp: {name}, thiếu cột {sorted(required - actual)}"
                     )
 

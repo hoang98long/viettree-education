@@ -21,7 +21,8 @@ type SessionContextValue = SessionState & {
 };
 const SessionContext = createContext<SessionContextValue | null>(null);
 
-export function homeFor(user: Pick<User, "roles">) {
+export function homeFor(user: Pick<User, "roles" | "must_change_password">) {
+  if (user.must_change_password) return "/account/security";
   const role = ["admin", "student", "teacher", "guardian"].find((value) =>
     user.roles.includes(value),
   );

@@ -5,8 +5,11 @@ export default function Page() {
     <>
       <PageTitle
         title="Không gian giáo viên"
-        description="Phân quyền đã được chuẩn bị. Chức năng quản lý lớp và giao bài đang được phát triển."
+        description="Theo dõi lớp được phân công, giao bài AI Academy và nhận xét sản phẩm học sinh."
       />
+      <Link className="button" href="/teacher/ai-academy">
+        Lớp học AI Academy
+      </Link>
       <Link className="button secondary" href="/teacher/questions/new">
         Xem khung tạo bài tập
       </Link>
