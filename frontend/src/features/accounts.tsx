@@ -451,8 +451,8 @@ function AccountForm({
               </select>
             </label>
             <p className="muted">
-              Hiện có học liệu lớp 3 và lớp 4. Đổi lớp không xóa kết quả cũ; gói
-              mặc định Free. Quản lý VIP ở trang gói học.
+              Hiện có học liệu lớp 1–4. Đổi lớp không xóa kết quả cũ; gói mặc
+              định Free. Quản lý VIP ở trang gói học.
             </p>
           </>
         )}

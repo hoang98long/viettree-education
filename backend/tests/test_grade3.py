@@ -291,7 +291,7 @@ def test_grade3_catalogues_current_grade_and_admin_filters(logged_student, conn)
     client = logged_student
     grade3_student(client, conn)
     available = client.get("/api/v1/grades").json()
-    assert [r["grade"] for r in available if r["status"] == "available"] == [3, 4]
+    assert [r["grade"] for r in available if r["status"] == "available"] == [1, 2, 3, 4]
     assert client.get("/api/v1/admin/curriculum-map?grade=3").status_code == 403
     lessons = db.table("lessons")
     grade4_id = conn.execute(
@@ -310,7 +310,7 @@ def test_grade3_catalogues_current_grade_and_admin_filters(logged_student, conn)
     assert sum(r["vip_lessons"] for r in report["rows"]) == 22
     assert sum(r["questions"] for r in report["rows"]) == 384
     assert sum(r["assessments"] for r in report["rows"]) == 56
-    assert client.get("/api/v1/admin/curriculum-map?grade=2").status_code == 422
+    assert len(client.get("/api/v1/admin/curriculum-map?grade=2").json()["rows"]) == 21
     assert client.get("/api/v1/admin/questions?grade=3").json()["total"] == 384
     assert client.get("/api/v1/admin/lessons?grade=3").json()["total"] == 68
 

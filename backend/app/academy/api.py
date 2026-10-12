@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from fastapi.responses import FileResponse
 from pydantic import Field
-from sqlalchemy import func, select, update
+from sqlalchemy import and_, func, or_, select, update
 from sqlalchemy.dialects.postgresql import insert
 
 from app.academy import cms, learning, tutor
@@ -83,6 +83,56 @@ def home(user=Depends(student_user), conn=Depends(connection)):
             .order_by(assignments.c.created_at.desc())
             .limit(50)
         ).mappings()
+    )
+    batches, batch_targets = (
+        db.table("learning_assignment_batches"),
+        db.table("learning_assignment_targets"),
+    )
+    assigned.extend(
+        conn.execute(
+            select(
+                batches.c.id,
+                lessons.c.id.label("lesson_id"),
+                lessons.c.title,
+                func.coalesce(classrooms.c.name, "Bài giao riêng").label("class_name"),
+                batches.c.due_at,
+                progress.c.completed_at,
+            )
+            .select_from(
+                batches.join(batch_targets, batch_targets.c.batch_id == batches.c.id)
+                .join(lessons, lessons.c.id == batches.c.resource_id)
+                .join(units, units.c.id == lessons.c.unit_id)
+                .outerjoin(classrooms, classrooms.c.id == batches.c.class_id)
+                .outerjoin(
+                    enrollments,
+                    and_(
+                        enrollments.c.class_id == batches.c.class_id,
+                        enrollments.c.student_id == user["id"],
+                        enrollments.c.left_at.is_(None),
+                    ),
+                )
+                .outerjoin(
+                    progress,
+                    (progress.c.student_id == user["id"]) & (progress.c.lesson_id == lessons.c.id),
+                )
+            )
+            .where(
+                batches.c.kind == "ai_lesson",
+                batch_targets.c.student_id == user["id"],
+                units.c.grade <= grade,
+                or_(
+                    batches.c.class_id.is_(None),
+                    and_(classrooms.c.is_active.is_(True), enrollments.c.student_id.is_not(None)),
+                ),
+                select(versions.c.id)
+                .where(versions.c.lesson_id == lessons.c.id, versions.c.status == "published")
+                .exists(),
+            )
+            .order_by(batches.c.created_at.desc())
+            .limit(50)
+        )
+        .mappings()
+        .all()
     )
     return {
         "assignments": [dict(row) for row in assigned],
@@ -355,7 +405,14 @@ def media_file(
     path = (root / row["object_key"]).resolve()
     if not path.is_relative_to(root.resolve()) or not path.is_file():
         raise HTTPException(404, "Không tìm thấy hình")
-    cache_allowed = row["bundled"] and row["category"] in {"hero", "cover", "mascot", "card", "badge", "ui"}
+    cache_allowed = row["bundled"] and row["category"] in {
+        "hero",
+        "cover",
+        "mascot",
+        "card",
+        "badge",
+        "ui",
+    }
     if cache_allowed:
         request.state.academy_asset_cache = True
     return FileResponse(
@@ -423,7 +480,11 @@ def own_classes(user=Depends(current_user), conn=Depends(connection)):
 
 @router.post("/teacher/assignments")
 def assign(payload: AssignmentInput, user=Depends(current_user), conn=Depends(connection)):
-    classroom = cms.class_access(conn, user, payload.class_id)
+    from app.classroom.service import class_scope, validate_student
+
+    classroom = class_scope(conn, user, payload.class_id, staff_only=True, lock=True)
+    if not classroom["is_active"]:
+        raise HTTPException(409, "Lớp đã đóng")
     lesson = learning.lesson_row(conn, payload.lesson_id)
     if lesson["grade"] != classroom["grade"]:
         raise HTTPException(422, "Bài phải phù hợp lớp được giao")
@@ -457,6 +518,9 @@ def assign(payload: AssignmentInput, user=Depends(current_user), conn=Depends(co
             )
         ).scalars()
     )
+    for identifier in students:
+        validate_student(conn, identifier, classroom)
+        learning.allowed_lesson(conn, {"id": identifier, "roles": ["student"]}, payload.lesson_id)
     for identifier in students:
         conn.execute(
             insert(targets)
@@ -821,8 +885,14 @@ def policy(payload: PolicyInput, user=Depends(admin_user), conn=Depends(connecti
     from app.services.accounts import authenticate_actor
 
     authenticate_actor(conn, user, payload.actor_password)
-    if settings().ai_training_only and payload.enabled and payload.code in {"tutor_enabled", "image_generation_enabled"}:
-        raise HTTPException(422,"Đang ưu tiên đào tạo lý thuyết và bài tập; chức năng gọi mô hình tạm tắt")
+    if (
+        settings().ai_training_only
+        and payload.enabled
+        and payload.code in {"tutor_enabled", "image_generation_enabled"}
+    ):
+        raise HTTPException(
+            422, "Đang ưu tiên đào tạo lý thuyết và bài tập; chức năng gọi mô hình tạm tắt"
+        )
     if payload.code == "tutor_enabled" and payload.enabled:
         if (
             not payload.approve_local_model

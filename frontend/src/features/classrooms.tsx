@@ -36,7 +36,7 @@ const labels: Record<string, string> = {
 export function ClassroomsPage() {
   const { user } = useSession();
   const admin = !!user?.roles.includes("admin");
-  const classes = useResource<Classroom[]>("/classroom/classes");
+  const classes = useResource<Classroom[]>("/classroom/classes", true);
   const [chosen, setChosen] = useState("");
   const current =
     classes.data?.find((c) => c.id === chosen) || classes.data?.[0];
@@ -52,7 +52,7 @@ export function ClassroomsPage() {
           <ClassForm onSaved={classes.retry} />
         </details>
       )}
-      {classes.loading ? (
+      {classes.loading && !classes.data ? (
         <Loading />
       ) : classes.error ? (
         <ErrorState message={classes.error} retry={classes.retry} />
@@ -89,18 +89,22 @@ export function ClassroomsPage() {
             </details>
           )}
           <ClassRoster
-            key={current.id}
+            key={`roster:${current.id}`}
             classroom={current}
             admin={admin}
             onChanged={classes.retry}
           />
           <AssignmentPanel
-            key={current.id + ":" + current.grade}
+            key={`assignment:${current.id}:${current.grade}`}
             classroom={current}
             admin={admin}
           />
           {current.is_active && (
-            <RecognitionBoard key={current.id} classroom={current} staff />
+            <RecognitionBoard
+              key={`recognition:${current.id}`}
+              classroom={current}
+              staff
+            />
           )}
         </>
       )}
@@ -207,7 +211,7 @@ function ClassForm({
           ))}
         </select>
       </label>
-      <label>
+      <label className="check-label">
         <input
           type="checkbox"
           checked={active}
@@ -215,7 +219,7 @@ function ClassForm({
         />{" "}
         Lớp đang hoạt động
       </label>
-      <label>
+      <label className="check-label">
         <input
           type="checkbox"
           checked={recognize}
@@ -243,8 +247,9 @@ function ClassRoster({
   admin: boolean;
   onChanged: () => void;
 }) {
+  const [page, setPage] = useState(1);
   const roster = useResource<{ items: Learner[]; total: number }>(
-    `/classroom/students?class_id=${classroom.id}&grade=${classroom.grade}`,
+    `/classroom/students?class_id=${classroom.id}&grade=${classroom.grade}&page=${page}`,
   );
   const [student, setStudent] = useState("");
   const [message, setMessage] = useState("");
@@ -331,6 +336,23 @@ function ClassRoster({
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="quiz-actions">
+            <button
+              className="button secondary small"
+              disabled={page === 1}
+              onClick={() => setPage(page - 1)}
+            >
+              Trang trước
+            </button>
+            <span>Trang {page}</span>
+            <button
+              className="button secondary small"
+              disabled={page * 50 >= (roster.data?.total || 0)}
+              onClick={() => setPage(page + 1)}
+            >
+              Trang sau
+            </button>
           </div>
         </>
       )}
@@ -797,7 +819,9 @@ function RankResourceFilter({
   value: string;
   onChange: (v: string) => void;
 }) {
-  const resource = useResource<{ id: string; title: string }[]>(
+  const resource = useResource<
+    { id: string; title: string; subject_code?: string }[]
+  >(
     `/classroom/resources?kind=${category === "AI" ? "ai_lesson" : "assessment"}&grade=${grade}`,
   );
   return (
@@ -809,11 +833,13 @@ function RankResourceFilter({
         onChange={(e) => onChange(e.target.value)}
       >
         <option value="">Tổng hợp các bài của loại này</option>
-        {resource.data?.map((r) => (
-          <option key={r.id} value={r.id}>
-            {r.title}
-          </option>
-        ))}
+        {resource.data
+          ?.filter((r) => category === "AI" || r.subject_code === category)
+          .map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.title}
+            </option>
+          ))}
       </select>
     </label>
   );

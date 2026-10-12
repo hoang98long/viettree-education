@@ -489,3 +489,119 @@ Smoke cuối trên 4 trang xác nhận mapping 3/8 đúng trên desktop/mobile, 
 giao hiện ở Hành trình, admin có độ phủ 48/48 và không cảnh báo chất lượng.
 Server kiểm thử 8001/3001 đã dừng. Build local được trả về backend 8000;
 dùng run-local để mở lại.
+
+## Lớp, thành tích, giá và đào tạo AI Free/VIP · 12/10/2026
+
+Đã áp dụng `0011_classes_vip_training` trên DB local sau native PostgreSQL
+backup; đối chiếu hash mọi hàng/cột cũ vẫn nguyên vẹn. Head/check-schema/
+check-system và verify-ai-academy đạt, chất lượng 48/48, không thiếu media.
+Tám bảng mới giữ batch giao bài, snapshot tuyên dương, giá/ưu đãi/nguồn thị
+trường; thêm revision lớp, biệt danh và chính sách Free/VIP từng bài AI.
+
+- VIP: replay thao tác cũ trả quyền hiện tại, không cộng ngày hoặc báo gói đã
+  thu hồi còn hiệu lực; gia hạn gói đã thu hồi cần cấp mới. Chỉ cấp/gia hạn
+  học sinh còn hoạt động và plan đang mở. Thu hồi chặn nội dung và grants
+  attempts cũ ngay cả khi cấp lại. Khóa/idempotency/audit giữ thao tác đồng thời.
+- Admin tạo/sửa lớp, phân giáo viên, trường/năm học, ghi danh/chuyển ra/đóng
+  lớp; học sinh tự do vẫn dùng được. Teacher chỉ quản lý lớp phụ trách.
+  Giao bài đọc/bài chấm/AI cho cá nhân hoặc cả lớp, kiểm quyền người nhận,
+  idempotency và hạn; lịch sử không bị xóa khi rời lớp.
+- Thành tích năm loại: Toán, Tiếng Việt, Tiếng Anh, checkpoint AI, sản phẩm
+  AI đã chấm. Trung bình thang 100 của kết quả tốt nhất mỗi bài; không cộng
+  điểm từ lượt lặp/VIP. Bảng riêng theo tuần/tháng, biệt danh với học sinh,
+  tuyên dương tối đa ba người có kết quả thật, snapshot không tự viết lại.
+- AI Academy: giữ 48 bài/315 hình; 7 Free / 41 VIP, lớp 4 là 3 / 33. Lab,
+  Prompt Builder, studio/dự án từ mẫu thuộc VIP. API kiểm quyền mỗi bước,
+  giữ progress/kết quả sau thu hồi; tranh nội dung bị khóa có no-store.
+  `AI_TRAINING_ONLY=true` chặn model dù cờ/consent cũ bật; hướng dẫn và soạn
+  nháp dùng mẫu. Admin chỉnh Free/VIP từng bài bằng mật khẩu/lý do/revision.
+- Giá tham khảo có khảo sát Monkey/OLM/Edupia và giới hạn nguồn rõ ràng.
+  Đề xuất 99k/269k/899k cho 30/90/365 ngày; sale 79k/219k/699k đến hết
+  12/11/2026 giờ Việt Nam. Admin chỉnh giá/ưu đãi có audit/CAS/xác nhận;
+  hết hạn tự bỏ sale, nhiều ưu đãi chọn giá thấp nhất, không cộng dồn.
+  Chưa tích hợp thanh toán, xem giá không cấp gói hoặc ghi doanh thu.
+
+Kiểm chứng đợt này:
+
+| Kiểm tra                                           | Kết quả                                                                                                        |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Backend toàn hệ thống trước bổ sung ba ca cuối     | **476 passed**, 397,10 giây                                                                                    |
+| Hai ca VIP đồng thời bổ sung                       | **2 passed**, 5,20 giây                                                                                        |
+| Tập Academy/lớp/membership/concurrency sau mở rộng | 97/98 qua; một assertion phân biệt bài riêng/theo lớp trong test được sửa                                      |
+| Toàn bộ 10 ca lớp/giá/quyền AI sau sửa và bổ sung  | **10 passed**, 29,52 giây; có điểm Toán, rubric đúng lớp, đổi policy live và promo CAS                         |
+| Frontend                                           | **19 component tests**, ESLint/TypeScript/production build đạt                                                 |
+| Browser toàn hệ thống 36 desktop/mobile            | 34 qua lượt đầu; sau sửa, cả **6 ca liên quan đạt**, 33,3 giây; tổng 36 kịch bản riêng biệt đã đạt, không skip |
+| Database thực tế                                   | Head 0011, schema/system/48 bài/315 SVG đạt; mọi hàng/cột cũ giữ nguyên                                        |
+| Đóng gói                                           | Wheel có hai schema SQL Academy/lớp và 315 SVG; Compose production config --quiet đạt                          |
+
+Không cộng dồn các tập kiểm thử lặp thành số kiểm thử mới. Một warning
+Starlette/httpx về adapter test deprecated; không lỗi chức năng. Browser đã
+phát hiện và sửa duplicate key làm danh sách lớp cũ còn hiện, đồng thời giữ
+form giao bài khi roster làm mới. Kiểm thử đọc bài chờ phản hồi lưu trước
+khi điều hướng. Ảnh top 3 desktop/mobile được kiểm tra; trang không tràn ngang.
+Docker Engine/HTTPS trên VPS và tải thực tế vẫn cần kiểm chứng tại server đích.
+
+Smoke cuối trang giá và đổi lớp tại 1280/390 px đạt: không pageerror/5xx/tràn
+ngang, đổi lớp không lặp danh sách. Checkbox lớp/ưu đãi được chỉnh cùng hệ
+style tài khoản, đúng kích thước. Build cuối đã trả về API local 8000;
+server kiểm thử 8001/3001 đã dừng, server đang chạy của người dùng không bị dừng.
+
+Tài liệu: [lớp và thành tích](classes-achievements.md),
+[đào tạo AI Free/VIP](ai-training-vip.md), [khảo sát giá](vip-pricing-research.md),
+[chạy local](run-local.md). Không reset/seed lại tài khoản hiện có.
+
+## Học liệu lớp 1–2 · 12/10/2026
+
+Đã bổ sung và nạp vào DB local hai bộ ba môn, cùng quy mô lớp 3–4:
+
+| Môn, mỗi khối | Chủ đề | Bài học Free / VIP | Câu hỏi | Đề luyện tập |
+| ------------- | -----: | -----------------: | ------: | -----------: |
+| Toán          |      8 |             18 / 7 |     142 |           21 |
+| Tiếng Việt    |      6 |             15 / 8 |     130 |           19 |
+| Tiếng Anh     |      7 |             13 / 7 |     112 |           16 |
+| Tổng          |     21 |            46 / 22 |     384 |           56 |
+
+Hai khối thêm **136 bài / 768 câu / 112 đề**, chưa tính AI Academy. Khảo sát
+phụ lục chương trình Bộ GDĐT đăng trên website trường công lập; nguồn,
+phạm vi và lưu ý dự thảo tiếng Anh 2026 có trong
+[thiết kế học liệu](grades1-2-curriculum.md). Ngữ liệu tự viết; bộ này bổ trợ,
+không thay toàn bộ sách/chương trình năm hoặc đánh giá nghe/nói/viết mở.
+
+Lớp 1 học khoảng 6 phút/bài, lớp 2 khoảng 8 phút; hướng dẫn làm 2–3 câu rồi
+nghỉ, lưu bài để học tiếp. Đề nền tảng lớp 1 chỉ hai lựa chọn, tối đa ba ở
+phần sau; lớp 2 có điền số ngắn. VIP vận dụng trong kiến thức đúng tuổi,
+không yêu cầu phân số, diện tích hay bài toán hai bước. Gợi ý Free 1/VIP 3
+lọc tại API và đổi ngay khi cấp/thu hồi. Bài nghe/nói thực hành cùng người
+lớn, chưa có âm thanh chuẩn hoặc chấm phát âm tự động.
+
+Thêm minh họa đếm 0–20 chấm và thẻ chữ/từ lớn 26px; admin soạn/preview được,
+thẻ xuống hàng trên điện thoại. Map chương trình và kiểm tra chất lượng hỗ
+trợ cả lớp 1–4; chọn khối trong hồ sơ/danh mục/giao bài vẫn kiểm quyền cũ.
+
+Hai CLI `seed-grade1-content` / `seed-grade2-content` chỉ nạp học liệu,
+giữ khóa/transaction/id ổn định, không tạo/reset tài khoản. Backup native
+PostgreSQL trước nạp; đối chiếu hash sau nạp xác nhận mọi hàng/cột cũ còn
+nguyên. Không cần migration mới, head vẫn `0011_classes_vip_training`.
+[CSV đủ 136 bài](grades1-2-lessons.csv) đã đối chiếu mã với DB thực tế.
+
+Kiểm chứng đợt này:
+
+| Kiểm tra               | Kết quả                                                                                                                                                                                                                                                 |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Backend toàn hệ thống  | 626/627 qua lượt đầy đủ (905,35 giây); assertion cũ coi lớp 1 chưa có bài được chuyển sang lớp 5, ca đó và hai ca kế hoạch/gợi ý liên quan chạy lại **3 passed**. Tổng 627 ca riêng biệt đã qua, không cộng dồn lượt lặp                                |
+| Học liệu mới           | 146 ca trong tập backend: cấu trúc 136 bài/768 câu, đáp án Toán độc lập, inventory, seed lặp giữ sửa đổi, quyền/gợi ý và toàn bộ 112 đề lưu/nộp/chấm                                                                                                    |
+| Browser desktop/mobile | 37/40 qua lượt đầy đủ; hai assertion lớp chưa có bài cập nhật sang lớp 5 và lỗi điều hướng sau đổi mật khẩu được sửa. Cả **14 ca liên quan passed**, gồm bốn ca lớp 1–2, tài khoản, hành trình và phiên; tổng 40 kịch bản riêng biệt đã qua, không skip |
+| Frontend               | 19 component tests, ESLint, TypeScript và production build qua                                                                                                                                                                                          |
+| Database thực tế       | Schema/system đạt; verify-seed lớp 1/2 đúng 68 bài/384 câu/56 đề mỗi khối; dữ liệu cũ giữ nguyên                                                                                                                                                        |
+
+Đã sửa duplicate React key khi đổi khối trong map chương trình để chỉ còn
+một bảng hiện hành. Trang login chỉ chuyển hướng khi URL thực sự còn ở
+`/login`, tránh trang được Next giữ lại gây chuyển về dashboard sau đổi mật
+khẩu. Một warning Starlette/httpx về adapter test deprecated, không lỗi
+chức năng. Các test ghi dữ liệu dùng DB test riêng.
+
+Visual smoke thẻ từ lớp 1/2 trên 1280px và 390px đạt: chữ 26px, không
+tràn ngang, pageerror hoặc HTTP 5xx; ảnh đếm và thẻ đã kiểm tra trực quan.
+Wheel chứa đủ năm module học liệu mới. Build cuối trả về backend local
+8000; server kiểm thử 8001/3001 đã dừng. Các server của người dùng và `.env`
+không bị thay đổi. Dùng [run-local](run-local.md) để khởi động lại ứng dụng.

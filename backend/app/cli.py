@@ -30,6 +30,8 @@ def main():
             "seed-vip-content",
             "seed-grade4-content",
             "seed-grade3-content",
+            "seed-grade1-content",
+            "seed-grade2-content",
             "seed-ai-academy",
             "verify-ai-academy",
             "verify-seed",
@@ -68,7 +70,7 @@ def main():
         if args.command == "check-schema":
             db.validate(conn)
             print(
-                "Schema đúng: 34 bảng gốc + 2 bảng auth + 6 bảng gói học + 1 bảng quyền câu hỏi + 1 bảng nháp bài học + 29 bảng AI Academy, đủ cột quản trị tài khoản; database="
+                "Schema đúng: 34 bảng gốc + 2 bảng auth + 6 bảng gói học + 1 bảng quyền câu hỏi + 1 bảng nháp bài học + 29 bảng AI Academy + 8 bảng lớp/thành tích/giá, đủ cột quản trị tài khoản và quyền AI; database="
                 + engine().url.database
             )
         else:
@@ -136,6 +138,12 @@ def main():
 
                 seed_grade3_content(conn)
                 print(json.dumps(verify_seed(conn, grade=3), ensure_ascii=False))
+            elif args.command in {"seed-grade1-content", "seed-grade2-content"}:
+                from app.seed import seed_early_primary_content
+
+                grade = 1 if args.command == "seed-grade1-content" else 2
+                seed_early_primary_content(conn, grade)
+                print(json.dumps(verify_seed(conn, grade=grade), ensure_ascii=False))
             elif args.command == "verify-seed":
                 print(json.dumps(verify_seed(conn, grade=args.grade), ensure_ascii=False))
             else:

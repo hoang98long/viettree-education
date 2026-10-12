@@ -18,7 +18,8 @@ Set-Location 'D:\01_viettree_code\viettree-education\backend'
 
 Terminal frontend: `INTERNAL_API_URL=http://localhost:8000`, `PORT=3000`,
 `npm run dev`. URL http://localhost:3000/ai-academy, đăng nhập người dùng hiện có.
-DB local đã được nâng head 0010 và nạp học liệu trong đợt triển khai này.
+DB local đã được nâng head 0011 và nạp học liệu. Migration mới thêm chính sách
+Free/VIP, lớp/thành tích/giá; không cần seed lại tài khoản.
 
 ## VPS / Docker
 
@@ -37,20 +38,18 @@ docker compose --env-file .env.production -f docker-compose.production.yml exec 
 ```
 
 `run migrate` cần profile operations nếu bản Compose đang dùng yêu cầu profile:
-thêm `--profile operations` trước `run`. Kiểm `/health`, `/ready`, head 0010,
+thêm `--profile operations` trước `run`. Kiểm `/health`, `/ready`, head 0011,
 đăng nhập học sinh/teacher/guardian/admin và duyệt media. Không cần model server
 cho simulation. `check-system` kiểm LMS; dùng thêm `verify-ai-academy` cho module.
 
-## Tùy chọn Ollama
+## Chế độ đào tạo
 
-Mặc định `AI_PROVIDER=simulation`, model rỗng; các flag external tắt.
-Muốn dùng model local: tự provision Ollama/model có giấy phép phù hợp, cấu hình
-`AI_PROVIDER=ollama`, `AI_OLLAMA_URL`, `AI_OLLAMA_MODEL`, khởi động backend lại;
-test model rồi admin xác nhận chính sách ở UI. Chỉ host local/ollama được chấp
-nhận, không URL tùy ý. Trong container, 127.0.0.1 là chính container; phải nối
-dịch vụ `ollama` trong network hoặc endpoint host có cấu hình mạng phù hợp.
-Không public Ollama lên internet. Consent, quota và moderation vẫn bắt buộc.
-Repo chưa tự cài/pull model, không có khóa trả phí hoặc provider cloud.
+Giữ `AI_TRAINING_ONLY=true` (mặc định, đã đưa vào production Compose) và
+`AI_PROVIDER=simulation`. Server không gọi model dù flag/consent cũ được bật.
+Đây là cấu hình của đợt triển khai hiện tại: lý thuyết, bài tập đơn giản, lab
+thuật toán và studio ghép mẫu; không cần cài/pull Ollama hoặc API trả phí.
+Adapter cũ được giữ để tương thích, không phát triển model mới trong đợt này.
+Xem [đào tạo Free/VIP](../ai-training-vip.md).
 
 ## Backup / restore
 
@@ -68,8 +67,7 @@ liệu. Bundled SVG khôi phục bằng release code/hash manifest tương ứng
 - Guardian trống: kiểm verified_at, không tự suy ra liên kết theo tên.
 - 409 draft: tải lại trước sửa, không lặp ghi từ tab cũ.
 - 409 media: đang dùng ở published, thay hoặc ẩn bài trước thu hồi.
-- Model vẫn mô phỏng: kiểm env/flag/provider/policy/consent và quota; đây là
-  fallback có chủ ý. Không nhập dữ liệu thật để thử model.
+- Model vẫn mô phỏng: đây là hành vi khi `AI_TRAINING_ONLY=true`.
 - 404 ảnh upload: kiểm private volume, manifest/release và restore media.
 - Thay API port khi build production: đặt INTERNAL_API_URL **lúc build**;
   không chỉ đặt lúc `next start`. Tests phải trỏ DB/port test riêng.

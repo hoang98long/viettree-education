@@ -49,6 +49,13 @@ khẩu của DB test, không tài khoản production.
 
 ## Kết quả
 
+Đợt lớp/giá/đào tạo Free/VIP tiếp theo đã nâng head 0011. Backend vòng toàn
+hệ thống 476 passed; các ca Academy/lớp/membership và VIP đồng thời được kiểm
+lại sau bổ sung. Browser hiện có 36 kịch bản riêng biệt đã đạt: 34 lượt đầu
+và sáu ca liên quan được chạy lại thành công sau sửa. Xem chi tiết, thời gian
+và cách tính các tập lặp tại [IMPLEMENTATION_STATUS.md](../IMPLEMENTATION_STATUS.md).
+Các số bên dưới là kết quả lịch sử của đợt Academy trước chính sách này.
+
 Lượt toàn bộ backend cuối: **468 passed**, 379,55 giây. Sau thêm kiểm tra chất
 lượng và mục bài được giao: **67 kiểm thử Academy passed**, 39,45 giây (tập con
 cộng một kiểm thử mới, không cộng dồn 468+67). Có một deprecation warning Starlette/httpx.

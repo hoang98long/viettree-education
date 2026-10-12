@@ -1,6 +1,6 @@
 # Hướng dẫn deploy VietTree Education lên VPS
 
-Cập nhật: **10/10/2026**. Hướng dẫn dành cho **Ubuntu Server 24.04 LTS**, một VPS,
+Cập nhật: **12/10/2026**. Hướng dẫn dành cho **Ubuntu Server 24.04 LTS**, một VPS,
 một tên miền và dữ liệu hiện tại của dự án. Các khối `bash` chạy trên VPS; các
 khối `powershell` chạy trên máy Windows đang chứa source code.
 
@@ -11,6 +11,27 @@ production và Caddy cấp/gia hạn HTTPS. Bộ cấu hình production đã có
 Tài liệu đã được đối chiếu với code và tài liệu chính thức. Chưa chạy triển khai
 trên VPS thực tế của bạn; cần thực hiện các bước kiểm tra ở mục 10 trước khi mở
 cho học sinh sử dụng.
+
+Head hiện tại **0011_classes_vip_training**. Sau migrate, cấp lại quyền runtime
+bằng `deploy/grant-runtime.sql` để truy cập tám bảng mới. Giữ
+`AI_TRAINING_ONLY=true`: phân hệ AI học lý thuyết/bài tập nội bộ, không gọi model.
+Chạy `seed-ai-academy` nếu DB chưa có học liệu, `verify-ai-academy` để kiểm chứng.
+Xem [triển khai Academy](ai-academy/deployment.md),
+[lớp/thành tích](classes-achievements.md), [giá/ưu đãi](vip-pricing-research.md).
+Giá là đề xuất tham khảo; release này chưa có thanh toán tự động.
+
+Lớp 1–2 dùng schema hiện có, không migration mới. Sau backup/migrate/grant,
+nạp nội dung một lần:
+
+```bash
+dc run --rm -T --no-deps backend python -m app.cli seed-grade1-content
+dc run --rm -T --no-deps backend python -m app.cli seed-grade2-content
+dc run --rm -T --no-deps backend python -m app.cli verify-seed --grade 1
+dc run --rm -T --no-deps backend python -m app.cli verify-seed --grade 2
+```
+
+Xem [học liệu lớp 1–2](grades1-2-curriculum.md).
+Hai lệnh không tạo demo, không đổi gói/mật khẩu/lịch sử, dùng được với production.
 
 ## 1. Chuẩn bị
 
@@ -409,7 +430,7 @@ dc exec -T db psql -X -U viettree_app -d viettree-education < database/seeds/ver
 
 Thay tên miền trong các lệnh. HTTP chuyển sang HTTPS; login và health trả 200;
 readiness nội bộ báo DB/schema sẵn sàng. Head hiện tại là
-`0009_guided_hints`; khi có release mới, dùng head của release đó.
+`0011_classes_vip_training`; khi có release mới, dùng head của release đó.
 Revision 0008 thêm ba cột quản trị tài khoản; 0009 bổ sung quyền gợi ý VIP.
 Các migration giữ mật khẩu/phiên/gói/lịch sử cũ;
 không seed/reset tài khoản khi nâng cấp. Mở **Quản trị tài khoản** để cấp tài
@@ -578,7 +599,7 @@ kiểm chứng local đã chạy và những kiểm tra cần hoàn thành trên
 
 # Bổ sung AI Academy · 12/10/2026
 
-Head mới `0010_ai_academy`, sau migration/grant chạy
+Head hiện tại `0011_classes_vip_training` bao gồm `0010_ai_academy`; sau migration/grant chạy
 `python -m app.cli seed-ai-academy`, rồi `verify-ai-academy`.
 Production Compose có volume riêng `academy_media`; script backup tạo cặp
 database dump và `media.tar.gz`, cần giữ/phục hồi cả hai. Các hướng dẫn cũ về

@@ -105,15 +105,22 @@ def leaderboard(conn, user, class_id, category, period, resource_id=None):
             "category": category,
             "period": period,
         }
-    enrollments, users = db.table("class_enrollments"), db.table("users")
+    enrollments, users, profiles, roles = (
+        db.table(n) for n in ("class_enrollments", "users", "student_profiles", "user_roles")
+    )
     learners = list(
         conn.execute(
             select(users.c.id, users.c.display_name, enrollments.c.recognition_alias)
             .join(enrollments, enrollments.c.student_id == users.c.id)
+            .join(profiles, profiles.c.student_id == users.c.id)
             .where(
                 enrollments.c.class_id == class_id,
                 enrollments.c.left_at.is_(None),
                 users.c.is_active.is_(True),
+                profiles.c.current_grade == classroom["grade"],
+                select(roles.c.user_id)
+                .where(roles.c.user_id == users.c.id, roles.c.role == "student")
+                .exists(),
             )
         ).mappings()
     )

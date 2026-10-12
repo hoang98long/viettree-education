@@ -54,10 +54,36 @@ def main():
             user(key)
         for key in ["E2E_GRADE3_USERNAME", "E2E_GRADE3_MOBILE_USERNAME"]:
             user(key, grade=3)
+        for grade in (1, 2):
+            for suffix in ("DESKTOP", "MOBILE"):
+                user(f"E2E_GRADE{grade}_{suffix}_USERNAME", grade=grade)
         teacher = user("E2E_ACADEMY_TEACHER_USERNAME", "teacher")
         guardian = user("E2E_ACADEMY_GUARDIAN_USERNAME", "guardian")
         for project in ["DESKTOP", "MOBILE"]:
+            for suffix in ["FREE", "SECOND", "THIRD"]:
+                user("E2E_CLASS_" + project + "_" + suffix + "_USERNAME")
             student = user("E2E_ACADEMY_" + project + "_USERNAME")
+            # VIP fixtures cover the paid lab/studio; Free behavior has separate browser cases.
+            from datetime import timedelta
+
+            from sqlalchemy import select
+
+            admin_id = conn.execute(
+                select(db.table("users").c.id).where(db.table("users").c.username == "admin")
+            ).scalar_one()
+            conn.execute(
+                db.table("student_memberships")
+                .insert()
+                .values(
+                    student_id=student,
+                    plan_code="vip",
+                    status="active",
+                    starts_at=now(),
+                    ends_at=now() + timedelta(days=30),
+                    source="admin",
+                    granted_by=admin_id,
+                )
+            )
             class_id = uuid4()
             conn.execute(
                 db.table("classes")

@@ -1,5 +1,10 @@
 # Database và migration
 
+Head hiện tại `0011_classes_vip_training`: thêm chính sách Free/VIP trên
+`ai_lessons`, cài đặt lớp, giao bài và tuyên dương. Xem
+[database lớp và thành tích](../classes-achievements.md). Các bảng Academy
+ở migration 0010 dưới đây được giữ nguyên dữ liệu.
+
 Giữ nguyên `database/viettree_education_schema.sql` (34 bảng gốc).
 `backend/alembic/versions/0010_ai_academy.py` sau `0009_guided_hints` chạy DDL
 additive ở `backend/app/academy/schema.sql`. Không DROP/TRUNCATE/reset dữ liệu.

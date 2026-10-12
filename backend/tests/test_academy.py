@@ -201,6 +201,11 @@ def test_cms_versions_review_publish_and_stale_revision(client, conn):
 @pytest.mark.integration
 def test_tutor_default_no_provider_calls_and_pii_blocked(logged_student, monkeypatch, conn):
     client = logged_student
+    from uuid import UUID
+
+    from tests.test_classrooms import grant
+
+    grant(conn, UUID(client.get("/api/v1/auth/me").json()["id"]))
     calls = []
     monkeypatch.setattr("app.academy.tutor.httpx.post", lambda *a, **k: calls.append(k))
     body = {
@@ -227,6 +232,12 @@ def test_real_provider_requires_flags_consent_and_does_not_receive_child_text(
 ):
     client = logged_student
     student = client.get("/api/v1/auth/me").json()["id"]
+    from uuid import UUID
+
+    from tests.test_classrooms import grant
+
+    grant(conn, UUID(student))
+    monkeypatch.setattr(settings(), "ai_training_only", False)
     conn.execute(
         update(db.table("ai_feature_flags"))
         .where(db.table("ai_feature_flags").c.code == "tutor_enabled")

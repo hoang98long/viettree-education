@@ -55,6 +55,9 @@ test("lớp 4: bài mới, biểu đồ/góc, Góc tư duy Free/VIP và bảng h
   await page
     .getByRole("button", { name: "Em đã đọc xong", exact: true })
     .click();
+  await expect(
+    page.getByRole("button", { name: "Đã đánh dấu đọc xong", exact: true }),
+  ).toBeDisabled();
   await page.goto("/student/thinking");
   await expect(
     page.locator("article").filter({ hasText: "Đố mẹo: đếm khoảng" }),

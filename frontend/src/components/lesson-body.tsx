@@ -7,6 +7,17 @@ import type { LessonContent, LessonIllustration } from "@/lib/types";
 
 export function LessonFigure({ value }: { value: LessonIllustration }) {
   const label = useId();
+  if (value.kind === "cards")
+    return (
+      <figure className="lesson-figure">
+        <div className="early-word-cards" role="img" aria-label={value.caption}>
+          {(value.labels || []).slice(0, 6).map((word, i) => (
+            <span key={i}>{word}</span>
+          ))}
+        </div>
+        <figcaption>{value.caption}</figcaption>
+      </figure>
+    );
   const n = Math.max(0, Math.min(value.numerator ?? 3, value.denominator ?? 8));
   const d = Math.max(1, Math.min(value.denominator ?? 8, 12));
   const rows = Math.max(1, Math.min(value.rows ?? 3, 6));
@@ -35,6 +46,31 @@ export function LessonFigure({ value }: { value: LessonIllustration }) {
         <title id={label}>{value.caption}</title>
         <rect width="600" height="260" rx="24" fill="#edf6ef" />
         <circle cx="550" cy="34" r="16" fill="#f5ce71" />
+        {value.kind === "counters" && (
+          <>
+            {Array.from(
+              { length: Math.max(0, Math.min(value.count ?? 5, 20)) },
+              (_, i) => (
+                <circle
+                  key={i}
+                  cx={75 + (i % 10) * 50}
+                  cy={85 + Math.floor(i / 10) * 65}
+                  r="18"
+                  fill={i < 10 ? "#23805b" : "#d69b35"}
+                />
+              ),
+            )}
+            <text
+              x="300"
+              y="227"
+              textAnchor="middle"
+              fontSize="27"
+              fill="#203d34"
+            >
+              {value.count ?? 5} chấm tròn
+            </text>
+          </>
+        )}
         <path
           d="M35 224Q55 194 75 224T115 224"
           fill="none"

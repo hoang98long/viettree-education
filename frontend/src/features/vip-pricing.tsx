@@ -193,7 +193,7 @@ function PriceEditor({
           onChange={(e) => setValue(Number(e.target.value))}
         />
       </label>
-      <label>
+      <label className="check-label">
         <input
           type="checkbox"
           checked={active}
@@ -271,7 +271,11 @@ function PromotionForm({
   const [label, setLabel] = useState(initial?.label || "");
   const [sale, setSale] = useState(initial?.sale_price_vnd || 79000);
   const [start, setStart] = useState(
-    initial?.starts_at?.slice(0, 10) || "2026-10-12",
+    initial
+      ? new Date(initial.starts_at).toLocaleDateString("en-CA", {
+          timeZone: "Asia/Bangkok",
+        })
+      : new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Bangkok" }),
   );
   const [end, setEnd] = useState(
     initial
@@ -363,7 +367,7 @@ function PromotionForm({
           />
         </label>
       </div>
-      <label>
+      <label className="check-label">
         <input
           type="checkbox"
           checked={active}

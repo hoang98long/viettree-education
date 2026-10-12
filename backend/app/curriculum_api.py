@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/v1", tags=["curriculum-extension"])
 
 @router.get("/admin/curriculum-map", response_model=dict)
 def curriculum_map(
-    grade: int = Query(4, ge=3, le=4), user=Depends(admin_user), conn=Depends(connection)
+    grade: int = Query(4, ge=1, le=4), user=Depends(admin_user), conn=Depends(connection)
 ):
     from app.grade3_curriculum import FOCUS, TOPICS
 
@@ -26,6 +26,22 @@ def curriculum_map(
             for subject, source in TOPICS.items()
         }
     )
+    sources = SOURCES
+    if grade in (1, 2):
+        from app.early_primary_curriculum import SOURCES as EARLY_SOURCES
+        from app.early_primary_curriculum import TOPICS as EARLY_TOPICS
+
+        topic_map = {
+            subject: {
+                key: (
+                    title,
+                    "Học từng bước ngắn với người hướng dẫn; bài vận dụng giữ trong kiến thức của khối.",
+                )
+                for key, title in source.items()
+            }
+            for subject, source in EARLY_TOPICS[grade].items()
+        }
+        sources = EARLY_SOURCES
     topics, subjects, lessons, policies = (
         db.table(name) for name in ("topics", "subjects", "lessons", "content_access_policies")
     )
@@ -85,7 +101,7 @@ def curriculum_map(
                     unconfigured_lessons=numbers.get(None, 0),
                     questions=resources["questions"].get(topic_id, 0),
                     assessments=resources["assessments"].get(topic_id, 0),
-                    source_url=SOURCES[subject_code],
+                    source_url=sources[subject_code],
                 )
             )
     return {"grade": grade, "rows": rows}

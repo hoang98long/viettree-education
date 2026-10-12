@@ -2250,7 +2250,8 @@ tr:last-child td {
   display: block;
   margin: 1rem 0;
 }
-.account-form .check-label {
+.account-form .check-label,
+.check-label {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -2258,7 +2259,8 @@ tr:last-child td {
   margin: 0;
   flex: 0 0 auto;
 }
-.account-form .check-label input {
+.account-form .check-label input,
+.check-label input {
   width: 24px;
   height: 24px;
   min-height: 24px;
@@ -2278,6 +2280,33 @@ tr:last-child td {
 }
 .account-security {
   max-width: 900px;
+}
+.early-word-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: #edf6ef;
+  border-radius: 20px;
+}
+.early-word-cards span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 76px;
+  padding: 12px;
+  border: 2px solid #8ab49b;
+  border-radius: 16px;
+  background: #fff;
+  color: #203d34;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.early-word-cards span:nth-child(even) {
+  background: #fff3cf;
 }
 .account-history {
   padding: 1rem 0;

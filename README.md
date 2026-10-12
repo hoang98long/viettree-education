@@ -4,11 +4,19 @@
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**Ba môn lớp 1–4 đã có học liệu:** mỗi khối **68 bài / 384 câu / 56 đề**:
+Toán 25/142/21, Tiếng Việt 23/130/19, Tiếng Anh 20/112/16. Lớp 1–2 được
+biên soạn riêng theo chương trình Việt Nam: bài 6–8 phút, minh họa đếm/thẻ
+chữ, câu lệnh ngắn, lựa chọn ít, nghỉ sau 2–3 câu. Free 46 bài/34 đề;
+VIP thêm 22 bài/22 đề vận dụng phù hợp khối, gợi ý 1 → 3 theo quyền.
+Xem [khảo sát, nội dung và cách nạp lớp 1–2](docs/grades1-2-curriculum.md).
+
 **AI Academy đã được tích hợp:** lớp 4 có **9 chủ đề / 36 tiết**, lớp 1/2/3/5
 có 3 bài mẫu mỗi khối, tổng 48 bài và 315 SVG minh họa thật. Học nhiều bước,
 game/lab, Prompt Builder, trợ giảng an toàn, xưởng sáng tạo, sản phẩm riêng,
 giao bài/chấm rubric và CMS/media theo quyền. Dùng cùng tài khoản hiện có;
-mặc định mô phỏng nội bộ, không cần dịch vụ AI trả phí.
+mặc định học lý thuyết và bài tập nội bộ, `AI_TRAINING_ONLY=true` chặn gọi model.
+Lớp 4 có 3 tiết Free / 33 tiết VIP; toàn bộ module có 7 bài Free / 41 bài VIP.
 Xem [hướng dẫn đầy đủ AI Academy](docs/ai-academy/README.md).
 
 **Deploy lên VPS:** xem [hướng dẫn riêng](docs/deploy-vps.md) cho Ubuntu + Docker
@@ -18,7 +26,7 @@ Compose production, HTTPS, chuyển dữ liệu, tài khoản thật, backup và
 Admin có mục **Kiểm tra hệ thống** (`/admin/system`). Bộ production đã có trong
 `docker-compose.production.yml` và `deploy/`; local tiếp tục dùng cấu hình development.
 CLI `check-system` chỉ đọc, `cleanup-auth` mặc định dry-run. Head hiện tại
-`0010_ai_academy`; nạp module lần đầu bằng `seed-ai-academy`.
+`0011_classes_vip_training`; nạp module lần đầu bằng `seed-ai-academy`.
 
 **Chạy trên máy hiện tại:** xem [hướng dẫn local ngắn](docs/run-local.md) với hai
 terminal PowerShell cho backend và frontend.
@@ -44,7 +52,9 @@ không được dùng làm bằng chứng năng lực; năng lực vẫn dựa v
 DROP hay TRUNCATE database học tập. Database mặc định có tên **`viettree-education`**,
 bao gồm dấu gạch ngang. Alembic bổ sung hai bảng auth và sáu bảng gói học, revision
 `0009_guided_hints` thêm quyền gợi ý theo bước cho VIP; `0010_ai_academy`
-thêm 29 bảng riêng và tái sử dụng tài khoản/lớp/media/consent. Migration tài khoản thêm vòng đời mật khẩu tạm và revision tài khoản,
+thêm 29 bảng riêng và tái sử dụng tài khoản/lớp/media/consent. `0011_classes_vip_training`
+thêm 8 bảng quản lý giao bài, tuyên dương và giá VIP, cùng chính sách đào tạo AI.
+Migration tài khoản thêm vòng đời mật khẩu tạm và revision tài khoản,
 giữ mật khẩu, phiên và lịch sử cũ. Bảng nháp bài học tiếp tục tách bản xuất bản.
 
 ## Quản trị tài khoản
@@ -52,12 +62,12 @@ giữ mật khẩu, phiên và lịch sử cũ. Bảng nháp bài học tiếp t
 Admin có **Quản trị tài khoản**: tạo/sửa, phân vai trò, khóa/mở, đặt lại mật khẩu,
 thu hồi phiên và nhật ký. Mọi người dùng có **Bảo mật tài khoản** để tự đổi mật
 khẩu, đăng xuất phiên khác. Mật khẩu tạm bắt buộc đổi trước khi sử dụng. Nâng cấp
-chạy `alembic upgrade head` (head `0010_ai_academy`), khởi động lại server;
+chạy `alembic upgrade head` (head `0011_classes_vip_training`), khởi động lại server;
 không cần seed/reset tài khoản. Xem [quản trị tài khoản](docs/account-management.md).
 
 ## Gói học Free / VIP
 
-Mỗi lớp 3 hoặc 4 có 46 bài học và 34 đề miễn phí. VIP mở thêm 22 bài nâng cao, 22 đề thử thách mỗi lớp
+Mỗi khối 1–4 có 46 bài học và 34 đề miễn phí. VIP mở thêm 22 bài vận dụng, 22 đề thử thách mỗi khối
 và kế hoạch theo kỹ năng cần ôn (`plan_v2`). Cách chấm điểm và quyền
 xem kết quả của chính học sinh giống nhau giữa hai gói.
 
@@ -76,6 +86,18 @@ Attempt VIP đã bắt đầu hợp lệ được hoàn tất tối đa 60 phút
 giao bài/thời lượng đề. Thu hồi VIP chặn ngay attempt đó, kể cả cấp lại VIP sau này.
 Kế hoạch VIP hết quyền chuyển tạm dừng; học sinh vẫn tạo được kế hoạch cơ bản.
 
+AI Academy kiểm tra quyền tại mỗi bước, không có thời gian gia hạn hoàn tất sau
+hết VIP. Thu hồi chặn ngay bài/lab/xưởng VIP, giữ tiến độ, kết quả và sản phẩm
+của chính em. Request cấp/gia hạn cũ lặp lại trả trạng thái hiện tại, không báo
+VIP đã bị thu hồi còn hiệu lực. Gia hạn gói đã thu hồi trả 409; dùng cấp mới.
+Chi tiết: [đào tạo AI Free/VIP](docs/ai-training-vip.md).
+
+Trang **Gói học của em** đã có giá tham khảo và sale có ngày hết hạn:
+30 ngày **99.000đ → 79.000đ**, 90 ngày **269.000đ → 219.000đ**,
+365 ngày **899.000đ → 699.000đ**. Ưu đãi giới thiệu đến hết 12/11/2026,
+giờ Việt Nam. Admin chỉnh tại `/admin/vip-pricing`; chưa có thanh toán tự động.
+Xem [khảo sát giá Việt Nam và điều kiện ưu đãi](docs/vip-pricing-research.md).
+
 VIP có **Góc học VIP**, **Sổ tay ôn lỗi** với tự luyện không đổi điểm, **Báo cáo
 7/30 ngày** và in/lưu PDF từ trình duyệt. Cách dùng, nội dung mới và nâng cấp:
 [docs/vip-expansion.md](docs/vip-expansion.md).
@@ -85,7 +107,26 @@ dung nâng cao được seed cho development; cần giáo viên rà soát trư�
 Seed thường không tự nâng cấp học sinh. Lệnh riêng `seed-demo-learners` tạo bốn
 tài khoản demo theo yêu cầu, gồm hai Free và hai VIP 90 ngày.
 
+## Lớp học, giao bài và thành tích
+
+Admin mở **Lớp và giao bài** (`/admin/classes`) để tạo/sửa lớp, phân giáo viên,
+ghi danh hoặc chuyển học sinh ra. Học sinh tự do vẫn tự học và nhận bài riêng.
+Giáo viên mở `/teacher/classes` để giao bài cá nhân/cả lớp, xem kết quả và
+tuyên dương top 3; chỉ được quản lý lớp mình phụ trách.
+
+Học sinh mở **Lớp và thành tích** (`/student/classroom`) để xem bài được giao,
+kết quả theo Toán/Tiếng Việt/Tiếng Anh/AI/sản phẩm AI. Xếp thứ tự theo kết quả
+tốt nhất mỗi bài, trung bình thang 100; VIP không cộng điểm thưởng. Bảng riêng
+trong lớp dùng biệt danh, có tuần/tháng và snapshot tuyên dương top 3.
+Xem [thiết kế và cách sử dụng](docs/classes-achievements.md).
+
 ## Ngân hàng câu hỏi, bài tập và tài khoản demo
+
+**Lớp 1 và 2** có quy mô từng môn bằng lớp 3–4, nội dung phù hợp trẻ mới học.
+Máy hiện tại đã nạp sau backup. Máy khác dùng `seed-grade1-content` và
+`seed-grade2-content`; lệnh chỉ thêm học liệu, không tạo/reset tài khoản hoặc
+cấp VIP. Admin tạo học sinh với khối đúng; danh mục mặc định theo hồ sơ.
+Kho bốn khối có tổng **272 bài / 1536 câu / 224 đề**, tách học liệu AI Academy.
 
 **Lớp 3** đã có 68 bài/384 câu/56 đề, bằng quy mô lớp 4 cho từng môn: Toán
 25/142/21, Tiếng Việt 23/130/19, Tiếng Anh 20/112/16. Mỗi bài lớp 3 có 1 gợi ý

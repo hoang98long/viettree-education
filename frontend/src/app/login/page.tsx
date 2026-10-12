@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { Brand, ErrorState, Loading, TreeArt } from "@/components/ui";
 import { api } from "@/lib/api";
@@ -10,10 +10,17 @@ export default function Login() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const session = useSession();
   useEffect(() => {
-    if (session.user) router.replace(homeFor(session.user));
-  }, [session.user, router]);
+    // A retained login view must not navigate away after password/session rotation.
+    if (
+      session.user &&
+      pathname === "/login" &&
+      window.location.pathname === "/login"
+    )
+      router.replace(homeFor(session.user));
+  }, [session.user, router, pathname]);
   if (session.loading || session.user)
     return (
       <main id="main" className="standalone">

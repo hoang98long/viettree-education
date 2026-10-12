@@ -53,9 +53,9 @@ test("học sinh: bài học → làm bài → lưu/reload → nộp → kết q
     page.getByRole("heading", { name: "Cây năng lực của em" }),
   ).toBeVisible();
   await page.goto("/student/grades");
-  await page.getByRole("button", { name: /Lớp 1/ }).click();
+  await page.getByRole("button", { name: /Lớp 5/ }).click();
   await expect(
-    page.getByText("Chương trình lớp 1 đang xây dựng"),
+    page.getByText("Chương trình lớp 5 đang xây dựng"),
   ).toBeVisible();
   await page.goto("/admin/dashboard");
   await expect(page.getByRole("heading", { name: /403/ })).toBeVisible();

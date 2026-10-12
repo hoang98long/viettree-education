@@ -1,5 +1,6 @@
 import csv
 from io import StringIO
+from typing import Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -15,6 +16,51 @@ from app.db import connection, db
 from app.schemas import StrictModel
 
 router = APIRouter(prefix="/api/v1/ai-academy", tags=["ai-academy-management"])
+
+
+class LessonAccessInput(AdminAction):
+    minimum_plan_code: Literal["free", "vip"]
+    revision: int = Field(ge=1)
+
+
+@router.put("/admin/lessons/{identifier}/access")
+def set_lesson_access(
+    identifier: UUID, payload: LessonAccessInput, user=Depends(admin_user), conn=Depends(connection)
+):
+    from app.services.accounts import authenticate_actor
+
+    authenticate_actor(conn, user, payload.actor_password)
+    table = db.table("ai_lessons")
+    old = (
+        conn.execute(select(table).where(table.c.id == identifier).with_for_update())
+        .mappings()
+        .first()
+    )
+    if not old:
+        raise HTTPException(404, "Không tìm thấy bài")
+    if old["revision"] != payload.revision:
+        raise HTTPException(409, "Bài đã thay đổi, tải lại trước khi đổi quyền")
+    conn.execute(
+        update(table)
+        .where(table.c.id == identifier)
+        .values(
+            minimum_plan_code=payload.minimum_plan_code,
+            revision=old["revision"] + 1,
+            updated_at=now(),
+        )
+    )
+    audit(
+        conn,
+        user["id"],
+        "academy.access_policy_updated",
+        identifier,
+        {
+            "from": old["minimum_plan_code"],
+            "to": payload.minimum_plan_code,
+            "reason": payload.reason,
+        },
+    )
+    return {"minimum_plan_code": payload.minimum_plan_code, "revision": old["revision"] + 1}
 
 
 @router.get("/admin/units")

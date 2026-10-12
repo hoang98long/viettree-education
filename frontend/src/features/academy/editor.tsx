@@ -5,9 +5,11 @@ import { useResource } from "@/hooks/use-resource";
 import { Loading, ErrorState } from "@/components/ui";
 import type { LessonContent, Step } from "./types";
 import { AcademyImage } from "./shared";
+import { useSession } from "@/lib/session";
 
 type Detail = {
   lesson: {
+    minimum_plan_code: "free" | "vip";
     id: string;
     code: string;
     title: string;
@@ -61,6 +63,7 @@ function EditorForm({
   retry: () => void;
 }) {
   const resource = { retry };
+  const { user } = useSession();
   const [content, setContent] = useState<LessonContent>(
     structuredClone(current.versions[0].payload),
   );
@@ -193,6 +196,15 @@ function EditorForm({
   return (
     <section className="panel">
       <h2>Biên soạn {current.lesson.code}</h2>
+      {user?.roles.includes("admin") && (
+        <AccessPolicy
+          key={current.lesson.revision}
+          id={id}
+          plan={current.lesson.minimum_plan_code}
+          revision={current.lesson.revision}
+          onSaved={retry}
+        />
+      )}
       <p>
         Phiên bản {current.versions[0].version} · {current.versions[0].status} ·
         revision {current.lesson.revision}.
@@ -557,5 +569,72 @@ function EditorForm({
       </div>
       <p role="status">{message}</p>
     </section>
+  );
+}
+
+function AccessPolicy({
+  id,
+  plan,
+  revision,
+  onSaved,
+}: {
+  id: string;
+  plan: "free" | "vip";
+  revision: number;
+  onSaved: () => void;
+}) {
+  const [selected, setSelected] = useState(plan);
+  const [password, setPassword] = useState("");
+  const [reason, setReason] = useState("");
+  const [message, setMessage] = useState("");
+  async function save() {
+    try {
+      await api(`/ai-academy/admin/lessons/${id}/access`, {
+        method: "PUT",
+        body: JSON.stringify({
+          minimum_plan_code: selected,
+          revision,
+          actor_password: password,
+          reason,
+        }),
+      });
+      onSaved();
+    } catch (e) {
+      setMessage((e as Error).message);
+    }
+  }
+  return (
+    <details className="notice">
+      <summary>
+        Quyền học bài này: {plan === "vip" ? "VIP" : "Miễn phí"}
+      </summary>
+      <label>
+        Gói tối thiểu của bài
+        <select
+          value={selected}
+          onChange={(e) => setSelected(e.target.value as "free" | "vip")}
+        >
+          <option value="free">Miễn phí</option>
+          <option value="vip">VIP</option>
+        </select>
+      </label>
+      <label>
+        Lý do đổi quyền
+        <input value={reason} onChange={(e) => setReason(e.target.value)} />
+      </label>
+      <label>
+        Mật khẩu xác nhận đổi quyền
+        <input
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </label>
+      <button className="button secondary" onClick={() => void save()}>
+        Lưu quyền học bài AI
+      </button>
+      <p role="alert">{message}</p>
+    </details>
   );
 }

@@ -24,6 +24,9 @@ def test_projects_revision_rubric_and_enrollment_boundaries(client, conn):
     teacher, teacher_name = insert_user(conn, "teacher")
     other_teacher, other_name = insert_user(conn, "teacher")
     student, student_name = insert_user(conn, "student", 4)
+    from tests.test_classrooms import grant
+
+    grant(conn, student)
     classroom = uuid4()
     conn.execute(
         db.table("classes")
@@ -79,6 +82,9 @@ def test_projects_revision_rubric_and_enrollment_boundaries(client, conn):
 @pytest.mark.integration
 def test_privacy_export_and_project_text_removal_preserve_records(client, conn):
     student, name = insert_user(conn, "student", 4)
+    from tests.test_classrooms import grant
+
+    grant(conn, student)
     stranger, stranger_name = insert_user(conn, "student", 4)
     guardian, guardian_name = insert_user(conn, "guardian")
     login(client, name, settings().seed_student_password)

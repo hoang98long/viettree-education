@@ -248,6 +248,8 @@ const illustrations: Record<LessonIllustration["kind"], string> = {
   clock: "Đồng hồ",
   bars: "Biểu đồ cột",
   angles: "Góc và số đo",
+  counters: "Chấm tròn để đếm (lớp 1–2)",
+  cards: "Thẻ chữ và từ ngắn (lớp 1–2)",
 };
 
 function LessonForm({
@@ -732,9 +734,13 @@ function LessonForm({
                         columns: 4,
                         hour: 8,
                         minute: 0,
+                        count: 5,
                         angle: 60,
                         tick: 4,
-                        labels: ["Tổ 1", "Tổ 2", "Tổ 3"],
+                        labels:
+                          e.target.value === "cards"
+                            ? ["a", "ă", "â"]
+                            : ["Tổ 1", "Tổ 2", "Tổ 3"],
                         values: [12, 16, 20],
                       }
                     : null,
@@ -787,9 +793,11 @@ function LessonForm({
                         ]
                       : form.content.illustration.kind === "angles"
                         ? [["angle", "Số đo góc (độ)", 1, 180]]
-                        : form.content.illustration.kind === "bars"
-                          ? [["tick", "Số đơn vị mỗi vạch", 1, 20]]
-                          : []
+                        : form.content.illustration.kind === "counters"
+                          ? [["count", "Số chấm tròn (0–20)", 0, 20]]
+                          : form.content.illustration.kind === "bars"
+                            ? [["tick", "Số đơn vị mỗi vạch", 1, 20]]
+                            : []
                 ).map(([key, label, min, max]) => (
                   <label key={key} htmlFor={`figure-${key}`}>
                     {label}
@@ -816,6 +824,24 @@ function LessonForm({
                   </label>
                 ))}
               </div>
+              {form.content.illustration.kind === "cards" && (
+                <label>
+                  Thẻ chữ/từ (1–6 thẻ, phân cách bằng dấu phẩy)
+                  <input
+                    value={(form.content.illustration.labels || []).join(", ")}
+                    onChange={(e) =>
+                      content({
+                        illustration: {
+                          ...form.content.illustration!,
+                          labels: e.target.value
+                            .split(",")
+                            .map((v) => v.trim()),
+                        },
+                      })
+                    }
+                  />
+                </label>
+              )}
               {form.content.illustration.kind === "bars" && (
                 <fieldset>
                   <legend>Số liệu biểu đồ (1–6 cột)</legend>

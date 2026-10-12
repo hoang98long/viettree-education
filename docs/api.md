@@ -171,6 +171,13 @@ next_lessons có kiểm tra quyền, không trả nháp cho học sinh. Giới h
 
 ## Học liệu lớp 3 và gợi ý VIP
 
+Đợt lớp 1–2 đã mở cùng các endpoint học/luyện/kế hoạch và quản trị, có 68 bài/
+384 câu/56 đề mỗi khối. `/admin/curriculum-map?grade=1|2` trả 21 mạch và nguồn
+chương trình; nhận grade 1–4. `/grades` có nội dung thật ở 1–4. Gợi ý vẫn lọc
+live 1/3 theo Free/VIP, không mở nội dung khác khối. `Illustration.kind` thêm
+`counters` (count 0–20) và `cards` (1–6 nhãn ≤20 ký tự), lưu JSONB hiện có.
+CLI chỉ nội dung: seed-grade1-content/seed-grade2-content, không sửa accounts.
+
 - `GET /api/v1/grades`: trạng thái khả dụng dựa trên bài đã xuất bản, chủ đề/môn hoạt động.
 - `GET /api/v1/admin/curriculum-map?grade=3`: chỉ admin; chấp nhận lớp 3 hoặc 4, mặc định 4.
 - Các API chủ đề/bài tập/ngân hàng/editor nhận `grade=3`; quyền học vẫn theo lớp hồ sơ.
@@ -239,6 +246,12 @@ Swagger/OpenAPI chỉ bật ngoài production. Chi tiết CLI và cấu hình:
 
 ## AI Academy
 
+Chính sách hiện tại: `AI_TRAINING_ONLY=true`, nội dung chủ yếu VIP. Lớp 4 có
+3 tiết Free / 33 tiết VIP; các request start/step/attempt/hint/lab/studio kiểm
+tra quyền trực tiếp. Thu hồi chặn ở request tiếp theo, giữ kết quả/progress.
+`PUT admin/lessons/{id}/access` chỉ admin, xác nhận mật khẩu/lý do/revision;
+teacher editor không thay nhãn thương mại. Tutor/teacher draft dùng mẫu nội bộ.
+
 Prefix `/api/v1/ai-academy`, cùng auth và CSRF. Các write cần X-CSRF-Token;
 không gọi trực tiếp provider từ browser. Payload/giới hạn đầy đủ trong
 `backend/app/academy/schemas.py`, `api.py`, `management_api.py`.
@@ -261,9 +274,34 @@ không gọi trực tiếp provider từ browser. Payload/giới hạn đầy đ
 | Dữ liệu              | GET privacy/{studentId}/export; POST privacy/project-text-removal                                      | Student own, guardian verified hoặc admin         |
 | Xét yêu cầu          | GET admin/privacy-requests; POST admin/privacy-requests/{id}/resolve                                   | Admin, xác nhận mật khẩu/lý do                    |
 
-`home.assignments` chỉ trả bài giao cho chính học sinh còn ghi danh, lớp đang
-hoạt động và bài published phù hợp khối. Public lesson payload bỏ đáp án và
+`home.assignments` trả bài giao cá nhân và bài theo lớp cho chính học sinh còn
+ghi danh, lớp đang hoạt động và bài published phù hợp khối. Public lesson payload bỏ đáp án và
 teacher-only fields. Trả 409 revision/idempotency xung đột, 422 nội dung không
 đủ/không hợp lệ; moderation input trả blocked với lời hướng dẫn, không lưu raw
-text. Media API approved bundled cache private 300s; các API dữ liệu no-store.
-CSV có BOM và escape formula. Model chưa đủ điều kiện trả simulation/fallback.
+text. Media giới thiệu approved bundled cache private 300s; tranh nội dung bài
+VIP kiểm tra quyền và no-store; các API dữ liệu no-store.
+CSV có BOM và escape formula. Training-only luôn trả hướng dẫn nội bộ.
+
+## Lớp, giao bài, kết quả và giá VIP
+
+Prefix `/api/v1`; write cần CSRF. Danh sách có auth trừ giá tham khảo công khai.
+
+| Endpoint                                                             | Quyền / hành vi                                                                                  |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| GET classroom/classes; POST/PUT classroom/classes[/{id}]             | List theo quyền; admin tạo/sửa, revision khi sửa                                                 |
+| GET classroom/schools                                                | Admin                                                                                            |
+| GET classroom/students                                               | Staff scoped; admin có free_only/search/grade; page 50                                           |
+| POST classroom/classes/{id}/enrollments                              | Admin/teacher chủ lớp, student_id/enrolled; giữ lịch sử khi rời                                  |
+| GET classroom/resources?kind=&grade=                                 | Staff, ba loại lesson/assessment/ai_lesson                                                       |
+| POST classroom/assignments                                           | Staff; class_id hoặc student_ids 1–50; resource_id/due_at/idempotency_key; kiểm quyền người nhận |
+| GET classroom/my-assignments; classroom/my-achievements              | Student own, các loại kết quả và số bài đọc hoàn thành                                           |
+| GET classroom/classes/{id}/leaderboard                               | Student hiện ghi danh hoặc staff đúng lớp; category/period/resource_id; biệt danh với student    |
+| GET/POST classroom/classes/{id}/recognition                          | Read scoped; write staff chủ lớp/admin; snapshot top 3, lặp trả batch cũ                         |
+| GET membership/prices                                                | Public; reference_only, offers/market_references; tự bỏ sale hết hạn                             |
+| GET admin/membership/prices                                          | Admin, cấu hình giá và ưu đãi                                                                    |
+| PUT admin/membership/prices/{code}; POST admin/membership/promotions | Admin, mật khẩu/lý do/revision, validation giá/ngày, audit                                       |
+
+409 cho revision/idempotency/trạng thái lớp; 403 cho sai lớp hoặc thiếu VIP;
+422 cho người nhận sai khối/trường, hơn 50 người, hạn/ngày/giá không hợp lệ.
+Giao bài không cấp gói, bảng giá không tạo thanh toán. Xem
+[công thức thứ tự](classes-achievements.md), [giá](vip-pricing-research.md).

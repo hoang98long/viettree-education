@@ -8,7 +8,7 @@ from app.schemas import PreviewInput
 
 
 class Illustration(StrictModel):
-    kind: Literal["fraction", "garden", "reading", "clock", "bars", "angles"]
+    kind: Literal["fraction", "garden", "reading", "clock", "bars", "angles", "counters", "cards"]
     caption: str = Field(min_length=5, max_length=400)
     numerator: int = Field(default=3, ge=0, le=12)
     denominator: int = Field(default=8, ge=1, le=12)
@@ -16,6 +16,7 @@ class Illustration(StrictModel):
     columns: int = Field(default=4, ge=1, le=8)
     hour: int = Field(default=8, ge=0, le=23)
     minute: int = Field(default=0, ge=0, le=59)
+    count: int = Field(default=5, ge=0, le=20)
     angle: int = Field(default=60, ge=1, le=180)
     tick: int = Field(default=4, ge=1, le=20)
     labels: list[str] = Field(
@@ -25,6 +26,10 @@ class Illustration(StrictModel):
 
     @model_validator(mode="after")
     def fraction_bounds(self):
+        if self.kind == "cards" and any(
+            not label.strip() or len(label) > 20 for label in self.labels
+        ):
+            raise ValueError("Thẻ chữ cần 1–6 nhãn ngắn, mỗi nhãn tối đa 20 ký tự")
         if self.kind == "fraction" and self.numerator > self.denominator:
             raise ValueError("Số phần tô màu không vượt tổng số phần")
         if self.kind == "bars" and (

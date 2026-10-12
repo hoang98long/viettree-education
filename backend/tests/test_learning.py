@@ -148,7 +148,7 @@ def test_grade_unavailable_subject_and_owner_checks(logged_student, conn):
     first_lesson = plan["items"][0]["lesson_id"]
     profiles = db.table("student_profiles")
     conn.execute(
-        profiles.update().where(profiles.c.student_id == student_id).values(current_grade=1)
+        profiles.update().where(profiles.c.student_id == student_id).values(current_grade=5)
     )
     assert client.get(f"{BASE}/students/me/learning-plans").json() == []
     assert client.post(f"{BASE}/lessons/{first_lesson}/complete").status_code == 403

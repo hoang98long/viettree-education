@@ -33,8 +33,12 @@ Học liệu cần giáo viên nhà trường rà soát trước khi đưa vào 
   chủ đề mới, lớp/ghi danh/quyền/phụ huynh, báo cáo, hàng đợi SVG,
   mẫu hướng dẫn có phiên bản, cảnh báo và yêu cầu riêng tư.
 
-Academy nền tảng miễn phí. VIP mở mức 2–3 của thang gợi ý; Free có mức 1.
-Server quyết định quyền, không dựa vào cờ trong browser. Không có thanh toán mới.
+Chính sách từ 12/10/2026: toàn module có **7 bài Free / 41 bài VIP**; lớp 4
+**3 tiết Free / 33 tiết VIP**. Free có gợi ý mức 1 trong bài được mở;
+VIP có mức 2–3, lab/Prompt Builder và studio/dự án từ mẫu. Server kiểm tra quyền
+tại mỗi bước; không gửi nội dung bài VIP rồi chỉ che trong browser.
+Xem [chính sách đào tạo AI](../ai-training-vip.md) và
+[giá VIP tham khảo](../vip-pricing-research.md). Chưa có thanh toán tự động.
 
 ## Chạy nhanh
 
@@ -46,7 +50,7 @@ Trong terminal backend, dùng môi trường và PostgreSQL đã cấu hình:
 ../.venv/Scripts/python.exe -m app.cli verify-ai-academy
 ```
 
-Head là `0010_ai_academy`. Khởi động backend/frontend theo
+Head là `0011_classes_vip_training`. Khởi động backend/frontend theo
 [run-local.md](../run-local.md), đăng nhập bằng tài khoản hiện có. Seed không đổi
 mật khẩu, VIP, lớp hoặc lịch sử. Không tạo bài làm/điểm demo giả.
 
@@ -61,6 +65,10 @@ mật khẩu, VIP, lớp hoặc lịch sử. Không tạo bài làm/điểm demo
 [Báo cáo đối chiếu prompt, kiểm chứng và phần còn thiếu](completion-report.md).
 
 ## Phạm vi còn cần tích hợp
+
+Đợt hiện tại ưu tiên đào tạo: `AI_TRAINING_ONLY=true` chặn provider trước
+flag/consent và giữ trợ giảng/soạn nháp ở mẫu nội bộ. Admin không bật model
+qua UI trong chế độ này; học lý thuyết, bài tập và studio vẫn dùng được.
 
 Ollama có adapter thật và kiểm thử HTTP bằng mock; chưa có model cài/chạy để
 kiểm chứng chất lượng phản hồi thật. Sinh ảnh bitmap bằng model chưa có adapter

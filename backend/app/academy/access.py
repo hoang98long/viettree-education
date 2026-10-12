@@ -19,7 +19,7 @@ def student_feature(conn, user, feature):
 
 
 def media_access(conn, user, row):
-    if "student" not in user["roles"] or row["category"] in {
+    if {"teacher", "admin"} & set(user["roles"]) or row["category"] in {
         "hero",
         "cover",
         "mascot",
@@ -38,7 +38,20 @@ def media_access(conn, user, row):
             .where(usages.c.asset_id == row["id"], versions.c.status == "published")
         ).scalars()
     )
-    if plans and "free" not in plans and resolve_membership(conn, user["id"])["plan_code"] != "vip":
+    entitled = (
+        "student" in user["roles"] and resolve_membership(conn, user["id"])["plan_code"] == "vip"
+    )
+    if "guardian" in user["roles"]:
+        links = db.table("guardian_students")
+        entitled = entitled or any(
+            resolve_membership(conn, identifier)["plan_code"] == "vip"
+            for identifier in conn.execute(
+                select(links.c.student_id).where(
+                    links.c.guardian_user_id == user["id"], links.c.verified_at.is_not(None)
+                )
+            ).scalars()
+        )
+    if plans and "free" not in plans and not entitled:
         denied(
             message="Minh họa của bài này dành cho VIP; em có thể xem tranh bìa và bài nhập môn miễn phí."
         )

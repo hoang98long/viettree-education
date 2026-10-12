@@ -140,7 +140,7 @@ def seed_content(conn, curriculum=CURRICULUM, grade=4):
                         **lesson_source,
                         "status": "published",
                         "sort_order": lesson_order,
-                        "estimated_minutes": 12,
+                        "estimated_minutes": lesson_source.get("estimated_minutes", 12),
                     },
                     code,
                 )
@@ -268,6 +268,8 @@ def seed(conn, reset=False):
     seed_advanced_content(conn, VIP_EXTENSION)
     seed_grade4_content(conn)
     seed_grade3_content(conn)
+    seed_early_primary_content(conn, 1)
+    seed_early_primary_content(conn, 2)
     return verify_seed(conn)
 
 
@@ -319,7 +321,7 @@ def seed_advanced_content(conn, curriculum=ADVANCED, grade=4):
                 {
                     **source["lesson"],
                     "status": "published",
-                    "estimated_minutes": 18,
+                    "estimated_minutes": source["lesson"].get("estimated_minutes", 18),
                     "sort_order": source.get("sort_order", 10 + index),
                 },
                 code + "/lesson",
@@ -505,6 +507,45 @@ def seed_grade3_content(conn):
     seed_content(conn, CORE, grade=3)
     seed_access_policies(conn, CORE, grade=3)
     seed_advanced_content(conn, EXTENSION, grade=3)
+
+
+def seed_early_primary_content(conn, grade):
+    """Content only; preserve existing published versions, accounts and progress."""
+    from app.early_primary_curriculum import PACKS, TOPICS
+
+    if grade not in (1, 2):
+        raise ValueError("Chỉ nạp bộ học liệu lớp 1 hoặc lớp 2")
+    conn.execute(text("SELECT pg_advisory_xact_lock(78249100)"))
+    for subject, source in TOPICS[grade].items():
+        subject_id = conn.execute(
+            select(db.table("subjects").c.id).where(db.table("subjects").c.code == subject)
+        ).scalar_one()
+        for index, (key, title) in enumerate(source.items(), 1):
+            code = f"VT{grade}-{subject}-{key}"
+            topic, _ = ensure(
+                conn,
+                "topics",
+                {"subject_id": subject_id, "grade": grade, "code": code},
+                {"title": title, "sort_order": index},
+                code,
+            )
+            ensure(
+                conn,
+                "skills",
+                {"code": code + "-skill"},
+                {
+                    "subject_id": subject_id,
+                    "topic_id": topic["id"],
+                    "grade": grade,
+                    "name": title,
+                    "sort_order": index,
+                },
+                code + "/skill",
+            )
+    pack = PACKS[grade]
+    seed_content(conn, pack["core"], grade=grade)
+    seed_access_policies(conn, pack["core"], grade=grade)
+    seed_advanced_content(conn, pack["extension"], grade=grade)
 
 
 def verify_seed(conn, grade=4):

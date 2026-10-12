@@ -16,9 +16,21 @@ Set-Location 'D:\01_viettree_code\viettree-education\backend'
 Giữ terminal này mở. Migration cập nhật cấu trúc nếu cần, giữ dữ liệu học tập.
 Không cần import schema hoặc seed lại mỗi lần chạy.
 
+**Lớp 1–2 trên máy này đã có học liệu**. Đăng nhập học sinh có hồ sơ khối 1/2,
+hoặc admin tạo/chỉnh hồ sơ tại Quản trị tài khoản. Mỗi khối 68 bài/384 câu/56
+đề; bài ngắn 6–8 phút, Free 1/VIP 3 gợi ý. Với máy chưa nạp, chạy một lần:
+
+```powershell
+../.venv/Scripts/python.exe -m app.cli seed-grade1-content
+../.venv/Scripts/python.exe -m app.cli seed-grade2-content
+```
+
+Không đổi khối hay mật khẩu tài khoản hiện có tự động. Chi tiết
+[khảo sát và học liệu lớp 1–2](grades1-2-curriculum.md).
+
 Nâng cấp lớp 3 lần đầu: trước khi mở backend, chạy thêm
 `../.venv/Scripts/python.exe -m app.cli seed-grade3-content`.
-Head hiện tại `0010_ai_academy`, bao gồm gợi ý VIP từ 0009. Admin tạo/chỉnh hồ sơ học sinh
+Head hiện tại `0011_classes_vip_training`, bao gồm lớp/thành tích/giá và gợi ý VIP. Admin tạo/chỉnh hồ sơ học sinh
 **Lớp 3**, rồi chọn lớp 3 trong học liệu. Mỗi bài lớp 3: Free 1 gợi ý, VIP 3;
 xem [học liệu lớp 3](grade3-curriculum.md). Không đổi tài khoản lớp 4 tự động.
 
@@ -32,7 +44,9 @@ khác hoặc lần nâng cấp đầu, cài thêm dependencies và nạp module 
 ```
 
 Đăng nhập → **AI Academy** (`/ai-academy`); admin `/admin/ai-academy`.
-Mặc định mô phỏng, không cần khóa AI. Chi tiết [AI Academy](ai-academy/README.md).
+Mặc định `AI_TRAINING_ONLY=true`: học lý thuyết và bài tập, không gọi model.
+Lớp 4 có 3 bài Free / 33 bài VIP; lab và xưởng sáng tạo thuộc VIP.
+Chi tiết [AI Academy](ai-academy/README.md).
 Giữ `.env` hiện có; file `.env.example` dùng placeholder, không chép đè mật khẩu.
 
 ## 2. Mở frontend — terminal thứ hai
@@ -79,6 +93,15 @@ Khởi động lại hai server sau khi cập nhật code. Xem [học liệu l�
 Mật khẩu demo lấy từ `.env` ở thư mục gốc: `SEED_ADMIN_PASSWORD` cho admin,
 `SEED_STUDENT_PASSWORD` cho học sinh. Nếu đã đổi mật khẩu, dùng mật khẩu mới.
 Admin có thể cấp/gia hạn VIP tại **Học sinh → Quản lý gói học**.
+
+Admin mở **Lớp và giao bài** (`/admin/classes`) để tạo lớp, ghi danh học sinh
+hoặc giao bài riêng cho học sinh tự do. Giáo viên dùng `/teacher/classes`;
+học sinh dùng **Lớp và thành tích** để xem bài giao/kết quả/top 3 trong lớp.
+Xem [hướng dẫn lớp và thành tích](classes-achievements.md).
+
+**Giá VIP và ưu đãi** (`/admin/vip-pricing`) quản lý giá tham khảo và sale có
+ngày hết hạn, hiển thị tại **Gói học của em**. Chưa có thanh toán tự động;
+cấp/thu hồi vẫn qua quản lý gói. Xem [bảng giá và khảo sát](vip-pricing-research.md).
 
 Phiên thường mặc định **8 giờ**. Học sinh có thể chọn **Ghi nhớ đăng nhập trên máy
 cá nhân** để giữ phiên **7 ngày**. Trong phiên, bấm biểu tượng VietTree sẽ về

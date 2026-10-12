@@ -1,5 +1,15 @@
 # Thiết kế gói học miễn phí và VIP cho VietTree Education
 
+Lớp 1–2 đã thêm bộ ba môn có quy mô/tỷ lệ Free–VIP bằng lớp 3–4: mỗi khối
+68 bài/384 câu/56 đề, Free 46/228/34 và VIP 22/156/22. VIP tăng mức vận dụng
+trong kiến thức của khối; gợi ý Free 1/VIP 3. Xem [nội dung và khảo sát](grades1-2-curriculum.md).
+Cập nhật 12/10/2026: [AI Academy](ai-training-vip.md) có 7 bài Free / 41 bài
+VIP (lớp 4: 3 / 33), lab và studio thuộc VIP. `AI_TRAINING_ONLY=true` chặn gọi
+model. [Giá tham khảo và sale](vip-pricing-research.md) hiển thị tại trang gói;
+admin quản lý ưu đãi có hạn. [Lớp và thành tích](classes-achievements.md) dùng
+cùng tài khoản, không cộng điểm thưởng cho VIP. Migration head 0011.
+Gia hạn gói đã thu hồi trả 409, cần cấp mới; replay thao tác trả quyền hiện tại.
+
 Cập nhật lớp 3: cùng quy mô và tỷ lệ nội dung như lớp 4; 46 bài/34 đề Free,
 22 bài/22 đề VIP. Mỗi bài lớp 3 có 3 gợi ý: Free xem 1 ý định hướng, VIP xem
 thêm cách làm và tự kiểm tra. Tính năng `learning.guided_hints` được thêm bởi
@@ -45,20 +55,20 @@ Các lựa chọn về gói, thời hạn và trải nghiệm trong tài liệu 
 
 ## 2. Ma trận sản phẩm
 
-| Khả năng | Free | VIP | Tình trạng hiện tại |
-| --- | --- | --- | --- |
-| Bài học nền tảng được đánh dấu miễn phí | Có | Có | 46 bài/34 đề Free, gồm bộ cũ và phần mở rộng |
-| Luyện tập đi kèm bài miễn phí, chấm và lời giải | Có | Có | Đã có |
-| Lịch sử, kết quả và cây năng lực của chính em | Có | Có | Đã có; tiếp tục xem khi hết VIP |
-| Kế hoạch học theo thứ tự chương trình | Tối đa 3 bài mới/kế hoạch, từng môn | Có | Đã có plan_v1 |
-| Cỡ chữ, hỗ trợ đọc và giao diện điện thoại | Đầy đủ | Đầy đủ | Đã có tùy chọn cỡ chữ; các hỗ trợ mới dùng chung |
-| Bài học nâng cao và luyện tập VIP | Xem giới thiệu, không mở nội dung đầy đủ | Có | 22 bài/156 câu VIP development, cần rà soát chuyên môn |
-| Thử thách theo chủ đề, đề tổng hợp nâng cao | Không | Có | 22 đề thử thách theo chủ đề; đề tổng hợp là phần sau |
-| Kế hoạch cá nhân theo kỹ năng cần ôn | Không; vẫn có gợi ý luyện tập cơ bản | Có; phối hợp nền tảng, ôn và nâng cao | Đã triển khai plan_v2 |
-| Góc học VIP, lọc môn và bài chưa đọc | Không | Có | Đã triển khai |
-| Sổ tay ôn lỗi và tự luyện không đổi điểm | Không | Có | Câu sai gần nhất của chính em, lọc môn/phân trang |
-| Báo cáo cá nhân 7/30 ngày và in/lưu PDF | Không | Có | Trong tài khoản học sinh, xem cùng phụ huynh |
-| Báo cáo phụ huynh | Tiến độ và kết quả cơ bản của trẻ được liên kết | Thêm xu hướng theo tuần, kỹ năng cần ôn, hướng dẫn hỗ trợ và PDF | Báo cáo là giai đoạn sau; hiện chỉ xem gói của trẻ đã liên kết |
+| Khả năng                                        | Free                                            | VIP                                                              | Tình trạng hiện tại                                            |
+| ----------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------- |
+| Bài học nền tảng được đánh dấu miễn phí         | Có                                              | Có                                                               | 46 bài/34 đề Free, gồm bộ cũ và phần mở rộng                   |
+| Luyện tập đi kèm bài miễn phí, chấm và lời giải | Có                                              | Có                                                               | Đã có                                                          |
+| Lịch sử, kết quả và cây năng lực của chính em   | Có                                              | Có                                                               | Đã có; tiếp tục xem khi hết VIP                                |
+| Kế hoạch học theo thứ tự chương trình           | Tối đa 3 bài mới/kế hoạch, từng môn             | Có                                                               | Đã có plan_v1                                                  |
+| Cỡ chữ, hỗ trợ đọc và giao diện điện thoại      | Đầy đủ                                          | Đầy đủ                                                           | Đã có tùy chọn cỡ chữ; các hỗ trợ mới dùng chung               |
+| Bài học nâng cao và luyện tập VIP               | Xem giới thiệu, không mở nội dung đầy đủ        | Có                                                               | 22 bài/156 câu VIP development, cần rà soát chuyên môn         |
+| Thử thách theo chủ đề, đề tổng hợp nâng cao     | Không                                           | Có                                                               | 22 đề thử thách theo chủ đề; đề tổng hợp là phần sau           |
+| Kế hoạch cá nhân theo kỹ năng cần ôn            | Không; vẫn có gợi ý luyện tập cơ bản            | Có; phối hợp nền tảng, ôn và nâng cao                            | Đã triển khai plan_v2                                          |
+| Góc học VIP, lọc môn và bài chưa đọc            | Không                                           | Có                                                               | Đã triển khai                                                  |
+| Sổ tay ôn lỗi và tự luyện không đổi điểm        | Không                                           | Có                                                               | Câu sai gần nhất của chính em, lọc môn/phân trang              |
+| Báo cáo cá nhân 7/30 ngày và in/lưu PDF         | Không                                           | Có                                                               | Trong tài khoản học sinh, xem cùng phụ huynh                   |
+| Báo cáo phụ huynh                               | Tiến độ và kết quả cơ bản của trẻ được liên kết | Thêm xu hướng theo tuần, kỹ năng cần ôn, hướng dẫn hỗ trợ và PDF | Báo cáo là giai đoạn sau; hiện chỉ xem gói của trẻ đã liên kết |
 
 Không giới hạn thêm số bài Free được đọc mỗi ngày. Số lượt làm từng đề vẫn theo
 assessments.max_attempts cho cả hai gói. VIP có thêm đề/biến thể mới, không được
@@ -82,11 +92,11 @@ Nội dung VIP vẫn thuộc lớp của học sinh; không tự mở lớp khá
 Đề xuất giữ 24 bài học và 12 đề hiện có là Free khi chuyển sang mô hình mới. Phần
 VIP bắt đầu với 6 bài mới và đề đi kèm, mỗi môn 2 bài, sau khi rà soát chuyên môn:
 
-| Môn | Ví dụ nội dung VIP lớp 4 |
-| --- | --- |
-| Toán | Giải bài toán nhiều bước; giải thích và so sánh cách giải phân số |
-| Tiếng Việt | Đọc hiểu suy luận; lựa chọn chi tiết và cách diễn đạt phù hợp |
-| Tiếng Anh | Đọc đoạn hội thoại dài hơn; lựa chọn câu theo ngữ cảnh |
+| Môn        | Ví dụ nội dung VIP lớp 4                                          |
+| ---------- | ----------------------------------------------------------------- |
+| Toán       | Giải bài toán nhiều bước; giải thích và so sánh cách giải phân số |
+| Tiếng Việt | Đọc hiểu suy luận; lựa chọn chi tiết và cách diễn đạt phù hợp     |
+| Tiếng Anh  | Đọc đoạn hội thoại dài hơn; lựa chọn câu theo ngữ cảnh            |
 
 Các chủ đề trên đã có nội dung mẫu trong advanced_curriculum.py, được xuất bản khi
 chủ động seed development. Rà soát chương trình/đáp án trước vận hành. Dùng version/câu hỏi mới; không sửa version published
@@ -161,14 +171,14 @@ trạng thái tài khoản, xuất bản nội dung hoặc cửa sổ làm bài.
 Schema gốc hiện không có bảng gói học. Đề xuất migration Alembic bổ sung, giữ nguyên
 database/viettree_education_schema.sql và các khóa ngoại ghép của bài làm:
 
-| Bảng đề xuất | Trường và ràng buộc chính |
-| --- | --- |
-| membership_plans | code PK (free/vip), name, is_active, created_at; khai báo gói |
-| membership_plan_features | plan_code FK, feature_code, composite PK; danh sách quyền đã được phát hành của gói |
-| student_memberships | student_id PK/FK student_profiles, plan_code FK, starts_at, ends_at, status active/revoked, source admin/payment, granted_by/revoked_by FK users, revoked_at, revoke_reason, updated_at; CHECK ends_at > starts_at |
-| membership_operations | id UUID PK, student_id FK, actor_user_id FK, idempotency_key UNIQUE theo actor, operation grant/extend/revoke, request_fingerprint, response_snapshot JSONB, created_at; bảo đảm yêu cầu lặp không cộng ngày hoặc thao tác lần hai |
-| content_access_policies | id UUID PK, lesson_id FK nullable, assessment_id FK nullable, minimum_plan_code FK, learning_level, preview JSONB, updated_by FK users; CHECK đúng một target khác NULL, unique riêng theo lesson_id và assessment_id |
-| attempt_access_grants | attempt_id PK/FK attempts, membership_student_id FK student_memberships, allowed_until TIMESTAMPTZ, granted_at, revoked_at; CHECK allowed_until > granted_at; dùng cho hoàn tất attempt khi VIP hết hạn |
+| Bảng đề xuất             | Trường và ràng buộc chính                                                                                                                                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| membership_plans         | code PK (free/vip), name, is_active, created_at; khai báo gói                                                                                                                                                                      |
+| membership_plan_features | plan_code FK, feature_code, composite PK; danh sách quyền đã được phát hành của gói                                                                                                                                                |
+| student_memberships      | student_id PK/FK student_profiles, plan_code FK, starts_at, ends_at, status active/revoked, source admin/payment, granted_by/revoked_by FK users, revoked_at, revoke_reason, updated_at; CHECK ends_at > starts_at                 |
+| membership_operations    | id UUID PK, student_id FK, actor_user_id FK, idempotency_key UNIQUE theo actor, operation grant/extend/revoke, request_fingerprint, response_snapshot JSONB, created_at; bảo đảm yêu cầu lặp không cộng ngày hoặc thao tác lần hai |
+| content_access_policies  | id UUID PK, lesson_id FK nullable, assessment_id FK nullable, minimum_plan_code FK, learning_level, preview JSONB, updated_by FK users; CHECK đúng một target khác NULL, unique riêng theo lesson_id và assessment_id              |
+| attempt_access_grants    | attempt_id PK/FK attempts, membership_student_id FK student_memberships, allowed_until TIMESTAMPTZ, granted_at, revoked_at; CHECK allowed_until > granted_at; dùng cho hoàn tất attempt khi VIP hết hạn                            |
 
 Membership là trạng thái hiện tại; membership_operations và audit_logs lưu lịch
 sử cấp/gia hạn/thu hồi. Không xóa lịch sử để đổi gói. Request fingerprint ngăn cùng
@@ -179,13 +189,13 @@ mới sau đó không khôi phục grant đã thu hồi. Các thao tác cùng kh
 
 Danh sách feature_code cố định trong backend:
 
-| Mã | Gói |
-| --- | --- |
-| learning.basic, practice.basic, results.own, skills.own, learning_plan.basic, accessibility.text_size | Free và VIP |
-| learning.advanced, practice.advanced, practice.challenge | VIP, khi nội dung/tính năng đã phát hành |
-| learning_plan.adaptive | VIP, khi plan_v2 đã phát hành |
-| guardian_report.basic | Free và VIP, khi luồng phụ huynh đã phát hành |
-| guardian_report.detailed, guardian_report.export | VIP, khi báo cáo đã phát hành |
+| Mã                                                                                                    | Gói                                           |
+| ----------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| learning.basic, practice.basic, results.own, skills.own, learning_plan.basic, accessibility.text_size | Free và VIP                                   |
+| learning.advanced, practice.advanced, practice.challenge                                              | VIP, khi nội dung/tính năng đã phát hành      |
+| learning_plan.adaptive                                                                                | VIP, khi plan_v2 đã phát hành                 |
+| guardian_report.basic                                                                                 | Free và VIP, khi luồng phụ huynh đã phát hành |
+| guardian_report.detailed, guardian_report.export                                                      | VIP, khi báo cáo đã phát hành                 |
 
 Quyền báo cáo được tính từ gói của trẻ, kết hợp role guardian và verified_at của
 liên kết guardian_students. Mua gói không tự xác minh quan hệ với trẻ.
@@ -231,20 +241,20 @@ cần ôn khi có đủ bằng chứng. Kế hoạch cơ bản vẫn dùng đư�
 
 Tất cả đường dẫn có prefix /api/v1. Các API trong bảng đã hoạt động:
 
-| Endpoint | Quyền và hành vi |
-| --- | --- |
-| GET /membership/plans | Danh sách gói và quyền lợi đã phát hành; không quảng cáo phần chưa hoạt động |
-| GET /students/me/membership | Gói hiện tại, trạng thái, ngày kết thúc, features của chính học sinh |
-| GET /guardian/students/{id}/membership | Guardian có liên kết verified_at; gói của trẻ |
-| GET /admin/students/{id}/membership | Admin xem gói |
-| GET /admin/students/{id}/membership/history | Admin xem lịch sử thao tác |
-| GET /guardian/students | Danh sách trẻ có liên kết đã xác minh |
-| GET /admin/content-access | Danh sách chính sách và gói hiệu lực của bài/đề |
-| PUT /admin/content/{lesson hoặc assessment}/{id}/policy | Admin, CSRF, lý do; cấu hình chính sách và audit |
-| POST /admin/students/{id}/membership/grant | Admin, CSRF, Idempotency-Key; cấp mới theo duration_days cho phép và lý do |
-| POST /admin/students/{id}/membership/extend | Admin, CSRF, Idempotency-Key; gia hạn, không tự đổi vai trò |
-| POST /admin/students/{id}/membership/revoke | Admin, CSRF, Idempotency-Key; thu hồi, bắt buộc lý do |
-| GET /lessons/{id}/preview | Metadata và đoạn giới thiệu được duyệt, không lấy nguyên blocks |
+| Endpoint                                                | Quyền và hành vi                                                             |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| GET /membership/plans                                   | Danh sách gói và quyền lợi đã phát hành; không quảng cáo phần chưa hoạt động |
+| GET /students/me/membership                             | Gói hiện tại, trạng thái, ngày kết thúc, features của chính học sinh         |
+| GET /guardian/students/{id}/membership                  | Guardian có liên kết verified_at; gói của trẻ                                |
+| GET /admin/students/{id}/membership                     | Admin xem gói                                                                |
+| GET /admin/students/{id}/membership/history             | Admin xem lịch sử thao tác                                                   |
+| GET /guardian/students                                  | Danh sách trẻ có liên kết đã xác minh                                        |
+| GET /admin/content-access                               | Danh sách chính sách và gói hiệu lực của bài/đề                              |
+| PUT /admin/content/{lesson hoặc assessment}/{id}/policy | Admin, CSRF, lý do; cấu hình chính sách và audit                             |
+| POST /admin/students/{id}/membership/grant              | Admin, CSRF, Idempotency-Key; cấp mới theo duration_days cho phép và lý do   |
+| POST /admin/students/{id}/membership/extend             | Admin, CSRF, Idempotency-Key; gia hạn, không tự đổi vai trò                  |
+| POST /admin/students/{id}/membership/revoke             | Admin, CSRF, Idempotency-Key; thu hồi, bắt buộc lý do                        |
+| GET /lessons/{id}/preview                               | Metadata và đoạn giới thiệu được duyệt, không lấy nguyên blocks              |
 
 GET membership ví dụ: plan_code=vip, status=active, starts_at/ends_at dạng ISO UTC,
 features=[learning.basic, learning.advanced, ...]. Admin/teacher không có hồ sơ
@@ -282,20 +292,20 @@ và hoàn tiền được thiết kế riêng khi chốt mô hình kinh doanh.
 
 ## 10. Tiêu chí nghiệm thu
 
-| Tình huống | Kết quả bắt buộc |
-| --- | --- |
-| Free gọi trực tiếp API bài VIP hoặc đoán UUID | Không có blocks/câu hỏi/đáp án ngoài quyền; không chỉ chặn UI |
-| Free đổi localStorage, cookie phụ hoặc gửi is_vip=true | Không làm thay đổi quyền từ server |
-| VIP vào trang admin hoặc bài làm học sinh khác | Vẫn bị chặn bởi role/owner |
-| VIP vừa cấp/gia hạn/thu hồi trong phiên hiện tại | Quyền có hiệu lực ở request tiếp theo, không cần đăng nhập lại |
-| Hết hạn đúng ends_at | Không mở bài VIP mới; vẫn xem kết quả của mình |
-| Hết hạn giữa attempt | Chỉ attempt được cấp grant tiếp tục trong allowed_until; không kéo dài cửa sổ đề |
-| Thu hồi trong attempt | Quyền VIP bị chặn ngay; dữ liệu đã lưu và kết quả cũ được giữ |
-| Hai request cấp/gia hạn cùng Idempotency-Key | Một thay đổi, một lần cộng thời hạn; key khác payload trả 409 |
-| Guardian chưa verified hoặc chọn trẻ ngoài liên kết | Không xem báo cáo hoặc thao tác nâng cấp cho trẻ đó |
-| Không có chính sách nội dung hoặc thiếu migration | Không lộ nội dung; báo lỗi cấu hình phù hợp cho người vận hành |
-| Kế hoạch/gợi ý Free và VIP hết hạn | Không đưa bài bị khóa thành bước bắt buộc; giữ tiến độ cũ |
-| Chuyển đổi dữ liệu hiện tại | 24 bài/12 đề vẫn Free, điểm/lịch sử không thay đổi; SQL gốc giữ nguyên |
+| Tình huống                                             | Kết quả bắt buộc                                                                 |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Free gọi trực tiếp API bài VIP hoặc đoán UUID          | Không có blocks/câu hỏi/đáp án ngoài quyền; không chỉ chặn UI                    |
+| Free đổi localStorage, cookie phụ hoặc gửi is_vip=true | Không làm thay đổi quyền từ server                                               |
+| VIP vào trang admin hoặc bài làm học sinh khác         | Vẫn bị chặn bởi role/owner                                                       |
+| VIP vừa cấp/gia hạn/thu hồi trong phiên hiện tại       | Quyền có hiệu lực ở request tiếp theo, không cần đăng nhập lại                   |
+| Hết hạn đúng ends_at                                   | Không mở bài VIP mới; vẫn xem kết quả của mình                                   |
+| Hết hạn giữa attempt                                   | Chỉ attempt được cấp grant tiếp tục trong allowed_until; không kéo dài cửa sổ đề |
+| Thu hồi trong attempt                                  | Quyền VIP bị chặn ngay; dữ liệu đã lưu và kết quả cũ được giữ                    |
+| Hai request cấp/gia hạn cùng Idempotency-Key           | Một thay đổi, một lần cộng thời hạn; key khác payload trả 409                    |
+| Guardian chưa verified hoặc chọn trẻ ngoài liên kết    | Không xem báo cáo hoặc thao tác nâng cấp cho trẻ đó                              |
+| Không có chính sách nội dung hoặc thiếu migration      | Không lộ nội dung; báo lỗi cấu hình phù hợp cho người vận hành                   |
+| Kế hoạch/gợi ý Free và VIP hết hạn                     | Không đưa bài bị khóa thành bước bắt buộc; giữ tiến độ cũ                        |
+| Chuyển đổi dữ liệu hiện tại                            | 24 bài/12 đề vẫn Free, điểm/lịch sử không thay đổi; SQL gốc giữ nguyên           |
 
 Kiểm thử backend cho role/owner/gói/biên thời gian/idempotency, browser cho thẻ khóa,
 nâng cấp, hết hạn, màn hình chữ lớn và điện thoại. Tất cả kiểm thử ghi dữ liệu chạy

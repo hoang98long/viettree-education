@@ -140,7 +140,7 @@ def students(
     )
     query = (
         select(users.c.id, users.c.username, users.c.display_name, profiles.c.current_grade)
-        .join(profiles, profiles.c.student_id == users.c.id)
+        .select_from(users.join(profiles, profiles.c.student_id == users.c.id))
         .where(
             users.c.is_active.is_(True),
             profiles.c.current_grade == grade if class_id is None else True,
@@ -160,12 +160,13 @@ def students(
         classes = db.table("classes")
         query = query.where(
             ~select(enrollments.c.student_id)
-            .join(classes)
+            .select_from(enrollments.join(classes, classes.c.id == enrollments.c.class_id))
             .where(
                 enrollments.c.student_id == users.c.id,
                 enrollments.c.left_at.is_(None),
                 classes.c.is_active.is_(True),
             )
+            .correlate(users)
             .exists()
         )
     if search:
@@ -202,9 +203,16 @@ def resources(
             for r in catalog(conn, grade)
         ]
     policies = db.table("content_access_policies")
+    subjects, topics = db.table("subjects"), db.table("topics")
     table = db.table("lessons" if kind == "lesson" else "assessments")
     query = (
-        select(table.c.id, table.c.title, policies.c.minimum_plan_code)
+        select(
+            table.c.id,
+            table.c.title,
+            policies.c.minimum_plan_code,
+            subjects.c.code.label("subject_code"),
+        )
+        .select_from(table)
         .outerjoin(
             policies,
             policies.c.lesson_id == table.c.id
@@ -214,9 +222,15 @@ def resources(
         .where(table.c.status == "published")
     )
     if kind == "lesson":
-        query = query.join(db.table("topics")).where(db.table("topics").c.grade == grade)
+        query = (
+            query.join(topics, topics.c.id == table.c.topic_id)
+            .join(subjects, subjects.c.id == topics.c.subject_id)
+            .where(topics.c.grade == grade, topics.c.is_active.is_(True))
+        )
     else:
-        query = query.where(table.c.grade == grade)
+        query = query.join(subjects, subjects.c.id == table.c.subject_id).where(
+            table.c.grade == grade
+        )
     return [dict(r) for r in conn.execute(query.order_by(table.c.title)).mappings()]
 
 

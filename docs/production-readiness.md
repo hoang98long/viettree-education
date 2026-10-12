@@ -1,5 +1,13 @@
 # Kiểm tra trước triển khai thực tế
 
+Đợt bổ sung 12/10/2026: head hiện tại `0011_classes_vip_training`, có lớp,
+thành tích, giá/ưu đãi và đào tạo AI Free/VIP. DB local đã backup/migrate và
+đối chiếu giữ mọi hàng/cột cũ. Giữ `AI_TRAINING_ONLY=true`; cấp runtime grant
+sau migrate khi deploy. Kết quả và giới hạn kiểm chứng mới tại
+[IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md),
+[lớp/thành tích](classes-achievements.md), [giá](vip-pricing-research.md).
+Các mốc kiểm thử ngày 10/10 bên dưới là lịch sử đợt vận hành trước Academy.
+
 Cập nhật 10/10/2026. Đợt rà soát này tập trung vào vận hành và kiểm tra hồi quy
 cho học sinh/admin, học liệu lớp 3–4 và quyền Free/VIP. Không thay SQL gốc,
 không reset mật khẩu, cấp lại gói hay xóa dữ liệu database đang sử dụng.

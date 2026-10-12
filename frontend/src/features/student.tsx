@@ -263,7 +263,7 @@ export function Grades() {
       <PageTitle
         eyebrow="KHÁM PHÁ CHƯƠNG TRÌNH"
         title="Chọn lớp học của em"
-        description="Lớp 3 và lớp 4 đã có bài học, luyện tập và bài tư duy cho ba môn."
+        description="Lớp 1–4 đã có bài học, luyện tập và bài tư duy cho ba môn. Lớp 1–2 học từng bước ngắn cùng người hướng dẫn."
       />
       <div className="grade-selector">
         {[1, 2, 3, 4, 5].map((value) => (

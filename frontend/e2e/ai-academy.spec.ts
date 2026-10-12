@@ -124,7 +124,7 @@ test("AI Academy: 36 tiết, học/chấm/resume, lab, an toàn, sản phẩm v�
 
 test("AI Academy: admin biên soạn bản sao, xem trước, thư viện và an toàn", async ({
   page,
-}, info) => {
+}) => {
   test.skip(!process.env.E2E_ADMIN_PASSWORD, "Cần mật khẩu admin test");
   await login(
     page,
@@ -146,12 +146,19 @@ test("AI Academy: admin biên soạn bản sao, xem trước, thư viện và an
   await page
     .getByRole("button", { name: "Quay lại biên soạn", exact: true })
     .click();
-  await page
-    .getByLabel("Thứ tự bản sao", { exact: true })
-    .fill(info.project.name === "mobile" ? "101" : "100");
   const before = await (
     await page.request.get("/api/v1/ai-academy/admin/lessons?grade=4")
   ).json();
+  const occupied = new Set(
+    before
+      .filter((r: { unit_id: string }) => r.unit_id === before[0].unit_id)
+      .map((r: { position: number }) => r.position),
+  );
+  let copyPosition = 100;
+  while (occupied.has(copyPosition)) copyPosition++;
+  await page
+    .getByLabel("Thứ tự bản sao", { exact: true })
+    .fill(String(copyPosition));
   await page.getByRole("button", { name: "Nhân bản bài", exact: true }).click();
   await expect
     .poll(

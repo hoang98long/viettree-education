@@ -5,6 +5,11 @@ thực hiện mã nguồn, migration, học liệu, media, giao diện, kiểm t
 trong repository đang dùng. Các mục cần model/hạ tầng ngoài chưa được nhận là
 đã chạy thật; xem phạm vi dưới đây.
 
+Cập nhật theo yêu cầu tiếp theo: [AI đào tạo Free/VIP](../ai-training-vip.md)
+thay chính sách nền tảng Free trước đây; head 0011, `AI_TRAINING_ONLY=true`
+chặn gọi model. Xem [đợt triển khai và kiểm thử mới](../IMPLEMENTATION_STATUS.md),
+[lớp/thành tích](../classes-achievements.md), [giá/ưu đãi](../vip-pricing-research.md).
+
 ## 1. Khảo sát
 
 README, Next.js/React/FastAPI/PostgreSQL, SQL gốc 34 bảng, migrations 0001–0009,

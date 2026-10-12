@@ -623,15 +623,16 @@ export function CurriculumPage() {
     <>
       <PageTitle
         title="Chương trình học"
-        description="Xem môn học, chủ đề, bài học và kỹ năng. Nội dung lớp 3 và lớp 4 đã xuất bản."
+        description="Xem môn học, chủ đề, bài học và kỹ năng. Nội dung lớp 1–4 đã xuất bản."
       />
-      {[3, 4].includes(grade) && (
-        <CurriculumMapPanel key={grade} grade={grade} />
+      {[1, 2, 3, 4].includes(grade) && (
+        <CurriculumMapPanel key={`map:${grade}`} grade={grade} />
       )}
       <div className="filters">
         <label>
           Lớp
           <select
+            aria-label="Lớp học liệu"
             value={grade}
             onChange={(e) => setGrade(Number(e.target.value))}
           >
@@ -643,7 +644,10 @@ export function CurriculumPage() {
           </select>
         </label>
       </div>
-      <Data<Curriculum> key={grade} path={`/admin/curriculum?grade=${grade}`}>
+      <Data<Curriculum>
+        key={`curriculum:${grade}`}
+        path={`/admin/curriculum?grade=${grade}`}
+      >
         {(data) => (
           <>
             {!data.topics.length && (
@@ -789,7 +793,7 @@ export function SettingsPage() {
       <section className="panel">
         <h2>Thông tin phiên bản MVP</h2>
         <p>
-          Giao diện tiếng Việt · Chương trình lớp 1–5 · Nội dung lớp 3–4: Toán,
+          Giao diện tiếng Việt · Chương trình lớp 1–5 · Nội dung lớp 1–4: Toán,
           Tiếng Việt, Tiếng Anh.
         </p>
         <p>

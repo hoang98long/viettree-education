@@ -60,6 +60,7 @@ services:
       SESSION_HOURS: ${SESSION_HOURS:-8}
       REMEMBER_SESSION_DAYS: ${REMEMBER_SESSION_DAYS:-7}
       AI_PROVIDER: ${AI_PROVIDER:-simulation}
+      AI_TRAINING_ONLY: ${AI_TRAINING_ONLY:-true}
       AI_OLLAMA_URL: ${AI_OLLAMA_URL:-http://127.0.0.1:11434}
       AI_OLLAMA_MODEL: ${AI_OLLAMA_MODEL:-}
       AI_MEDIA_ROOT: /workspace/var/ai-media

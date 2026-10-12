@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import Field, model_validator
+from pydantic import ConfigDict, Field, model_validator
 
 from app.account_schemas import AdminAction
 from app.schemas import StrictModel
@@ -11,6 +11,7 @@ Category = Literal["MATH", "VIETNAMESE", "ENGLISH", "AI", "AI_PROJECT"]
 
 
 class ClassInput(StrictModel):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
     name: str = Field(min_length=3, max_length=160)
     grade: int = Field(ge=1, le=5)
     teacher_id: UUID | None = None
