@@ -1,6 +1,7 @@
 "use client";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import type { Answer, AttemptItem } from "@/lib/types";
+import { WordPicture } from "./word-picture";
 
 export function QuestionInput({
   item,
@@ -42,13 +43,16 @@ export function QuestionInput({
     }
     return (
       <div className="ordering">
-        <p className="muted">
-          Dùng nút lên / xuống để sắp xếp. Em cũng có thể lưu thứ tự hiện tại.
-        </p>
+        <p className="muted">Bấm ↑ hoặc ↓ để đổi thứ tự.</p>
         {ids.map((id, index) => (
           <div className="order-item" key={id}>
             <span className="number-dot">{index + 1}</span>
-            <span>{options.find((option) => option.id === id)?.text}</span>
+            <span className="option-content">
+              <WordPicture
+                text={options.find((option) => option.id === id)?.text || ""}
+              />
+              {options.find((option) => option.id === id)?.text}
+            </span>
             <button
               aria-label={`Đưa mục ${index + 1} lên`}
               disabled={disabled || index === 0}
@@ -113,7 +117,10 @@ export function QuestionInput({
             <span className="option-letter">
               {String.fromCharCode(65 + index)}
             </span>
-            <span>{option.text}</span>
+            <span className="option-content">
+              <WordPicture text={option.text} />
+              {option.text}
+            </span>
           </label>
         );
       })}

@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import { Loading, ErrorState } from "@/components/ui";
 import { AcademyImage } from "./shared";
-import { ActivityBoard } from "./activities";
+import { ActivityBoard } from "./activity-board";
 import type { PlayerData } from "./types";
 import { LockedContent } from "@/features/membership/pages";
+import { GuidedText } from "@/components/guided-text";
+import { StepJourney } from "./step-journey";
 
 export function LessonPlayer({ id }: { id: string }) {
   const [data, setData] = useState<PlayerData | null>(null);
@@ -16,8 +18,7 @@ export function LessonPlayer({ id }: { id: string }) {
   const [passed, setPassed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [hint, setHint] = useState("");
-  const [tried, setTried] = useState("");
-  const [hintLevel, setHintLevel] = useState(1);
+  const [hintLevel, setHintLevel] = useState(0);
   useEffect(() => {
     let alive = true;
     api<PlayerData>(`/ai-academy/lessons/${id}/start`, { method: "POST" })
@@ -65,6 +66,7 @@ export function LessonPlayer({ id }: { id: string }) {
       setSelected(Math.min(index + 1, data!.content.steps.length - 1));
       setPassed(false);
       setHint("");
+      setHintLevel(0);
     } catch (e) {
       setError((e as Error).message);
       if (e instanceof ApiError && e.code === "MEMBERSHIP_REQUIRED") {
@@ -77,26 +79,17 @@ export function LessonPlayer({ id }: { id: string }) {
   }
   async function getHint() {
     setBusy(true);
+    setError("");
     try {
-      const result = await api<{ message: string; notice: string }>(
-        "/ai-academy/tutor",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            lesson_id: id,
-            mode: "GiveHint",
-            tried,
-            level: hintLevel,
-          }),
-        },
+      const level = Math.min(3, hintLevel + 1);
+      const result = await api<{ message: string }>(
+        `/ai-academy/lessons/${id}/hints`,
+        { method: "POST", body: JSON.stringify({ step_id: step.id, level }) },
       );
-      setHint(result.message + " " + (result.notice || ""));
+      setHint(result.message);
+      setHintLevel(level);
     } catch (e) {
       setError((e as Error).message);
-      if (e instanceof ApiError && e.code === "MEMBERSHIP_REQUIRED") {
-        setErrorCode(e.code);
-        setData(null);
-      }
     } finally {
       setBusy(false);
     }
@@ -113,37 +106,56 @@ export function LessonPlayer({ id }: { id: string }) {
           LỚP {data.lesson.grade} · {index + 1}/{data.content.steps.length}
         </span>
         <h1>{data.lesson.title}</h1>
-        <p>
-          Quan sát · Thử làm · Kiểm tra ·{" "}
-          {finished ? "Đã hoàn thành" : "Tiến độ được lưu trên tài khoản"}
-        </p>
+        <p>{finished ? "Đã hoàn thành" : "Xem tranh · Chạm chọn · Thử lại"}</p>
       </header>
+      <StepJourney
+        steps={data.content.steps}
+        current={index}
+        nextStep={data.progress.next_step}
+        completed={finished}
+      />
       <div className="academy-player-layout">
-        <nav aria-label="Các bước bài học" className="academy-step-nav">
-          {data.content.steps.map((s, i) => (
-            <button
-              key={s.id}
-              className={i === index ? "active" : ""}
-              disabled={i > data.progress.next_step}
-              onClick={() => {
-                setSelected(i);
-                setPassed(false);
-                setHint("");
-              }}
-            >
-              {i < data.progress.next_step ? "✓" : i + 1} {s.title}
-            </button>
-          ))}
-        </nav>
+        <details className="academy-step-menu">
+          <summary>
+            Bước {index + 1}/{data.content.steps.length} · Đổi bước
+          </summary>
+          <nav aria-label="Các bước bài học" className="academy-step-nav">
+            {data.content.steps.map((s, i) => (
+              <button
+                key={s.id}
+                className={i === index ? "active" : ""}
+                disabled={busy || i > data.progress.next_step}
+                onClick={() => {
+                  setSelected(i);
+                  setPassed(false);
+                  setHint("");
+                  setHintLevel(0);
+                }}
+              >
+                {i < data.progress.next_step ? "✓" : i + 1} {s.title}
+              </button>
+            ))}
+          </nav>
+        </details>
         <article className="panel academy-step">
           <h2>{step.title}</h2>
-          <p>{step.text}</p>
+          {!["activity", "quiz"].includes(step.kind) && (
+            <GuidedText text={step.text} grade={data.lesson.grade} />
+          )}
+          {step.details_text && (
+            <details className="academy-extra-reading">
+              <summary>Đọc thêm nếu em muốn</summary>
+              <p>{step.details_text}</p>
+            </details>
+          )}
           {data.flags?.voice_enabled && (
             <button
               className="button secondary"
               onClick={() => {
                 if (!("speechSynthesis" in window)) {
-                  setError("Chưa có giọng đọc; em đọc chữ hoặc nhờ người lớn.");
+                  setError(
+                    "Thiết bị chưa có giọng đọc. Em có thể nhờ người lớn đọc cùng.",
+                  );
                   return;
                 }
                 const voice = window.speechSynthesis
@@ -151,7 +163,7 @@ export function LessonPlayer({ id }: { id: string }) {
                   .find((v) => v.localService && v.lang.startsWith("vi"));
                 if (!voice) {
                   setError(
-                    "Chưa có giọng Việt local; không gọi dịch vụ giọng nói ngoài.",
+                    "Thiết bị chưa có giọng đọc tiếng Việt. Em có thể nhờ người lớn đọc cùng.",
                   );
                   return;
                 }
@@ -162,18 +174,20 @@ export function LessonPlayer({ id }: { id: string }) {
                 window.speechSynthesis.speak(utterance);
               }}
             >
-              Đọc lại bằng giọng local
+              Nghe bài
             </button>
           )}
-          <div className="academy-scenes">
-            {step.media.map((code) => (
-              <AcademyImage
-                key={code}
-                code={code}
-                alt={`${data.lesson.title} · ${step.title}`}
-              />
-            ))}
-          </div>
+          {!["activity", "quiz"].includes(step.kind) && (
+            <div className="academy-scenes">
+              {step.media.map((code) => (
+                <AcademyImage
+                  key={code}
+                  code={code}
+                  alt={`${data.lesson.title} · ${step.title}`}
+                />
+              ))}
+            </div>
+          )}
           {step.kind === "flip_card" && (
             <details>
               <summary>Mở điều em cần đối chiếu</summary>
@@ -193,6 +207,7 @@ export function LessonPlayer({ id }: { id: string }) {
               activity={step.activity}
               questions={step.questions}
               onPass={() => setPassed(true)}
+              onReset={() => setPassed(false)}
             />
           )}
           <details className="academy-help">
@@ -208,39 +223,20 @@ export function LessonPlayer({ id }: { id: string }) {
               ))}
             </div>
           </details>
-          <details className="academy-help">
-            <summary>Gợi ý và cách học phù hợp</summary>
-            <p>{data.content.support}</p>
-            <label>
-              Em đã thử điều gì? (dùng dữ liệu mẫu)
-              <textarea
-                value={tried}
-                maxLength={500}
-                onChange={(e) => setTried(e.target.value)}
-              />
-            </label>
-            <label>
-              Mức gợi ý
-              <select
-                value={hintLevel}
-                onChange={(e) => setHintLevel(Number(e.target.value))}
-              >
-                <option value={1}>1 · Định hướng</option>
-                <option value={2}>2 · Cách làm (VIP)</option>
-                <option value={3}>3 · Kiểm tra (VIP)</option>
-              </select>
-            </label>
+          <div className="academy-help">
             <button
               className="button secondary"
-              disabled={busy}
+              disabled={busy || hintLevel >= 3}
               onClick={() => void getHint()}
             >
-              Xin gợi ý sau khi thử
+              {hintLevel === 0
+                ? "Em cần gợi ý"
+                : hintLevel >= 3
+                  ? "Đã mở hết gợi ý"
+                  : "Gợi ý thêm · VIP"}
             </button>
             {hint && <p role="status">{hint}</p>}
-            <h3>Thử thách thêm</h3>
-            <p>{data.content.advanced}</p>
-          </details>
+          </div>
           {error && (
             <p role="alert" className="notice error">
               {error}
@@ -249,10 +245,12 @@ export function LessonPlayer({ id }: { id: string }) {
           <div className="academy-actions">
             <button
               className="button secondary"
-              disabled={index === 0}
+              disabled={busy || index === 0}
               onClick={() => {
                 setSelected(index - 1);
                 setPassed(false);
+                setHint("");
+                setHintLevel(0);
               }}
             >
               Quay lại
@@ -270,7 +268,7 @@ export function LessonPlayer({ id }: { id: string }) {
             >
               {index === data.content.steps.length - 1
                 ? "Hoàn thành bài"
-                : "Lưu và tiếp tục"}
+                : "Tiếp theo"}
             </button>
           </div>
           {finished && (

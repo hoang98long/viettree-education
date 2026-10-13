@@ -1,13 +1,14 @@
 # Hướng dẫn media
 
-315 SVG được tạo bằng code: 8 trạng thái Mầm AI, 19 bìa chủ đề, 48 hero,
-144 minh họa nội dung (3/bài), 72 thẻ (24 đối tượng × 3 biến thể), 12 huy hiệu,
+1547 SVG được tạo bằng code: 8 trạng thái Mầm AI, 45 bìa chủ đề, 231 hero,
+1150 minh họa nội dung/thẻ theo bài, 72 thẻ chung (24 đối tượng × 3 biến thể), 12 huy hiệu,
 12 asset UI. Không gọi dịch vụ trả phí. Phong cách vector pastel, hình dễ đọc,
 không dùng nhân vật có bản quyền hoặc ảnh nhận dạng học sinh.
 
 File thật: `backend/app/academy/assets`; danh mục/mapping/hash/alt:
 `backend/app/academy/data/media-manifest.json`. Mỗi bài tham chiếu cover, hero,
-3 support và 6 thẻ. Phân số 3/8 được vẽ đúng, bài phép nhân có nhóm/chấm để kiểm
+3 support và các thẻ tương ứng từng ví dụ. Ảnh cũ được giữ nguyên để học sinh
+đang học một phiên bản cũ tiếp tục được. Phân số 3/8 được vẽ đúng, bài phép nhân có nhóm/chấm để kiểm
 đếm; các tranh bối cảnh khác có thể là minh họa ký hiệu, không thay dữ kiện đề.
 
 ```powershell

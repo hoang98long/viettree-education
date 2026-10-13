@@ -25,7 +25,11 @@ export function LessonContent({ data }: { data: Lesson }) {
         title={data.title}
         description={`${data.estimated_minutes} phút · Đọc chậm rãi theo nhịp của em`}
       />
-      <LessonBody content={data.content} hintAccess={data.hint_access} />
+      <LessonBody
+        content={data.content}
+        hintAccess={data.hint_access}
+        grade={data.grade}
+      />
       <section className="panel lesson-completion">
         <h2>{completed ? "Em đã đọc xong bài này" : "Em đã đọc xong chưa?"}</h2>
         <p>
@@ -40,6 +44,7 @@ export function LessonContent({ data }: { data: Lesson }) {
             setError("");
             try {
               await api(`/lessons/${data.id}/complete`, { method: "POST" });
+              window.dispatchEvent(new Event("viettree:learning-progress"));
               setCompleted(true);
             } catch (e) {
               setError((e as Error).message);

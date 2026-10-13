@@ -34,6 +34,7 @@ export type Step = {
   kind: string;
   title: string;
   text: string;
+  details_text?: string | null;
   media: string[];
   activity?: Activity | null;
   questions: Question[];

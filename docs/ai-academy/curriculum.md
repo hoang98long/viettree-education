@@ -1,6 +1,6 @@
 # Chương trình AI Academy
 
-36 tiết lớp 4 thuộc 9 chủ đề; 12 bài mẫu cho bốn khối còn lại. Nội dung
+180 bài cho lớp 1–5, mỗi khối 36 bài thuộc 9 chủ đề. Nội dung
 nguyên bản, không sao chép sách giáo khoa. Đây là chương trình AI tích hợp,
 không tự nhận là môn AI bắt buộc theo chương trình quốc gia hoặc sách cụ thể.
 
@@ -45,10 +45,11 @@ không tự nhận là môn AI bắt buộc theo chương trình quốc gia ho�
 | 35   | Dự án AI của em          | Kiểm thử, nhận góp ý, cải tiến                              | sequence    |
 | 36   | Dự án AI của em          | Trình bày, đánh giá rubric và triển lãm sản phẩm            | match       |
 
-## Khung khối khác
+## Khối 1, 2, 3 và 5
 
-Các khối 1/2/3/5 có annual_outline theo 9 năng lực/chủ đề và 3 bài mẫu
-khác tình huống, độ đọc, hướng dẫn theo tuổi. Khung không phải 36 bài đã viết.
+Các khối 1/2/3/5 có đủ 36 bài/9 chủ đề, mỗi chủ đề bốn bài. Nội dung,
+độ đọc và thao tác được phân hóa theo tuổi; giữ ID ba bài mẫu cũ.
+Xem [danh sách 180 bài](lessons.csv) và [đối chiếu quốc tế](../visual-learning-and-ai.md).
 
 - Lớp 1: Máy và người; Xếp thẻ hình của em; Điều em giữ riêng.
 - Lớp 2: Quan sát màu và hình; Khi robot nhận nhầm; Dùng dữ liệu mẫu an toàn.
@@ -59,7 +60,7 @@ khác tình huống, độ đọc, hướng dẫn theo tuổi. Khung không ph�
 
 Mỗi bài seed có 7 bước: story → discover → observe → practice → checkpoint
 → apply → finish; 3 mục tiêu, 3 câu checkpoint có đáp án/giải thích server,
-35 phút dự kiến, age_range, competencies, teacher guide, materials,
+10 phút dự kiến cho lớp 1–2, 15 phút cho lớp 3–5, age_range, competencies, teacher guide, materials,
 misconceptions, safety/support/standard/advanced. Tổng 336 steps/144 câu.
 
 10 loại activity: classify, match, sequence, train, bias, prompt, fact_check,

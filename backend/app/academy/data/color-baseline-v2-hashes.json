@@ -1,0 +1,20 @@
+{
+  "AI1-08": {
+    "sha256": "f355bc96edece058b27402f846d1e67adbad9fd3b1b92441a285b28bed601a91",
+    "title": "Cùng màu, khác nhóm",
+    "unit_code": "AI1-data",
+    "position": 3
+  },
+  "AI2-04": {
+    "sha256": "977e886371d0ff79f0dc339dadd0b1bf8dda525cb59d3bd58a49ff46cea5b9db",
+    "title": "Cần có nhiều loại mẫu",
+    "unit_code": "AI2-data",
+    "position": 3
+  },
+  "AI3-08": {
+    "sha256": "2e9db4098d40fe39565a89a0573adf36041da104d6bff1788fda85e3d5fa7891",
+    "title": "Nhìn đủ các nhóm",
+    "unit_code": "AI3-data",
+    "position": 3
+  }
+}

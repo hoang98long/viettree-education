@@ -25,13 +25,19 @@ Học sinh có **Thư viện bài học** (`/student/lessons`), tìm không dấ
 tiến độ. Admin chọn khối ở đầu trang chương trình, xem tổng, thu gọn chủ đề và
 biên soạn năm kiểu minh họa mới. Khởi động lại server sau cập nhật.
 
-**AI Academy đã được tích hợp:** lớp 4 có **9 chủ đề / 36 tiết**, lớp 1/2/3/5
-có 3 bài mẫu mỗi khối, tổng 48 bài và 315 SVG minh họa thật. Học nhiều bước,
+**AI Academy đã có đủ lớp 1–5:** mỗi khối **9 chủ đề / 36 bài**, tổng **180 bài**
+và **1547 SVG** (giữ cả ảnh cho các phiên bản cũ). Học bằng tranh, mỗi lần một thẻ,
 game/lab, Prompt Builder, trợ giảng an toàn, xưởng sáng tạo, sản phẩm riêng,
 giao bài/chấm rubric và CMS/media theo quyền. Dùng cùng tài khoản hiện có;
 mặc định học lý thuyết và bài tập nội bộ, `AI_TRAINING_ONLY=true` chặn gọi model.
-Lớp 4 có 3 tiết Free / 33 tiết VIP; toàn bộ module có 7 bài Free / 41 bài VIP.
+Baseline mỗi khối có **3 bài Free / 33 bài VIP**, tổng 15/165; giữ quyền đã được
+admin chỉnh riêng. Gợi ý mức 1 miễn phí, mức 2–3 dành cho VIP, không cần gõ mô tả.
 Xem [hướng dẫn đầy đủ AI Academy](docs/ai-academy/README.md).
+
+**Bài học dễ đọc hơn:** mở từng phần, đọc từng đoạn; 46 tranh từ vựng/truyện,
+thẻ từ và lựa chọn bài tập có hình phù hợp, tranh thay đổi theo đoạn đang đọc;
+minh họa phép cộng, các hàng của số và phân số. Nội dung đọc đầy đủ vẫn có nút
+**Xem cả phần**. Xem [thiết kế học bằng hình và nguồn quốc tế](docs/visual-learning-and-ai.md).
 
 **Deploy lên VPS:** xem [hướng dẫn riêng](docs/deploy-vps.md) cho Ubuntu + Docker
 Compose production, HTTPS, chuyển dữ liệu, tài khoản thật, backup và cập nhật.

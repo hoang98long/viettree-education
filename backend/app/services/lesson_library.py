@@ -2,7 +2,7 @@
 
 import unicodedata
 
-from sqlalchemy import func, or_, select
+from sqlalchemy import func, or_, select, true
 
 from app.db import db
 from app.services import access
@@ -75,47 +75,83 @@ def lesson_library(
                 ]
             )
         )
-    totals = (
-        conn.execute(
-            select(
-                func.count().label("total"),
-                func.count().filter(progress_status == "completed").label("completed"),
-                func.count().filter(progress_status == "in_progress").label("in_progress"),
-                func.count().filter(policies.c.minimum_plan_code == "free").label("free"),
-                func.count().filter(policies.c.minimum_plan_code == "vip").label("vip"),
-            )
-            .select_from(scope)
-            .where(*predicates)
+    # One PostgreSQL statement gives the count and page the same MVCC snapshot.
+    # Progress can otherwise change between COUNT and SELECT under READ COMMITTED.
+    filtered = (
+        select(
+            lessons.c.id,
+            lessons.c.title,
+            lessons.c.estimated_minutes,
+            topics.c.title.label("topic_title"),
+            subjects.c.code.label("subject_code"),
+            subjects.c.name_vi.label("subject_name"),
+            progress_status.label("progress_status"),
+            category_value.label("category"),
+            policies.c.minimum_plan_code,
+            subjects.c.sort_order.label("subject_order"),
+            topics.c.sort_order.label("topic_order"),
+            lessons.c.sort_order.label("lesson_order"),
         )
-        .mappings()
-        .one()
+        .select_from(scope)
+        .where(*predicates)
+        .cte("library_filtered")
     )
-    rows = (
+    counts = (
+        select(
+            func.count().label("total"),
+            func.count().filter(filtered.c.progress_status == "completed").label("completed"),
+            func.count().filter(filtered.c.progress_status == "in_progress").label("in_progress"),
+            func.count().filter(filtered.c.minimum_plan_code == "free").label("free"),
+            func.count().filter(filtered.c.minimum_plan_code == "vip").label("vip"),
+        )
+        .select_from(filtered)
+        .subquery("library_counts")
+    )
+    fields = [
+        "id",
+        "title",
+        "estimated_minutes",
+        "topic_title",
+        "subject_code",
+        "subject_name",
+        "progress_status",
+        "category",
+    ]
+    page_rows = (
+        select(
+            *(filtered.c[name] for name in fields),
+            filtered.c.subject_order,
+            filtered.c.topic_order,
+            filtered.c.lesson_order,
+        )
+        .order_by(
+            filtered.c.subject_order,
+            filtered.c.topic_order,
+            filtered.c.lesson_order,
+            filtered.c.id,
+        )
+        .offset((page - 1) * 12)
+        .limit(12)
+        .subquery("library_page")
+    )
+    result = (
         conn.execute(
-            select(
-                lessons.c.id,
-                lessons.c.title,
-                lessons.c.estimated_minutes,
-                topics.c.title.label("topic_title"),
-                subjects.c.code.label("subject_code"),
-                subjects.c.name_vi.label("subject_name"),
-                progress_status.label("progress_status"),
-                category_value.label("category"),
-            )
-            .select_from(scope)
-            .where(*predicates)
+            select(*counts.c, *page_rows.c)
+            .select_from(counts.outerjoin(page_rows, true()))
             .order_by(
-                subjects.c.sort_order,
-                topics.c.sort_order,
-                lessons.c.sort_order,
-                lessons.c.id,
+                page_rows.c.subject_order,
+                page_rows.c.topic_order,
+                page_rows.c.lesson_order,
+                page_rows.c.id,
             )
-            .offset((page - 1) * 12)
-            .limit(12)
         )
         .mappings()
         .all()
     )
+    totals = {
+        name: result[0][name] for name in ["total", "completed", "in_progress", "free", "vip"]
+    }
+    rows = [{name: row[name] for name in fields} for row in result if row["id"] is not None]
     membership = access.resolve_membership(conn, user["id"])
     items = [
         {**dict(row), **access.content_access(conn, user, "lesson", row["id"], grade, membership)}

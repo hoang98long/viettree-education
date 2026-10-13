@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BookOpen,
   CheckCircle2,
@@ -58,6 +58,12 @@ function LibraryContent() {
   });
   if (filters.subject_code) query.set("subject_code", filters.subject_code);
   const resource = useResource<Library>(`/students/me/lesson-library?${query}`);
+  useEffect(() => {
+    // A learner may open this page while the preceding completion is still saving.
+    window.addEventListener("viettree:learning-progress", resource.retry);
+    return () =>
+      window.removeEventListener("viettree:learning-progress", resource.retry);
+  }, [resource.retry]);
   const update = (key: keyof typeof filters, value: string) => {
     setFilters((old) => ({ ...old, [key]: value }));
     setPage(1);

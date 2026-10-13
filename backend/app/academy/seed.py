@@ -4,6 +4,7 @@ from sqlalchemy import func, select, text
 from sqlalchemy.dialects.postgresql import insert
 
 from app.academy.access import FREE_CODES
+from app.academy.baseline_upgrade import publish_visual_revision
 from app.academy.curriculum import COMPETENCIES, content, records
 from app.academy.media import MANIFEST, uid, validate_manifest
 from app.db import db
@@ -53,11 +54,26 @@ def seed(conn):
                     "reading": "Tranh và câu ngắn, người lớn hỗ trợ đọc"
                     if grade < 3
                     else "Đọc tình huống, thực hành và giải thích căn cứ",
-                    "coverage": "36 tiết đầy đủ" if grade == 4 else "Khung năm học và 3 bài mẫu",
+                    "coverage": "36 bài · 9 chủ đề · học bằng tranh và thao tác chạm",
                     "annual_outline": [dict(code=k, title=v) for k, v in COMPETENCIES.items()],
                 },
             ),
         )
+        grades = db.table("ai_grades")
+        previous = conn.execute(
+            select(grades.c.curriculum).where(grades.c.grade == grade)
+        ).scalar_one()
+        if previous.get("coverage") in {"36 tiết đầy đủ", "Khung năm học và 3 bài mẫu"}:
+            conn.execute(
+                grades.update()
+                .where(grades.c.grade == grade)
+                .values(
+                    curriculum={
+                        **previous,
+                        "coverage": "36 bài · 9 chủ đề · học bằng tranh và thao tác chạm",
+                    }
+                )
+            )
     for asset in manifest["assets"]:
         add(
             conn,
@@ -104,6 +120,20 @@ def seed(conn):
         )
     for row in records():
         unit_id = uid(row["unit_code"])
+        units = db.table("ai_units")
+        occupied = conn.execute(
+            select(units.c.id).where(
+                units.c.grade == row["grade"], units.c.position == row["unit_position"]
+            )
+        ).scalar()
+        unit_position = row["unit_position"]
+        if occupied is not None and occupied != unit_id:
+            unit_position = (
+                conn.execute(
+                    select(func.max(units.c.position)).where(units.c.grade == row["grade"])
+                ).scalar()
+                or 0
+            ) + 1
         add(
             conn,
             "ai_units",
@@ -112,11 +142,25 @@ def seed(conn):
                 grade=row["grade"],
                 code=row["unit_code"],
                 title=row["unit_title"],
-                position=row["unit_position"],
+                position=unit_position,
                 description=COMPETENCIES[row["unit_code"].split("-")[-1]],
             ),
         )
         lesson_id = uid(row["code"])
+        lessons = db.table("ai_lessons")
+        occupied = conn.execute(
+            select(lessons.c.id).where(
+                lessons.c.unit_id == unit_id, lessons.c.position == row["position"]
+            )
+        ).scalar()
+        lesson_position = row["position"]
+        if occupied is not None and occupied != lesson_id:
+            lesson_position = (
+                conn.execute(
+                    select(func.max(lessons.c.position)).where(lessons.c.unit_id == unit_id)
+                ).scalar()
+                or 0
+            ) + 1
         add(
             conn,
             "ai_lessons",
@@ -125,26 +169,13 @@ def seed(conn):
                 unit_id=unit_id,
                 code=row["code"],
                 title=row["title"],
-                position=row["position"],
+                position=lesson_position,
                 minimum_plan_code="free" if row["code"] in FREE_CODES else "vip",
             ),
         )
-        versions = db.table("ai_lesson_versions")
-        if not conn.execute(select(versions.c.id).where(versions.c.lesson_id == lesson_id)).first():
-            payload = content(row)
-            version_id = uid(row["code"] + "-version-1")
-            add(
-                conn,
-                "ai_lesson_versions",
-                dict(
-                    id=version_id,
-                    lesson_id=lesson_id,
-                    version=1,
-                    status="published",
-                    payload=payload,
-                    published_at=func.now(),
-                ),
-            )
+        payload = content(row)
+        version_id = publish_visual_revision(conn, row, payload)
+        if version_id is not None:
             for code in {
                 payload["hero"],
                 *payload["cards"],

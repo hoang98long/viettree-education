@@ -18,6 +18,30 @@ const item: AttemptItem = {
   answer: null,
 };
 describe("QuestionInput", () => {
+  it("tranh chỉ minh họa nhãn đáp án, giữ tên radio và giá trị gửi backend", () => {
+    const onChange = vi.fn();
+    const { container } = render(
+      <QuestionInput
+        item={{
+          ...item,
+          content: {
+            prompt: "Chọn từ",
+            options: [
+              { id: "a", text: "bag" },
+              { id: "b", text: "cat" },
+              { id: "c", text: "Không phải mèo" },
+            ],
+          },
+        }}
+        answer={null}
+        onChange={onChange}
+      />,
+    );
+    expect(container.querySelectorAll(".word-picture")).toHaveLength(2);
+    expect(container.querySelector("img")).toHaveAttribute("alt", "");
+    fireEvent.click(screen.getByRole("radio", { name: /bag/ }));
+    expect(onChange).toHaveBeenCalledWith({ option_id: "a" });
+  });
   it("gửi lựa chọn đơn, không chứa điểm", () => {
     const onChange = vi.fn();
     render(<QuestionInput item={item} answer={null} onChange={onChange} />);

@@ -7,13 +7,12 @@ quyền Free/VIP, hồ sơ, lớp học và phụ huynh đã xác minh. Không c
 
 | Nội dung                         |                            Số lượng seed |
 | -------------------------------- | ---------------------------------------: |
-| Lớp 4                            |              9 chủ đề, 36 tiết khác nhau |
-| Lớp 1, 2, 3, 5                   |      Khung 9 chủ đề/khối, 3 bài mẫu/khối |
-| Tổng bài / bước / câu checkpoint |                           48 / 336 / 144 |
+| Lớp 1–5                          |                     9 chủ đề, 36 bài/khối |
+| Tổng bài / bước / câu checkpoint |                         180 / 1260 / 540 |
 | Kiểu hoạt động                   | 10; thêm lab phân loại và Prompt Builder |
 | Dự án theo khối                  |   5; mỗi học sinh lưu một sản phẩm/dự án |
 | Huy hiệu                         |        12, ghi nhận số bài đã hoàn thành |
-| File SVG nguyên bản              | 315, có manifest/hash/alt và mapping bài |
+| File SVG nguyên bản              | 1547, gồm ảnh mới và ảnh phiên bản cũ |
 
 Từng bài có mục tiêu, tình huống, kiến thức, hoạt động, checkpoint, vận dụng,
 hướng dẫn giáo viên, hỗ trợ và thử thách. Đây là chương trình làm quen AI tích
@@ -33,12 +32,19 @@ Học liệu cần giáo viên nhà trường rà soát trước khi đưa vào 
   chủ đề mới, lớp/ghi danh/quyền/phụ huynh, báo cáo, hàng đợi SVG,
   mẫu hướng dẫn có phiên bản, cảnh báo và yêu cầu riêng tư.
 
-Chính sách từ 12/10/2026: toàn module có **7 bài Free / 41 bài VIP**; lớp 4
-**3 tiết Free / 33 tiết VIP**. Free có gợi ý mức 1 trong bài được mở;
+Baseline cập nhật 13/10/2026: mỗi khối **3 bài Free / 33 bài VIP**,
+toàn module **15 Free / 165 VIP**. Giữ quyền admin đã chỉnh riêng.
+Free có gợi ý mức 1 trong bài được mở;
 VIP có mức 2–3, lab/Prompt Builder và studio/dự án từ mẫu. Server kiểm tra quyền
 tại mỗi bước; không gửi nội dung bài VIP rồi chỉ che trong browser.
 Xem [chính sách đào tạo AI](../ai-training-vip.md) và
 [giá VIP tham khảo](../vip-pricing-research.md). Chưa có thanh toán tự động.
+
+Học từng thẻ bằng nút chạm, checkpoint từng câu; **Em cần gợi ý** không yêu cầu
+nhập chữ. Menu công cụ và giải thích dài thu gọn để trẻ tập trung. Lớp 1–2 có
+bài khoảng 10 phút và hai thẻ; lớp 3–5 khoảng 15 phút. Có thể chia thời gian theo trẻ.
+Xem [đối chiếu quốc tế và thiết kế](../visual-learning-and-ai.md),
+[danh sách 180 bài](lessons.csv).
 
 ## Chạy nhanh
 

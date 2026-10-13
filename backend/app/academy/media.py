@@ -437,11 +437,17 @@ def svg(content, width=600, height=360):
 
 
 def generate(records):
+    from app.academy.visual_art import labelled_picture, lesson_scene
+
     ASSETS.mkdir(parents=True, exist_ok=True)
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
-    assets = []
+    # Retain previous media bytes/hashes: historical versions still reference them.
+    assets = json.loads(MANIFEST.read_text(encoding="utf-8"))["assets"] if MANIFEST.exists() else []
+    existing = {asset["code"] for asset in assets}
 
     def add(code, category, alt, body, width=600, height=360):
+        if code in existing:
+            return
         raw = svg(body, width, height).encode("utf-8")
         filename = code + ".svg"
         (ASSETS / filename).write_bytes(raw)
@@ -460,6 +466,7 @@ def generate(records):
                 source="SVG do VietTree biên soạn bằng code",
             )
         )
+        existing.add(code)
 
     for i, name in enumerate(
         [
@@ -534,21 +541,22 @@ def generate(records):
         )
     covers = set()
     for record in records:
-        number = record["number"]
-        code = record["code"]
+        code = record["visual_prefix"]
         if record["unit_code"] not in covers:
             covers.add(record["unit_code"])
             add(
                 "cover-" + record["unit_code"],
                 "cover",
                 f"Chủ đề {record['unit_title']}: tình huống học bằng tranh",
-                scene(number, 0) + path("M40 38 H220", stroke=COLORS[record["grade"] % 6], width=8),
+                lesson_scene(record, 0)
+                + path("M40 38 H220", stroke=COLORS[record["grade"] % 6], width=8),
             )
         add(
             code + "-hero",
             "hero",
             f"Tình huống: {record['title']}",
-            scene(number, 0) + circle(562, 325, 9 + record["grade"], COLORS[record["grade"] % 6]),
+            lesson_scene(record, 0)
+            + circle(562, 325, 9 + record["grade"], COLORS[record["grade"] % 6]),
         )
         for variant, purpose in enumerate(
             ["Quan sát và tìm đặc điểm", "Đối chiếu một trường hợp khác", "Kiểm tra và vận dụng"], 1
@@ -557,21 +565,34 @@ def generate(records):
                 code + f"-support-{variant}",
                 "illustration",
                 f"{record['title']} · {purpose}",
-                scene(number, variant) + rect(27, 27, 5 + record["grade"] * 3, 14, "#98c7bb", 3),
+                lesson_scene(record, variant)
+                + rect(27, 27, 5 + record["grade"] * 3, 14, "#98c7bb", 3),
+            )
+        for i, item in enumerate(record["activity"]["items"], 1):
+            item_code = code + f"-item-{i}"
+            add(
+                item_code,
+                "illustration",
+                item["text"],
+                labelled_picture(item["text"], i, item_code),
+                300,
+                300,
             )
     manifest = {
         "assets": assets,
         "lessons": {
             r["code"]: {
                 "cover": "cover-" + r["unit_code"],
-                "hero": r["code"] + "-hero",
-                "illustrations": [r["code"] + f"-support-{i}" for i in range(1, 4)],
+                "hero": r["visual_prefix"] + "-hero",
+                "illustrations": [r["visual_prefix"] + f"-support-{i}" for i in range(1, 4)],
                 "cards": r["cards"],
             }
             for r in records
         },
     }
-    MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    MANIFEST.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
     return manifest
 
 

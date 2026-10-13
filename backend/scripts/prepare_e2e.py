@@ -57,6 +57,9 @@ def main():
             user(key)
         for key in ["E2E_GRADE3_USERNAME", "E2E_GRADE3_MOBILE_USERNAME"]:
             user(key, grade=3)
+        for grade in range(1, 6):
+            for device in ["DESKTOP", "MOBILE"]:
+                user(f"E2E_VISUAL_GRADE{grade}_{device}_USERNAME", grade=grade)
         for grade in (1, 2, 5):
             for suffix in ("DESKTOP", "MOBILE"):
                 user(f"E2E_GRADE{grade}_{suffix}_USERNAME", grade=grade)

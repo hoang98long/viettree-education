@@ -1,0 +1,290 @@
+{
+  "AI4-01": {
+    "sha256": "32097c35d54701929db53832841e26743395b2036277b09713a06110268281fb",
+    "title": "AI là gì và AI không phải là gì?",
+    "unit_code": "AI4-around",
+    "position": 1
+  },
+  "AI4-02": {
+    "sha256": "e5766bcc4b9499b9a8e489c443a77af5fbacdc16e7dbf9b4a55d0485d1927d30",
+    "title": "AI ở nhà, ở trường và trong cuộc sống",
+    "unit_code": "AI4-around",
+    "position": 2
+  },
+  "AI4-03": {
+    "sha256": "2f049f4a5a014aa6c0e302674551babc79d291967361018b9e6e33b4e5dc308d",
+    "title": "Con người giỏi gì, AI giỏi gì?",
+    "unit_code": "AI4-around",
+    "position": 3
+  },
+  "AI4-04": {
+    "sha256": "e6d7b85dc76f68147d7916ee1f11f76141d78d74a4262e2d5e1952506bb09f32",
+    "title": "Dữ liệu là gì?",
+    "unit_code": "AI4-data",
+    "position": 1
+  },
+  "AI4-05": {
+    "sha256": "8b7ea8fa6e123aba14b9f15a3e0e8e22d55c3dc4fc82dcb4e73f323fe680a085",
+    "title": "Dạy máy phân loại động vật",
+    "unit_code": "AI4-data",
+    "position": 2
+  },
+  "AI4-06": {
+    "sha256": "e4e8fb1eb1d37a279dbcee77af485f539bc89b75323f96bed00b62cf3f388bfb",
+    "title": "Khi dữ liệu thiếu hoặc sai",
+    "unit_code": "AI4-data",
+    "position": 3
+  },
+  "AI4-07": {
+    "sha256": "4f48a6d0d796792148d62625fac1405d7b8fc82f28154af6429232b3720aa918",
+    "title": "Câu hỏi rõ ràng và câu hỏi mơ hồ",
+    "unit_code": "AI4-prompt",
+    "position": 1
+  },
+  "AI4-08": {
+    "sha256": "dc0c6c606aa30ae525760339c20e5cde1bb9e4d0243ecbd368521e06662723ee",
+    "title": "Công thức hỏi AI: mục tiêu + ngữ cảnh + yêu cầu + định dạng",
+    "unit_code": "AI4-prompt",
+    "position": 2
+  },
+  "AI4-09": {
+    "sha256": "b4271ccc37f984a78fe8251439dc63a0ac494c01f94dd9a582462ab1c8d2a708",
+    "title": "Hỏi tiếp và cải thiện câu trả lời",
+    "unit_code": "AI4-prompt",
+    "position": 3
+  },
+  "AI4-10": {
+    "sha256": "f7f3a59ce4d1cf72dd722c5a5a15b1fdf9280d69b6be1de1ac70948af0489695",
+    "title": "Kiểm chứng: AI có thể trả lời sai",
+    "unit_code": "AI4-prompt",
+    "position": 4
+  },
+  "AI4-11": {
+    "sha256": "786262ff48f7ca0c130138b3c37005a74fb9692b9cb117d9e9ad02b253a47b10",
+    "title": "Hỏi gợi ý thay vì xin đáp án",
+    "unit_code": "AI4-math",
+    "position": 1
+  },
+  "AI4-12": {
+    "sha256": "374eebc66b2d0e1320982c9596463e1277583d4c8e76a17ff795f49a662ec280",
+    "title": "Phân số trực quan với bánh và hình khối",
+    "unit_code": "AI4-math",
+    "position": 2
+  },
+  "AI4-13": {
+    "sha256": "5fa6607439e4031e97cd1902d69fc294b7d9b92f7071a29a3b2594e99d4b2578",
+    "title": "Giải bài toán có lời văn từng bước",
+    "unit_code": "AI4-math",
+    "position": 3
+  },
+  "AI4-14": {
+    "sha256": "fe501f01bd723fcfa70c2bb197660ed0a93d6afc9b5182db18fa617e67e6c63b",
+    "title": "Kiểm tra kết quả Toán bằng hai cách",
+    "unit_code": "AI4-math",
+    "position": 4
+  },
+  "AI4-15": {
+    "sha256": "77f451730ef0fa617ffcfd5e89bdc727605d072be41a8c0658a61c6a73ae6d5c",
+    "title": "Tìm ý cho đoạn văn theo chủ đề",
+    "unit_code": "AI4-vietnamese",
+    "position": 1
+  },
+  "AI4-16": {
+    "sha256": "8486e4294040bf8921707766477a665ca196d4c71e2bc8fb5d078cb2a89a3047",
+    "title": "Nhân vật, bối cảnh và cốt truyện",
+    "unit_code": "AI4-vietnamese",
+    "position": 2
+  },
+  "AI4-17": {
+    "sha256": "170f47bbfd30ed37d2abd68881b9cfdce01490bf68810111c7fb1b01ed304b40",
+    "title": "Sửa câu, chính tả và giữ giọng văn của em",
+    "unit_code": "AI4-vietnamese",
+    "position": 3
+  },
+  "AI4-18": {
+    "sha256": "8505bf28b7df71771b90d55ed65da3ded30b0177770003c5050fc1b7b8d1439f",
+    "title": "Đọc hiểu và đặt câu hỏi về văn bản",
+    "unit_code": "AI4-vietnamese",
+    "position": 4
+  },
+  "AI4-19": {
+    "sha256": "c917d20db8be7c1fd9e8badd8a59f124adec36345816760c09034a175801cedb",
+    "title": "Từ vựng đồ vật, con vật và trường học qua hình",
+    "unit_code": "AI4-english",
+    "position": 1
+  },
+  "AI4-20": {
+    "sha256": "a53d9cb6600607b618d1085e7be252fb0a65b7bbb1dc3fb415270c1f3e6c73d6",
+    "title": "Hội thoại chào hỏi và giới thiệu bản thân",
+    "unit_code": "AI4-english",
+    "position": 2
+  },
+  "AI4-21": {
+    "sha256": "2b4f34ee621d6cfbdb5d8dfa89a939c78f59da78afb5b8005be76d5577d2b9c2",
+    "title": "Luyện nghe/nói với phản hồi tích cực",
+    "unit_code": "AI4-english",
+    "position": 3
+  },
+  "AI4-22": {
+    "sha256": "f329c3dc6ec2d7335602212a2532f9a8af2bd14d436462c5ff3718b6c32ee002",
+    "title": "Viết câu đơn giản và tự sửa lỗi",
+    "unit_code": "AI4-english",
+    "position": 4
+  },
+  "AI4-23": {
+    "sha256": "b2e176eab564201f327753c5f9b7f3983afa4b96f6a287dac6ee11833dc7d910",
+    "title": "Thiết kế nhân vật robot của em",
+    "unit_code": "AI4-creative",
+    "position": 1
+  },
+  "AI4-24": {
+    "sha256": "403a6f778a440ebc1230bce810c160c99d6b29769c4cbe34f8c0230d6d70a1d7",
+    "title": "Viết truyện tranh 4 khung với AI",
+    "unit_code": "AI4-creative",
+    "position": 2
+  },
+  "AI4-25": {
+    "sha256": "1e829a14a78d100cac2dad7bfe978698e7ab0a338d9e211e89832f1f26da1e27",
+    "title": "Tạo poster bảo vệ môi trường",
+    "unit_code": "AI4-creative",
+    "position": 3
+  },
+  "AI4-26": {
+    "sha256": "e15fc8845372942aa2ad7d89909e2a51fa754d45dd24f6524e90fd5a0c3c7651",
+    "title": "Sáng tạo câu đố và trò chơi học tập",
+    "unit_code": "AI4-creative",
+    "position": 4
+  },
+  "AI4-27": {
+    "sha256": "31ac40fafc140283ffc4f8ed5698e81c132c41642b514e26f0929b2c0207d701",
+    "title": "Thông tin cá nhân nào không được chia sẻ?",
+    "unit_code": "AI4-safety",
+    "position": 1
+  },
+  "AI4-28": {
+    "sha256": "ca57629c4f3a176403ce2512b844345a82f6204c87456a17fedb445ef33a9c17",
+    "title": "Tin giả, hình ảnh do AI tạo và kiểm chứng",
+    "unit_code": "AI4-safety",
+    "position": 2
+  },
+  "AI4-29": {
+    "sha256": "43fcbb9ed7f90c914a9c278b74ad06f0b26772bee9b892f22415157aef8162b9",
+    "title": "Bản quyền, ghi nguồn, trung thực khi dùng AI",
+    "unit_code": "AI4-safety",
+    "position": 3
+  },
+  "AI4-30": {
+    "sha256": "3f7f9545b5811c07fa5c8442bd0e0c792904439027db215ef8ff6c0c542195ce",
+    "title": "Công bằng, tôn trọng và biết nói không",
+    "unit_code": "AI4-safety",
+    "position": 4
+  },
+  "AI4-31": {
+    "sha256": "debb56e2f736ee8c820841d433a9d84e2b1718c1a443f5fc2c9970779571bb03",
+    "title": "Chọn vấn đề thực tế và lập nhóm",
+    "unit_code": "AI4-project",
+    "position": 1
+  },
+  "AI4-32": {
+    "sha256": "b0b1d90af8d260987df07c7d6fbf3499d6992c39b88c93826d6ad96c82fa4f58",
+    "title": "Thiết kế ý tưởng sản phẩm",
+    "unit_code": "AI4-project",
+    "position": 2
+  },
+  "AI4-33": {
+    "sha256": "ae6f77e4d858cb22821dab7d8dde91cde9fd8825bc4278284d9b0c9ea4202b38",
+    "title": "Thu thập dữ liệu mẫu an toàn",
+    "unit_code": "AI4-project",
+    "position": 3
+  },
+  "AI4-34": {
+    "sha256": "2a74baf39e616af9fd7ffca26f88843c091c3ef52add06ca686e5a88c3c69766",
+    "title": "Tạo nguyên mẫu",
+    "unit_code": "AI4-project",
+    "position": 4
+  },
+  "AI4-35": {
+    "sha256": "650b8df6ac69e640b2fd155ede4c586189c7f49d9ccf50f7a09bb1efbd938af1",
+    "title": "Kiểm thử, nhận góp ý, cải tiến",
+    "unit_code": "AI4-project",
+    "position": 5
+  },
+  "AI4-36": {
+    "sha256": "f309e73ae52bb0b5c262a726a4471c43fcf5fc29b5eaab35cbb04d29d234b610",
+    "title": "Trình bày, đánh giá rubric và triển lãm sản phẩm",
+    "unit_code": "AI4-project",
+    "position": 6
+  },
+  "AI1-01": {
+    "sha256": "62768a0880da718367b0ae6e8f5ad0e76d1502c3fe60662709b8544c0980dedd",
+    "title": "Máy và người",
+    "unit_code": "AI1-around",
+    "position": 1
+  },
+  "AI1-02": {
+    "sha256": "80ace6efd183e24681e5c1ae4f0730dbbdc2d1d4ee8bdd55e1b2c4478bb55167",
+    "title": "Xếp thẻ hình của em",
+    "unit_code": "AI1-data",
+    "position": 1
+  },
+  "AI1-03": {
+    "sha256": "d7c0db83544722654b0abf89b524305a104f5d9b7d1a00f854a0cbe6b9d3d5d0",
+    "title": "Điều em giữ riêng",
+    "unit_code": "AI1-safety",
+    "position": 1
+  },
+  "AI2-01": {
+    "sha256": "2ddebeefe4d042792229396991122550f842d188753602f29df7364e7307f2d1",
+    "title": "Quan sát màu và hình",
+    "unit_code": "AI2-data",
+    "position": 1
+  },
+  "AI2-02": {
+    "sha256": "b73eab2f780ea60ac07e95f0c0ec19130f606ab16600a53ad57cc7423d6e3b76",
+    "title": "Khi robot nhận nhầm",
+    "unit_code": "AI2-data",
+    "position": 2
+  },
+  "AI2-03": {
+    "sha256": "1c05d614aae786eb29a7c9ef93c58e7bf33da40e529b6d866e05ab26fa708d23",
+    "title": "Dùng dữ liệu mẫu an toàn",
+    "unit_code": "AI2-safety",
+    "position": 1
+  },
+  "AI3-01": {
+    "sha256": "4092c4290e9e966294c6a1475b7f0002d663241124ea063eae925ce86a7ffe1a",
+    "title": "Tập mẫu và dự đoán",
+    "unit_code": "AI3-data",
+    "position": 1
+  },
+  "AI3-02": {
+    "sha256": "6703ac7ea753544097af7530e35e726548d061c9dfb043d3230a257e060a1815",
+    "title": "Hướng dẫn robot từng bước",
+    "unit_code": "AI3-project",
+    "position": 1
+  },
+  "AI3-03": {
+    "sha256": "1eff724b515d3878ae8c2be7f03081b3655ebbff05d056889491f89e858828d0",
+    "title": "Kiểm tra trước khi tin",
+    "unit_code": "AI3-prompt",
+    "position": 1
+  },
+  "AI5-01": {
+    "sha256": "9e9bf3e7e5c4670aa7c76496cb417bed35998a282b9c8ab5514af52a408c7244",
+    "title": "Thiết kế bộ dữ liệu công bằng",
+    "unit_code": "AI5-data",
+    "position": 1
+  },
+  "AI5-02": {
+    "sha256": "8ce7f593e56efcb82da8c4508f0d1f7de7fe533a393c1249948fb514d0bf0d0d",
+    "title": "Tư duy hệ thống và nếu/thì",
+    "unit_code": "AI5-project",
+    "position": 1
+  },
+  "AI5-03": {
+    "sha256": "c29df3eaf49fd819880fbc086dc0c8e718fd8ebdbf8b75a2a33b407cf47b40b4",
+    "title": "Dự án STEM có trách nhiệm",
+    "unit_code": "AI5-project",
+    "position": 2
+  }
+}

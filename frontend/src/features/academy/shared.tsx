@@ -119,10 +119,6 @@ export function AcademyLayout({ children }: { children: React.ReactNode }) {
       <nav aria-label="Điều hướng AI Academy" className="academy-tabs">
         {[
           ["", "Hành trình"],
-          ["games", "Trò chơi"],
-          ["lab", "Phòng thí nghiệm"],
-          ["creative-studio", "Xưởng sáng tạo"],
-          ["ai-tutor", "Trợ giảng"],
           ["projects", "Dự án"],
           ["portfolio", "Sản phẩm của em"],
         ].map(([path, title]) => (
@@ -130,6 +126,15 @@ export function AcademyLayout({ children }: { children: React.ReactNode }) {
             {title}
           </Link>
         ))}
+        <details className="academy-more-menu">
+          <summary>Khám phá thêm</summary>
+          <div>
+            <Link href="/ai-academy/games">Trò chơi</Link>
+            <Link href="/ai-academy/lab">Phòng thí nghiệm</Link>
+            <Link href="/ai-academy/creative-studio">Xưởng sáng tạo</Link>
+            <Link href="/ai-academy/ai-tutor">Trợ giảng</Link>
+          </div>
+        </details>
       </nav>
       <main id="main" className="academy-main">
         {children}

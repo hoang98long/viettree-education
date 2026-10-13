@@ -2,6 +2,8 @@
 
 import { useId, useState } from "react";
 import Link from "next/link";
+import { WordPicture } from "./word-picture";
+import { GuidedText } from "./guided-text";
 import { BookOpen, Lightbulb, MessageCircle } from "lucide-react";
 import type { LessonContent, LessonIllustration } from "@/lib/types";
 import { GeometryFigure } from "./geometry-figure";
@@ -15,7 +17,10 @@ export function LessonFigure({ value }: { value: LessonIllustration }) {
       <figure className="lesson-figure">
         <div className="early-word-cards" role="img" aria-label={value.caption}>
           {(value.labels || []).slice(0, 6).map((word, i) => (
-            <span key={i}>{word}</span>
+            <span key={i}>
+              <WordPicture text={word} />
+              {word}
+            </span>
           ))}
         </div>
         <figcaption>{value.caption}</figcaption>
@@ -375,9 +380,11 @@ export function LessonFigure({ value }: { value: LessonIllustration }) {
 export function LessonBody({
   content,
   hintAccess,
+  grade,
 }: {
   content: LessonContent;
   hintAccess?: { available: number; total: number; vip_locked: number };
+  grade?: number;
 }) {
   const [revealed, setRevealed] = useState(0);
   const prefix = useId();
@@ -396,27 +403,40 @@ export function LessonBody({
           </ul>
         </section>
       )}
-      <nav className="lesson-outline panel" aria-label="Các phần trong bài">
-        <strong>Chọn phần em muốn đọc</strong>
-        <div>
-          {content.blocks.map((block, i) => (
-            <a href={`#${prefix}-block-${i}`} key={i}>
-              {i + 1}. {block.title}
-            </a>
-          ))}
-        </div>
-      </nav>
+      <details className="lesson-outline panel">
+        <summary>Các phần trong bài · {content.blocks.length} bước nhỏ</summary>
+        <nav aria-label="Các phần trong bài">
+          <div>
+            {content.blocks.map((block, i) => (
+              <a
+                href={`#${prefix}-block-${i}`}
+                key={i}
+                onClick={() => {
+                  const block = document.getElementById(`${prefix}-block-${i}`);
+                  if (block instanceof HTMLDetailsElement) block.open = true;
+                }}
+              >
+                {i + 1}. {block.title}
+              </a>
+            ))}
+          </div>
+        </nav>
+      </details>
       {content.illustration && <LessonFigure value={content.illustration} />}
       <div className="lesson-blocks">
         {content.blocks.map((block, i) => (
-          <section
+          <details
             id={`${prefix}-block-${i}`}
             className={`lesson-block ${block.type}`}
             key={i}
+            open={i === 0}
           >
-            <h2>{block.title}</h2>
-            <p>{block.text}</p>
-          </section>
+            <summary>
+              <h2>{block.title}</h2>
+              <span aria-hidden>⌄</span>
+            </summary>
+            <GuidedText text={block.text} grade={grade} illustrated />
+          </details>
         ))}
       </div>
       {!!hints.length && (
@@ -424,10 +444,7 @@ export function LessonBody({
           <h2>
             <Lightbulb aria-hidden size={24} /> Gợi ý từng bước
           </h2>
-          <p>
-            Thử nghĩ trước, rồi mở thêm gợi ý khi em cần. Gợi ý này giúp học
-            bài, không trả lời thay bài kiểm tra.
-          </p>
+          <p>Cần giúp? Mở từng gợi ý sau khi em thử.</p>
           <ol>
             {hints.slice(0, revealed).map((hint, i) => (
               <li key={i}>{hint}</li>

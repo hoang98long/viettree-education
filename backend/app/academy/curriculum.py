@@ -458,9 +458,9 @@ LESSONS = [
 def records():
     from copy import deepcopy
 
+    from app.academy.curriculum_primary import records_for_grade
     from app.academy.curriculum_projects import LESSONS as projects
     from app.academy.curriculum_subjects import LESSONS as subjects
-    from app.academy.media import OBJECTS
 
     all_lessons = LESSONS + subjects + projects
     if [row["number"] for row in all_lessons] != list(range(1, 37)):
@@ -483,208 +483,19 @@ def records():
                 output.append(value)
                 break
             cursor += count
-    samples = {
-        1: [
-            (
-                1,
-                "Máy và người",
-                "Quạt bật khi em nhấn nút. Một công cụ đoán tên con vật từ thẻ hình. Em quan sát hai việc khác nhau.",
-                "Máy làm việc được thiết kế. Không phải máy nào cũng dùng AI. Em nhờ người lớn giải thích nếu chưa biết.",
-                "around",
-            ),
-            (
-                4,
-                "Xếp thẻ hình của em",
-                "Em nhìn thẻ mèo, cam và bút. Em chọn nhóm con vật, trái cây hoặc đồ dùng.",
-                "Xếp nhóm bằng đặc điểm của hình. Hai vật cùng màu chưa chắc cùng nhóm.",
-                "data",
-            ),
-            (
-                27,
-                "Điều em giữ riêng",
-                "Trò chơi hỏi mật khẩu. Em dừng và nhờ người lớn; chỉ dùng thẻ mẫu để học.",
-                "Mật khẩu và địa chỉ nhà cần giữ riêng. Không cho người lạ biết để mở trò chơi.",
-                "safety",
-            ),
-        ],
-        2: [
-            (
-                4,
-                "Quan sát màu và hình",
-                "Táo đỏ và bút đỏ cùng màu nhưng khác nhóm. Em thử nhìn hình dáng và công dụng nữa.",
-                "Dữ liệu mẫu có đặc điểm và nhãn. Dùng nhiều đặc điểm để xếp nhóm thay vì chỉ nhìn màu.",
-                "data",
-            ),
-            (
-                6,
-                "Khi robot nhận nhầm",
-                "Bộ mẫu chỉ có mèo vàng. Em bổ sung mèo ở màu khác rồi kiểm tra lại.",
-                "Mẫu thiếu đa dạng có thể làm dự đoán nhầm. Sửa nhãn và thêm ví dụ phù hợp.",
-                "data",
-            ),
-            (
-                27,
-                "Dùng dữ liệu mẫu an toàn",
-                "Nhóm dùng tên nhân vật trong truyện thay cho tên thật. Em chọn thẻ an toàn để thử.",
-                "Chỉ ghi thông tin cần cho bài học. Không gửi hình mặt, số điện thoại hay mật khẩu.",
-                "safety",
-            ),
-        ],
-        3: [
-            (
-                5,
-                "Tập mẫu và dự đoán",
-                "Nhóm giữ vài thẻ mới để thử bộ phân loại sau khi học bằng thẻ có nhãn.",
-                "Tập học giúp tìm quy luật; tập thử giúp xem quy luật có dùng được với mẫu mới hay không.",
-                "data",
-            ),
-            (
-                32,
-                "Hướng dẫn robot từng bước",
-                "Robot giấy cần đi từ cửa tới kệ sách. Em xếp hướng dẫn rồi nhờ bạn làm theo.",
-                "Thuật toán là các bước rõ để làm một nhiệm vụ. Thử từng bước và sửa chỗ chưa rõ.",
-                "project",
-            ),
-            (
-                10,
-                "Kiểm tra trước khi tin",
-                "Một thẻ nói 7 × 8 = 54. Em tính lại bằng các nhóm tám chấm trước khi sử dụng.",
-                "Công cụ có thể sai. Dùng phép tính, văn bản và người lớn làm căn cứ kiểm tra.",
-                "prompt",
-            ),
-        ],
-        5: [
-            (
-                33,
-                "Thiết kế bộ dữ liệu công bằng",
-                "Nhóm phân loại thẻ đồ vật ở nhiều màu. Em so hai tập học và tìm nhóm bị thiếu.",
-                "Thiết kế tập học và thử tách biệt, kiểm tra nguồn, nhãn, độ đa dạng và quyền sử dụng.",
-                "data",
-            ),
-            (
-                32,
-                "Tư duy hệ thống và nếu/thì",
-                "Sản phẩm có đầu vào thẻ hình, bộ quy tắc và đầu ra nhãn. Nếu chưa đủ dữ liệu, báo cần kiểm tra.",
-                "Một hệ thống gồm các phần liên kết. Quy tắc nếu/thì cần trường hợp chưa biết, kiểm thử và giới hạn rõ.",
-                "project",
-            ),
-            (
-                36,
-                "Dự án STEM có trách nhiệm",
-                "Nhóm xây bộ phân loại mô phỏng, thử với thẻ mới và trình bày giới hạn bằng rubric.",
-                "Kết hợp thiết kế, thử nghiệm, cải tiến và an toàn. Không dùng kết quả máy để gắn nhãn năng lực con người.",
-                "project",
-            ),
-        ],
-    }
-    for grade, entries in samples.items():
-        unit_positions = {}
-        positions = {}
-        for i, (number, title, scene, concept, unit) in enumerate(entries, 1):
-            row = deepcopy(all_lessons[number - 1])
-            unit_positions.setdefault(unit, len(unit_positions) + 1)
-            positions[unit] = positions.get(unit, 0) + 1
-            row.update(
-                grade=grade,
-                code=f"AI{grade}-{i:02}",
-                title=title,
-                scene=scene,
-                concept=concept,
-                unit_code=f"AI{grade}-{unit}",
-                unit_title=dict((u, t) for u, t, _ in UNITS)[unit],
-                unit_position=unit_positions[unit],
-                position=positions[unit],
-            )
-            if grade == 1:
-                row["activity"] = activity(
-                    "classify",
-                    "Chọn nhóm phù hợp cho từng thẻ hình.",
-                    [("Mèo", "Con vật"), ("Cam", "Trái cây"), ("Bút chì", "Đồ dùng")],
-                    "Quan sát hình và công dụng của vật. Em có thể thử lại.",
-                )
-                row["questions"] = [
-                    quiz("Mèo thuộc nhóm nào?", "Con vật", "Đồ dùng", "Mèo là một con vật."),
-                    quiz(
-                        "Có nên chia sẻ mật khẩu không?", "Không", "Có", "Mật khẩu cần giữ riêng."
-                    ),
-                    quiz(
-                        "Không hiểu hướng dẫn, em làm gì?",
-                        "Nhờ người lớn giúp",
-                        "Đoán thông tin riêng",
-                        "Em có thể nhờ người lớn đọc và giải thích.",
-                    ),
-                ]
-                row["teacher"] = (
-                    "Đọc từng câu ngắn, chỉ hình và cho trẻ chọn/chạm. Không yêu cầu gõ hay thu âm; chấp nhận câu trả lời bằng chỉ tay. Mời trẻ nói lý do bằng lời của mình."
-                )
-                row["application"] = "Chỉ một thẻ và nói điều em đã học; không cần gõ chữ."
-                row["advanced"] = "Tìm một thẻ có màu giống nhưng thuộc nhóm khác."
-                if number == 1:
-                    row["activity"] = activity(
-                        "classify",
-                        "Chọn người hoặc máy trong từng tình huống.",
-                        [
-                            ("Bạn nhỏ biết chăm bạn", "Con người"),
-                            ("Quạt làm theo lệnh bật", "Máy"),
-                            ("Cô giáo lắng nghe em", "Con người"),
-                        ],
-                        "Con người có trải nghiệm và cảm xúc. Máy thực hiện việc được thiết kế.",
-                    )
-                    row["questions"] = [
-                        quiz(
-                            "Quạt bật khi nào?",
-                            "Khi em bật công tắc",
-                            "Khi quạt tự buồn",
-                            "Quạt thông thường làm theo công tắc.",
-                        ),
-                        quiz(
-                            "Robot trong tranh có cảm xúc thật không?",
-                            "Không",
-                            "Có như người",
-                            "Robot là nhân vật minh họa hoặc máy được thiết kế.",
-                        ),
-                        quiz(
-                            "Khi chưa biết cách dùng, hỏi ai?",
-                            "Người lớn đáng tin",
-                            "Người lạ trên mạng",
-                            "Người lớn có thể đọc và chỉ cho em.",
-                        ),
-                    ]
-                if number == 27:
-                    row["activity"] = activity(
-                        "classify",
-                        "Chọn điều giữ riêng hoặc thẻ mẫu để học.",
-                        [
-                            ("Mật khẩu tài khoản", "Giữ riêng"),
-                            ("Thẻ táo tự vẽ", "Thẻ mẫu"),
-                            ("Địa chỉ nhà", "Giữ riêng"),
-                        ],
-                        "Mật khẩu và địa chỉ giữ riêng. Thẻ mẫu đủ để chơi và học.",
-                    )
-                    row["questions"] = [
-                        quiz(
-                            "Có nên cho người lạ biết địa chỉ nhà?",
-                            "Không",
-                            "Có",
-                            "Địa chỉ nhà là thông tin cần giữ riêng.",
-                        ),
-                        quiz(
-                            "Trò ghép hình có cần mật khẩu trong câu hỏi không?",
-                            "Không",
-                            "Có",
-                            "Trò chơi không cần biết mật khẩu.",
-                        ),
-                        quiz(
-                            "Nếu trò chơi hỏi thông tin riêng, em làm gì?",
-                            "Dừng và nhờ người lớn",
-                            "Nhập để chơi tiếp",
-                            "Dừng lại để giữ thông tin an toàn.",
-                        ),
-                    ]
-            output.append(row)
-    card_codes = [f"card-{kind}-{variant}" for kind, _, _ in OBJECTS for variant in range(3)]
-    for i, row in enumerate(output):
-        row["cards"] = [card_codes[(i * 6 + j) % len(card_codes)] for j in range(6)]
+    for grade in [1, 2, 3, 5]:
+        output.extend(records_for_grade(grade, UNITS))
+    for row in output:
+        row["visual_prefix"] = row["code"] + "-v2"
+        if (
+            row["grade"] in [1, 2, 3]
+            and row["unit_code"].endswith("-data")
+            and row["position"] == 3
+        ):
+            row["visual_prefix"] = row["code"] + "-color-v3"
+        row["cards"] = [
+            row["visual_prefix"] + f"-item-{i}" for i in range(1, len(row["activity"]["items"]) + 1)
+        ]
     return output
 
 
@@ -693,18 +504,12 @@ def content(row):
 
     from app.academy.schemas import LessonContent
 
-    code = row["code"]
+    prefix = row["visual_prefix"]
     unit = row["unit_code"].split("-")[-1]
     questions = deepcopy(row["questions"])
     practice = deepcopy(row["activity"])
-    from app.academy.media import OBJECTS
-
-    for item in practice["items"]:
-        match = next(
-            (kind for kind, name, _ in OBJECTS if name.casefold() in item["text"].casefold()), None
-        )
-        if match:
-            item["asset"] = f"card-{match}-0"
+    for i, item in enumerate(practice["items"], 1):
+        item["asset"] = prefix + f"-item-{i}"
     for i, q in enumerate(questions, 1):
         q["id"] = f"q-{i}"
         if (row["number"] + i) % 2:
@@ -717,7 +522,7 @@ def content(row):
             "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần.",
         ],
         prerequisites=[],
-        estimated_minutes=35,
+        estimated_minutes=10 if row["grade"] <= 2 else 15,
         keywords=[unit, "mô phỏng", "kiểm chứng"],
         age_range=[row["grade"] + 5, row["grade"] + 6],
         competencies=[unit],
@@ -729,7 +534,7 @@ def content(row):
         + row["activity"]["instruction"],
         standard=row["activity"]["instruction"],
         advanced=row["advanced"],
-        hero=code + "-hero",
+        hero=prefix + "-hero",
         cards=row["cards"],
         steps=[
             dict(
@@ -737,21 +542,21 @@ def content(row):
                 kind="story",
                 title="Câu chuyện mở đầu",
                 text=row["scene"],
-                media=[code + "-hero"],
+                media=[prefix + "-hero"],
             ),
             dict(
                 id="discover",
                 kind="illustrated_explanation",
                 title="Em khám phá",
                 text=row["concept"],
-                media=[code + "-hero" if row["number"] == 12 else code + "-support-1"],
+                media=[prefix + "-hero" if row["number"] == 12 else prefix + "-support-1"],
             ),
             dict(
                 id="observe",
                 kind="flip_card",
                 title="Quan sát và đối chiếu",
                 text=row["activity"]["explanation"],
-                media=[code + "-support-2"],
+                media=[prefix + "-support-2"],
             ),
             dict(
                 id="practice",
@@ -759,7 +564,7 @@ def content(row):
                 title="Em thử làm",
                 text=row["activity"]["instruction"],
                 activity=practice,
-                media=[code + "-support-3"],
+                media=[prefix + "-support-3"],
             ),
             dict(
                 id="checkpoint",
@@ -773,14 +578,24 @@ def content(row):
                 kind="reflection",
                 title="Em vận dụng",
                 text=row["application"],
-                media=[code + "-support-3"],
+                media=[prefix + "-support-3"],
             ),
             dict(
                 id="finish",
                 kind="project_task",
                 title="Điều em mang theo",
-                text=row["concept"] + " Em nói một điều đã hiểu và một điều còn muốn hỏi.",
+                text="Chỉ một tranh và nói điều em đã hiểu.",
+                media=[prefix + "-hero"],
             ),
         ],
     )
+    for step in data["steps"]:
+        text = step["text"]
+        sentence = text.split(". ", 1)[0]
+        limit = 18 if row["grade"] <= 2 else 36
+        if len(sentence.split()) > limit:
+            sentence = " ".join(sentence.split()[:limit]) + "…"
+        if len(sentence) < len(text):
+            step["details_text"] = text
+            step["text"] = sentence + ("." if sentence[-1] not in ".!?…" else "")
     return LessonContent.model_validate(data).model_dump()

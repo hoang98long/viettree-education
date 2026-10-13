@@ -86,6 +86,7 @@ class Step(StrictModel):
     ]
     title: str = Field(min_length=1, max_length=160)
     text: str = Field(min_length=10, max_length=4000)
+    details_text: str | None = Field(default=None, max_length=4000)
     media: list[AssetCode] = Field(default_factory=list, max_length=12)
     activity: Activity | None = None
     questions: list[Question] = Field(default_factory=list, max_length=6)
@@ -99,6 +100,11 @@ class Step(StrictModel):
         if self.kind == "quiz" and not self.questions:
             raise ValueError("Checkpoint phải có câu hỏi")
         return self
+
+
+class HintInput(StrictModel):
+    step_id: str = Field(pattern=r"^[a-z0-9_-]{1,60}$")
+    level: int = Field(default=1, ge=1, le=3)
 
 
 class LessonContent(StrictModel):

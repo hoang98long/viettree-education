@@ -37,14 +37,10 @@ export function Journey({ grade }: { grade?: number }) {
         <div>
           <span className="eyebrow">VIETTREE AI ACADEMY</span>
           <h1>Khám phá AI, sáng tạo an toàn</h1>
+          <p>Xem tranh. Chạm chọn. Thử lại cùng Mầm AI.</p>
           <p>
-            Em quan sát, thử làm và kiểm tra. Mầm AI sẽ đưa em qua những câu
-            chuyện bằng tranh.
-          </p>
-          <p>
-            Học lý thuyết và bài tập đơn giản, không cần dùng mô hình AI. Lớp 4
-            có 3 bài nhập môn miễn phí; VIP mở thêm 33 tiết cùng phòng thực hành
-            và dự án.
+            Mỗi lớp có 36 bài nhỏ. Bài nhập môn miễn phí; VIP mở thêm bài và dự
+            án.
           </p>
           <Link className="button secondary" href="/student/membership">
             Xem gói VIP cùng phụ huynh
@@ -58,10 +54,6 @@ export function Journey({ grade }: { grade?: number }) {
               Tiếp tục khám phá
             </Link>
           )}
-          <p className="muted">
-            Mô phỏng và học liệu đã biên soạn. Không cần khóa AI, camera hay
-            microphone.
-          </p>
         </div>
         <AcademyImage
           code="mascot-0"
@@ -111,25 +103,28 @@ export function Journey({ grade }: { grade?: number }) {
         </p>
       )}
       <PageTitle
-        title={
-          selected === 4
-            ? "36 tiết · 9 chủ đề"
-            : `Khung lớp ${selected} · 3 bài mẫu`
-        }
-        description="Chọn một bài học. Thực hành từng bước, thử lại và đọc giải thích."
+        title={`Lớp ${selected} · ${catalog.data?.length ?? 36} bài · ${units.length || 9} chủ đề`}
+        description="Chọn tranh để mở bài học."
       />
       {catalog.loading ? (
         <Loading />
       ) : catalog.error ? (
         <ErrorState message={catalog.error} retry={catalog.retry} />
       ) : units.length ? (
-        units.map((id) => {
+        units.map((id, index) => {
           const rows = catalog.data!.filter((l) => l.unit_id === id);
           return (
-            <section key={id} className="panel academy-unit">
-              <h2>
-                {rows[0].unit_position}. {rows[0].unit_title}
-              </h2>
+            <details
+              key={id}
+              className="panel academy-unit"
+              open={id === next?.unit_id || (!next && index === 0)}
+            >
+              <summary>
+                <h2>
+                  {rows[0].unit_position}. {rows[0].unit_title}
+                </h2>
+                <span>{rows.length} bài · Mở chủ đề</span>
+              </summary>
               {rows[0].unit_cover && (
                 <div className="academy-unit-cover">
                   <AcademyImage
@@ -167,7 +162,7 @@ export function Journey({ grade }: { grade?: number }) {
                   </Link>
                 ))}
               </div>
-            </section>
+            </details>
           );
         })
       ) : (

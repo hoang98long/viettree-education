@@ -14,6 +14,7 @@ from app.academy.schemas import (
     AssignmentInput,
     AttemptInput,
     DraftInput,
+    HintInput,
     ReviewInput,
     RevisionInput,
     StepInput,
@@ -204,6 +205,26 @@ def attempt(identifier: UUID, payload: AttemptInput, user=Depends(student_user),
         raise HTTPException(429, "Em nghỉ một chút rồi thử tiếp nhé", headers={"Retry-After": "60"})
     result = learning.attempt(conn, user, identifier, payload)
     return {key: result[key] for key in ["id", "score", "feedback", "level", "created_at"]}
+
+
+@router.post("/lessons/{identifier}/hints")
+def lesson_hint(
+    identifier: UUID,
+    payload: HintInput,
+    user=Depends(student_user),
+    conn=database,
+):
+    # Use the learner's pinned version; no provider call and no typed explanation required.
+    level = payload.level
+    _, _, body, _, current = learning.current_step(conn, user, identifier, payload.step_id)
+    if level > 1:
+        student_feature(conn, user, "learning.guided_hints")
+    hints = (current.get("activity") or {}).get("hints", [])
+    fallbacks = [body["support"], body["standard"], body["advanced"]]
+    return {
+        "level": level,
+        "message": hints[level - 1] if len(hints) >= level else fallbacks[level - 1],
+    }
 
 
 @router.get("/portfolio")

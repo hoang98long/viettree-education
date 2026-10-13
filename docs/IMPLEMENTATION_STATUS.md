@@ -750,3 +750,71 @@ ca đó đã chạy cả ba nhóm bằng ba browser context trong lượt deskto
 Ruff, ESLint, TypeScript, Prettier và production build đạt.
 
 Chi tiết sử dụng và API: [cỡ chữ học tập](reading-preferences.md).
+
+## Học bằng hình và đủ AI lớp 1–5 · 13/10/2026
+
+Bài học ba môn mở từng phần, đọc từng đoạn và có lựa chọn xem đầy đủ; giữ toàn bộ
+ngữ liệu gốc và dòng thơ. Bổ sung 16 SVG từ vựng/truyện, hình phép cộng nhỏ, phân
+số có phần bằng nhau và bảng các hàng của số. Chỉ minh họa dữ kiện phù hợp,
+không hiểu nhầm số âm/thập phân hoặc từ “cá” trong “các”.
+
+AI Academy có **180 bài / 1260 bước / 540 checkpoint**, mỗi khối 1–5 đủ **36 bài /
+9 chủ đề**, baseline **3 Free / 33 VIP**. Lớp 1–2 khoảng 10 phút, hai thẻ;
+lớp 3–5 khoảng 15 phút, lớp 5 tăng chất lượng dữ liệu, mẫu học/mẫu thử, tiêu chí,
+thập phân/phân số/tỉ lệ và kiểm chứng. Tham khảo mục tiêu công khai Day of AI,
+AI4K12 và Discovering AI 8–12; nội dung/ảnh tự biên soạn, không sao chép giáo án.
+
+Giao diện mỗi lần một thẻ/câu, nút chạm thay dropdown/kéo thả, gợi ý không cần
+gõ mô tả; gợi ý 1 Free, 2–3 VIP từ học liệu nội bộ. Menu công cụ và phần đọc
+dài thu gọn; cập nhật đáp án bỏ trạng thái đạt cũ. Giữ font theo thiết bị.
+
+Thư viện có **1547 SVG**: 315 cũ, 1232 bổ sung; đối chiếu số lượng và màu sắc với
+nhãn. Màu đỏ có phiên bản sửa riêng, giữ ảnh và payload cũ. Ảnh thuộc bài VIP
+vẫn khóa khi phiên bản được lưu trữ. Giáo viên sửa/nháp/vị trí/quyền riêng được
+giữ; giữ tiến độ trỏ phiên bản đã bắt đầu. Không cần migration mới.
+
+Đã pg_dump trước khi nạp trên database hiện tại, seed chạy lặp không tăng số lượng.
+Kiểm hash mọi hàng cũ ngoài các cột AI được chủ động nâng cấp: không có thay đổi
+ngoài dự kiến, không reset tài khoản/gói/kết quả. Đủ 180 baseline published,
+1547 ảnh hợp lệ; `verify-ai-academy` và `check-system` đạt.
+
+Kiểm thử tập trung: **214 backend** cho AI, hình, gợi ý, phiên bản/quyền riêng tư,
+snapshot thư viện và giao dịch; **81 kiểm tra lớp 5** đã đạt, rồi kiểm lại các ca
+thư viện sau sửa. **48 frontend** đạt. Lượt browser liên quan **21 passed**, gồm
+năm khối trên desktop/mobile, Free/VIP, lưu/resume, CMS, giáo viên/phụ huynh,
+ba môn, font và thư viện; một ca đa thiết bị trùng mobile được bỏ qua vì đã
+thử cả ba nhóm trong lượt desktop. Hai ca browser bổ sung xác nhận minh họa màu đỏ
+đạt trên desktop/mobile; hồi quy backend xác nhận ảnh VIP của bản lưu trữ vẫn
+trả 403 cho tài khoản Free. Ruff, ESLint, TypeScript, Prettier và production build đạt.
+
+Sửa lỗi tiến độ lúc chuyển nhanh sang thư viện: count/page dùng một snapshot SQL,
+và phản hồi lưu thành công phát tín hiệu làm mới thư viện. Có hồi quy bằng hai
+connection PostgreSQL chứng minh không lệch count với danh sách.
+
+Tài liệu: [thiết kế và nguồn quốc tế](visual-learning-and-ai.md),
+[danh sách 180 bài](ai-academy/lessons.csv).
+
+## Rà soát tranh và thao tác học · 13/10/2026
+
+Bổ sung 30 SVG nguyên bản cho đồ dùng, phương tiện, thời tiết, thức ăn, màu và
+hình học; ba môn có tổng 46 tranh. Thẻ từ, đáp án trắc nghiệm và mục sắp xếp
+hiển thị hình khi nhãn cụ thể phù hợp; giữ nguyên chữ và giá trị đáp án gửi backend.
+Không suy đoán tranh từ câu phủ định, phép tính hoặc nhãn có số lượng khác một vật.
+Bút mực và bút chì có tranh riêng, tránh lẫn nghĩa trong thẻ từ.
+
+Tranh chỉ theo đoạn đang đọc; chuyển bài/bước mới đặt lại đoạn đầu. Hành trình
+AI có biểu tượng, bước đang học và dấu hoàn thành; quay lại đóng gợi ý cũ,
+khóa đổi bước trong lúc lưu/lấy gợi ý. Đổi tên nút giọng đọc thành “Nghe bài”;
+giữ cờ bật/tắt và điều kiện giọng trên thiết bị đã có.
+
+Đối chiếu lại mô tả công khai Day of AI, AI4K12 và Discovering AI. Đọc kiểm tra
+database hiện tại: đủ 180 bài, mỗi lớp 36 bài, 1547 ảnh AI hợp lệ và không có
+lỗi chất lượng tham chiếu. Lượt bổ sung giao diện không cần migration hoặc seed
+lại dữ liệu bài học. Học liệu giáo viên và lịch sử phiên bản không bị ghi lại.
+
+Kiểm thử: **54 frontend passed**; **4 backend** cho độ phủ năm khối và độ đúng
+của tranh; **12 browser AI/quan sát đã đạt**, thêm **2 browser thẻ từ/đáp án**
+đạt sau kiểm tra cuối. Browser chạy Chrome desktop và mô phỏng mobile; thêm
+kiểm tra chiều rộng 320/390/768/1280 px, lưu/reload, chuyển bước và đóng gợi ý.
+ESLint, TypeScript, Prettier và production build đạt. Tài liệu chi tiết:
+[học bằng hình](visual-learning-and-ai.md).

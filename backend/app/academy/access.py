@@ -5,7 +5,11 @@ from sqlalchemy import select
 from app.db import db
 from app.services.access import denied, require_feature, resolve_membership
 
-FREE_CODES = {"AI1-01", "AI2-01", "AI3-01", "AI4-01", "AI4-04", "AI4-27", "AI5-01"}
+FREE_CODES = {f"AI{grade}-{number:02}" for grade in [1, 2, 3, 5] for number in [1, 2, 3]} | {
+    "AI4-01",
+    "AI4-04",
+    "AI4-27",
+}
 
 
 def lesson_access(conn, user, lesson):
@@ -35,7 +39,7 @@ def media_access(conn, user, row):
         conn.execute(
             select(lessons.c.minimum_plan_code)
             .select_from(usages.join(versions).join(lessons))
-            .where(usages.c.asset_id == row["id"], versions.c.status == "published")
+            .where(usages.c.asset_id == row["id"])
         ).scalars()
     )
     entitled = (

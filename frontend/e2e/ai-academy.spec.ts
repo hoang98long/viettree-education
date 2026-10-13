@@ -40,36 +40,41 @@ test("AI Academy: 36 tiết, học/chấm/resume, lab, an toàn, sản phẩm v�
     fullPage: true,
   });
   for (let i = 0; i < 3; i++)
-    await page
-      .getByRole("button", { name: "Lưu và tiếp tục", exact: true })
-      .click();
+    await page.getByRole("button", { name: "Tiếp theo", exact: true }).click();
   const answers = ["Có dùng AI", "Thiết bị thông thường", "Có dùng AI"];
-  const selects = page
-    .getByRole("region", { name: "Hoạt động tương tác" })
-    .locator("select")
-    .filter({ has: page.locator('option[value=""]') });
-  for (let i = 0; i < 3; i++) await selects.nth(i).selectOption(answers[i]);
+  const board = page.getByRole("region", { name: "Hoạt động tương tác" });
+  for (let i = 0; i < 3; i++) {
+    await board.getByRole("button", { name: answers[i], exact: true }).click();
+    if (i < 2)
+      await board
+        .getByRole("button", { name: "Thẻ tiếp", exact: true })
+        .click();
+  }
   await page.getByRole("button", { name: "Kiểm tra lựa chọn" }).click();
   await expect(page.getByRole("status")).toContainText("100%");
   await page.reload();
   await expect(
-    page.getByRole("button", { name: "Lưu và tiếp tục", exact: true }),
+    page.getByRole("button", { name: "Tiếp theo", exact: true }),
   ).toBeEnabled();
-  await page
-    .getByRole("button", { name: "Lưu và tiếp tục", exact: true })
-    .click();
-  for (const answer of [
+  await page.getByRole("button", { name: "Tiếp theo", exact: true }).click();
+  const quizAnswers = [
     "Nó làm theo lệnh bật/tắt đã định",
     "Ước đoán nhãn từ dữ liệu",
     "Câu được hệ thống tạo hoặc lập trình",
-  ])
-    await page.getByRole("radio", { name: answer, exact: true }).check();
+  ];
+  for (let i = 0; i < quizAnswers.length; i++) {
+    await page
+      .getByRole("radio", { name: quizAnswers[i], exact: true })
+      .check();
+    if (i < quizAnswers.length - 1)
+      await board
+        .getByRole("button", { name: "Thẻ tiếp", exact: true })
+        .click();
+  }
   await page.getByRole("button", { name: "Kiểm tra lựa chọn" }).click();
   await expect(page.getByRole("status")).toContainText("100%");
   for (let i = 0; i < 2; i++)
-    await page
-      .getByRole("button", { name: "Lưu và tiếp tục", exact: true })
-      .click();
+    await page.getByRole("button", { name: "Tiếp theo", exact: true }).click();
   await page
     .getByRole("button", { name: "Hoàn thành bài", exact: true })
     .click();

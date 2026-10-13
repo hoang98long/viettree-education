@@ -2268,6 +2268,168 @@ tr:last-child td {
   padding: 18px;
   border-radius: 12px;
 }
+.lesson-block > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 48px;
+  cursor: pointer;
+  list-style: none;
+}
+.lesson-block > summary::-webkit-details-marker {
+  display: none;
+}
+.lesson-block > summary h2 {
+  margin: 0;
+}
+.lesson-block[open] > summary > span {
+  transform: rotate(180deg);
+}
+.lesson-block:not([open]) {
+  padding-block: 10px;
+}
+.lesson-outline > summary {
+  min-height: 48px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.lesson-picture-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-block: 18px;
+}
+.lesson-word-picture {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 10px;
+  text-align: center;
+  margin: 0;
+}
+.lesson-word-picture img {
+  max-width: 100%;
+  height: auto;
+}
+.lesson-word-picture figcaption {
+  font-size: var(--reading-body, 18px);
+  font-weight: 600;
+}
+.lesson-count-picture {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px;
+  margin: 0;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+.lesson-count-picture svg {
+  width: 100%;
+  height: auto;
+}
+.lesson-fraction-picture {
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  text-align: center;
+  max-width: 500px;
+}
+.fraction-parts {
+  display: flex;
+  min-height: 70px;
+  border: 2px solid var(--green);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.fraction-parts > span {
+  flex: 1;
+  background: white;
+  border-right: 1px solid var(--green);
+}
+.fraction-parts > span:last-child {
+  border-right: 0;
+}
+.fraction-parts > .filled {
+  background: #72b695;
+}
+.lesson-place-value {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+}
+.lesson-place-value > div {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+  background: white;
+  border: 1px solid var(--border);
+}
+.lesson-place-value dt {
+  font-size: var(--reading-meta, 14px);
+}
+.lesson-place-value dd {
+  font-size: var(--reading-question, 22px);
+  color: var(--green);
+  font-weight: 700;
+}
+.reading-paragraph {
+  white-space: pre-line;
+}
+.word-picture {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 12px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.option-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.early-word-cards > span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.early-word-cards .word-picture {
+  width: min(100%, 100px);
+  height: auto;
+}
+.reading-page-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.lesson-block > summary:focus-visible,
+.lesson-outline > summary:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 5px;
+}
 .lesson-completion > .button,
 .lesson-completion > .card-link {
   margin-top: 18px;

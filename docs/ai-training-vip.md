@@ -1,7 +1,7 @@
 # AI Academy ưu tiên đào tạo, Free và VIP
 
 Chính sách mới 12/10/2026 thay mô tả “toàn bộ nền tảng Academy miễn phí” trước
-đây. Giữ 48 bài/315 SVG; tập trung lý thuyết, quan sát, câu hỏi lựa chọn/ghép/
+đây. Cập nhật 13/10/2026: 180 bài/1547 SVG; tập trung lý thuyết, quan sát, câu hỏi lựa chọn/ghép/
 xếp bước và bài thực hành dữ liệu mô phỏng. Không cần tài khoản model hay
 API trả phí để học.
 
@@ -10,8 +10,8 @@ API trả phí để học.
 | Khối        | Miễn phí                                                        | VIP                          |
 | ----------- | --------------------------------------------------------------- | ---------------------------- |
 | Lớp 4       | AI4-01 nhận biết AI, AI4-04 dữ liệu, AI4-27 giữ thông tin riêng | 33 tiết còn lại              |
-| Lớp 1/2/3/5 | Bài đầu mỗi khối                                                | Hai bài mẫu còn lại mỗi khối |
-| Tổng        | 7 bài                                                           | 41 bài                       |
+| Lớp 1/2/3/5 | Ba bài đầu mỗi khối                                             | 33 bài còn lại mỗi khối |
+| Tổng        | 15 bài                                                          | 165 bài                      |
 
 VIP còn có lab phân loại/bias bằng thuật toán đơn giản, Prompt Builder,
 xưởng comic/poster/quiz/báo cáo từ mẫu, dự án nộp giáo viên. Free xem bìa/tên/
@@ -21,7 +21,9 @@ Free có mức gợi ý 1, VIP tối đa 3; tất cả đều do nội dung biê
 ## Server và giao diện
 
 `ai_lessons.minimum_plan_code` mặc định VIP cho bài mới. Migration 0011 gán
-đúng bảy bài miễn phí trên; không sửa payload/phiên bản/progress. Admin có thể
+đúng bảy bài miễn phí của bản cũ. Seed mới bổ sung các bài và xuất bản phiên bản
+tranh cho baseline chưa sửa; giữ payload/tiến độ cũ, giữ nội dung và quyền đã
+được chỉnh qua CMS. Admin có thể
 đổi quyền từng bài trong editor bằng mật khẩu/lý do/revision và audit; teacher
 editor không tự đổi chính sách thương mại.
 

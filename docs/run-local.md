@@ -34,7 +34,7 @@ Head hiện tại `0011_classes_vip_training`, bao gồm lớp/thành tích/giá
 **Lớp 3**, rồi chọn lớp 3 trong học liệu. Mỗi bài lớp 3: Free 1 gợi ý, VIP 3;
 xem [học liệu lớp 3](grade3-curriculum.md). Không đổi tài khoản lớp 4 tự động.
 
-AI Academy trên máy hiện tại đã được migrate và nạp 48 bài/315 hình. Với máy
+AI Academy có 180 bài cho lớp 1–5 và 1547 hình trong thư viện. Với máy
 khác hoặc lần nâng cấp đầu, cài thêm dependencies và nạp module trước khi chạy:
 
 ```powershell
