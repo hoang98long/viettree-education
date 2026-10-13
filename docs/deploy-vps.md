@@ -339,42 +339,28 @@ dc exec -T db psql -X -v ON_ERROR_STOP=1 -U viettree_owner -d viettree-education
 dc run --rm --no-deps backend python -m app.cli check-schema
 ```
 
-`app.cli seed` bị chặn ở production vì tạo tài khoản demo. Muốn nạp bộ nội dung
-lớp 3 và 4 mà không tạo demo, chạy riêng các hàm nội dung trong một transaction:
+`app.cli seed` bị chặn ở production vì tạo tài khoản demo. Nạp đầy đủ bộ
+ba môn từng khối 1–5 bằng registry chung; mỗi lệnh có transaction riêng,
+chỉ thêm học liệu, không tạo tài khoản hoặc đổi gói:
 
 ```bash
-dc run --rm -T --no-deps backend python - <<'PY'
-from sqlalchemy import text
-from app.db import db, engine
-from app.expanded_curriculum import EXPANDED
-from app.vip_curriculum import VIP_EXTENSION
-from app.seed import seed_content, seed_access_policies, seed_advanced_content, seed_grade4_content, seed_grade3_content, verify_seed
-
-with engine().begin() as conn:
-    db.load(conn)
-    conn.execute(text("SELECT pg_advisory_xact_lock(78249100)"))
-    seed_content(conn)
-    seed_access_policies(conn)
-    seed_advanced_content(conn)
-    seed_advanced_content(conn, EXPANDED)
-    seed_advanced_content(conn, VIP_EXTENSION)
-    seed_grade4_content(conn)
-    seed_grade3_content(conn)
-    print(verify_seed(conn))
-    print(verify_seed(conn, grade=3))
-PY
+for grade in 1 2 3 4 5; do
+  dc run --rm -T --no-deps backend python -m app.cli seed-grade-content --grade "$grade" || exit 1
+  dc run --rm -T --no-deps backend python -m app.cli verify-seed --grade "$grade" || exit 1
+done
 ```
 
-Giữ `APP_ENV=production`; không đổi sang development để vượt chặn seed.
-Kết quả trên DB mới: mỗi lớp 68 bài/384 câu/56 đề, 21 chủ đề/kỹ năng của 3 môn;
-hai lớp tổng 136 bài/768 câu/112 đề. Lớp 3 có gợi ý Free/VIP theo bước;
-xem [học liệu lớp 3](grade3-curriculum.md).
-Bộ nội dung cần được giáo viên rà soát trước dùng thật; xem [đối chiếu lớp 4](grade4-curriculum.md).
-Nếu muốn chương trình trống để tự biên soạn, bỏ qua khối nạp nội dung này.
+Giữ `APP_ENV=production`. DB mới: mỗi khối 68 bài/384 câu/56 đề; năm khối
+tổng 340 bài/1920 câu/280 đề, chưa tính AI Academy hoặc bài giáo viên tự tạo.
+`curriculum-inventory --grade 1` kiểm kê source mà không cần DB; không nhầm
+với tổng kho có nội dung riêng. Backup và giáo viên rà soát trước nạp. Nếu
+tự biên soạn từ đầu, bỏ qua bước này. Xem [lớp 1–2](grades1-2-curriculum.md),
+[lớp 3](grade3-curriculum.md), [lớp 4](grade4-curriculum.md), [lớp 5](grade5-curriculum.md).
 
 VPS đã có bộ nền tảng: sau khi backup và rà soát bộ bổ sung, nạp riêng bằng
 `dc run --rm -T --no-deps backend python -m app.cli seed-grade4-content`.
 Để thêm lớp 3: `dc run --rm -T --no-deps backend python -m app.cli seed-grade3-content`.
+Để thêm lớp 5: `dc run --rm -T --no-deps backend python -m app.cli seed-grade-content --grade 5`.
 Lệnh này không cấp gói hay tạo tài khoản. Không cần migration mới ngoài head hiện tại.
 
 ## 8. Quản trị đầu tiên và tài khoản thật
@@ -396,7 +382,7 @@ firewall nhà cung cấp cho IP người vận hành; mở rộng sau khi hoàn 
 Không chạy bootstrap để ghi đè admin cũ. Nếu mất mật khẩu admin, cần quy trình
 khôi phục có xác minh người vận hành; công cụ này không tự reset.
 
-Tạo học sinh thật qua **Quản trị tài khoản**, chọn lớp 3/4, mật khẩu tạm và yêu
+Tạo học sinh thật qua **Quản trị tài khoản**, chọn lớp 1–5, mật khẩu tạm và yêu
 cầu đổi trước khi học. Mặc định Free; cấp/gia hạn/thu hồi VIP qua quản trị.
 Không dùng `seed-demo-learners` trên production.
 

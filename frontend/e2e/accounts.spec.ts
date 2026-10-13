@@ -113,9 +113,13 @@ test("quản trị tài khoản: tạo, sửa, khóa/mở, đặt lại; ngườ
         editForm.getByLabel("Mật khẩu của quản trị viên"),
       ).toHaveValue("");
     }
-    await editForm.getByLabel("Cỡ chữ học sinh").selectOption("large");
+    await editForm
+      .getByLabel("Cỡ chữ mặc định của học sinh")
+      .selectOption("compact");
     await saveProfile(true);
-    await expect(editForm.getByLabel("Cỡ chữ học sinh")).toHaveValue("large");
+    await expect(
+      editForm.getByLabel("Cỡ chữ mặc định của học sinh"),
+    ).toHaveValue("compact");
     await saveProfile(false);
     expect((await student.request.get("/api/v1/auth/me")).status()).toBe(401);
     await saveProfile(true);

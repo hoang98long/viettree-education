@@ -20,17 +20,18 @@ from app.academy.schemas import (
     SubmissionInput,
     TutorInput,
 )
-from app.account_schemas import AdminAction
 from app.core.config import settings
+from app.core.dependencies import database
 from app.core.security import _throttle, admin_user, current_user, now, student_user
-from app.db import connection, db
-from app.schemas import StrictModel
+from app.db import db
+from app.schemas.accounts import AdminAction
+from app.schemas.common import StrictModel
 
 router = APIRouter(prefix="/api/v1/ai-academy", tags=["ai-academy"])
 
 
 @router.get("/home")
-def home(user=Depends(student_user), conn=Depends(connection)):
+def home(user=Depends(student_user), conn=database):
     profiles, progress, ledger = (
         db.table(n) for n in ("student_profiles", "ai_progress", "ai_rewards_ledger")
     )
@@ -154,7 +155,7 @@ def home(user=Depends(student_user), conn=Depends(connection)):
 
 
 @router.get("/grades")
-def grades(user=Depends(current_user), conn=Depends(connection)):
+def grades(user=Depends(current_user), conn=database):
     return [
         dict(r)
         for r in conn.execute(
@@ -164,14 +165,12 @@ def grades(user=Depends(current_user), conn=Depends(connection)):
 
 
 @router.get("/catalog")
-def catalog(
-    grade: int = Query(4, ge=1, le=5), user=Depends(current_user), conn=Depends(connection)
-):
+def catalog(grade: int = Query(4, ge=1, le=5), user=Depends(current_user), conn=database):
     return learning.catalog(conn, grade, user["id"] if "student" in user["roles"] else None)
 
 
 @router.post("/lessons/{identifier}/start")
-def start(identifier: UUID, user=Depends(student_user), conn=Depends(connection)):
+def start(identifier: UUID, user=Depends(student_user), conn=database):
     row, progress, payload = learning.start(conn, user, identifier)
     attempts = db.table("ai_attempts")
     passed = list(
@@ -195,16 +194,12 @@ def start(identifier: UUID, user=Depends(student_user), conn=Depends(connection)
 
 
 @router.post("/lessons/{identifier}/steps")
-def step(
-    identifier: UUID, payload: StepInput, user=Depends(student_user), conn=Depends(connection)
-):
+def step(identifier: UUID, payload: StepInput, user=Depends(student_user), conn=database):
     return learning.complete_step(conn, user, identifier, payload.step_id)
 
 
 @router.post("/lessons/{identifier}/attempts")
-def attempt(
-    identifier: UUID, payload: AttemptInput, user=Depends(student_user), conn=Depends(connection)
-):
+def attempt(identifier: UUID, payload: AttemptInput, user=Depends(student_user), conn=database):
     if _throttle("academy-attempt:" + str(user["id"]), 60):
         raise HTTPException(429, "Em nghỉ một chút rồi thử tiếp nhé", headers={"Retry-After": "60"})
     result = learning.attempt(conn, user, identifier, payload)
@@ -212,7 +207,7 @@ def attempt(
 
 
 @router.get("/portfolio")
-def portfolio(user=Depends(student_user), conn=Depends(connection)):
+def portfolio(user=Depends(student_user), conn=database):
     badges, earned = (db.table(n) for n in ("ai_badges", "ai_student_badges"))
     return {
         "badges": [
@@ -243,7 +238,7 @@ def portfolio(user=Depends(student_user), conn=Depends(connection)):
 
 
 @router.get("/projects")
-def projects(user=Depends(student_user), conn=Depends(connection)):
+def projects(user=Depends(student_user), conn=database):
     student_feature(conn, user, "academy.studio")
     profile = db.table("student_profiles")
     grade = conn.execute(
@@ -258,7 +253,7 @@ def projects(user=Depends(student_user), conn=Depends(connection)):
 
 
 @router.post("/projects/submissions")
-def submission(payload: SubmissionInput, user=Depends(student_user), conn=Depends(connection)):
+def submission(payload: SubmissionInput, user=Depends(student_user), conn=database):
     student_feature(conn, user, "academy.studio")
     if not tutor.flags(conn).get("student_creative_enabled"):
         raise HTTPException(403, "Xưởng sáng tạo đang tạm đóng")
@@ -355,7 +350,7 @@ def submission(payload: SubmissionInput, user=Depends(student_user), conn=Depend
 
 
 @router.post("/tutor")
-def ai_tutor(payload: TutorInput, user=Depends(student_user), conn=Depends(connection)):
+def ai_tutor(payload: TutorInput, user=Depends(student_user), conn=database):
     return tutor.respond(conn, user, payload)
 
 
@@ -364,7 +359,7 @@ def media(
     page: int = Query(1, ge=1),
     category: str = "",
     user=Depends(current_user),
-    conn=Depends(connection),
+    conn=database,
 ):
     table = db.table("ai_media_assets")
     query = select(table).where(table.c.status == "approved")
@@ -384,7 +379,7 @@ def media_file(
     request: Request,
     variant: str = Query("original", pattern="^(original|responsive|thumbnail)$"),
     user=Depends(current_user),
-    conn=Depends(connection),
+    conn=database,
 ):
     media, variants = (db.table(n) for n in ("ai_media_assets", "ai_media_variants"))
     row = (
@@ -433,7 +428,7 @@ class LabInput(StrictModel):
 
 
 @router.get("/lab")
-def lab(user=Depends(student_user), conn=Depends(connection)):
+def lab(user=Depends(student_user), conn=database):
     student_feature(conn, user, "academy.lab")
     from app.academy.games import DATASET
 
@@ -445,7 +440,7 @@ def lab(user=Depends(student_user), conn=Depends(connection)):
 
 
 @router.post("/lab")
-def lab_try(payload: LabInput, user=Depends(student_user), conn=Depends(connection)):
+def lab_try(payload: LabInput, user=Depends(student_user), conn=database):
     student_feature(conn, user, "academy.lab")
     from app.academy.games import predict
 
@@ -464,7 +459,7 @@ def lab_try(payload: LabInput, user=Depends(student_user), conn=Depends(connecti
 
 
 @router.get("/classes")
-def own_classes(user=Depends(current_user), conn=Depends(connection)):
+def own_classes(user=Depends(current_user), conn=database):
     classes, enrollments = (db.table(n) for n in ("classes", "class_enrollments"))
     query = select(classes).where(classes.c.is_active.is_(True))
     if "admin" not in user["roles"]:
@@ -479,7 +474,7 @@ def own_classes(user=Depends(current_user), conn=Depends(connection)):
 
 
 @router.post("/teacher/assignments")
-def assign(payload: AssignmentInput, user=Depends(current_user), conn=Depends(connection)):
+def assign(payload: AssignmentInput, user=Depends(current_user), conn=database):
     from app.classroom.service import class_scope, validate_student
 
     classroom = class_scope(conn, user, payload.class_id, staff_only=True, lock=True)
@@ -532,7 +527,7 @@ def assign(payload: AssignmentInput, user=Depends(current_user), conn=Depends(co
 
 
 @router.get("/teacher/reports")
-def reports(class_id: UUID, user=Depends(current_user), conn=Depends(connection)):
+def reports(class_id: UUID, user=Depends(current_user), conn=database):
     cms.class_access(conn, user, class_id)
     enrollments, users, progress, submissions = (
         db.table(n) for n in ("class_enrollments", "users", "ai_progress", "ai_project_submissions")
@@ -570,7 +565,7 @@ def reports(class_id: UUID, user=Depends(current_user), conn=Depends(connection)
 
 @router.post("/teacher/submissions/{identifier}/review")
 def review_submission(
-    identifier: UUID, payload: ReviewInput, user=Depends(current_user), conn=Depends(connection)
+    identifier: UUID, payload: ReviewInput, user=Depends(current_user), conn=database
 ):
     if moderation_reason(payload.feedback):
         raise HTTPException(422, "Nhận xét cần dùng nội dung học, không có thông tin riêng")
@@ -578,7 +573,7 @@ def review_submission(
 
 
 @router.get("/guardian")
-def guardian(user=Depends(current_user), conn=Depends(connection)):
+def guardian(user=Depends(current_user), conn=database):
     if "guardian" not in user["roles"]:
         raise HTTPException(403, "Trang dành cho phụ huynh đã liên kết")
     links, users, profiles = (
@@ -606,7 +601,7 @@ class ConsentInput(StrictModel):
 
 
 @router.post("/guardian/consent")
-def record_consent(payload: ConsentInput, user=Depends(current_user), conn=Depends(connection)):
+def record_consent(payload: ConsentInput, user=Depends(current_user), conn=database):
     links = db.table("guardian_students")
     if (
         "guardian" not in user["roles"]
@@ -641,7 +636,7 @@ def record_consent(payload: ConsentInput, user=Depends(current_user), conn=Depen
 
 
 @router.get("/admin/overview")
-def overview(user=Depends(current_user), conn=Depends(connection)):
+def overview(user=Depends(current_user), conn=database):
     from app.academy.quality import report
 
     learning.staff(conn, user, "read")
@@ -676,9 +671,7 @@ def overview(user=Depends(current_user), conn=Depends(connection)):
 
 
 @router.get("/admin/lessons")
-def admin_lessons(
-    grade: int = Query(4, ge=1, le=5), user=Depends(current_user), conn=Depends(connection)
-):
+def admin_lessons(grade: int = Query(4, ge=1, le=5), user=Depends(current_user), conn=database):
     learning.staff(conn, user, "read")
     lessons, units = (db.table(n) for n in ("ai_lessons", "ai_units"))
     return [
@@ -693,7 +686,7 @@ def admin_lessons(
 
 
 @router.get("/admin/lessons/{identifier}")
-def draft(identifier: UUID, user=Depends(current_user), conn=Depends(connection)):
+def draft(identifier: UUID, user=Depends(current_user), conn=database):
     learning.staff(conn, user, "read")
     row = learning.lesson_row(conn, identifier)
     versions = db.table("ai_lesson_versions")
@@ -711,14 +704,12 @@ def draft(identifier: UUID, user=Depends(current_user), conn=Depends(connection)
 
 
 @router.post("/admin/lessons")
-def create(payload: DraftInput, user=Depends(current_user), conn=Depends(connection)):
+def create(payload: DraftInput, user=Depends(current_user), conn=database):
     return cms.save_draft(conn, user, payload)
 
 
 @router.put("/admin/lessons/{identifier}")
-def edit(
-    identifier: UUID, payload: DraftInput, user=Depends(current_user), conn=Depends(connection)
-):
+def edit(identifier: UUID, payload: DraftInput, user=Depends(current_user), conn=database):
     return cms.save_draft(conn, user, payload, identifier)
 
 
@@ -728,7 +719,7 @@ def workflow(
     action: str,
     payload: RevisionInput,
     user=Depends(current_user),
-    conn=Depends(connection),
+    conn=database,
 ):
     if action not in {"submit", "review", "publish", "archive"}:
         raise HTTPException(404, "Không tìm thấy thao tác")
@@ -743,7 +734,7 @@ class UploadInput(StrictModel):
 
 
 @router.post("/admin/media")
-def upload(payload: UploadInput, user=Depends(current_user), conn=Depends(connection)):
+def upload(payload: UploadInput, user=Depends(current_user), conn=database):
     learning.staff(conn, user)
     if _throttle("academy-upload:" + str(user["id"]), 10):
         raise HTTPException(429, "Đợi một phút trước khi tải thêm ảnh")
@@ -753,7 +744,7 @@ def upload(payload: UploadInput, user=Depends(current_user), conn=Depends(connec
 
 
 @router.get("/admin/media")
-def admin_media(page: int = Query(1, ge=1), user=Depends(current_user), conn=Depends(connection)):
+def admin_media(page: int = Query(1, ge=1), user=Depends(current_user), conn=database):
     learning.staff(conn, user, "read")
     table = db.table("ai_media_assets")
     return [
@@ -772,9 +763,7 @@ class MediaReview(StrictModel):
 
 
 @router.post("/admin/media/{identifier}/review")
-def media_review(
-    identifier: UUID, payload: MediaReview, user=Depends(current_user), conn=Depends(connection)
-):
+def media_review(identifier: UUID, payload: MediaReview, user=Depends(current_user), conn=database):
     learning.staff(conn, user, "reviewer")
     table = db.table("ai_media_assets")
     if not conn.execute(
@@ -818,7 +807,7 @@ class UnitInput(StrictModel):
 
 
 @router.post("/admin/units")
-def new_unit(payload: UnitInput, user=Depends(current_user), conn=Depends(connection)):
+def new_unit(payload: UnitInput, user=Depends(current_user), conn=database):
     learning.staff(conn, user)
     grades, units = db.table("ai_grades"), db.table("ai_units")
     conn.execute(select(grades.c.grade).where(grades.c.grade == payload.grade).with_for_update())
@@ -849,7 +838,7 @@ def new_unit(payload: UnitInput, user=Depends(current_user), conn=Depends(connec
 
 
 @router.get("/admin/moderation")
-def moderation(user=Depends(admin_user), conn=Depends(connection)):
+def moderation(user=Depends(admin_user), conn=database):
     table = db.table("ai_moderation_reviews")
     return [
         dict(r)
@@ -860,7 +849,7 @@ def moderation(user=Depends(admin_user), conn=Depends(connection)):
 
 
 @router.post("/admin/moderation/{identifier}/review")
-def moderate(identifier: UUID, user=Depends(admin_user), conn=Depends(connection)):
+def moderate(identifier: UUID, user=Depends(admin_user), conn=database):
     table = db.table("ai_moderation_reviews")
     if not conn.execute(
         update(table)
@@ -881,7 +870,7 @@ class PolicyInput(AdminAction):
 
 
 @router.post("/admin/policy")
-def policy(payload: PolicyInput, user=Depends(admin_user), conn=Depends(connection)):
+def policy(payload: PolicyInput, user=Depends(admin_user), conn=database):
     from app.services.accounts import authenticate_actor
 
     authenticate_actor(conn, user, payload.actor_password)
@@ -936,7 +925,7 @@ class ClassInput(AdminAction):
 
 
 @router.post("/admin/classes")
-def class_create(payload: ClassInput, user=Depends(admin_user), conn=Depends(connection)):
+def class_create(payload: ClassInput, user=Depends(admin_user), conn=database):
     from app.services.accounts import authenticate_actor
 
     authenticate_actor(conn, user, payload.actor_password)
@@ -983,9 +972,7 @@ class EnrollInput(AdminAction):
 
 
 @router.post("/admin/classes/{identifier}/enroll")
-def enroll(
-    identifier: UUID, payload: EnrollInput, user=Depends(admin_user), conn=Depends(connection)
-):
+def enroll(identifier: UUID, payload: EnrollInput, user=Depends(admin_user), conn=database):
     from app.services.accounts import authenticate_actor
 
     authenticate_actor(conn, user, payload.actor_password)
@@ -1021,7 +1008,7 @@ class RoleInput(AdminAction):
 
 
 @router.post("/admin/staff")
-def staff_role(payload: RoleInput, user=Depends(admin_user), conn=Depends(connection)):
+def staff_role(payload: RoleInput, user=Depends(admin_user), conn=database):
     from app.services.accounts import authenticate_actor
 
     authenticate_actor(conn, user, payload.actor_password)
@@ -1066,7 +1053,7 @@ class JobInput(StrictModel):
 
 
 @router.get("/admin/jobs")
-def jobs(user=Depends(current_user), conn=Depends(connection)):
+def jobs(user=Depends(current_user), conn=database):
     learning.staff(conn, user, "read")
     table = db.table("ai_generation_jobs")
     return [
@@ -1078,7 +1065,7 @@ def jobs(user=Depends(current_user), conn=Depends(connection)):
 
 
 @router.post("/admin/jobs")
-def job_create(payload: JobInput, user=Depends(current_user), conn=Depends(connection)):
+def job_create(payload: JobInput, user=Depends(current_user), conn=database):
     learning.staff(conn, user)
     result = conn.execute(
         db.table("ai_generation_jobs")
@@ -1095,7 +1082,7 @@ def job_create(payload: JobInput, user=Depends(current_user), conn=Depends(conne
 
 
 @router.post("/admin/jobs/{identifier}/run")
-def run_job(identifier: UUID, user=Depends(current_user), conn=Depends(connection)):
+def run_job(identifier: UUID, user=Depends(current_user), conn=database):
     learning.staff(conn, user)
     if _throttle("academy-svg-job:" + str(user["id"]), 10):
         raise HTTPException(429, "Đợi một phút trước khi tạo thêm hình")

@@ -50,11 +50,14 @@ def main():
             "E2E_LESSON_USERNAME",
             "E2E_LESSON_MOBILE_USERNAME",
             "E2E_AUTHORING_STUDENT_USERNAME",
+            "E2E_READING_DESKTOP_USERNAME",
+            "E2E_READING_MOBILE_USERNAME",
+            "E2E_READING_OTHER_USERNAME",
         ]:
             user(key)
         for key in ["E2E_GRADE3_USERNAME", "E2E_GRADE3_MOBILE_USERNAME"]:
             user(key, grade=3)
-        for grade in (1, 2):
+        for grade in (1, 2, 5):
             for suffix in ("DESKTOP", "MOBILE"):
                 user(f"E2E_GRADE{grade}_{suffix}_USERNAME", grade=grade)
         teacher = user("E2E_ACADEMY_TEACHER_USERNAME", "teacher")

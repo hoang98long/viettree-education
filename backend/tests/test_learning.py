@@ -152,6 +152,8 @@ def test_grade_unavailable_subject_and_owner_checks(logged_student, conn):
     )
     assert client.get(f"{BASE}/students/me/learning-plans").json() == []
     assert client.post(f"{BASE}/lessons/{first_lesson}/complete").status_code == 403
+    topics = db.table("topics")
+    conn.execute(topics.update().where(topics.c.grade == 5).values(is_active=False))
     assert (
         client.post(f"{BASE}/students/me/learning-plans", json={"subject_code": "MATH"}).status_code
         == 409

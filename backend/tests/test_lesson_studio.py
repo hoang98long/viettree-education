@@ -5,9 +5,9 @@ import pytest
 from pydantic import ValidationError
 from sqlalchemy import select
 
+from app.curriculum.lesson_content import enrich
 from app.db import db
-from app.lesson_schemas import Illustration, LessonContent
-from app.lesson_support import enrich
+from app.schemas.lessons import Illustration, LessonContent
 from tests.test_authoring import question_payload, restore_student
 from tests.test_memberships import admin_login, identities, membership
 
@@ -252,8 +252,8 @@ def test_concurrent_saves_cannot_overwrite_each_other(test_engine):
 
     from fastapi import HTTPException
 
-    from app.lesson_schemas import LessonInput
-    from app.seed import seed
+    from app.fixtures.development import seed
+    from app.schemas.lessons import LessonInput
     from app.services import lesson_studio
 
     with test_engine.begin() as connection:

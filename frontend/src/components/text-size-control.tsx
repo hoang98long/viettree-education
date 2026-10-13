@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { useAccessibility } from "./shell";
 import type { TextSize } from "@/lib/types";
+import { deviceLabels } from "@/lib/reading-preferences";
 
 export function TextSizeControl() {
-  const { textSize, saveTextSize } = useAccessibility();
+  const { textSize, deviceType, saveTextSize } = useAccessibility();
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -22,15 +23,26 @@ export function TextSizeControl() {
     }
   }
   return (
-    <section className="panel reading-settings">
-      <h2>Chữ dễ đọc cho em</h2>
+    <section
+      id="reading-settings"
+      className="panel reading-settings"
+      aria-labelledby="reading-settings-title"
+    >
+      <h2 id="reading-settings-title">Chữ dễ đọc cho em</h2>
       <p>
-        Chọn cỡ chữ em thấy thoải mái. Lần sau đăng nhập, em vẫn dùng cỡ chữ
-        này.
+        Chọn cỡ chữ em thấy thoải mái. Chữ gọn hơn giúp em học trên điện thoại.
+        Lựa chọn được lưu riêng cho điện thoại, máy tính bảng và máy tính của
+        em.
+      </p>
+      <p className="reading-device">
+        {deviceType
+          ? `Đang chọn cho: ${deviceLabels[deviceType]}.`
+          : "Đang nhận diện thiết bị…"}
       </p>
       <div className="text-size-choices" role="group" aria-label="Cỡ chữ">
         {(
           [
+            ["compact", "Chữ gọn hơn"],
             ["comfortable", "Chữ vừa đủ lớn"],
             ["large", "Chữ lớn hơn"],
           ] as const
@@ -39,7 +51,7 @@ export function TextSizeControl() {
             key={size}
             className={`button ${textSize === size ? "" : "secondary"}`}
             aria-pressed={textSize === size}
-            disabled={busy}
+            disabled={busy || !deviceType}
             onClick={() => choose(size)}
           >
             {label}

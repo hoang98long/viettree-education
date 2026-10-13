@@ -306,8 +306,8 @@ def test_bulk_assign_is_atomic_and_repeated_requests_reuse_task(logged_student, 
 
 
 def test_expanded_content_grading_and_demo_seed_idempotency(conn):
-    from app.demo_learners import seed_demo_learners
-    from app.expanded_curriculum import EXPANDED
+    from app.curriculum.grades.grade_04.standard import EXPANDED
+    from app.fixtures.learners import seed_demo_learners
     from app.services.grading import grade_answer, validate_answer
     from tests.test_grading import correct_answer
 

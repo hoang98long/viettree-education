@@ -1,66 +1,123 @@
 # Kiến trúc VietTree Education
 
-Nguồn sự thật: `database/viettree_education_schema.sql`, 34 bảng gốc; database
-`viettree-education`. Giữ nguyên SQL gốc. Backend dùng SQLAlchemy 2 Core với reflection
-để ánh xạ **đúng toàn bộ cột, kiểu, khóa, CHECK và index** của database đã import;
-không gọi `create_all`. `/ready` và `python -m app.cli check-schema` kiểm tra bảng/cột.
+FastAPI + Next.js App Router + PostgreSQL, tổ chức theo module trong một ứng dụng.
+API, hợp đồng dữ liệu, nghiệp vụ, học liệu và tài khoản demo có trách nhiệm riêng.
 
-| Nhóm | Bảng gốc |
-| --- | --- |
-| Danh tính | users, user_roles, schools, student_profiles, guardian_students, classes, class_enrollments |
-| Chương trình | subjects, topics, lessons, skills, skill_prerequisites, lesson_skills |
-| Ngân hàng | media_assets, questions, question_versions, question_skills, lesson_questions |
-| Làm bài | assessments, assessment_items, student_assignments, attempts, attempt_answers |
-| Cá nhân hóa | student_skill_mastery, student_lesson_progress, student_learning_plans, learning_plan_items, learning_plan_history, student_recommendations, learning_events |
-| Thống kê/quyền riêng tư | question_statistics, student_daily_statistics, audit_logs, privacy_consents |
+```text
+backend/app/
+├── main.py, cli.py, db.py       # entry point, vận hành và kết nối/schema
+├── api/router.py               # đăng ký router tại một nơi
+├── api/routes/                 # auth, catalog, learning, assessments, attempts,
+│                               # administration, accounts, memberships,
+│                               # authoring, lesson_studio, curriculum, vip, operations
+├── schemas/                    # hợp đồng request/response theo chức năng
+├── services/                   # quy tắc/giao dịch nghiệp vụ LMS
+├── curriculum/
+│   ├── builders.py             # cấu trúc câu hỏi/bài học dùng chung
+│   ├── registry.py             # chọn bộ, inventory và map theo khối
+│   ├── seeding.py              # chỉ nạp học liệu, không tạo tài khoản
+│   ├── lesson_content.py       # chuẩn hóa nội dung và phân bổ gợi ý khi đọc
+│   └── grades/
+│       ├── early_primary/      # lớp 1–2: pack, math, vietnamese, english, builders
+│       ├── grade_03/           # lớp 3: pack, math, vietnamese, english, builders
+│       ├── grade_04/           # foundation, standard, advanced, vip, thinking, map
+│       └── grade_05/           # pack, builders, math, vietnamese, readings, english
+├── fixtures/                   # base_accounts, learners, development; chỉ development
+├── core/                       # config, security, dependencies, seed_support
+├── personalization/            # năng lực/kế hoạch từ kết quả thật
+├── academy/                    # đào tạo AI, nội dung/media riêng
+└── classroom/                  # lớp, giao bài, tuyên dương, giá VIP
 
-UUID là khóa định danh. Nội dung/đáp án là JSONB object, điểm là NUMERIC, thời gian
-TIMESTAMPTZ. Lớp nằm trong `grade/current_grade` (1..5), không thêm bảng grades.
-`topics` unique `(subject_id, grade, code)`; `lessons` unique `(topic_id, code)`.
-`question_versions` unique `(question_id, version)`, chỉ một published/question.
-`assessment_items` giữ nguyên EXACT version; không sửa nội dung published khi seed lại.
+frontend/src/
+├── app/                        # URL/layout, ghép màn hình
+├── features/
+│   ├── student/                # dashboard, catalog, lesson, assessment, attempt,
+│   │                           # result, history, progress, profile, learning-plan, lesson-library
+│   ├── admin/                  # dashboard, students, questions, curriculum, system-status
+│   ├── accounts/               # catalog, editor, form, security-action, security-page
+│   ├── authoring/              # question-editor, assessment-editor, assignments, shared
+│   ├── lessons/                # catalog, editor, content-fields, illustration-fields
+│   ├── classrooms/             # catalog, roster, assignments, recognition, student
+│   ├── curriculum/             # coverage, thinking, types, constants
+│   ├── membership/             # pages, content-access, pricing
+│   ├── vip/                    # workspace, sổ lỗi và báo cáo
+│   ├── guardian/               # dashboard phụ huynh
+│   └── academy/                # player, editor, lab, staff, quản trị AI
+├── components/                 # thành phần dùng lại giữa các module
+├── hooks/                      # hooks dùng chung
+└── lib/                        # API client, session, types, CSV
+```
 
-Các FK ghép phải giữ: attempts `(assignment_id, student_id, assessment_id)` →
-student_assignments `(id, student_id, assessment_id)`; attempt_answers
-`(attempt_id, assessment_id)` → attempts và `(assessment_item_id, assessment_id,
-question_version_id)` → assessment_items. API không nhận các identity này từ đáp án client.
-`student_recommendations` phải có chính xác một question_version_id hoặc assessment_id.
+Python dùng `snake_case`, package theo chức năng; không lặp tên khối trong mọi
+file của cùng thư mục. React dùng file `kebab-case`, component `PascalCase`.
+`types` chứa kiểu dữ liệu; `constants` chứa nhãn/cấu hình hiển thị. Import trực
+tiếp module cần dùng, không thêm file tên cũ chỉ để chuyển tiếp. Không tạo một
+`utils` hay một file chứa mọi trang mà không có trách nhiệm rõ ràng.
 
-Mọi trạng thái dùng đúng CHECK gốc: phiên `in_progress/submitted/graded/abandoned`,
-bài/câu `draft/published/archived`, giao bài `assigned/in_progress/completed/cancelled/expired`,
-nguồn giao `self/system/teacher/guardian`, đáp án `pending/graded/needs_review`.
+Lớp 1–2 dùng chung factory vì cùng cấu trúc bài ngắn nhưng khác ngữ liệu theo
+`grade`. Lớp 4 giữ các đợt nội dung theo gói để bảo toàn mã/UUID/phiên bản đang
+gắn với lịch sử. Registry giữ cả số kiểm kê riêng theo pack (lớp 5 có 9 chủ đề Toán).
+Registry gom lựa chọn này để API và CLI không tự viết nhiều
+nhánh. Học liệu/builders không import router, fixture, DB hoặc nghiệp vụ runtime;
+runtime không tạo tài khoản mẫu. Có test bảo vệ ranh giới học liệu.
 
-Monolith FastAPI + Next.js App Router. Browser gọi `/api/v1` cùng origin, Next.js
-proxy đến `INTERNAL_API_URL`; container backend dùng host.docker.internal để nối DB.
-Cookie HttpOnly chứa phiên opaque, chỉ lưu SHA-256 token tại DB; CSRF token riêng,
-SameSite=Lax, kiểm tra Origin và header CSRF cho thao tác ghi. Migration Alembic bổ
-sung auth_sessions và auth_login_limits; baseline không import hay thay đổi bảng gốc.
+```mermaid
+flowchart LR
+  UI[Next.js: app → features] --> HTTP[api/router → routes]
+  HTTP --> Schemas[schemas]
+  HTTP --> Services[services / academy / classroom]
+  Services --> DB[(PostgreSQL)]
+  CLI[cli] --> Seed[curriculum/seeding]
+  Seed --> Packs[registry → grades]
+  Seed --> DB
+  Dev[fixtures development] --> Seed
+```
 
-Migration 0003_memberships bổ sung membership_plans/membership_plan_features,
-student_memberships/membership_operations, content_access_policies và
-attempt_access_grants. Gói độc lập user_roles. access.py tập trung quyết định quyền;
-membership_api.py phục vụ quản lý gói, giới thiệu và chính sách nội dung. Không có
-cache quyền ở session; thời hạn được tính lại mỗi request.
+`main.py` và `app.cli` vẫn là entry point cũ: lệnh Uvicorn, Docker và Alembic
+không đổi. Hai OpenAPI component ID nhận tên module mới; URL, request/response,
+validation giữ nguyên. Nếu sinh client từ OpenAPI, sinh lại kiểu dữ liệu.
+Source hashes xác nhận toàn bộ ngữ liệu không đổi sau refactor.
 
-Đổi gói khóa theo actor/Idempotency-Key trước, rồi student_profiles; ghi membership,
-operation và audit cùng transaction. Bắt đầu/lưu/nộp bài cùng khóa học sinh để tuần
-tự hóa với thu hồi. Plan_v2 dùng bằng chứng mastery có sẵn, không thêm điểm giả.
+Đợt lớp 5 bổ sung pack `grade_05` và endpoint thư viện bài học, cùng năm kiểu
+minh họa trong schema JSON. API mới chỉ trả metadata và tiến độ của học sinh
+hiện tại; quyền nội dung vẫn kiểm tra tại backend. Xem [chi tiết lớp 5](grade5-curriculum.md).
 
-Khóa hàng student_profiles tuần tự hóa bắt đầu/nộp bài và đề xuất theo học sinh;
-khóa attempts bảo đảm nộp lại trả kết quả cũ. Điểm, mastery, sự kiện và tiến độ ghi
-trong một transaction. Chỉ trả whitelist nội dung public trước nộp. Admin đọc đáp án
-qua API riêng. Free text không tự chấm. Seed không tạo lịch sử/điểm giả.
+SQL gốc `database/viettree_education_schema.sql` có 34 bảng, giữ nguyên; head
+Alembic `0011_classes_vip_training` bổ sung auth/gói/nháp/AI/lớp/thành tích.
+SQLAlchemy Core reflection bảng thật, không `create_all`; `/ready`,
+`check-schema`, `check-system` kiểm tra schema/quyền/đề. Không reset/DROP/TRUNCATE.
+UUID/codes và các FK ghép của attempt/answer giữ nguyên. Đề ghim đúng phiên bản
+câu; seed không sửa published/đề cũ/tài khoản/lịch sử. Giao dịch ghi điểm,
+mastery, sự kiện cùng transaction; free text không tự chấm. Quyền VIP/gợi ý lọc
+tại API và kiểm tra live sau thu hồi. Phiên opaque HttpOnly lưu hash tại DB,
+CSRF/Origin cho thao tác ghi; Next proxy `/api/v1` cùng origin.
 
-Checkpoint: schema → cấu hình/auth → seed → API bài làm → rule_v1 → UI → kiểm thử
-→ tài liệu bàn giao. Tiến độ và chứng cứ cuối cùng ở IMPLEMENTATION_STATUS.md.
+Dependency database dùng chung ở `core/dependencies.py` với
+`Depends(connection, scope="function")`: commit hoặc rollback trước khi gửi
+phản hồi, theo [cơ chế scope của FastAPI](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/#early-exit-and-scope).
+Tránh phản hồi đăng nhập/duyệt/nộp thành công trong khi request kế tiếp chưa
+thấy dữ liệu. Không dùng connection này cho việc nền sau khi trả phản hồi.
+FastAPI tối thiểu 0.121; lock hiện dùng 0.143.0. Có kiểm thử ASGI đọc qua
+connection PostgreSQL độc lập ngay trước khi gửi HTTP, cùng trường hợp rollback.
 
-## Biên soạn và giao bài
+## Cách mở rộng
 
-`authoring_api.py` dùng `authoring_schemas.py` và `services/authoring.py`; thao tác
-ghi cùng transaction audit. Migration 0004 bổ sung policy từng phiên bản câu;
-0005 thêm revision tăng đơn điệu vào câu/đề để phát hiện nháp bị sửa đồng thời.
-Khóa questions trước question_versions khi biên soạn; khóa student_profiles theo
-thứ tự ID rồi assessment ở chế độ chia sẻ khi giao/bắt đầu. Archive đề khóa đề
-độc quyền và kiểm tra không còn lượt đang làm. Nội dung published được giữ nguyên;
-phiên bản cũ đã published vẫn dùng trong đề cũ sau khi archive. UI nằm ở
-`features/authoring.tsx` và `features/practice-library.tsx`.
+1. Khối mới đặt trong `curriculum/grades/grade_XX`, dùng builders chung, mã
+   ổn định/ngữ liệu đúng tuổi. Đăng ký trong registry, khai báo nguồn/map và
+   inventory riêng nếu quy mô khác. AI Academy có nội dung riêng; mẫu AI lớp
+   5 không phải bộ ba môn LMS lớp 5.
+2. `python -m app.cli curriculum-inventory --grade 1` kiểm kê source không cần
+   DB; `seed-grade-content --grade 1` nạp đầy đủ một khối; `verify-seed --grade 1`
+   kiểm kho DB. Source khác tổng kho có bài giáo viên tự tạo.
+3. Schema cụ thể → service/giao dịch → route → đăng ký router. UI đặt trong
+   feature tương ứng, route chỉ ghép trang. Chia các phần form có trách nhiệm
+   riêng, không tách file chỉ để giảm số dòng.
+4. Kiểm thử quyền, validation, đồng thời, giữ lịch sử trên DB test riêng; chạy
+   luồng trình duyệt khi đổi UI. Production backup trước migration/nạp nội dung.
+
+Admin **Chương trình → Theo dõi học liệu → Xuất học liệu CSV** tải đúng bộ lọc
+khối/môn/mạch thiếu Free; có số bài Free/VIP, câu, đề và nguồn để rà soát. CSV
+UTF-8 BOM, escape dấu nháy/xuống dòng và chặn công thức từ nội dung văn bản.
+
+Xem [local](run-local.md), [VPS](deploy-vps.md), [demo theo khối](demo-accounts.md),
+[kiểm chứng](IMPLEMENTATION_STATUS.md).

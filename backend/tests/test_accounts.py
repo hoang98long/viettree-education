@@ -6,9 +6,9 @@ import pytest
 from pydantic import ValidationError
 from sqlalchemy import func, select
 
-from app.account_schemas import AccountCreate
 from app.core.security import digest, hasher, now
 from app.db import db
+from app.schemas.accounts import AccountCreate
 
 ADMIN_PASSWORD = "Quan tri vien rieng 2026"
 TEMP = "Mat khau tam lop bon 2026"
@@ -127,9 +127,11 @@ def test_normalize_contact_and_roles():
 
 
 @pytest.mark.integration
-def test_create_search_filters_and_no_secret_exposure(manager, conn):
+@pytest.mark.parametrize("text_size", ["large", "compact"])
+def test_create_search_filters_and_no_secret_exposure(manager, conn, text_size):
     client, _ = manager
-    account = create(client, email=" Parent@Example.COM ", text_size="large")
+    account = create(client, email=" Parent@Example.COM ", text_size=text_size)
+    assert account["text_size"] == text_size
     user_id = UUID(account["id"])
     assert account["email"] == "parent@example.com"
     assert account["roles"] == ["student"] and account["must_change_password"]
@@ -143,7 +145,7 @@ def test_create_search_filters_and_no_secret_exposure(manager, conn):
         .one()
     )
     assert (
-        profile["current_grade"] == 4 and profile["accessibility_options"]["text_size"] == "large"
+        profile["current_grade"] == 4 and profile["accessibility_options"]["text_size"] == text_size
     )
     for query in (
         f"search={account['username']}",
@@ -246,7 +248,13 @@ def test_edit_preserves_profiles_history_and_stale_revision(manager, conn):
     conn.execute(
         profiles.update()
         .where(profiles.c.student_id == uid)
-        .values(learning_preferences={"keep": True}, accessibility_options={"other": True})
+        .values(
+            learning_preferences={"keep": True},
+            accessibility_options={
+                "other": True,
+                "text_size_by_device": {"phone": "compact", "tablet": "large"},
+            },
+        )
     )
     result = client.patch(
         f"/api/v1/admin/accounts/{uid}",
@@ -260,7 +268,11 @@ def test_edit_preserves_profiles_history_and_stale_revision(manager, conn):
     profile = conn.execute(select(profiles).where(profiles.c.student_id == uid)).mappings().one()
     assert profile["learning_preferences"] == {"keep": True} and profile[
         "accessibility_options"
-    ] == {"other": True, "text_size": "large"}
+    ] == {
+        "other": True,
+        "text_size": "large",
+        "text_size_by_device": {"phone": "compact", "tablet": "large"},
+    }
     updated = result.json()
     result = client.patch(
         f"/api/v1/admin/accounts/{uid}",

@@ -3,9 +3,9 @@
 from pydantic import Field, field_validator
 from sqlalchemy import func, select, text
 
-from app.account_schemas import AccountFields, Password, Role, password_policy
 from app.core.security import hasher, now
 from app.db import db
+from app.schemas.accounts import AccountFields, Password, Role, password_policy
 
 
 class BootstrapAdmin(AccountFields):

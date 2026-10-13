@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, homeFor } from "@/lib/session";
+import { useReadingPreferences } from "@/hooks/use-reading-preferences";
 import { ErrorState, Loading, Brand } from "@/components/ui";
-import { useMembership, LockedContent } from "../membership";
+import { useMembership, LockedContent } from "@/features/membership/pages";
 
 export function AcademyFeatureGate({
   feature,
@@ -62,6 +63,7 @@ export function AcademyImage({
 }
 export function AcademyLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, error, refresh } = useSession();
+  const { textSize, deviceType } = useReadingPreferences();
   const router = useRouter();
   useEffect(() => {
     if (!loading && !user && !error) router.replace("/login");
@@ -98,7 +100,8 @@ export function AcademyLayout({ children }: { children: React.ReactNode }) {
   return (
     <div
       className="academy-page"
-      data-text-size={user.text_size || "comfortable"}
+      data-text-size={textSize}
+      data-device-type={deviceType}
     >
       <header className="academy-header">
         <Brand href={homeFor(user)} />
@@ -106,6 +109,12 @@ export function AcademyLayout({ children }: { children: React.ReactNode }) {
           AI Academy
         </Link>
         <Link href={homeFor(user)}>Góc học tập</Link>
+        <Link
+          className="reading-settings-link"
+          href="/student/profile#reading-settings"
+        >
+          Cỡ chữ
+        </Link>
       </header>
       <nav aria-label="Điều hướng AI Academy" className="academy-tabs">
         {[

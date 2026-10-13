@@ -3,7 +3,7 @@ import unicodedata
 from fastapi import HTTPException
 from pydantic import ValidationError
 
-from app.schemas import BlankAnswer, ChoiceAnswer, MultipleAnswer, OrderAnswer, TextAnswer
+from app.schemas.attempts import BlankAnswer, ChoiceAnswer, MultipleAnswer, OrderAnswer, TextAnswer
 
 ANSWER_MODELS = {
     "single_choice": ChoiceAnswer,

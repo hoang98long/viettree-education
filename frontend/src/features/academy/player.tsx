@@ -6,7 +6,7 @@ import { Loading, ErrorState } from "@/components/ui";
 import { AcademyImage } from "./shared";
 import { ActivityBoard } from "./activities";
 import type { PlayerData } from "./types";
-import { LockedContent } from "../membership";
+import { LockedContent } from "@/features/membership/pages";
 
 export function LessonPlayer({ id }: { id: string }) {
   const [data, setData] = useState<PlayerData | null>(null);

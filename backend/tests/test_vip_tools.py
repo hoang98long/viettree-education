@@ -5,11 +5,11 @@ import pytest
 from sqlalchemy import func, select
 
 from app.core.security import now
+from app.curriculum.grades.grade_04.vip import VIP_EXTENSION
+from app.curriculum.seeding import seed_advanced_content
 from app.db import db
-from app.seed import seed_advanced_content
 from app.services import attempts as service
 from app.services.grading import grade_answer, validate_answer
-from app.vip_curriculum import VIP_EXTENSION
 from tests.test_grading import correct_answer
 from tests.test_memberships import identities, membership
 

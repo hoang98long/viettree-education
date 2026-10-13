@@ -8,9 +8,9 @@ from sqlalchemy import func, select, text
 from sqlalchemy.dialects.postgresql import insert
 
 from app.core.security import now
+from app.curriculum.lesson_content import enrich
 from app.db import db
-from app.lesson_schemas import LessonInput
-from app.lesson_support import enrich
+from app.schemas.lessons import LessonInput
 from app.services.authoring import audit, scope, validate_stored
 
 

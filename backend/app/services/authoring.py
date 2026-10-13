@@ -7,9 +7,9 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import ValidationError
 from sqlalchemy import func, select, text
 
-from app.authoring_schemas import AssessmentInput, QuestionInput
 from app.core.security import now
 from app.db import db
+from app.schemas.authoring import AssessmentInput, QuestionInput
 from app.services import access
 from app.services.attempts import lock_student, published_assessment
 

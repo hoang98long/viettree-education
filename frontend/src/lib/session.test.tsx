@@ -26,7 +26,15 @@ const student: User = {
 };
 const mockApi = vi.mocked(api);
 function Probe({ name = "one" }: { name?: string }) {
-  const { user, loading, error, refresh, setUser, clear } = useSession();
+  const {
+    user,
+    loading,
+    error,
+    refresh,
+    setUser,
+    updateReadingPreferences,
+    clear,
+  } = useSession();
   return (
     <div>
       <output data-testid={name}>
@@ -39,6 +47,22 @@ function Probe({ name = "one" }: { name?: string }) {
       <button onClick={() => void refresh()}>cached-{name}</button>
       <button onClick={() => void refresh(true)}>force-{name}</button>
       <button onClick={() => setUser(student)}>login-{name}</button>
+      <button onClick={() => setUser({ ...student, id: "student-two" })}>
+        switch-{name}
+      </button>
+      <button
+        onClick={() =>
+          updateReadingPreferences(student.id, {
+            text_size: "comfortable",
+            text_size_by_device: { phone: "compact" },
+          })
+        }
+      >
+        choose-{name}
+      </button>
+      <output data-testid={`preferences-${name}`}>
+        {JSON.stringify(user?.text_size_by_device)}
+      </output>
       <button onClick={clear}>logout-{name}</button>
     </div>
   );
@@ -210,5 +234,87 @@ describe("Phiên dùng chung và cache giao diện", () => {
     expect(homeFor({ roles: ["teacher"] })).toBe("/teacher/dashboard");
     expect(homeFor({ roles: ["guardian"] })).toBe("/guardian/dashboard");
     expect(homeFor({ roles: [] })).toBe("/403");
+  });
+
+  it("cỡ chữ mới cập nhật cache ngay và yêu cầu kiểm tra cũ không ghi đè", async () => {
+    mockApi.mockResolvedValueOnce(student);
+    mount();
+    await waitFor(() =>
+      expect(screen.getByTestId("one")).toHaveTextContent(student.id),
+    );
+    const oldRequest = deferred<User>();
+    mockApi.mockReturnValueOnce(oldRequest.promise);
+    fireEvent.click(screen.getByText("force-one"));
+    fireEvent.click(screen.getByText("choose-one"));
+    await act(async () => {
+      oldRequest.resolve(student);
+    });
+    expect(screen.getByTestId("preferences-one")).toHaveTextContent(
+      '"phone":"compact"',
+    );
+    fireEvent.click(screen.getByText("cached-one"));
+    expect(mockApi).toHaveBeenCalledTimes(2);
+  });
+
+  it.each(["logout-one", "switch-one"])(
+    "lưu cỡ chữ muộn không đổi tài khoản sau %s",
+    async (action) => {
+      mockApi.mockResolvedValueOnce(student);
+      mount();
+      await waitFor(() =>
+        expect(screen.getByTestId("one")).toHaveTextContent(student.id),
+      );
+      fireEvent.click(screen.getByText(action));
+      fireEvent.click(screen.getByText("choose-one"));
+      expect(screen.getByTestId("one")).toHaveTextContent(
+        action === "logout-one" ? "anonymous" : "student-two",
+      );
+      expect(screen.getByTestId("preferences-one")).toBeEmptyDOMElement();
+    },
+  );
+
+  it("đổi cỡ chữ chỉ báo các tab kiểm tra lại, không gửi dữ liệu tài khoản", async () => {
+    const postMessage = vi.fn();
+    let receive!: (event: { data: string }) => void;
+    vi.stubGlobal(
+      "BroadcastChannel",
+      class {
+        postMessage = postMessage;
+        close = vi.fn();
+        set onmessage(value: typeof receive) {
+          receive = value;
+        }
+      },
+    );
+    mockApi.mockResolvedValueOnce(student);
+    mount();
+    await waitFor(() =>
+      expect(screen.getByTestId("one")).toHaveTextContent(student.id),
+    );
+    fireEvent.click(screen.getByText("choose-one"));
+    expect(postMessage).toHaveBeenLastCalledWith("preferences");
+    const updated = {
+      ...student,
+      text_size_by_device: { desktop: "large" as const },
+    };
+    const oldRequest = deferred<User>();
+    mockApi.mockReturnValueOnce(oldRequest.promise);
+    fireEvent.click(screen.getByText("force-one"));
+    mockApi.mockResolvedValueOnce(updated);
+    act(() => {
+      receive({ data: "preferences" });
+    });
+    expect(screen.getByTestId("one")).toHaveTextContent(student.id);
+    await waitFor(() =>
+      expect(screen.getByTestId("preferences-one")).toHaveTextContent(
+        '"desktop":"large"',
+      ),
+    );
+    await act(async () => {
+      oldRequest.resolve(student);
+    });
+    expect(screen.getByTestId("preferences-one")).toHaveTextContent(
+      '"desktop":"large"',
+    );
   });
 });

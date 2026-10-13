@@ -7,13 +7,13 @@ import pytest
 from fastapi import HTTPException, Request, Response
 from sqlalchemy import func, select
 
-from app import api
-from app.account_api import account_row
-from app.account_schemas import AccountReset, AccountUpdate
+from app.api.routes import auth as api
+from app.api.routes.accounts import account_row
 from app.core.security import digest, now
 from app.db import db
-from app.schemas import LoginInput
-from app.seed import seed
+from app.fixtures.development import seed
+from app.schemas.accounts import AccountReset, AccountUpdate
+from app.schemas.auth import LoginInput
 from app.services import accounts
 from tests.test_accounts import ADMIN_PASSWORD, NEW, TEMP, edit_payload, insert_user
 

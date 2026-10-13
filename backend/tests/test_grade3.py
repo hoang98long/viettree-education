@@ -6,12 +6,12 @@ import pytest
 from pydantic import ValidationError
 from sqlalchemy import func, select
 
-from app.authoring_schemas import QuestionInput
 from app.core.security import now
+from app.curriculum.grades.grade_03.pack import ALL, EXPECTED
+from app.curriculum.seeding import seed_grade3_content, verify_seed
 from app.db import db
-from app.grade3_curriculum import ALL, EXPECTED
-from app.lesson_schemas import LessonContent
-from app.seed import seed_grade3_content, verify_seed
+from app.schemas.authoring import QuestionInput
+from app.schemas.lessons import LessonContent
 from app.services.grading import grade_answer, validate_answer
 from tests.test_grading import correct_answer
 from tests.test_memberships import admin_login, identities, membership
@@ -291,7 +291,7 @@ def test_grade3_catalogues_current_grade_and_admin_filters(logged_student, conn)
     client = logged_student
     grade3_student(client, conn)
     available = client.get("/api/v1/grades").json()
-    assert [r["grade"] for r in available if r["status"] == "available"] == [1, 2, 3, 4]
+    assert [r["grade"] for r in available if r["status"] == "available"] == [1, 2, 3, 4, 5]
     assert client.get("/api/v1/admin/curriculum-map?grade=3").status_code == 403
     lessons = db.table("lessons")
     grade4_id = conn.execute(

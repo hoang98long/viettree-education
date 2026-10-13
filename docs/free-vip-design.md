@@ -98,7 +98,7 @@ VIP bắt đầu với 6 bài mới và đề đi kèm, mỗi môn 2 bài, sau k
 | Tiếng Việt | Đọc hiểu suy luận; lựa chọn chi tiết và cách diễn đạt phù hợp     |
 | Tiếng Anh  | Đọc đoạn hội thoại dài hơn; lựa chọn câu theo ngữ cảnh            |
 
-Các chủ đề trên đã có nội dung mẫu trong advanced_curriculum.py, được xuất bản khi
+Các chủ đề trên có nội dung mẫu trong `app/curriculum/grades/grade_04/advanced.py`, được xuất bản khi
 chủ động seed development. Rà soát chương trình/đáp án trước vận hành. Dùng version/câu hỏi mới; không sửa version published
 đang được tham chiếu trong bài làm. Không mở CRUD câu hỏi bị giữ chờ trong prompt gốc.
 

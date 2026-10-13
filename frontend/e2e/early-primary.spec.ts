@@ -116,6 +116,21 @@ for (const grade of [1, 2]) {
       await expect(
         admin.getByRole("heading", { name: /^Theo dõi học liệu lớp/ }),
       ).toHaveCount(1);
+      const pendingDownload = admin.waitForEvent("download");
+      await admin
+        .getByRole("button", { name: "Xuất học liệu CSV", exact: true })
+        .click();
+      const download = await pendingDownload;
+      expect(download.suggestedFilename()).toBe(
+        `viettree-hoc-lieu-lop-${grade}.csv`,
+      );
+      const stream = await download.createReadStream();
+      const chunks: Buffer[] = [];
+      for await (const chunk of stream!) chunks.push(chunk);
+      const csv = Buffer.concat(chunks).toString("utf8");
+      expect(csv.startsWith("\uFEFF")).toBe(true);
+      expect(csv).toContain(`VT${grade}-MATH-numbers`);
+      expect(csv.split("\r\n").filter(Boolean)).toHaveLength(22);
       const map = await (
         await admin.request.get(`/api/v1/admin/curriculum-map?grade=${grade}`)
       ).json();

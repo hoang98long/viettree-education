@@ -8,8 +8,8 @@ from fastapi import HTTPException
 from sqlalchemy import func, select
 
 from app.db import db
-from app.schemas import MembershipGrantInput, MembershipRevokeInput
-from app.seed import seed
+from app.fixtures.development import seed
+from app.schemas.memberships import MembershipGrantInput, MembershipRevokeInput
 from app.services.memberships import change_membership
 from tests.test_concurrency import create_student
 

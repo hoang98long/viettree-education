@@ -8,7 +8,7 @@ from app.academy.media import uid
 from app.classroom.recognition import aggregate
 from app.core.config import settings
 from app.db import db
-from app.schemas import MembershipGrantInput, MembershipRevokeInput
+from app.schemas.memberships import MembershipGrantInput, MembershipRevokeInput
 from app.services.memberships import change_membership
 from tests.test_academy import insert_user, login
 

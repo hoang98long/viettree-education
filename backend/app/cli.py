@@ -8,9 +8,10 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.core.config import ROOT
+from app.curriculum.seeding import verify_seed
 from app.db import SchemaNotReady, db, engine
+from app.fixtures.development import seed
 from app.personalization.engine import rebuild_statistics, rebuild_student
-from app.seed import seed, verify_seed
 
 
 def main():
@@ -32,6 +33,9 @@ def main():
             "seed-grade3-content",
             "seed-grade1-content",
             "seed-grade2-content",
+            "seed-grade5-content",
+            "seed-grade-content",
+            "curriculum-inventory",
             "seed-ai-academy",
             "verify-ai-academy",
             "verify-seed",
@@ -41,6 +45,13 @@ def main():
     parser.add_argument("--reset-demo-passwords", action="store_true")
     parser.add_argument("--grade", type=int, choices=range(1, 6), default=4)
     parser.add_argument(
+        "--grades",
+        type=int,
+        nargs="+",
+        choices=range(1, 6),
+        help="Khối tạo tài khoản demo; mặc định 1 2 3 4 5",
+    )
+    parser.add_argument(
         "--apply", action="store_true", help="Thực hiện cleanup-auth; mặc định chỉ thống kê"
     )
     parser.add_argument("--username")
@@ -49,6 +60,27 @@ def main():
     args = parser.parse_args()
     if args.apply and args.command != "cleanup-auth":
         parser.error("--apply chỉ dùng với cleanup-auth")
+    if args.grades is not None and args.command != "seed-demo-learners":
+        parser.error("--grades chỉ dùng với seed-demo-learners")
+    if args.command in {"seed-grade-content", "curriculum-inventory"}:
+        from app.curriculum.registry import SUPPORTED_GRADES
+
+        if args.grade not in SUPPORTED_GRADES:
+            parser.error("Khối này chưa có bộ ba môn; chọn --grade 1–5")
+    if args.command == "curriculum-inventory":
+        from app.curriculum.registry import get_pack, inventory
+
+        report = inventory(args.grade)
+        expected = get_pack(args.grade).expected
+        print(
+            json.dumps(
+                {"grade": args.grade, "subjects": report, "matches_expected": report == expected},
+                ensure_ascii=False,
+            )
+        )
+        if report != expected:
+            raise SystemExit(1)
+        return
     if args.command == "bootstrap-admin":
         if not sys.stdin.isatty() or not args.username or not args.display_name:
             parser.error("bootstrap-admin cần terminal tương tác, --username và --display-name")
@@ -113,15 +145,28 @@ def main():
                     )
                 )
             elif args.command == "seed-demo-learners":
-                from app.demo_learners import seed_demo_learners
+                from app.fixtures.learners import seed_demo_learners
 
-                print(json.dumps(seed_demo_learners(conn), ensure_ascii=False))
+                print(
+                    json.dumps(
+                        seed_demo_learners(conn, args.grades)
+                        if args.grades
+                        else seed_demo_learners(conn),
+                        ensure_ascii=False,
+                    )
+                )
+            elif args.command in {"seed-grade-content", "seed-grade5-content"}:
+                from app.curriculum.seeding import seed_grade_content
+
+                grade = 5 if args.command == "seed-grade5-content" else args.grade
+                seed_grade_content(conn, grade)
+                print(json.dumps(verify_seed(conn, grade=grade), ensure_ascii=False))
             elif args.command == "seed-vip-content":
                 from sqlalchemy import text
 
                 from app.core.config import settings
-                from app.seed import seed_advanced_content
-                from app.vip_curriculum import VIP_EXTENSION
+                from app.curriculum.grades.grade_04.vip import VIP_EXTENSION
+                from app.curriculum.seeding import seed_advanced_content
 
                 if settings().app_env == "production":
                     raise RuntimeError("Nội dung mẫu VIP cần rà soát trước khi nạp production")
@@ -129,17 +174,17 @@ def main():
                 seed_advanced_content(conn, VIP_EXTENSION)
                 print(json.dumps(verify_seed(conn), ensure_ascii=False))
             elif args.command == "seed-grade4-content":
-                from app.seed import seed_grade4_content
+                from app.curriculum.seeding import seed_grade4_content
 
                 seed_grade4_content(conn)
                 print(json.dumps(verify_seed(conn), ensure_ascii=False))
             elif args.command == "seed-grade3-content":
-                from app.seed import seed_grade3_content
+                from app.curriculum.seeding import seed_grade3_content
 
                 seed_grade3_content(conn)
                 print(json.dumps(verify_seed(conn, grade=3), ensure_ascii=False))
             elif args.command in {"seed-grade1-content", "seed-grade2-content"}:
-                from app.seed import seed_early_primary_content
+                from app.curriculum.seeding import seed_early_primary_content
 
                 grade = 1 if args.command == "seed-grade1-content" else 2
                 seed_early_primary_content(conn, grade)

@@ -9,20 +9,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.academy.api import router as academy_router
-from app.academy.management_api import router as academy_management_router
-from app.account_api import router as account_router
-from app.api import router
-from app.authoring_api import router as authoring_router
-from app.classroom.api import router as classroom_router
+from app.api.router import router
 from app.core.config import settings
-from app.curriculum_api import router as curriculum_router
 from app.db import SchemaNotReady, engine
-from app.lesson_api import router as lesson_router
-from app.membership_api import router as membership_router
 from app.operations import readiness
-from app.operations_api import router as operations_router
-from app.vip_api import router as vip_router
 
 logger = logging.getLogger("viettree")
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -41,17 +31,9 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "PATCH"],
     allow_headers=["Content-Type", "X-CSRF-Token", "Idempotency-Key"],
 )
+
+
 app.include_router(router)
-app.include_router(membership_router)
-app.include_router(authoring_router)
-app.include_router(vip_router)
-app.include_router(lesson_router)
-app.include_router(curriculum_router)
-app.include_router(account_router)
-app.include_router(operations_router)
-app.include_router(academy_management_router)
-app.include_router(academy_router)
-app.include_router(classroom_router)
 
 
 @app.exception_handler(RequestValidationError)

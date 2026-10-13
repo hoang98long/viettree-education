@@ -54,9 +54,7 @@ test("học sinh: bài học → làm bài → lưu/reload → nộp → kết q
   ).toBeVisible();
   await page.goto("/student/grades");
   await page.getByRole("button", { name: /Lớp 5/ }).click();
-  await expect(
-    page.getByText("Chương trình lớp 5 đang xây dựng"),
-  ).toBeVisible();
+  await expect(page.getByRole("link", { name: /Toán.*chủ đề/ })).toBeVisible();
   await page.goto("/admin/dashboard");
   await expect(page.getByRole("heading", { name: /403/ })).toBeVisible();
 });

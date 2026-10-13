@@ -8,7 +8,7 @@ import pytest
 from sqlalchemy import func, select
 
 from app.db import db
-from app.seed import seed
+from app.fixtures.development import seed
 from app.services.attempts import assign_self, start_attempt, submit
 
 pytestmark = pytest.mark.integration

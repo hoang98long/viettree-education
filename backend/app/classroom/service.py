@@ -283,7 +283,7 @@ def assign(conn, user, payload):
             raise HTTPException(403, "Chỉ giao cho học sinh ở lớp được phân công")
     linked = {}
     if payload.kind == "assessment":
-        from app.authoring_schemas import AssignmentInput
+        from app.schemas.authoring import AssignmentInput
         from app.services.authoring import assign_students
 
         assigned = assign_students(

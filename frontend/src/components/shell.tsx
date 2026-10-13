@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 import {
   BookOpen,
   ChartNoAxesCombined,
@@ -21,7 +21,8 @@ import {
   Trophy,
 } from "lucide-react";
 import { api } from "@/lib/api";
-import type { TextSize, User } from "@/lib/types";
+import type { User } from "@/lib/types";
+import { useReadingPreferences } from "@/hooks/use-reading-preferences";
 import { homeFor, useSession } from "@/lib/session";
 import { Brand, ErrorState, Loading } from "./ui";
 
@@ -29,10 +30,9 @@ const UserContext = createContext<User | null>(null);
 export function useUser() {
   return useContext(UserContext)!;
 }
-const AccessibilityContext = createContext<{
-  textSize: TextSize;
-  saveTextSize: (size: TextSize) => Promise<void>;
-} | null>(null);
+const AccessibilityContext = createContext<ReturnType<
+  typeof useReadingPreferences
+> | null>(null);
 export function useAccessibility() {
   return useContext(AccessibilityContext)!;
 }
@@ -40,6 +40,7 @@ const studentMenu = [
   ["dashboard", "Góc học tập", Home],
   ["learning-plan", "Kế hoạch học", ListChecks],
   ["grades", "Khám phá lớp học", GraduationCap],
+  ["lessons", "Thư viện bài học", BookOpen],
   ["practice", "Thư viện luyện tập", BookOpen],
   ["thinking", "Góc tư duy", Lightbulb],
   ["history", "Lịch sử luyện tập", Clock],
@@ -77,19 +78,12 @@ export function Shell({
   const { user, error, loading, refresh, clear } = useSession();
   const path = usePathname();
   const router = useRouter();
-  const [chosenSize, setChosenSize] = useState<TextSize | null>(null);
+  const readingPreferences = useReadingPreferences();
+  const { textSize, deviceType } = readingPreferences;
   useEffect(() => {
     if (!loading && !user && !error) router.replace("/login");
     if (user?.must_change_password) router.replace("/account/security");
   }, [loading, user, error, router]);
-  const textSize = chosenSize ?? user?.text_size ?? "comfortable";
-  async function saveTextSize(size: TextSize) {
-    await api("/students/me/accessibility", {
-      method: "PUT",
-      body: JSON.stringify({ text_size: size }),
-    });
-    setChosenSize(size);
-  }
   async function logout() {
     try {
       await api("/auth/logout", { method: "POST" });
@@ -130,8 +124,12 @@ export function Shell({
     role === "admin" ? adminMenu : role === "student" ? studentMenu : [];
   return (
     <UserContext.Provider value={user}>
-      <AccessibilityContext.Provider value={{ textSize, saveTextSize }}>
-        <div className={`app-shell ${role}`} data-text-size={textSize}>
+      <AccessibilityContext.Provider value={readingPreferences}>
+        <div
+          className={`app-shell ${role}`}
+          data-text-size={textSize}
+          data-device-type={deviceType}
+        >
           <aside className="sidebar">
             <Brand href={`/${role}/dashboard`} />
             <span className="sidebar-label">
@@ -210,6 +208,14 @@ export function Shell({
                 </span>
               </span>
               <span className="pill">Học điều hay, lớn mỗi ngày 🌱</span>
+              {role === "student" && (
+                <Link
+                  className="reading-settings-link"
+                  href="/student/profile#reading-settings"
+                >
+                  Cỡ chữ
+                </Link>
+              )}
               <button
                 className="button secondary small"
                 onClick={logout}

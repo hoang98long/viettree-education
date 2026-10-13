@@ -4,10 +4,10 @@ import pytest
 from pydantic import ValidationError
 from sqlalchemy import select
 
+from app.curriculum.grades.grade_04.thinking import GRADE4
+from app.curriculum.seeding import seed_grade4_content
 from app.db import db
-from app.grade4_curriculum import GRADE4
-from app.lesson_schemas import Illustration, LessonContent
-from app.seed import seed_grade4_content
+from app.schemas.lessons import Illustration, LessonContent
 from app.services.grading import grade_answer, validate_answer
 from tests.test_memberships import admin_login, identities, membership
 

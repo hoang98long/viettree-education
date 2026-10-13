@@ -605,3 +605,148 @@ tràn ngang, pageerror hoặc HTTP 5xx; ảnh đếm và thẻ đã kiểm tra t
 Wheel chứa đủ năm module học liệu mới. Build cuối trả về backend local
 8000; server kiểm thử 8001/3001 đã dừng. Các server của người dùng và `.env`
 không bị thay đổi. Dùng [run-local](run-local.md) để khởi động lại ứng dụng.
+
+## Tổ chức lại kiến trúc và tài khoản theo khối · 12/10/2026
+
+Thư mục gốc backend còn sáu file entry point/hạ tầng. Các file học liệu
+`grade3_*`, `early_primary_*`, `*_curriculum` chuyển vào
+`curriculum/grades/{early_primary,grade_03,grade_04}`. Builders dùng chung
+tách khỏi nội dung lớp 4; registry tập trung chọn pack/map/source/inventory.
+API LMS 875 dòng chia thành router auth/catalog/learning/assessments/attempts/
+administration; cùng các router chức năng được đăng ký tại `api/router.py`.
+Schema chia theo chức năng, seed tài khoản tách khỏi seed học liệu.
+Không giữ các file tên cũ để chuyển tiếp import. Có EditorConfig và Ruff
+chuẩn hóa LF; cập nhật import/tests/tài liệu/lệnh deploy.
+
+Frontend chia các file student/admin/authoring/accounts/classrooms lớn thành
+page/form/types/shared theo feature. Lesson studio tách nội dung và minh họa
+thành component riêng. URL/entry point/Docker/Alembic giữ nguyên. So sánh
+source hashes xác nhận toàn bộ ngữ liệu/câu hỏi giữ nguyên; OpenAPI endpoint,
+request/response và validation tương đương, chỉ hai component ID nhận tên
+module mới. Client sinh từ OpenAPI nên sinh lại kiểu khi cần.
+
+Bổ sung CLI `curriculum-inventory --grade 1` kiểm kê source không cần DB;
+`seed-grade-content --grade 1` nạp đầy đủ một khối, không tài khoản. Các CLI
+khối cũ vẫn hoạt động. Admin xuất bảng học liệu CSV đúng bộ lọc khối/môn/mạch
+thiếu Free; UTF-8 BOM, escape nội dung và chặn công thức từ text.
+
+Đã tạo **12 tài khoản lớp 1–3**, hai Free/hai VIP 90 ngày mỗi khối; giữ nguyên
+bốn tài khoản lớp 4. `seed-demo-learners --grades 1 2` chọn khối; chạy lại giữ
+mật khẩu, khối, khóa, gói đã thu hồi/hết hạn. Lệnh chặn ngoài development,
+collision vai trò hoặc thiếu admin/hồ sơ; cấp VIP qua service có audit.
+Backup PostgreSQL trước thay đổi, hash sau tạo xác nhận mọi hàng/cột cũ
+giữ nguyên. Không migration mới, head vẫn `0011_classes_vip_training`.
+
+Backend toàn bộ **639/640** qua lượt đầy đủ, 1015,16 giây; một test đồng thời
+còn import module API cũ đã sửa. Cả **4 ca account concurrency passed**,
+21,08 giây sau sửa; tổng 640 ca riêng biệt đã qua, không cộng lượt lặp.
+13 ca mới bảo vệ registry, seed lặp, đăng nhập/quyền theo khối, bảo toàn
+tài khoản, chặn production/collision và ranh giới phụ thuộc học liệu.
+Frontend **21 tests passed**, gồm hai ca CSV; lint/TypeScript/build đạt.
+Wheel build ở thư mục mới có module đúng, hai SQL schema domain và 315 SVG,
+không còn module gốc cũ trong gói. Schema/system DB thật đạt.
+
+Browser toàn bộ **40 passed**, 3,5 phút, desktop/mobile, không skip; gồm tạo/
+duyệt/xuất bản bài và câu, lưu/nộp/chấm, phiên/tài khoản, cấp/thu hồi VIP,
+lớp/giao bài/top 3, AI Academy và xuất CSV lớp 1/2. Visual admin 1280/390px
+đạt, CSV hiển thị và không tràn ngang/pageerror/5xx. Cấu hình build cuối trả
+về backend local 8000; server test 8001/3001 đã dừng, không dừng server của
+người dùng. Kiểm thử Docker Engine/HTTPS/tải VPS vẫn thực hiện tại server đích.
+
+Tài liệu: [kiến trúc và cách nâng cấp](architecture.md),
+[demo theo khối](demo-accounts.md), [chạy local](run-local.md), [VPS](deploy-vps.md).
+
+## Lớp 5 và thư viện bài học · 13/10/2026
+
+Bổ sung pack `curriculum/grades/grade_05` cho Toán, Tiếng Việt, Tiếng Anh:
+**68 bài / 384 câu / 56 đề**, gồm 46 bài/34 đề Free và 22 bài/22 đề VIP.
+Toán 9 chủ đề, 25 bài/142 câu/21 đề; Tiếng Việt 6 chủ đề, 23/130/19;
+Tiếng Anh 7 chủ đề, 20/112/16. Tổng năm khối 340 bài/1920 câu/280 đề,
+chưa tính AI Academy hoặc học liệu do giáo viên tạo. Registry giữ expected
+theo từng pack; không ép số chủ đề Toán lớp 5 bằng các khối trước.
+
+Đối chiếu phần lớp 5 trong chương trình Toán/Ngữ văn/Tiếng Anh, cùng văn bản
+sửa đổi 17/2025; nguồn và phạm vi ở [học liệu lớp 5](grade5-curriculum.md).
+Ngữ liệu gốc do VietTree tự viết: truyện 312/330 tiếng tính cả nhan đề,
+miêu tả khoảng 220–230, thơ 123, giải thích 230; Tiếng Anh 62–69 từ mỗi bài.
+Toán dùng phép tính decimal/fraction chính xác; chấp nhận phẩy/chấm trong
+câu điền thập phân. Nghe/nói và văn mở cần người hướng dẫn, chưa có audio hay
+chấm tự luận. Không khẳng định đã phủ đầy đủ kế hoạch năm học.
+
+Học sinh có **Thư viện bài học** (`/student/lessons`): tìm tên/chủ đề không dấu,
+lọc môn/gói/tiến độ/bài tư duy, phân trang 12 bài, trạng thái và quyền hiện hành.
+API chỉ trả metadata bài đã xuất bản, môn/chủ đề hoạt động và tiến độ của chính
+học sinh, đúng khối hồ sơ; không trả nội dung VIP, gợi ý hay đáp án qua danh mục.
+Tiến độ và quyền dùng `no-store`; mở bài vẫn kiểm quyền ở backend.
+
+Admin chọn khối ở đầu trang chương trình, xem tổng theo bộ lọc, mở/thu gọn
+chủ đề và xuất CSV. Editor/preview hỗ trợ thêm tam giác, hình thang, hình tròn,
+hộp chữ nhật và biểu đồ quạt tròn. Hình thang có thể đảo độ dài hai đáy;
+biểu đồ có tổng 100%, chú giải chữ, xử lý nhóm 0%/100%. Số đo có thêm chữ
+20/24 px để đọc trên điện thoại; backend từ chối số đo/nhãn/tổng không hợp lệ.
+
+Nạp grade 5 hai lần trên DB local sau pg_dump; lần hai không tăng số lượng.
+Tạo `free5_01`, `free5_02`, `vip5_01`, `vip5_02`; VIP mới 90 ngày. Chạy lại giữ
+mật khẩu/hồ sơ/gói. So sánh hash xác nhận mọi hàng/cột cũ của DB thật còn nguyên;
+hash toàn bộ nội dung/câu hỏi/gợi ý/đáp án lớp 1–4 không đổi. Head vẫn
+`0011_classes_vip_training`; không cần schema migration mới. `check-system`
+trên DB local đạt, không thiếu quyền hoặc có đề lỗi. Wheel chứa đủ bảy module
+grade 5 và cả SQL schema domain.
+
+Backend lượt đầy đủ cuối **725/725 passed**, 1162,29 giây, không skip. Bao gồm
+ba ca kiểm thời điểm giao dịch và cập nhật assertion cũ về lớp 5. Bộ mới kiểm
+schema 68 bài/384 câu, đáp án Toán độc lập, độ dài
+ngữ liệu, toàn bộ 56 đề lưu/đọc lại/nộp/chấm, seed lặp, tìm kiếm/phân trang,
+quyền riêng tư, nháp/chủ đề đóng, gợi ý/cấp/thu hồi VIP. Kiểm thêm Góc học VIP
+và kế hoạch theo kỹ năng cho lớp 5. Ruff lint/format đạt.
+
+Frontend **25 component tests passed**, ESLint, TypeScript và production build
+đạt. Danh mục CSV, hướng dẫn local/VPS, kiến trúc, demo và roadmap cập nhật.
+README dùng tham chiếu biến môi trường cho mật khẩu demo.
+
+Lượt browser ban đầu phát hiện hai lỗi không ổn định: duyệt câu trả 200 nhưng
+refresh chưa thấy đã duyệt; đăng nhập trả 200 nhưng mở bài ngay có thể nhận 401.
+Kiểm thử ASGI/PostgreSQL độc lập tái hiện phiên chưa commit tại thời điểm gửi
+HTTP. Sửa dependency database dùng chung `scope="function"` trên LMS, auth,
+AI Academy và lớp học; commit/rollback trước phản hồi. Tăng mức FastAPI tối
+thiểu lên 0.121 (lock đang là 0.143.0). Có ba ca bảo vệ scope mọi route, commit
+trước phản hồi và lỗi commit trả 503/rollback, không báo thành công giả.
+
+Browser cuối trên DB riêng mới **42/42 passed**, 3,8 phút, không skip; gồm cả
+hai luồng đã lỗi. DB `viettree-grade5-browser-test` được import SQL gốc,
+migrate head, nạp năm khối và AI Academy, kiểm tra hệ thống đạt. Backend
+pytest chạy trên `viettree-education-test`; hai bộ ghi tách DB.
+
+Đã xem hình và thư viện trên desktop/mobile; số đo chữ lớn và chú giải biểu
+đồ đọc được, kiểm tra tràn ngang đạt. Build cuối trả về backend local 8000;
+server kiểm thử 8001/3001 đã dừng. Không sửa `.env` hoặc dừng server người dùng.
+Cache `backend/build` cũ được lưu lại trong `.tools` rồi đóng wheel sạch;
+so khớp mọi file Python với source, không còn module gốc cũ đi kèm.
+
+## Cỡ chữ theo thiết bị · 13/10/2026
+
+Thêm **Chữ gọn hơn**: giao diện 16 px, bài học 18 px, câu hỏi 20 px;
+giữ hai mức vừa/lớn. Cân chỉnh padding, khoảng cách, tiêu đề và lựa chọn trên
+màn hình nhỏ; nút chính vẫn tối thiểu 48 px. Có lối tắt **Cỡ chữ** trên LMS
+và AI Academy; AI dùng 18/20/23 px. Sửa thứ tự ưu tiên CSS để câu hỏi dùng đúng
+cỡ chữ ở cả ba mức, tránh bị quy tắc tiêu đề ghi đè.
+
+Lưu `text_size_by_device` trong JSONB hồ sơ hiện có: điện thoại, máy tính bảng,
+máy tính; thiết bị chưa chọn dùng mặc định cũ. Không cần migration hoặc ghi lại
+dữ liệu thật. Khóa hàng trước khi gộp để hai thiết bị lưu đồng thời không làm mất
+lựa chọn khác. Admin hỗ trợ mức mặc định gọn và giữ các lựa chọn riêng khi sửa
+tài khoản. Đăng nhập, phiên, dashboard và hồ sơ trả cùng cấu hình.
+
+Cache phiên cập nhật ngay sau lưu; BroadcastChannel báo các tab kiểm tra lại,
+không gửi dữ liệu tài khoản. Kết quả cũ không ghi đè lần lưu mới, không khôi phục
+phiên đã thoát hoặc ghi sang tài khoản khác. Nhận diện điện thoại/máy tính bảng
+giữ ổn định khi xoay màn hình và thu nhỏ cửa sổ; không lưu định danh thiết bị.
+
+Kiểm thử tập trung trên database riêng: **20 backend / 41 frontend passed**;
+**11 browser passed**, bao gồm điện thoại, máy tính, máy tính bảng, ba cỡ câu hỏi,
+màn hình 320–1280 px, AI, lỗi mạng, reload/đăng nhập lại, đổi tài khoản, đồng bộ tab,
+quản trị tài khoản và phiên. Một lượt mobile bỏ qua ca đa thiết bị trùng lặp;
+ca đó đã chạy cả ba nhóm bằng ba browser context trong lượt desktop.
+Ruff, ESLint, TypeScript, Prettier và production build đạt.
+
+Chi tiết sử dụng và API: [cỡ chữ học tập](reading-preferences.md).

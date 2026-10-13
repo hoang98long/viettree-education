@@ -1,10 +1,16 @@
-export type TextSize = "comfortable" | "large";
+export type TextSize = "compact" | "comfortable" | "large";
+export type DeviceType = "phone" | "tablet" | "desktop";
+export type ReadingPreferences = {
+  text_size: TextSize;
+  text_size_by_device?: Partial<Record<DeviceType, TextSize>>;
+};
 export type User = {
   id: string;
   username: string;
   display_name: string;
   roles: string[];
   text_size: TextSize;
+  text_size_by_device?: Partial<Record<DeviceType, TextSize>>;
   session_expires_at?: string | null;
   must_change_password?: boolean;
 };
@@ -161,7 +167,12 @@ export type LessonIllustration = {
     | "bars"
     | "angles"
     | "counters"
-    | "cards";
+    | "cards"
+    | "triangle"
+    | "trapezoid"
+    | "circle"
+    | "box"
+    | "pie";
   caption: string;
   numerator: number;
   denominator: number;
@@ -170,6 +181,12 @@ export type LessonIllustration = {
   hour: number;
   minute: number;
   count?: number;
+  base?: number;
+  upper_base?: number;
+  height?: number;
+  radius?: number;
+  length?: number;
+  width?: number;
   angle?: number;
   tick?: number;
   labels?: string[];

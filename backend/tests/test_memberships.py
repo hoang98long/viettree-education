@@ -9,7 +9,7 @@ from sqlalchemy import func, select
 from app.core.config import settings
 from app.core.security import now
 from app.db import db
-from app.schemas import MembershipGrantInput, MembershipRevokeInput
+from app.schemas.memberships import MembershipGrantInput, MembershipRevokeInput
 from app.services.attempts import assign_self, start_attempt
 from app.services.memberships import change_membership
 from tests.test_concurrency import create_student
@@ -425,7 +425,7 @@ def test_guardian_requires_verified_link(logged_student, conn):
 
 
 def test_admin_policy_update_is_audited_and_seed_preserves_it(logged_student, conn):
-    from app.seed import seed
+    from app.fixtures.development import seed
 
     client = logged_student
     lesson_id = premium(conn, "lessons")

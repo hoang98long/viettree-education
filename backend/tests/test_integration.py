@@ -7,8 +7,8 @@ from sqlalchemy import func, select
 from app.core.config import settings
 from app.core.security import hasher, now
 from app.db import db
+from app.fixtures.development import seed
 from app.personalization.engine import rebuild_statistics, rebuild_student
-from app.seed import seed
 from tests.test_grading import correct_answer
 
 pytestmark = pytest.mark.integration
@@ -120,7 +120,7 @@ def test_grade_filters(logged_student, grade):
     assert response.status_code == 200
     assert all(row["grade"] == grade for row in response.json())
     topics = logged_student.get(f"/api/v1/topics?grade={grade}&subject_code=MATH").json()
-    assert (len(topics) >= 4) if grade in (1, 2, 3, 4) else (len(topics) == 0)
+    assert len(topics) >= 4
     assert logged_student.get("/api/v1/subjects?grade=6").status_code == 422
 
 

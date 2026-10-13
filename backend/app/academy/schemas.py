@@ -3,7 +3,7 @@ from uuid import UUID
 
 from pydantic import Field, field_validator, model_validator
 
-from app.schemas import StrictModel
+from app.schemas.common import StrictModel
 
 GAME_KINDS = [
     "classify",

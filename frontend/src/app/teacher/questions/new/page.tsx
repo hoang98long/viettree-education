@@ -1,2 +1,2 @@
-import { AuthoringScaffold } from "@/features/admin";
+import { AuthoringScaffold } from "@/features/authoring/teacher-page";
 export default AuthoringScaffold;

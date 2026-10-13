@@ -6,8 +6,8 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 
 from app.db import connection, db
+from app.fixtures.development import seed
 from app.main import app
-from app.seed import seed
 
 
 @pytest.fixture

@@ -10,10 +10,11 @@ from sqlalchemy import func, select, text, update
 from sqlalchemy.dialects.postgresql import insert
 
 from app.academy.learning import audit, staff
-from app.account_schemas import AdminAction
+from app.core.dependencies import database
 from app.core.security import admin_user, current_user, now
-from app.db import connection, db
-from app.schemas import StrictModel
+from app.db import db
+from app.schemas.accounts import AdminAction
+from app.schemas.common import StrictModel
 
 router = APIRouter(prefix="/api/v1/ai-academy", tags=["ai-academy-management"])
 
@@ -25,7 +26,7 @@ class LessonAccessInput(AdminAction):
 
 @router.put("/admin/lessons/{identifier}/access")
 def set_lesson_access(
-    identifier: UUID, payload: LessonAccessInput, user=Depends(admin_user), conn=Depends(connection)
+    identifier: UUID, payload: LessonAccessInput, user=Depends(admin_user), conn=database
 ):
     from app.services.accounts import authenticate_actor
 
@@ -64,7 +65,7 @@ def set_lesson_access(
 
 
 @router.get("/admin/units")
-def list_units(grade: int, user=Depends(current_user), conn=Depends(connection)):
+def list_units(grade: int, user=Depends(current_user), conn=database):
     staff(conn, user, "read")
     table = db.table("ai_units")
     return [
@@ -76,7 +77,7 @@ def list_units(grade: int, user=Depends(current_user), conn=Depends(connection))
 
 
 @router.get("/admin/prompts")
-def list_prompts(user=Depends(admin_user), conn=Depends(connection)):
+def list_prompts(user=Depends(admin_user), conn=database):
     table = db.table("ai_prompt_templates")
     return [
         dict(r)
@@ -94,7 +95,7 @@ class PromptDraft(StrictModel):
 
 
 @router.post("/admin/prompts")
-def save_prompt(payload: PromptDraft, user=Depends(admin_user), conn=Depends(connection)):
+def save_prompt(payload: PromptDraft, user=Depends(admin_user), conn=database):
     from app.academy.safety import moderation_reason
 
     if moderation_reason(payload.template):
@@ -124,7 +125,7 @@ def approve_prompt(
     version: int,
     payload: AdminAction,
     user=Depends(admin_user),
-    conn=Depends(connection),
+    conn=database,
 ):
     from app.services.accounts import authenticate_actor
 
@@ -174,7 +175,7 @@ def child_access(conn, user, identifier):
 
 
 @router.get("/privacy/{identifier}/export")
-def export_own_data(identifier: UUID, user=Depends(current_user), conn=Depends(connection)):
+def export_own_data(identifier: UUID, user=Depends(current_user), conn=database):
     child_access(conn, user, identifier)
     output = {}
     for name in [
@@ -198,7 +199,7 @@ class RemovalRequest(StrictModel):
 
 
 @router.post("/privacy/project-text-removal")
-def request_removal(payload: RemovalRequest, user=Depends(current_user), conn=Depends(connection)):
+def request_removal(payload: RemovalRequest, user=Depends(current_user), conn=database):
     child_access(conn, user, payload.student_id)
     audit(
         conn,
@@ -215,7 +216,7 @@ def request_removal(payload: RemovalRequest, user=Depends(current_user), conn=De
 
 
 @router.get("/admin/privacy-requests")
-def privacy_requests(user=Depends(admin_user), conn=Depends(connection)):
+def privacy_requests(user=Depends(admin_user), conn=database):
     table = db.table("ai_audit_logs")
     return [
         dict(r)
@@ -234,7 +235,7 @@ class RemovalApproval(AdminAction):
 
 @router.post("/admin/privacy-requests/{identifier}/resolve")
 def resolve_removal(
-    identifier: UUID, payload: RemovalApproval, user=Depends(admin_user), conn=Depends(connection)
+    identifier: UUID, payload: RemovalApproval, user=Depends(admin_user), conn=database
 ):
     from app.services.accounts import authenticate_actor
 
@@ -288,7 +289,7 @@ class GuardianLink(AdminAction):
 
 
 @router.post("/admin/guardian-links")
-def link_guardian(payload: GuardianLink, user=Depends(admin_user), conn=Depends(connection)):
+def link_guardian(payload: GuardianLink, user=Depends(admin_user), conn=database):
     from app.services.accounts import authenticate_actor
 
     authenticate_actor(conn, user, payload.actor_password)
@@ -324,7 +325,7 @@ def link_guardian(payload: GuardianLink, user=Depends(admin_user), conn=Depends(
 
 
 @router.get("/teacher/reports/export")
-def export_csv(class_id: UUID, user=Depends(current_user), conn=Depends(connection)):
+def export_csv(class_id: UUID, user=Depends(current_user), conn=database):
     from app.academy.api import reports
 
     data = reports(class_id, user, conn)
@@ -344,7 +345,7 @@ def export_csv(class_id: UUID, user=Depends(current_user), conn=Depends(connecti
 
 
 @router.post("/admin/lessons/{identifier}/teacher-draft")
-def teacher_draft(identifier: UUID, user=Depends(current_user), conn=Depends(connection)):
+def teacher_draft(identifier: UUID, user=Depends(current_user), conn=database):
     import httpx
 
     from app.academy.learning import lesson_row

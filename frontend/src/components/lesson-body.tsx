@@ -4,9 +4,12 @@ import { useId, useState } from "react";
 import Link from "next/link";
 import { BookOpen, Lightbulb, MessageCircle } from "lucide-react";
 import type { LessonContent, LessonIllustration } from "@/lib/types";
+import { GeometryFigure } from "./geometry-figure";
 
 export function LessonFigure({ value }: { value: LessonIllustration }) {
   const label = useId();
+  if (["triangle", "trapezoid", "circle", "box", "pie"].includes(value.kind))
+    return <GeometryFigure value={value} />;
   if (value.kind === "cards")
     return (
       <figure className="lesson-figure">

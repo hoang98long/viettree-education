@@ -14,19 +14,20 @@ from app.classroom.schemas import (
     PromotionInput,
     RecognitionInput,
 )
+from app.core.dependencies import database
 from app.core.security import admin_user, current_user, student_user
-from app.db import connection, db
+from app.db import db
 
 router = APIRouter(prefix="/api/v1", tags=["classes-achievements-prices"])
 
 
 @router.get("/membership/prices")
-def prices(conn=Depends(connection)):
+def prices(conn=database):
     return pricing.catalog(conn)
 
 
 @router.get("/admin/membership/prices")
-def price_admin(user=Depends(admin_user), conn=Depends(connection)):
+def price_admin(user=Depends(admin_user), conn=database):
     return {
         **pricing.catalog(conn),
         "price_options": [
@@ -47,19 +48,17 @@ def price_admin(user=Depends(admin_user), conn=Depends(connection)):
 
 
 @router.put("/admin/membership/prices/{code}")
-def update_price(
-    code: str, payload: PriceInput, user=Depends(admin_user), conn=Depends(connection)
-):
+def update_price(code: str, payload: PriceInput, user=Depends(admin_user), conn=database):
     return pricing.save_price(conn, user, code, payload)
 
 
 @router.post("/admin/membership/promotions")
-def save_promotion(payload: PromotionInput, user=Depends(admin_user), conn=Depends(connection)):
+def save_promotion(payload: PromotionInput, user=Depends(admin_user), conn=database):
     return pricing.save_promotion(conn, user, payload)
 
 
 @router.get("/classroom/classes")
-def list_classes(user=Depends(current_user), conn=Depends(connection)):
+def list_classes(user=Depends(current_user), conn=database):
     classes, enrollments, settings = (
         db.table(n) for n in ("classes", "class_enrollments", "classroom_settings")
     )
@@ -92,7 +91,7 @@ def list_classes(user=Depends(current_user), conn=Depends(connection)):
 
 
 @router.get("/classroom/schools")
-def schools(user=Depends(admin_user), conn=Depends(connection)):
+def schools(user=Depends(admin_user), conn=database):
     table = db.table("schools")
     return [
         dict(r)
@@ -105,20 +104,18 @@ def schools(user=Depends(admin_user), conn=Depends(connection)):
 
 
 @router.post("/classroom/classes")
-def new_class(payload: ClassInput, user=Depends(admin_user), conn=Depends(connection)):
+def new_class(payload: ClassInput, user=Depends(admin_user), conn=database):
     return service.save_class(conn, user, payload)
 
 
 @router.put("/classroom/classes/{identifier}")
-def edit_class(
-    identifier: UUID, payload: ClassInput, user=Depends(admin_user), conn=Depends(connection)
-):
+def edit_class(identifier: UUID, payload: ClassInput, user=Depends(admin_user), conn=database):
     return service.save_class(conn, user, payload, identifier)
 
 
 @router.post("/classroom/classes/{identifier}/enrollments")
 def enrollment(
-    identifier: UUID, payload: EnrollmentInput, user=Depends(current_user), conn=Depends(connection)
+    identifier: UUID, payload: EnrollmentInput, user=Depends(current_user), conn=database
 ):
     service.staff(user)
     return service.enroll(conn, user, identifier, payload)
@@ -132,7 +129,7 @@ def students(
     search: str = Query("", max_length=100),
     page: int = Query(1, ge=1),
     user=Depends(current_user),
-    conn=Depends(connection),
+    conn=database,
 ):
     service.staff(user)
     users, profiles, enrollments, roles = (
@@ -192,7 +189,7 @@ def resources(
     kind: Literal["lesson", "assessment", "ai_lesson"],
     grade: int = Query(4, ge=1, le=5),
     user=Depends(current_user),
-    conn=Depends(connection),
+    conn=database,
 ):
     service.staff(user)
     if kind == "ai_lesson":
@@ -235,12 +232,12 @@ def resources(
 
 
 @router.post("/classroom/assignments")
-def assign(payload: AssignmentInput, user=Depends(current_user), conn=Depends(connection)):
+def assign(payload: AssignmentInput, user=Depends(current_user), conn=database):
     return service.assign(conn, user, payload)
 
 
 @router.get("/classroom/my-assignments")
-def assignments(user=Depends(student_user), conn=Depends(connection)):
+def assignments(user=Depends(student_user), conn=database):
     batches, targets, classes = (
         db.table(n)
         for n in ("learning_assignment_batches", "learning_assignment_targets", "classes")
@@ -281,7 +278,7 @@ def board(
     period: Literal["week", "month"] = "month",
     resource_id: UUID | None = None,
     user=Depends(current_user),
-    conn=Depends(connection),
+    conn=database,
 ):
     return recognition.leaderboard(conn, user, identifier, category, period, resource_id)
 
@@ -291,13 +288,13 @@ def recognize(
     identifier: UUID,
     payload: RecognitionInput,
     user=Depends(current_user),
-    conn=Depends(connection),
+    conn=database,
 ):
     return recognition.publish(conn, user, identifier, payload)
 
 
 @router.get("/classroom/classes/{identifier}/recognition")
-def awards(identifier: UUID, user=Depends(current_user), conn=Depends(connection)):
+def awards(identifier: UUID, user=Depends(current_user), conn=database):
     service.class_scope(conn, user, identifier)
     settings = db.table("classroom_settings")
     if (
@@ -333,7 +330,7 @@ def awards(identifier: UUID, user=Depends(current_user), conn=Depends(connection
 
 @router.get("/classroom/my-achievements")
 def achievements(
-    period: Literal["week", "month"] = "month", user=Depends(student_user), conn=Depends(connection)
+    period: Literal["week", "month"] = "month", user=Depends(student_user), conn=database
 ):
     profile = db.table("student_profiles")
     grade = conn.execute(

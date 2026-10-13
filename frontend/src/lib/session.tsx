@@ -10,13 +10,17 @@ import {
 } from "react";
 import { usePathname } from "next/navigation";
 import { api, ApiError } from "./api";
-import type { User } from "./types";
+import type { ReadingPreferences, User } from "./types";
 
 const CACHE_MS = 30_000;
 type SessionState = { user: User | null; loading: boolean; error: string };
 type SessionContextValue = SessionState & {
   refresh: (force?: boolean) => Promise<void>;
   setUser: (user: User) => void;
+  updateReadingPreferences: (
+    ownerId: string,
+    preferences: ReadingPreferences,
+  ) => void;
   clear: () => void;
 };
 const SessionContext = createContext<SessionContextValue | null>(null);
@@ -40,12 +44,14 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   const generation = useRef(0);
   const pending = useRef<Promise<void> | null>(null);
   const channel = useRef<BroadcastChannel | null>(null);
+  const currentUserId = useRef<string | null>(null);
   const path = usePathname();
 
   const invalidate = useCallback(() => {
     generation.current += 1;
     pending.current = null;
     checkedAt.current = 0;
+    currentUserId.current = null;
     setState({ user: null, loading: false, error: "" });
   }, []);
 
@@ -58,12 +64,14 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       .then((user) => {
         if (version !== generation.current) return;
         checkedAt.current = Date.now();
+        currentUserId.current = user.id;
         setState({ user, loading: false, error: "" });
       })
       .catch((error: Error) => {
         if (version !== generation.current) return;
         const anonymous = error instanceof ApiError && error.status === 401;
         checkedAt.current = anonymous ? Date.now() : 0;
+        currentUserId.current = null;
         setState({
           user: null,
           loading: false,
@@ -81,9 +89,30 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     generation.current += 1;
     pending.current = null;
     checkedAt.current = Date.now();
+    currentUserId.current = user.id;
     setState({ user, loading: false, error: "" });
     channel.current?.postMessage("refresh");
   }, []);
+
+  const updateReadingPreferences = useCallback(
+    (ownerId: string, preferences: ReadingPreferences) => {
+      // A delayed save must never restore a logged-out or different account.
+      if (currentUserId.current !== ownerId) return;
+      generation.current += 1;
+      pending.current = null;
+      checkedAt.current = Date.now();
+      setState((current) =>
+        current.user?.id === ownerId
+          ? {
+              ...current,
+              user: { ...current.user, ...preferences },
+            }
+          : current,
+      );
+      channel.current?.postMessage("preferences");
+    },
+    [],
+  );
 
   const clear = useCallback(() => {
     invalidate();
@@ -108,6 +137,13 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     if (typeof BroadcastChannel !== "undefined") {
       channel.current = new BroadcastChannel("viettree-session");
       channel.current.onmessage = (event) => {
+        if (event.data === "preferences") {
+          // A check started before the save may still contain the old preferences.
+          generation.current += 1;
+          pending.current = null;
+          void refresh(true);
+          return;
+        }
         if (event.data !== "logout" && event.data !== "refresh") return;
         invalidate();
         if (event.data === "refresh") {
@@ -142,7 +178,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
   }, [state.user, refresh]);
 
   return (
-    <SessionContext.Provider value={{ ...state, refresh, setUser, clear }}>
+    <SessionContext.Provider
+      value={{ ...state, refresh, setUser, updateReadingPreferences, clear }}
+    >
       {children}
     </SessionContext.Provider>
   );

@@ -49,6 +49,20 @@ Lớp 4 có 3 bài Free / 33 bài VIP; lab và xưởng sáng tạo thuộc VIP.
 Chi tiết [AI Academy](ai-academy/README.md).
 Giữ `.env` hiện có; file `.env.example` dùng placeholder, không chép đè mật khẩu.
 
+Lớp 5: máy hiện tại đã nạp bộ ba môn. Máy khác nạp riêng nếu chưa có:
+
+```powershell
+../.venv/Scripts/python.exe -m app.cli seed-grade-content --grade 5
+../.venv/Scripts/python.exe -m app.cli verify-seed --grade 5
+```
+
+Dùng `free5_01` hoặc `vip5_01` với mật khẩu học sinh cấu hình; xem
+[danh sách tài khoản](demo-accounts.md). Học sinh mở **Thư viện bài học** để tìm
+và lọc; admin chọn **Chương trình → Lớp học liệu → Lớp 5**.
+[Căn cứ và danh mục lớp 5](grade5-curriculum.md). Không cần migration mới cho đợt này.
+Đã sửa thời điểm commit để phiên đăng nhập và thao tác duyệt/nộp hoàn tất trước
+khi trả thành công. Cần khởi động lại backend để nhận sửa lỗi này.
+
 ## 2. Mở frontend — terminal thứ hai
 
 ```powershell
@@ -107,6 +121,11 @@ Phiên thường mặc định **8 giờ**. Học sinh có thể chọn **Ghi nh
 cá nhân** để giữ phiên **7 ngày**. Trong phiên, bấm biểu tượng VietTree sẽ về
 dashboard; mở `/login` tự chuyển tiếp. Xem [quản lý phiên](session-management.md).
 
+Bấm **Cỡ chữ → Chữ gọn hơn** để dùng giao diện gọn cho điện thoại. Có ba mức chữ;
+lựa chọn tự lưu theo tài khoản và nhóm điện thoại / máy tính bảng / máy tính,
+dùng cả trong AI Academy. Khởi động lại hai server để nhận cập nhật này; không cần
+migration. Xem [cấu hình cỡ chữ](reading-preferences.md).
+
 Học sinh VIP mở menu **Góc học VIP** để tìm bài nâng cao, ôn câu sai và xem/in báo
 cáo 7/30 ngày. Chi tiết: [mở rộng VIP](vip-expansion.md).
 
@@ -115,6 +134,10 @@ Tài liệu API: **http://localhost:8000/docs**.
 Dừng hệ thống bằng **Ctrl+C** ở cả hai terminal.
 
 ## Khi gặp lỗi
+
+Tài khoản thử đủ các khối: xem [danh sách Free/VIP lớp 1–5](demo-accounts.md).
+Sau refactor chỉ khởi động lại hai server, không cần migration/reset mới.
+Admin có **Chương trình → Xuất học liệu CSV** để tải bảng theo bộ lọc.
 
 Sau nâng cấp bài học, chạy `../.venv/Scripts/python.exe -m alembic upgrade head`
 trong `backend`, rồi khởi động lại hai server. Admin dùng **Quản lý bài học**;

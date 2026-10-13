@@ -11,7 +11,8 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.engine import Connection
 
 from app.core.config import settings
-from app.db import connection, db, engine
+from app.core.dependencies import database
+from app.db import db, engine
 
 hasher = PasswordHasher()
 DUMMY_HASH = hasher.hash(secrets.token_urlsafe(32))
@@ -40,7 +41,7 @@ def verify_origin(request: Request):
         raise HTTPException(403, "Yêu cầu khác trang không được phép")
 
 
-def current_user(request: Request, conn: Connection = Depends(connection)):
+def current_user(request: Request, conn: Connection = database):
     raw = request.cookies.get("viettree_session", "")
     sessions, users, roles = (db.table(name) for name in ("auth_sessions", "users", "user_roles"))
     session = (

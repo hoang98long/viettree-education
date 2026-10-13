@@ -1,0 +1,69 @@
+﻿Khối,Môn,Chủ đề,Mã nguồn,Tên bài,Gói,Phút,Câu biên soạn,Gợi ý Free,Gợi ý VIP
+5,MATH,"Ôn số tự nhiên, phân số và hỗn số",g5-natural-review,Ôn số tự nhiên và tính hợp lí,free,12,4,1,3
+5,MATH,"Ôn số tự nhiên, phân số và hỗn số",g5-fraction-review,"Phân số, rút gọn và hỗn số",free,12,4,1,3
+5,MATH,"Đọc, so sánh và làm tròn số thập phân",g5-decimal-place,Đọc số thập phân và các hàng,free,12,4,1,3
+5,MATH,"Đọc, so sánh và làm tròn số thập phân",g5-decimal-order,So sánh và làm tròn số thập phân,free,12,4,1,3
+5,MATH,Phép tính thập phân và bài toán nhiều bước,g5-decimal-add-subtract,Cộng và trừ số thập phân,free,12,4,1,3
+5,MATH,Phép tính thập phân và bài toán nhiều bước,g5-decimal-multiply-divide,"Nhân, chia số thập phân đơn giản",free,12,4,1,3
+5,MATH,"Tỉ số, phần trăm, tổng–hiệu–tỉ và bản đồ",g5-percent-basics,Tỉ số và tỉ số phần trăm,free,12,4,1,3
+5,MATH,"Tỉ số, phần trăm, tổng–hiệu–tỉ và bản đồ",g5-sum-difference-ratio,Tìm hai số từ tổng hoặc hiệu và tỉ số,free,12,4,1,3
+5,MATH,"Diện tích, thể tích và đơn vị thời gian",g5-area-units,"Héc-ta, ki-lô-mét vuông và mét vuông",free,12,6,1,3
+5,MATH,"Diện tích, thể tích và đơn vị thời gian",g5-volume-units,Đơn vị thể tích và thời gian,free,12,6,1,3
+5,MATH,"Tam giác, hình thang và hình tròn",g5-triangle-area,"Đáy, chiều cao và diện tích tam giác",free,12,6,1,3
+5,MATH,"Tam giác, hình thang và hình tròn",g5-trapezoid-area,Hai đáy và diện tích hình thang,free,12,6,1,3
+5,MATH,"Tam giác, hình thang và hình tròn",g5-circle-measures,"Bán kính, đường kính và hình tròn",free,12,6,1,3
+5,MATH,"Hình khai triển, diện tích và thể tích khối",g5-solid-nets,Hình khai triển và các mặt của khối,free,12,6,1,3
+5,MATH,"Hình khai triển, diện tích và thể tích khối",g5-surface-area,Diện tích xung quanh và toàn phần,free,12,6,1,3
+5,MATH,"Hình khai triển, diện tích và thể tích khối",g5-solid-volume,Thể tích hộp chữ nhật và lập phương,free,12,6,1,3
+5,MATH,"Chuyển động đều: vận tốc, quãng đường, thời gian",g5-steady-motion,"Vận tốc, quãng đường và thời gian",free,12,6,1,3
+5,MATH,Biểu đồ quạt tròn và tỉ số quan sát,g5-statistics-basics,Đọc biểu đồ quạt tròn và tỉ số quan sát,free,12,6,1,3
+5,MATH,"Tỉ số, phần trăm, tổng–hiệu–tỉ và bản đồ",g5-map-scale,Tư duy: tỉ lệ bản đồ và đổi đơn vị,vip,15,8,0,3
+5,MATH,"Tỉ số, phần trăm, tổng–hiệu–tỉ và bản đồ",g5-discount-budget,Tư duy: giá giảm và tiền phải trả,vip,15,8,0,3
+5,MATH,Biểu đồ quạt tròn và tỉ số quan sát,g5-pie-reasoning,Tư duy: so sánh nhóm từ biểu đồ,vip,15,8,0,3
+5,MATH,Biểu đồ quạt tròn và tỉ số quan sát,g5-observed-ratios,Tư duy: thí nghiệm nói được điều gì?,vip,15,8,0,3
+5,MATH,"Tam giác, hình thang và hình tròn",g5-composite-area,Tư duy: diện tích phần còn lại,vip,15,6,0,3
+5,MATH,"Chuyển động đều: vận tốc, quãng đường, thời gian",g5-motion-with-rest,Tư duy: thời gian chạy và nghỉ,vip,15,6,0,3
+5,MATH,Phép tính thập phân và bài toán nhiều bước,g5-four-step-budget,Tư duy: lập kế hoạch mua trong ngân sách,vip,15,6,0,3
+5,VIETNAMESE,"Đọc truyện, thơ, thông tin và suy luận có bằng chứng",g5-shared-umbrella,Đọc truyện: Chiếc ô chung,free,12,4,1,3
+5,VIETNAMESE,"Đọc truyện, thơ, thông tin và suy luận có bằng chứng",g5-seedling-journal,Đọc truyện: Mầm cây bên cửa,free,12,4,1,3
+5,VIETNAMESE,"Từ điển, đồng nghĩa, đa nghĩa và sắc thái từ",g5-synonyms-context,Chọn từ đồng nghĩa theo ngữ cảnh,free,12,4,1,3
+5,VIETNAMESE,"Từ điển, đồng nghĩa, đa nghĩa và sắc thái từ",g5-multiple-meanings,Từ đa nghĩa và đồng âm khác nghĩa,free,12,4,1,3
+5,VIETNAMESE,"Đại từ, kết từ, câu ghép và liên kết câu",g5-pronouns-connectors,Đại từ và kết từ nối ý,free,12,4,1,3
+5,VIETNAMESE,"Đại từ, kết từ, câu ghép và liên kết câu",g5-simple-compound,"Câu đơn, câu ghép và quan hệ giữa vế",free,12,4,1,3
+5,VIETNAMESE,"Tả người/cảnh, ý kiến, kết thúc sáng tạo và báo cáo",g5-describe-scenery,Lập dàn ý và tả phong cảnh,free,12,4,1,3
+5,VIETNAMESE,"Tả người/cảnh, ý kiến, kết thúc sáng tạo và báo cáo",g5-describe-person,Tả người bằng hành động và chi tiết,free,12,4,1,3
+5,VIETNAMESE,"Đọc truyện, thơ, thông tin và suy luận có bằng chứng",g5-rain-information,Đọc văn bản giải thích: Vì sao có mưa?,free,12,6,1,3
+5,VIETNAMESE,"Đọc truyện, thơ, thông tin và suy luận có bằng chứng",g5-garden-poem,"Đọc thơ: hình ảnh, so sánh và nhân hóa",free,12,6,1,3
+5,VIETNAMESE,"Từ điển, đồng nghĩa, đa nghĩa và sắc thái từ",g5-dictionary-han-viet,Tra từ điển và hiểu yếu tố Hán Việt,free,12,6,1,3
+5,VIETNAMESE,"Đại từ, kết từ, câu ghép và liên kết câu",g5-sentence-links,"Liên kết câu bằng lặp, thay thế và nối",free,12,6,1,3
+5,VIETNAMESE,"Tên nước ngoài, gạch nối và dấu gạch ngang",g5-names-hyphen-dash,"Tên nước ngoài, gạch nối và gạch ngang",free,12,6,1,3
+5,VIETNAMESE,"Nghe ghi ý chính, nói và phản hồi theo lượt",g5-listen-and-note,"Nghe, ghi ý chính và nói có mục đích",free,12,6,1,3
+5,VIETNAMESE,"Tả người/cảnh, ý kiến, kết thúc sáng tạo và báo cáo",g5-activity-report,Viết báo cáo và chương trình hoạt động,free,12,6,1,3
+5,VIETNAMESE,"Đọc truyện, thơ, thông tin và suy luận có bằng chứng",g5-evidence-inference,Tư duy: nội dung hàm ẩn và bằng chứng,vip,15,8,0,3
+5,VIETNAMESE,"Từ điển, đồng nghĩa, đa nghĩa và sắc thái từ",g5-precise-word-choice,Tư duy: sắc thái từ và câu văn chính xác,vip,15,8,0,3
+5,VIETNAMESE,"Đại từ, kết từ, câu ghép và liên kết câu",g5-connector-reasoning,Tư duy: nối vế và dùng dấu để giữ ý,vip,15,8,0,3
+5,VIETNAMESE,"Tả người/cảnh, ý kiến, kết thúc sáng tạo và báo cáo",g5-opinion-and-reason,Tư duy: nêu ý kiến có lí do và ví dụ,vip,15,8,0,3
+5,VIETNAMESE,"Tả người/cảnh, ý kiến, kết thúc sáng tạo và báo cáo",g5-creative-ending,Tư duy: viết kết thúc khác có căn cứ,vip,15,6,0,3
+5,VIETNAMESE,"Đọc truyện, thơ, thông tin và suy luận có bằng chứng",g5-advertisement-information,Tư duy: đọc chương trình và quảng cáo,vip,15,6,0,3
+5,VIETNAMESE,"Tả người/cảnh, ý kiến, kết thúc sáng tạo và báo cáo",g5-revise-paragraph,Tư duy: chỉnh sửa đoạn để rõ chủ đề,vip,15,6,0,3
+5,VIETNAMESE,"Nghe ghi ý chính, nói và phản hồi theo lượt",g5-respectful-discussion,Tư duy: thảo luận và phản hồi có lí do,vip,15,6,0,3
+5,ENGLISH,"Friends, home, dream jobs and polite interviews",g5-profile-and-friends,"Introduce a friend: tên, tuổi và sở thích",free,12,4,1,3
+5,ENGLISH,"Friends, home, dream jobs and polite interviews",g5-where-you-live,Where do you live? Đọc mô tả nơi ở,free,12,4,1,3
+5,ENGLISH,"Routines, frequency and school activities",g5-daily-routine,Daily routines: thời gian và hoạt động,free,12,4,1,3
+5,ENGLISH,"Routines, frequency and school activities",g5-frequency,"Usually, often, never: thói quen",free,12,4,1,3
+5,ENGLISH,"Health words, should and asking adults for help",g5-feelings-health,Health words: đọc và nói khi cần giúp,free,12,4,1,3
+5,ENGLISH,"Health words, should and asking adults for help",g5-should-advice,Should và lời đề nghị đơn giản,free,12,4,1,3
+5,ENGLISH,"Transport, directions and travel plans",g5-transport,"By bus, by bike, on foot",free,12,4,1,3
+5,ENGLISH,"Transport, directions and travel plans",g5-directions,Chỉ đường theo lời hướng dẫn,free,12,4,1,3
+5,ENGLISH,"Seasons, weather and caring for the environment",g5-seasons-weather,Seasons and weather: chọn việc phù hợp,free,12,6,1,3
+5,ENGLISH,"Past events, future plans and short messages",g5-past-weekend,Yesterday: kể hoạt động đã diễn ra,free,12,6,1,3
+5,ENGLISH,"Past events, future plans and short messages",g5-future-holiday,Will: kế hoạch cho kì nghỉ,free,12,6,1,3
+5,ENGLISH,"Food, quantities and polite shopping dialogues",g5-food-and-quantity,Food and drinks: đọc số lượng,free,12,6,1,3
+5,ENGLISH,"Friends, home, dream jobs and polite interviews",g5-dream-job,Dream jobs: nghề nghiệp và lí do,free,12,6,1,3
+5,ENGLISH,"Past events, future plans and short messages",g5-postcard-evidence,VIP reading: a postcard with clues,vip,15,8,0,3
+5,ENGLISH,"Food, quantities and polite shopping dialogues",g5-shopping-dialogue,VIP dialogue: choose items from a list,vip,15,8,0,3
+5,ENGLISH,"Transport, directions and travel plans",g5-trip-plan,"VIP planning: time, place and transport",vip,15,8,0,3
+5,ENGLISH,"Routines, frequency and school activities",g5-club-schedule,VIP inference: read a club timetable,vip,15,8,0,3
+5,ENGLISH,"Seasons, weather and caring for the environment",g5-environment-plan,VIP reasoning: advice and a green plan,vip,15,6,0,3
+5,ENGLISH,"Friends, home, dream jobs and polite interviews",g5-polite-interview,VIP speaking: interview a friend politely,vip,15,6,0,3
+5,ENGLISH,"Past events, future plans and short messages",g5-small-kindness,"VIP story: actions, reasons and ending",vip,15,6,0,3

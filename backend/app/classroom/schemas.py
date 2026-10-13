@@ -4,8 +4,8 @@ from uuid import UUID
 
 from pydantic import ConfigDict, Field, model_validator
 
-from app.account_schemas import AdminAction
-from app.schemas import StrictModel
+from app.schemas.accounts import AdminAction
+from app.schemas.common import StrictModel
 
 Category = Literal["MATH", "VIETNAMESE", "ENGLISH", "AI", "AI_PROJECT"]
 

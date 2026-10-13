@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 import pytest
 from fastapi import HTTPException
 
-from app.curriculum import CURRICULUM
+from app.curriculum.grades.grade_04.foundation import CURRICULUM
 from app.personalization.engine import evidence_update
 from app.services.grading import grade_answer, normalize, safe_content, validate_answer
 

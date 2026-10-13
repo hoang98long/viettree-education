@@ -1,23 +1,24 @@
 "use client";
 import { useParams } from "next/navigation";
-import {
-  AdminDashboard,
-  AssessmentsPage,
-  CurriculumPage,
-  QuestionsPage,
-  SettingsPage,
-  StudentsPage,
-} from "@/features/admin";
+import { AdminDashboard } from "@/features/admin/dashboard";
+import { AssessmentsPage } from "@/features/admin/assessments";
+import { CurriculumPage } from "@/features/admin/curriculum";
+import { QuestionsPage } from "@/features/admin/questions";
+import { SettingsPage } from "@/features/admin/settings";
+import { StudentsPage } from "@/features/admin/students";
 import NotFound from "@/app/not-found";
-import { AdminMembershipPage } from "@/features/membership";
-import { ContentAccessPage } from "@/features/content-access";
-import { QuestionEditorPage, AssessmentEditorPage } from "@/features/authoring";
-import { LessonEditorPage, LessonsAdminPage } from "@/features/lesson-studio";
-import { AccountsPage, AccountEditorPage } from "@/features/accounts";
-import { SystemStatusPage } from "@/features/system-status";
+import { AdminMembershipPage } from "@/features/membership/pages";
+import { ContentAccessPage } from "@/features/membership/content-access";
+import { QuestionEditorPage } from "@/features/authoring/question-editor";
+import { AssessmentEditorPage } from "@/features/authoring/assessment-editor";
+import { LessonEditorPage } from "@/features/lessons/editor";
+import { LessonsAdminPage } from "@/features/lessons/catalog";
+import { AccountsPage } from "@/features/accounts/catalog";
+import { AccountEditorPage } from "@/features/accounts/editor";
+import { SystemStatusPage } from "@/features/admin/system-status";
 import { AcademyAdmin } from "@/features/academy/admin";
-import { ClassroomsPage } from "@/features/classrooms";
-import { VipPricing } from "@/features/vip-pricing";
+import { ClassroomsPage } from "@/features/classrooms/catalog";
+import { VipPricing } from "@/features/membership/pricing";
 export default function Page() {
   const { path } = useParams<{ path: string[] }>();
   if (path.join("/") === "questions/new") return <QuestionEditorPage />;

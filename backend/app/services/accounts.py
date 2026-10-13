@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.core.security import hasher, now, throttle_sensitive, verify_password
 from app.db import db
+from app.services.accessibility import reading_preferences
 
 SAFE_FIELDS = (
     "id",
@@ -41,9 +42,9 @@ def safe_account(conn, row):
     result.update(
         roles=role_names(conn, row["id"]),
         current_grade=profile["current_grade"] if profile else None,
-        text_size="large"
-        if profile and profile["accessibility_options"].get("text_size") == "large"
-        else "comfortable",
+        text_size=reading_preferences(profile["accessibility_options"] if profile else {})[
+            "text_size"
+        ],
     )
     return result
 

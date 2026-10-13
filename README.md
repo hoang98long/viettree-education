@@ -1,15 +1,29 @@
 # VietTree Education
 
+**Cấu trúc code đã được tổ chức lại theo chức năng:** học liệu tại
+`backend/app/curriculum/grades`, router tại `api/routes`, hợp đồng dữ liệu tại
+`schemas`, demo tại `fixtures`; giao diện chia theo feature/trang/form.
+Xem [kiến trúc và cách mở rộng](docs/architecture.md). Admin có xuất bảng
+học liệu CSV theo khối/môn. Đã bổ sung tài khoản Free/VIP lớp 1–3, giữ nguyên
+tài khoản lớp 4; thêm bốn tài khoản lớp 5: [danh sách và mật khẩu cấu hình](docs/demo-accounts.md).
+
 Ứng dụng học tập tiếng Việt cho học sinh tiểu học: Next.js App Router + FastAPI +
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
-**Ba môn lớp 1–4 đã có học liệu:** mỗi khối **68 bài / 384 câu / 56 đề**:
+**Ba môn lớp 1–5 đã có học liệu:** mỗi khối **68 bài / 384 câu / 56 đề**:
 Toán 25/142/21, Tiếng Việt 23/130/19, Tiếng Anh 20/112/16. Lớp 1–2 được
 biên soạn riêng theo chương trình Việt Nam: bài 6–8 phút, minh họa đếm/thẻ
 chữ, câu lệnh ngắn, lựa chọn ít, nghỉ sau 2–3 câu. Free 46 bài/34 đề;
 VIP thêm 22 bài/22 đề vận dụng phù hợp khối, gợi ý 1 → 3 theo quyền.
 Xem [khảo sát, nội dung và cách nạp lớp 1–2](docs/grades1-2-curriculum.md).
+
+**Lớp 5 mới:** 68 bài ba môn, gồm thập phân, tỉ số/phần trăm, hình học,
+chuyển động, đọc hiểu/viết và Tiếng Anh theo ngữ cảnh. Có 46 bài Free/22 bài VIP,
+minh họa hình học và biểu đồ quạt tròn. [Căn cứ chương trình và danh mục](docs/grade5-curriculum.md).
+Học sinh có **Thư viện bài học** (`/student/lessons`), tìm không dấu, lọc môn/gói/
+tiến độ. Admin chọn khối ở đầu trang chương trình, xem tổng, thu gọn chủ đề và
+biên soạn năm kiểu minh họa mới. Khởi động lại server sau cập nhật.
 
 **AI Academy đã được tích hợp:** lớp 4 có **9 chủ đề / 36 tiết**, lớp 1/2/3/5
 có 3 bài mẫu mỗi khối, tổng 48 bài và 315 SVG minh họa thật. Học nhiều bước,
@@ -37,9 +51,12 @@ phiên tự chuyển tiếp. Cache trạng thái giao diện 30 giây, quyền v
 Xem [thiết kế và vận hành phiên](docs/session-management.md).
 
 Khu vực học sinh dùng chữ mặc định 18 px, bài học 20 px, câu hỏi 22 px; các nút chính
-có chiều cao tối thiểu 48 px. Tại **Hồ sơ của em → Chữ dễ đọc cho em**, chọn
-**Chữ lớn hơn** để dùng chữ 22 px, bài học 24 px và câu hỏi 26 px. Lựa chọn được lưu
-theo tài khoản, áp dụng trên cả điện thoại và máy tính khi đăng nhập lại.
+có chiều cao tối thiểu 48 px. Bấm **Cỡ chữ** hoặc vào **Hồ sơ của em → Chữ dễ đọc cho em**:
+chọn **Chữ gọn hơn** (16 px, bài học 18 px, câu hỏi 20 px) cho màn hình điện thoại,
+**Chữ vừa đủ lớn** hoặc **Chữ lớn hơn** (22/24/26 px). Giao diện điều chỉnh khoảng
+cách theo cỡ chữ. Lựa chọn lưu trong tài khoản, riêng cho **điện thoại / máy tính bảng /
+máy tính**, dùng cả trong AI Academy và giữ sau đăng nhập lại. Thiết bị chưa chọn
+riêng dùng cỡ chữ mặc định cũ. Xem [cấu hình cỡ chữ](docs/reading-preferences.md).
 
 Mục **Kế hoạch học** (`/student/learning-plan`) chuẩn bị tối đa 3 bài học chưa hoàn
 thành và bài luyện tập theo chủ đề trong 7 ngày. Chọn môn rồi bấm **Chuẩn bị kế hoạch**.
@@ -67,7 +84,7 @@ không cần seed/reset tài khoản. Xem [quản trị tài khoản](docs/accou
 
 ## Gói học Free / VIP
 
-Mỗi khối 1–4 có 46 bài học và 34 đề miễn phí. VIP mở thêm 22 bài vận dụng, 22 đề thử thách mỗi khối
+Mỗi khối 1–5 có 46 bài học và 34 đề miễn phí. VIP mở thêm 22 bài vận dụng, 22 đề thử thách mỗi khối
 và kế hoạch theo kỹ năng cần ôn (`plan_v2`). Cách chấm điểm và quyền
 xem kết quả của chính học sinh giống nhau giữa hai gói.
 
@@ -104,8 +121,9 @@ VIP có **Góc học VIP**, **Sổ tay ôn lỗi** với tự luyện không đ�
 
 VIP hiện do admin cấp, chưa tích hợp thanh toán hoặc báo cáo riêng trong tài khoản phụ huynh. Bộ nội
 dung nâng cao được seed cho development; cần giáo viên rà soát trước sử dụng thực tế.
-Seed thường không tự nâng cấp học sinh. Lệnh riêng `seed-demo-learners` tạo bốn
-tài khoản demo theo yêu cầu, gồm hai Free và hai VIP 90 ngày.
+Seed thường không tự nâng cấp học sinh. Lệnh riêng `seed-demo-learners` tạo
+hai Free và hai VIP 90 ngày mỗi khối 1–5; `--grades` chọn khối. Chạy lại giữ
+nguyên mật khẩu, hồ sơ và gói cũ.
 
 ## Lớp học, giao bài và thành tích
 
@@ -126,7 +144,7 @@ Xem [thiết kế và cách sử dụng](docs/classes-achievements.md).
 Máy hiện tại đã nạp sau backup. Máy khác dùng `seed-grade1-content` và
 `seed-grade2-content`; lệnh chỉ thêm học liệu, không tạo/reset tài khoản hoặc
 cấp VIP. Admin tạo học sinh với khối đúng; danh mục mặc định theo hồ sơ.
-Kho bốn khối có tổng **272 bài / 1536 câu / 224 đề**, tách học liệu AI Academy.
+Kho năm khối có tổng **340 bài / 1920 câu / 280 đề**, tách học liệu AI Academy.
 
 **Lớp 3** đã có 68 bài/384 câu/56 đề, bằng quy mô lớp 4 cho từng môn: Toán
 25/142/21, Tiếng Việt 23/130/19, Tiếng Anh 20/112/16. Mỗi bài lớp 3 có 1 gợi ý
@@ -156,10 +174,12 @@ luyện tập** để tìm theo môn, gói, loại và từ khóa. Nội dung VI
 Sau migration và seed, tạo thêm tài khoản bằng `python -m app.cli seed-demo-learners`
 trong backend (chỉ development):
 
-| Tài khoản          | Gói                           |
-| ------------------ | ----------------------------- |
-| free4_01, free4_02 | Free, lớp 4                   |
-| vip4_01, vip4_02   | VIP 90 ngày từ lúc tạo, lớp 4 |
+| Khối | Free               | VIP 90 ngày khi tạo mới |
+| ---- | ------------------ | ----------------------- |
+| 1    | free1_01, free1_02 | vip1_01, vip1_02        |
+| 2    | free2_01, free2_02 | vip2_01, vip2_02        |
+| 3    | free3_01, free3_02 | vip3_01, vip3_02        |
+| 4    | free4_01, free4_02 | vip4_01, vip4_02        |
 
 Mật khẩu là `SEED_STUDENT_PASSWORD` trong `.env`. Chạy lại không đổi mật khẩu hoặc
 gia hạn/cấp lại VIP. Thiết kế, luồng sử dụng và đề xuất nâng cấp tiếp:
@@ -241,8 +261,8 @@ Seed bị chặn khi APP_ENV=production; ứng dụng không tự seed lúc kh�
 
 | Tên đăng nhập | Mật khẩu ví dụ trong .env.example | Vai trò         |
 | ------------- | --------------------------------- | --------------- |
-| admin         | Anhthuan33!                       | Quản trị        |
-| longnh        | Anhthuan33!                       | Học sinh, lớp 4 |
+| admin | `SEED_ADMIN_PASSWORD` trong `.env` | Quản trị        |
+| longnh | `SEED_STUDENT_PASSWORD` trong `.env` | Học sinh, lớp 4 |
 
 Postgres local trong `.env.example` dùng user `postgres`, password `123456` đúng
 cấu hình yêu cầu. Đổi toàn bộ thông tin demo và dùng DB role riêng trước khi đưa
@@ -386,7 +406,7 @@ lesson_questions, lesson_skills và question_skills đúng phiên bản.
 
 - Session server-side có thu hồi, cookie HttpOnly, CSRF/Origin, giới hạn login 10
   requests/phút/IP backend dùng chung giữa worker; login/logout/me và RBAC thật.
-- Khung lớp 1–5, giữ toàn bộ môn trong schema; nội dung thực lớp 3 và 4 cho ba môn chính.
+- Học liệu ba môn chính lớp 1–5; các môn khác giữ khung trong schema.
 - Lesson blocks an toàn, tự luyện tập, assignment self idempotent, resume draft.
 - Single choice, multiple choice, fill blank giữ dấu Việt, ordering; điểm theo item.
 - Transaction nộp bài, khóa hàng, nộp lại trả kết quả cũ; giới hạn lượt/thời gian/IDOR.
@@ -397,18 +417,20 @@ lesson_questions, lesson_skills và question_skills đúng phiên bản.
 - Admin biên soạn câu hỏi và ghép đề, nháp/duyệt/xuất bản/lưu trữ, tạo phiên bản
   và sao chép đề; chống ghi đè bằng revision, giao bài hàng loạt theo lớp/gói.
 - Thư viện luyện tập học sinh lọc theo môn, Free/VIP, loại đề và từ khóa.
+- Thư viện bài học tìm không dấu, lọc môn/gói/tiến độ; minh họa hình học lớp 5.
 - Responsive desktop/tablet/mobile, keyboard controls, reduced motion, loading/
   empty/error/retry; trang 403/404, chuyển login khi hết phiên.
 
-Được để chờ mở rộng theo phạm vi prompt:
+Các phần còn tiếp tục mở rộng:
 
-- Teacher có RBAC/layout; quản lý lớp và giao bài chưa mở. Guardian chỉ xem gói
-  học của trẻ có guardian_students.verified_at; báo cáo trong tài khoản guardian chưa mở.
-  Học sinh VIP đã có báo cáo riêng và in/lưu PDF từ trình duyệt.
-- Lớp 1/2/5 và bốn môn khác: khung chương trình, trạng thái Đang xây dựng.
-- Chưa có public signup, upload/media/audio, auto-grader tự luận, AI/ML,
-  email, thông báo, Redis/MinIO hay dịch vụ trả phí. Bài luyện viết là hướng dẫn tại
-  lesson, không có quy trình nộp tự luận/giáo viên chấm trong MVP.
+- Báo cáo học tập riêng trong tài khoản guardian cần mở rộng; chỉ truy cập trẻ
+  có liên kết đã xác minh. Teacher đã quản lý lớp/giao bài; học sinh VIP có báo
+  cáo riêng và in/lưu PDF.
+- Bốn môn khác ngoài Toán/Tiếng Việt/Tiếng Anh mới có khung chương trình.
+- Chưa có public signup, audio học bài, chấm tự động bài văn, email/thông báo
+  hay thanh toán tự động. Bài văn LMS là hướng dẫn để thực hành với người lớn.
+  AI Academy đã có media, bài thực hành và giáo viên chấm rubric sản phẩm;
+  mặc định `AI_TRAINING_ONLY=true`, học lý thuyết/bài tập nội bộ.
 - Kế hoạch cơ bản `plan_v1` và kế hoạch VIP `plan_v2` đã hoạt động. Gợi ý luyện tập
   `rule_v1` vẫn hoạt động độc lập và chỉ chọn đề đủ quyền gói hiện tại.
   Khi nội dung hoặc lượt làm bài thay đổi sau lúc lập kế hoạch, quy tắc truy cập
@@ -421,13 +443,14 @@ frontend/src/app/         Public + student/admin/teacher/guardian routes
 frontend/src/features/    Giao diện học tập và quản trị
 frontend/src/lib/         API client và TypeScript contracts
 frontend/e2e/             Browser tests desktop/mobile
-backend/app/api.py        REST routes và RBAC
+backend/app/api/routes/   REST routes và RBAC theo chức năng
+backend/app/schemas/      Request/response contracts theo chức năng
 backend/app/core/          Cấu hình, session, CSRF, Argon2id
 backend/app/db.py          SQLAlchemy reflection/kiểm tra schema
 backend/app/services/      Làm bài và graders
 backend/app/personalization/  rule_v1 và rebuild thống kê
-backend/app/curriculum.py  Nội dung tự biên soạn
-backend/app/seed.py        Seed an toàn, idempotent
+backend/app/curriculum/   Học liệu theo khối/môn, registry và seed nội dung
+backend/app/fixtures/     Tài khoản demo và seed development riêng
 backend/alembic/           Baseline + migrations auth/Free-VIP
 backend/tests/            Unit, integration, concurrency
 backend/scripts/smoke.py  Smoke transaction mặc định rollback

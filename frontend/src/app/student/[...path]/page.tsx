@@ -1,24 +1,26 @@
 "use client";
 import { useParams } from "next/navigation";
-import {
-  AssessmentPage,
-  AttemptPage,
-  Grades,
-  HistoryPage,
-  LessonPage,
-  ProfilePage,
-  ProgressPage,
-  ResultPage,
-  StudentDashboard,
-  SubjectPage,
-} from "@/features/student";
+import { AssessmentPage } from "@/features/student/assessment";
+import { AttemptPage } from "@/features/student/attempt";
+import { Grades, SubjectPage } from "@/features/student/catalog";
+import { HistoryPage } from "@/features/student/history";
+import { LessonPage } from "@/features/student/lesson";
+import { LessonLibraryPage } from "@/features/student/lesson-library";
+import { ProfilePage } from "@/features/student/profile";
+import { ProgressPage } from "@/features/student/progress";
+import { ResultPage } from "@/features/student/result";
+import { StudentDashboard } from "@/features/student/dashboard";
 import NotFound from "@/app/not-found";
-import { LearningPlanPage } from "@/features/learning-plan";
-import { MembershipPage } from "@/features/membership";
-import { PracticeLibrary } from "@/features/practice-library";
-import { VipLibraryPage, VipMistakesPage, VipReportPage } from "@/features/vip";
-import { ThinkingPage } from "@/features/curriculum-extension";
-import { StudentClassroom } from "@/features/classrooms";
+import { LearningPlanPage } from "@/features/student/learning-plan";
+import { MembershipPage } from "@/features/membership/pages";
+import { PracticeLibrary } from "@/features/student/practice-library";
+import {
+  VipLibraryPage,
+  VipMistakesPage,
+  VipReportPage,
+} from "@/features/vip/workspace";
+import { ThinkingPage } from "@/features/curriculum/thinking";
+import { StudentClassroom } from "@/features/classrooms/student";
 export default function Page() {
   const { path } = useParams<{ path: string[] }>();
   if (path.length === 1)
@@ -29,6 +31,8 @@ export default function Page() {
         return <StudentDashboard />;
       case "grades":
         return <Grades />;
+      case "lessons":
+        return <LessonLibraryPage />;
       case "history":
         return <HistoryPage />;
       case "progress":

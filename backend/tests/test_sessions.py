@@ -165,9 +165,15 @@ def test_login_returns_saved_text_size_for_shared_session_cache(client, conn):
     conn.execute(
         profiles.update()
         .where(profiles.c.student_id == user_id)
-        .values(accessibility_options={"text_size": "large"})
+        .values(
+            accessibility_options={
+                "text_size": "compact",
+                "text_size_by_device": {"phone": "comfortable", "desktop": "large"},
+            }
+        )
     )
     response = login(client)
     assert response.status_code == 200
-    assert response.json()["text_size"] == "large"
-    assert client.get("/api/v1/auth/me").json()["text_size"] == "large"
+    for result in [response.json(), client.get("/api/v1/auth/me").json()]:
+        assert result["text_size"] == "compact"
+        assert result["text_size_by_device"] == {"phone": "comfortable", "desktop": "large"}

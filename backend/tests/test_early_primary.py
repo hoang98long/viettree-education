@@ -5,12 +5,12 @@ from uuid import UUID, uuid4
 import pytest
 from sqlalchemy import func, select
 
-from app.authoring_schemas import QuestionInput
+from app.curriculum.grades.early_primary.builders import EXPECTED
+from app.curriculum.grades.early_primary.pack import PACKS, TOPICS
+from app.curriculum.seeding import seed_early_primary_content, verify_seed
 from app.db import db
-from app.early_primary_curriculum import PACKS, TOPICS
-from app.early_primary_support import EXPECTED
-from app.lesson_schemas import LessonContent
-from app.seed import seed_early_primary_content, verify_seed
+from app.schemas.authoring import QuestionInput
+from app.schemas.lessons import LessonContent
 from app.services.grading import grade_answer
 from tests.test_grading import correct_answer
 from tests.test_memberships import admin_login, identities, membership

@@ -2,10 +2,25 @@
 
 ## Đã triển khai trong vòng này
 
+Code đã chia theo module API/schema/nghiệp vụ/học liệu; frontend tách theo
+feature/trang/form. Registry học liệu dùng chung cho CLI và admin; CLI nạp
+đầy đủ từng khối và kiểm kê source không cần DB. Admin xuất bảng học liệu
+CSV theo bộ lọc. Có 20 tài khoản thử Free/VIP cho lớp 1–5, gồm bốn tài khoản lớp 5 mới;
+những tài khoản cũ giữ mật khẩu và gói. Xem [kiến trúc](architecture.md)
+và [demo theo khối](demo-accounts.md).
+
+Ba môn lớp 1–5 đã có mỗi khối 68 bài/384 câu/56 đề. Lớp và giao bài cá nhân/
+cả lớp, kết quả và tuyên dương top 3 đã triển khai; không còn là đề xuất.
+
 Chữ học sinh 18 px, bài học 20 px, câu hỏi 22 px; chế độ chữ lớn lưu theo tài khoản.
 Kế hoạch học 7 ngày theo môn có tối đa 3 bài mới và bài luyện tập, theo dõi tiến độ
 đọc và bài đã nộp. Kế hoạch dùng dữ liệu chương trình đang xuất bản, cùng lớp và
 còn lượt luyện tập. Không gán điểm hoặc năng lực từ thao tác xác nhận đọc.
+
+Lớp 5 đã có bộ ba môn theo chương trình Việt Nam, 46 bài Free và 22 bài VIP.
+Thư viện bài học tìm không dấu, lọc tiến độ/gói/môn; admin có tổng học liệu và
+biên soạn thêm tam giác, hình thang, hình tròn, hình hộp, biểu đồ quạt tròn.
+Xem [nội dung và phạm vi lớp 5](grade5-curriculum.md).
 
 ## Các chức năng đề xuất tiếp theo
 
@@ -27,13 +42,13 @@ Thiết kế gói học Free/VIP, quyền nội dung và tính năng nâng cao �
 22 bài/22 đề nâng cao, plan_v2 và xem gói qua liên kết phụ huynh đã triển khai; VIP vẫn
 giữ nguyên vai trò student và không thay thế quyền quản trị hoặc liên kết phụ huynh.
 
-| Ưu tiên | Chức năng | Giá trị và tiêu chí nghiệm thu |
-| --- | --- | --- |
-| 1 | Giáo viên giao bài cho lớp | Giáo viên chỉ xem lớp mình phụ trách; chọn đề đã xuất bản, giờ mở/hạn nộp; giao lặp không tạo trùng. Học sinh thấy bài trong Nhiệm vụ hôm nay; giáo viên xem ai chưa bắt đầu/đang làm/đã nộp. |
-| 2 | Báo cáo phụ huynh theo tuần | Chỉ phụ huynh có liên kết và quyền phù hợp mới xem dữ liệu trẻ; tổng hợp bài đã đọc, bài đã nộp, kỹ năng cần ôn và gợi ý hỗ trợ. Tách rõ tiến độ học khỏi độ vững kỹ năng; chưa có dữ liệu thì báo chưa đủ để đánh giá. |
-| 3 | Tự điều chỉnh bước kế hoạch | plan_v2 theo kỹ năng đã có. Tiếp tục thay bước bị đóng/hết lượt mà giữ lịch sử thay đổi và các bước đã hoàn thành. |
-| 4 | Nội dung lớp 1–3 và lớp 5 | Ưu tiên lớp 1–2 với câu ngắn, hình minh họa và hướng dẫn từng bước; giáo viên rà soát nội dung, đáp án và độ khó trước khi xuất bản. Giữ trạng thái đang xây dựng cho phần chưa có nội dung. |
-| 5 | Đọc hướng dẫn bằng âm thanh | Nút nghe/dừng, không tự phát; dùng âm thanh đã được rà soát cho tiếng Việt/tiếng Anh. Bài kiểm tra đọc hiểu cần quy tắc riêng để âm thanh không làm thay phần cần đánh giá. |
+| Ưu tiên | Chức năng                              | Giá trị và tiêu chí nghiệm thu                                                                                                                                                    |
+| ------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | Báo cáo phụ huynh theo tuần            | Chỉ phụ huynh có liên kết đã xác minh được xem; tách tiến độ đọc và bằng chứng kỹ năng, báo thiếu dữ liệu khi cần. Không tự gửi thông báo trước khi có cấu hình và chấp thuận.    |
+| 2       | MFA admin và khôi phục tài khoản       | Xác thực bổ sung, mã dự phòng và quy trình khôi phục có xác minh; rate limit/audit, thu hồi phiên phù hợp. Không dùng mật khẩu demo cho vận hành thật.                            |
+| 3       | Tự điều chỉnh bước kế hoạch            | plan_v2 theo kỹ năng đã có. Tiếp tục thay bước bị đóng/hết lượt mà giữ lịch sử thay đổi và các bước đã hoàn thành.                                                                |
+| 4 | Tăng độ phủ học liệu lớp 1–5 | Bộ lớp 5 đã có 68 bài. Tiếp tục tăng số văn bản đọc, bài viết mở, đo/vẽ, mô hình khối và thực hành dữ liệu; có giáo viên rà soát theo kế hoạch năm học. |
+| 5       | Đọc hướng dẫn bằng âm thanh            | Nút nghe/dừng, không tự phát; dùng âm thanh đã được rà soát cho tiếng Việt/tiếng Anh. Bài kiểm tra đọc hiểu cần quy tắc riêng để âm thanh không làm thay phần cần đánh giá.       |
 
 ## Thứ tự thực hiện đề nghị
 
@@ -42,8 +57,8 @@ mở thêm khối lớp, bổ sung các mảng lớp 4 còn thiếu đã ghi tro
 [grade4-curriculum.md](grade4-curriculum.md), đặc biệt nghe/nói có âm thanh và
 bài viết được giáo viên nhận xét. Bảng hiện tại theo mạch, chưa đánh giá đạt yêu cầu.
 
-Hoàn thiện giao bài cho lớp trước để giáo viên đưa hệ thống vào hoạt động hằng ngày.
-Tiếp đó làm báo cáo phụ huynh từ dữ liệu thật; sau khi có đủ lịch sử mới cải tiến
+Giao bài theo lớp đã có; ưu tiên báo cáo phụ huynh từ dữ liệu thật và bảo mật
+quản trị khi triển khai. Sau khi có đủ lịch sử mới cải tiến
 quy tắc kế hoạch cá nhân. Mở rộng nội dung có thể thực hiện song song với việc rà
 soát chuyên môn của giáo viên.
 
