@@ -9,7 +9,7 @@ temporary_dump=$(mktemp "$backup_root/.dump.XXXXXX")
 temporary_media=$(mktemp "$backup_root/.media.XXXXXX")
 trap 'rm -f -- "$temporary_dump" "$temporary_media"' EXIT
 dc() {
-  docker compose --project-name viettree --env-file .env.production -f docker-compose.production.yml "$@"
+  bash "$repo_root/deploy/compose.sh" "$@"
 }
 dc exec -T db sh -c 'exec pg_dump -U viettree_app -d "$POSTGRES_DB" -Fc' > "$temporary_dump"
 dc exec -T db pg_restore --list < "$temporary_dump" > /dev/null

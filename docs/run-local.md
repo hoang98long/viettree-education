@@ -3,6 +3,10 @@
 Máy Windows hiện có `.env`, `.venv`, `frontend/node_modules` và PostgreSQL 18
 đang chạy. Dùng PowerShell; không cần Docker hoặc cài lại các thư viện.
 
+Bản nâng cấp 14/10 bổ sung tự lưu bài luyện, đồng hồ thời hạn và rà soát học liệu.
+Không cần migration hoặc seed lại; khởi động lại cả hai server theo hướng dẫn
+dưới đây. [Cách dùng tự lưu](learning-reliability.md).
+
 ## 1. Mở backend — terminal thứ nhất
 
 ```powershell
@@ -153,6 +157,9 @@ học sinh mở bài để xem minh họa và gợi ý. [Hướng dẫn](lesson-
   `ALLOWED_ORIGINS=http://localhost:3000`, `COOKIE_SECURE=false`,
   `APP_ENV=development` trong `.env`, rồi khởi động lại backend.
 - **Đăng nhập lỗi 429:** đợi khoảng một phút rồi thử lại.
+- **API báo dữ liệu tạm bận (503):** thử lại sau vài giây; backend đã giới hạn
+  chờ khóa DB. Sau cập nhật 14/10, khởi động lại cả hai server để dùng dashboard
+  chỉ đọc, bài đọc trong đề và chấm số mới. Không cần migration mới.
 
 Nếu chuyển sang máy khác hoặc thiếu thư viện, xem phần
 [Chạy local development trong README](../README.md#chạy-local-development).

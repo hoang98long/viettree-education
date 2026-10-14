@@ -128,8 +128,10 @@ export type Attempt = {
   assignment_id: string;
   assessment_id: string;
   title: string;
+  grade?: number;
   status: string;
   deadline: string | null;
+  server_time?: string;
   items: AttemptItem[];
 };
 export type Result = {

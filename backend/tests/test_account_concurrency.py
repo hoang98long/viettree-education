@@ -142,8 +142,9 @@ def test_old_password_login_racing_reset_cannot_leave_active_session(test_engine
     )
 
     def login():
+        payload = api.login_guard(LoginInput(username=username, password=TEMP), request)
         with test_engine.begin() as conn:
-            api.login(LoginInput(username=username, password=TEMP), request, Response(), conn)
+            api.login(request, Response(), payload=payload, conn=conn)
 
     def reset():
         with test_engine.begin() as conn:

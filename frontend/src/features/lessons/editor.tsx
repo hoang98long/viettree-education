@@ -12,6 +12,7 @@ import { initial, lines } from "@/features/lessons/form-values";
 import { statusLabels } from "@/features/lessons/constants";
 import { ContentFields } from "@/features/lessons/content-fields";
 import { IllustrationFields } from "@/features/lessons/illustration-fields";
+import { ReadingReview } from "./reading-review";
 
 export function LessonForm({
   options,
@@ -393,6 +394,7 @@ export function LessonForm({
           </button>
         </div>
       </form>
+      <ReadingReview value={form} />
       {error && (
         <p className="notice error" role="alert">
           {error}

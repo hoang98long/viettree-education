@@ -1,6 +1,7 @@
 import json
 import logging
 import time
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from fastapi import FastAPI, Request
@@ -11,7 +12,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.api.router import router
 from app.core.config import settings
-from app.db import SchemaNotReady, engine
+from app.db import SchemaNotReady, db, engine
 from app.operations import readiness
 
 logger = logging.getLogger("viettree")
@@ -50,6 +51,7 @@ async def invalid_request(request, error):
 @app.middleware("http")
 async def request_logging(request: Request, call_next):
     started = time.monotonic()
+    request.state.received_at = datetime.now(UTC)
     request.state.request_id = uuid4().hex
     try:
         response = await call_next(request)
@@ -99,6 +101,7 @@ async def database_error(request, error):
             {
                 "error": "database_operation_failed",
                 "type": type(error).__name__,
+                "sqlstate": getattr(original, "sqlstate", None),
                 "constraint": getattr(getattr(original, "diag", None), "constraint_name", None),
                 "request_id": request.state.request_id,
             }
@@ -130,6 +133,10 @@ def ready():
     try:
         with engine().connect() as conn:
             readiness.check(conn)
+            # Compose waits for /ready before exposing the site. Reflect the
+            # API metadata here, so a login burst does not initialize it while
+            # holding every connection in the small VPS pool.
+            db.load(conn)
         return {"status": "ready"}
     except (SQLAlchemyError, SchemaNotReady):
         return JSONResponse(

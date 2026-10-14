@@ -1,7 +1,9 @@
 import hashlib
 import hmac
 import secrets
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
+from threading import BoundedSemaphore
 
 from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
@@ -12,10 +14,12 @@ from sqlalchemy.engine import Connection
 
 from app.core.config import settings
 from app.core.dependencies import database
-from app.db import db, engine
+from app.db import db
+from app.db import rate_engine as engine
 
 hasher = PasswordHasher()
 DUMMY_HASH = hasher.hash(secrets.token_urlsafe(32))
+password_slots = BoundedSemaphore(settings().password_verify_concurrency)
 
 
 def now():
@@ -26,11 +30,33 @@ def digest(value: str) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
 
 
-def verify_password(encoded: str | None, password: str) -> bool:
+@contextmanager
+def password_capacity():
+    if not password_slots.acquire(timeout=5):
+        raise HTTPException(
+            503,
+            "Đang có nhiều lượt xử lý tài khoản. Em chờ vài giây rồi thử lại nhé.",
+            headers={"Retry-After": "5"},
+        )
     try:
-        return hasher.verify(encoded or DUMMY_HASH, password) and encoded is not None
-    except (VerificationError, InvalidHashError):
-        return False
+        yield
+    finally:
+        password_slots.release()
+
+
+def hash_password(password: str) -> str:
+    # Creating/resetting/changing passwords shares the same memory budget as
+    # login verification. Do not reduce Argon2's security parameters.
+    with password_capacity():
+        return hasher.hash(password)
+
+
+def verify_password(encoded: str | None, password: str) -> bool:
+    with password_capacity():
+        try:
+            return hasher.verify(encoded or DUMMY_HASH, password) and encoded is not None
+        except (VerificationError, InvalidHashError):
+            return False
 
 
 def verify_origin(request: Request):
@@ -144,6 +170,15 @@ def throttle_sensitive(user_id) -> bool:
 
 
 def _throttle(identity, maximum) -> bool:
+    # Login guards run before the request's database dependency, including on
+    # the first request in a newly started worker. Load metadata in this short
+    # transaction instead of relying on a previously borrowed API connection.
+    with engine().begin() as conn:
+        db.load(conn)
+        return _record_login_limit(conn, identity, maximum)
+
+
+def _record_login_limit(conn, identity, maximum) -> bool:
     table = db.table("auth_login_limits")
     # Không lưu IP plaintext; không tin X-Forwarded-For từ client.
     key = digest(identity)
@@ -160,8 +195,7 @@ def _throttle(identity, maximum) -> bool:
         },
     ).returning(table.c.failures)
     # Transaction riêng để login sai vẫn tăng giới hạn, không commit transaction API.
-    with engine().begin() as conn:
-        return conn.execute(statement).scalar_one() > maximum
+    return conn.execute(statement).scalar_one() > maximum
 
 
 def create_session(conn, user_id, response, roles=(), remember_me=False):

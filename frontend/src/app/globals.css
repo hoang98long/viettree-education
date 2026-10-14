@@ -1353,6 +1353,63 @@ dd {
   margin-top: 20px;
   min-height: 20px;
 }
+.question-reading {
+  margin-block: 16px 24px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #f5faf6;
+}
+.question-reading summary {
+  cursor: pointer;
+  min-height: 48px;
+  font-weight: 700;
+}
+.question-reading .reading-paragraph {
+  margin-top: 12px;
+  font-weight: 400;
+}
+.deadline-clock {
+  margin-block: 16px;
+  padding: 12px 16px;
+  background: #eef6f1;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.deadline-clock > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.deadline-clock.ending {
+  background: #fff4da;
+  border-color: #dcc488;
+}
+.deadline-clock p {
+  margin-bottom: 0;
+}
+.reading-review dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr));
+  gap: 14px;
+}
+.reading-review dl > div {
+  padding: 14px;
+  background: #f2f7f3;
+  border-radius: 14px;
+}
+.reading-review dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+.reading-review dd {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+}
 .question-nav > div {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2381,6 +2438,7 @@ tr:last-child td {
   font-weight: 700;
 }
 .reading-paragraph {
+  color: var(--ink);
   white-space: pre-line;
 }
 .word-picture {

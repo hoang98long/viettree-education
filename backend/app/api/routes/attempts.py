@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 
 import app.schemas.attempts as schemas_attempts
 from app.core.dependencies import database
@@ -31,10 +31,11 @@ def answer(
     attempt_id: UUID,
     item_id: UUID,
     payload: AnswerInput,
+    request: Request,
     user=Depends(student_user),
     conn=database,
 ):
-    return service.save_answer(conn, user, attempt_id, item_id, payload)
+    return service.save_answer(conn, user, attempt_id, item_id, payload, request.state.received_at)
 
 
 @router.post(

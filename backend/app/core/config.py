@@ -22,9 +22,14 @@ class Settings(BaseSettings):
     db_password: str = ""
     db_connect_timeout: int = Field(default=5, ge=1, le=30)
     db_statement_timeout_ms: int = Field(default=30000, ge=1000, le=300000)
+    db_lock_timeout_ms: int = Field(default=5000, ge=1000, le=30000)
     db_pool_size: int = Field(default=5, ge=1, le=50)
     db_pool_max_overflow: int = Field(default=5, ge=0, le=50)
     db_pool_timeout: int = Field(default=5, ge=1, le=30)
+    server_workers: int = Field(default=2, ge=1, le=8)
+    server_limit_concurrency: int = Field(default=128, ge=16, le=2000)
+    server_graceful_timeout: int = Field(default=30, ge=5, le=120)
+    password_verify_concurrency: int = Field(default=2, ge=1, le=8)
     allowed_origins: str = "http://localhost:3000"
     cookie_secure: bool = False
     session_hours: int = Field(default=8, ge=1, le=24)

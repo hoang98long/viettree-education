@@ -17,6 +17,10 @@ test("admin tạo/duyệt bài minh họa; học sinh đọc, mở gợi ý; nh�
   );
   await login(page, "admin", adminPassword!);
   await page.goto("/admin/lessons/new");
+  const readingReview = page.getByRole("complementary", {
+    name: "Rà soát học liệu",
+  });
+  await expect(readingReview).toContainText("Phần chưa có nội dung");
   const code = `E2E-LESSON-${info.project.name}-${Date.now()}`;
   const title = `Bánh chia đều ${code}`;
   await page.getByLabel("Mã bài học", { exact: true }).fill(code);
@@ -51,6 +55,9 @@ test("admin tạo/duyệt bài minh họa; học sinh đọc, mở gợi ý; nh�
   await page
     .getByLabel("Chú thích hình (nêu rõ ý nghĩa và số liệu)")
     .fill(caption);
+  await expect(readingReview).toContainText("Đã chọn hình minh họa");
+  await expect(readingReview).toContainText("1 mức Free / 1 mức VIP");
+  await expect(readingReview).not.toContainText("Phần chưa có nội dung");
   await page
     .getByRole("button", { name: "Xem trước bài học", exact: true })
     .click();

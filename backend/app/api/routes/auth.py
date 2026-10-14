@@ -1,3 +1,4 @@
+from anyio import CapacityLimiter, to_thread
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy import func, select
 
@@ -18,6 +19,7 @@ from app.schemas.auth import LoginInput, UserResponse
 from app.services.accessibility import reading_preferences
 
 router = APIRouter(prefix="/api/v1")
+login_guard_slots = CapacityLimiter(1)
 
 
 def _user_response(user, conn):
@@ -34,13 +36,30 @@ def _user_response(user, conn):
     return result
 
 
-@router.post("/auth/login", response_model=UserResponse, tags=["auth"])
-def login(payload: LoginInput, request: Request, response: Response, conn=database):
+def login_guard(payload: LoginInput, request: Request):
+    # Finish the separate rate-limit transaction before borrowing the API
+    # connection; bursts otherwise need two pool connections per login.
     verify_origin(request)
     if throttle_login(request, payload.username):
         raise HTTPException(
             429, "Em hãy đợi một phút rồi thử lại nhé", headers={"Retry-After": "60"}
         )
+    return payload
+
+
+async def guarded_login(payload: LoginInput, request: Request):
+    # Authentication counters have a dedicated DB connection/thread slot.
+    # Waiting login guards must not starve the threads that verify passwords.
+    return await to_thread.run_sync(login_guard, payload, request, limiter=login_guard_slots)
+
+
+@router.post("/auth/login", response_model=UserResponse, tags=["auth"])
+def login(
+    request: Request,
+    response: Response,
+    payload: LoginInput = Depends(guarded_login),
+    conn=database,
+):
     users, roles = db.table("users"), db.table("user_roles")
     user = (
         conn.execute(

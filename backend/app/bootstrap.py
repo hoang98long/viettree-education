@@ -3,7 +3,7 @@
 from pydantic import Field, field_validator
 from sqlalchemy import func, select, text
 
-from app.core.security import hasher, now
+from app.core.security import hash_password, now
 from app.db import db
 from app.schemas.accounts import AccountFields, Password, Role, password_policy
 
@@ -32,7 +32,7 @@ def bootstrap_admin(conn, username, display_name, password):
         .values(
             username=payload.username,
             display_name=payload.display_name,
-            password_hash=hasher.hash(payload.password),
+            password_hash=hash_password(payload.password),
             password_changed_at=now(),
         )
         .returning(users.c.id)

@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy import delete, func, null, select, text, update
 from sqlalchemy.exc import IntegrityError
 
-from app.core.security import hasher, now, throttle_sensitive, verify_password
+from app.core.security import hash_password, now, throttle_sensitive, verify_password
 from app.db import db
 from app.services.accessibility import reading_preferences
 
@@ -219,7 +219,7 @@ def create(conn, actor, payload):
                     username=payload.username,
                     display_name=payload.display_name,
                     email=payload.email,
-                    password_hash=hasher.hash(payload.password),
+                    password_hash=hash_password(payload.password),
                     must_change_password=payload.must_change_password,
                     password_changed_at=now(),
                 )
@@ -311,7 +311,7 @@ def reset_password(conn, actor, target_id, payload):
     changed = bump(
         conn,
         target_id,
-        password_hash=hasher.hash(payload.new_password),
+        password_hash=hash_password(payload.new_password),
         password_changed_at=now(),
         must_change_password=True,
     )

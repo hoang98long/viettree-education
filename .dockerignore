@@ -1,6 +1,8 @@
 .git
 .env
 .env.*
+**/.env
+**/.env.*
 .venv
 **/node_modules
 **/.next
@@ -10,6 +12,7 @@
 **/test-results
 **/playwright-report
 .tools
+.artifacts
 *.log
 var
 backend/build

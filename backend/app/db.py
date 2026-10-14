@@ -1,7 +1,9 @@
 import re
+import sys
 from functools import lru_cache
 from threading import Lock
 
+from anyio import CancelScope, CapacityLimiter, to_thread
 from sqlalchemy import MetaData, create_engine, inspect
 from sqlalchemy.engine import Connection
 
@@ -83,21 +85,36 @@ MEMBERSHIP_COLUMNS["class_enrollments"] = {"recognition_alias"}
 MEMBERSHIP_COLUMNS["ai_lessons"] = {"minimum_plan_code"}
 
 
-@lru_cache
-def engine():
+def configured_engine(pool_size, max_overflow):
     config = settings()
     return create_engine(
         config.database_url,
         pool_pre_ping=True,
         hide_parameters=True,
-        pool_size=config.db_pool_size,
-        max_overflow=config.db_pool_max_overflow,
+        pool_size=pool_size,
+        max_overflow=max_overflow,
         pool_timeout=config.db_pool_timeout,
         connect_args={
             "connect_timeout": config.db_connect_timeout,
-            "options": f"-c statement_timeout={config.db_statement_timeout_ms}",
+            "options": (
+                f"-c statement_timeout={config.db_statement_timeout_ms} "
+                f"-c lock_timeout={config.db_lock_timeout_ms}"
+            ),
         },
     )
+
+
+@lru_cache
+def engine():
+    config = settings()
+    return configured_engine(config.db_pool_size, config.db_pool_max_overflow)
+
+
+@lru_cache
+def rate_engine():
+    # Short authentication counters must not need a second connection from a
+    # pool already occupied by password/account transactions.
+    return configured_engine(1, 0)
 
 
 class SchemaNotReady(RuntimeError):
@@ -154,9 +171,37 @@ class Database:
 
 
 db = Database()
+connection_slots = CapacityLimiter(settings().db_pool_size + settings().db_pool_max_overflow)
+transaction_exit_slots = CapacityLimiter(1)
 
 
-def connection():
-    with engine().begin() as conn:
+def begin_transaction():
+    transaction = engine().begin()
+    conn = transaction.__enter__()
+    try:
         db.load(conn)
+    except BaseException:
+        transaction.__exit__(*sys.exc_info())
+        raise
+    return transaction, conn
+
+
+async def connection():
+    # Wait for a small DB pool outside FastAPI's endpoint thread pool. Otherwise
+    # 50 waiting requests can occupy all endpoint threads while the few requests
+    # that own connections cannot run or commit to release them.
+    transaction, conn = await to_thread.run_sync(begin_transaction, limiter=connection_slots)
+    try:
         yield conn
+    except BaseException:
+        failure = sys.exc_info()
+        with CancelScope(shield=True):
+            await to_thread.run_sync(transaction.__exit__, *failure, limiter=transaction_exit_slots)
+        raise
+    else:
+        # Finalizers use their own slot, so connection waiters cannot prevent
+        # commits/rollbacks. Preserve commit-before-response and cleanup on cancel.
+        with CancelScope(shield=True):
+            await to_thread.run_sync(
+                transaction.__exit__, None, None, None, limiter=transaction_exit_slots
+            )

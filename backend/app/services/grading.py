@@ -1,4 +1,6 @@
+import re
 import unicodedata
+from decimal import Decimal
 
 from fastapi import HTTPException
 from pydantic import ValidationError
@@ -18,6 +20,18 @@ def normalize(text: str, case_sensitive: bool = False) -> str:
     # Giữ dấu tiếng Việt, chuẩn NFC, chỉ gộp whitespace và tùy chọn casefold.
     text = " ".join(unicodedata.normalize("NFC", text).split())
     return text if case_sensitive else text.casefold()
+
+
+def numeric_presentation(value: str, decimals=False) -> str:
+    """Ignore harmless numeric spacing, without simplifying a requested fraction."""
+    if re.fullmatch(r"[+-]?\d{1,3}(?: \d{3})+", value):
+        return value.replace(" ", "")
+    if re.fullmatch(r"[+-]?\d+\s*/\s*[1-9]\d*", value):
+        return value.replace(" ", "")
+    if decimals and re.fullmatch(r"[+-]?(?:\d+|\d{1,3}(?: \d{3})+)[.,]\d+", value):
+        number = Decimal(value.replace(" ", "").replace(",", "."))
+        return format(number, "f").rstrip("0").rstrip(".")
+    return value
 
 
 def safe_content(content: dict) -> dict:
@@ -63,9 +77,13 @@ def grade_answer(kind: str, grading: dict, answer: dict | None) -> bool | None:
         return set(answer.get("option_ids", [])) == set(grading["correct_option_ids"])
     if kind == "fill_blank":
         sensitive = grading.get("case_sensitive", False)
-        return normalize(answer.get("text", ""), sensitive) in {
-            normalize(value, sensitive) for value in grading["accepted_answers"]
-        }
+        accepted = [normalize(value, sensitive) for value in grading["accepted_answers"]]
+        candidate = normalize(answer.get("text", ""), sensitive)
+        if not sensitive:
+            decimals = any(re.fullmatch(r"[+-]?\d+[.,]\d+", value) for value in accepted)
+            accepted = [numeric_presentation(value, decimals) for value in accepted]
+            candidate = numeric_presentation(candidate, decimals)
+        return candidate in accepted
     if kind == "ordering":
         return answer.get("ordered_ids") == grading["ordered_ids"]
     raise ValueError("Không có grader hợp lệ")

@@ -3,7 +3,7 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: xem phần **Phân hệ lớp 3 và gợi ý VIP** cuối tài liệu;
+Trạng thái mới nhất: xem phần **Rà soát học liệu, tải 50 học sinh và VPS** cuối tài liệu;
 phần VIP, phiên đăng nhập và ngân hàng câu hỏi ghi nhận các đợt trước.
 Các checkpoint và số lượng trong phần đầu ghi nhận mốc MVP trước khi mở rộng.
 
@@ -818,3 +818,110 @@ của tranh; **12 browser AI/quan sát đã đạt**, thêm **2 browser thẻ t�
 kiểm tra chiều rộng 320/390/768/1280 px, lưu/reload, chuyển bước và đóng gợi ý.
 ESLint, TypeScript, Prettier và production build đạt. Tài liệu chi tiết:
 [học bằng hình](visual-learning-and-ai.md).
+
+## Tự lưu và rà soát học liệu · 14/10/2026
+
+Bài luyện tự lưu sau 0,8 giây; một request mỗi lần, giữ bản sửa mới khi phản hồi
+cũ đến muộn, chờ lưu hết trước đổi câu/nộp hoặc chuyển bằng liên kết nội bộ.
+Lỗi mạng giữ đáp án trên trang, có retry thủ công/online; request treo dừng sau
+15 giây. Cảnh báo đóng/reload khi chưa lưu; không lưu đáp án trong localStorage.
+Không bảo đảm khôi phục phần chưa lưu nếu đóng trang/tắt máy hoặc dùng Back.
+
+Backend nhận mốc request trước xác thực/DB, conditional upsert theo answered_at
+chặn request cũ xử lý muộn. Giữ khóa chủ bài, quyền Free/VIP, CSRF, thời hạn và
+chấm điểm trên server. GET attempt bổ sung server_time; đồng hồ giao diện dùng
+mốc server, nhắc hai phút, không tự nộp hoặc thay đổi hạn làm bài.
+
+Admin có rà soát độ dài/câu dài, phần trống, hình và gợi ý/giới thiệu VIP trước
+khi duyệt. Chỉ gợi ý biên soạn, giữ validation/revision và quy trình xuất bản.
+Không thêm migration, không seed hoặc sửa dữ liệu học tập hiện tại.
+
+Kiểm thử: **66 frontend passed**. Lượt backend ban đầu có **36 ca đạt**, sau đó
+chốt **6 ca đạt** cho clock/API, request cũ, nộp/chấm, quyền chủ bài, thời hạn
+và dependency transaction. Lượt browser cuối **10 passed** trên desktop/mobile,
+gồm lỗi mạng, response chậm, chuyển trang, lưu/reload, kết quả, admin/CMS và tranh.
+`check-system` trên DB hiện tại đạt, head giữ 0011_classes_vip_training. Ruff,
+ESLint, TypeScript, Prettier và production build đạt.
+
+Chi tiết: [tự lưu bài và rà soát học liệu](learning-reliability.md).
+
+## Rà soát học liệu, tải 50 học sinh và VPS · 14/10/2026
+
+Đối chiếu nguồn và 1.920 phiên bản câu hỏi trong đề xuất bản: không lỗi cấu
+trúc đáp án. Bộ giải độc lập bao phủ 710 câu Toán năm khối, đủ ba môn lớp 3
+và các câu vận dụng lớp 4; bổ sung bộ 88 câu Toán lớp 4. Môn ngôn ngữ có
+đọc đối chiếu và một lưu ý biên tập Tiếng Anh lớp 5 trong báo cáo chi tiết;
+không coi kiểm tra schema là chứng nhận mọi câu đều chính xác.
+
+Tách ngữ liệu khỏi câu hỏi, đọc từng đoạn, giữ dòng trắng giữa khổ thơ và tăng
+độ đậm chữ đọc. Chấm điền khuyết chấp nhận cách viết số tương đương có kiểm
+soát, vẫn giữ dấu Tiếng Việt và yêu cầu rút gọn phân số. Dashboard chỉ đọc,
+không giữ khóa hồ sơ/ghi gợi ý khi chuyển trang; gợi ý vẫn dựa trên kết quả.
+
+Rate limit hoàn tất trước kết nối API; worker mới tự nạp metadata khi đăng
+nhập đầu tiên. Giới hạn Argon2, số worker/concurrency/kết nối và chờ khóa DB.
+Thống kê nộp bài chỉ tổng hợp câu vừa chấm và ngày/môn của học sinh; khóa
+phối hợp với lệnh rebuild toàn bộ, cùng câu và hai tab của một học sinh.
+Không thêm migration hoặc sửa dữ liệu DB học tập đang dùng.
+
+Chứng cứ kiểm thử:
+
+| Phạm vi                                                    | Kết quả                                                                                                                        |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Toàn bộ backend trước các bổ sung cuối                     | 926 ca đã chạy: 925 đạt; một test gọi login bằng chữ ký cũ đã cập nhật và chạy lại đạt (`--lf`, cùng 4 ca account concurrency) |
+| Toàn bộ không cần DB sau bổ sung giới hạn                  | 750 passed; 9 ca cần DB bỏ qua trong lượt này, 171 integration không chọn; các ca DB đã được chạy riêng/toàn bộ                |
+| Sửa dashboard/điền khuyết/API/quyền/tải/vận hành liên quan | 37 passed sau thay đổi cuối, gồm DB mất kết nối, khóa hồ sơ, dashboard READ ONLY, nộp đồng thời và toàn bộ integration API     |
+| Frontend component                                         | 68 passed                                                                                                                      |
+| Browser tổng hợp                                           | 25 passed; một biến thể mobile bỏ qua có chủ ý vì desktop đã kiểm tra ba thiết bị trong cùng ca                                |
+| Đọc câu hỏi sau sửa dashboard                              | 8/8 desktop/mobile Free/VIP đạt khi đồng thời chạy tải 50 học sinh                                                             |
+| Lặp kiểm tra chuyển nhanh/đọc/lưu sau sửa dashboard        | 24/24 đạt trong ba vòng, không còn lỗi chờ khóa đã tái hiện trước đó                                                           |
+| Load ba vòng lưu đủ câu                                    | 2.310 request, 150/150 hành trình; không lỗi, không lệch tổng/statistics                                                       |
+| Load sau sửa dashboard                                     | 50/50 đăng nhập; 770/770 request học tập, p95 1,11 giây; 50 bài khớp tổng ngày                                                 |
+| DB hiện tại chỉ đọc                                        | check-system và verify-ai-academy đạt, head 0011_classes_vip_training, đủ 180 bài AI                                           |
+
+Đã xác định lỗi chờ khóa khi rời dashboard bằng `pg_stat_activity`; giữ
+profile lock và ghi gợi ý ở GET dashboard đã được bỏ. SQLSTATE được ghi vào
+log an toàn; giới hạn chờ khóa trả 503 để thử lại thay vì chờ 30 giây.
+Ruff, ESLint, TypeScript, Prettier và build production đạt. Compose/Caddyfile/
+backup script kiểm tra cấu hình/cú pháp đạt. Phép đo dùng hai worker, PostgreSQL
+thật trên máy Windows 12 logical CPU, dữ liệu/tài khoản mô phỏng ở DB test.
+
+Chưa build/run container Linux, xác nhận HTTPS/reboot/backup trên VPS thật;
+Docker Engine local chưa chạy và chưa có thông tin truy cập VPS. Chưa soak
+test nhiều giờ hoặc benchmark lịch sử hàng triệu bài. Các số đo là mốc local
+để triển khai staging, không cam kết công suất VPS.
+
+Chi tiết, số đo trước/sau và cách chạy lại:
+[content-load-vps-review.md](content-load-vps-review.md).
+
+## Profile VPS tiết kiệm · 14/10/2026
+
+Theo ngân sách gói 3 cores / RAM gốc 2 GB / SSD 50 GB, bổ sung
+`docker-compose.small-vps.yml` và `.env.production.small.example`. Bốn dịch vụ
+có giới hạn RAM tổng 1.440 MiB, backend một worker, hash/verify chung một slot,
+pool API 4+2 và một kết nối riêng cho auth counter. PostgreSQL giảm bộ nhớ/số
+kết nối/song song; Next standalone giới hạn V8 heap 192 MiB; log quay vòng.
+Giữ dữ liệu, quyền, cấp VIP và toàn bộ học liệu. Không có migration mới.
+
+Phát hiện thread chờ pool chiếm hết thread endpoint khi chỉ có một worker;
+đã dùng limiter riêng cho chờ kết nối, commit/rollback và auth guard. Giữ
+commit trước response, cleanup có shield khi request bị hủy. Readiness nạp
+metadata trước khi proxy nhận người dùng. Hồi quy pool một kết nối / thread
+endpoint một / sáu request đạt.
+
+`deploy/compose.sh` chọn profile từ env mà không chạy file secret như shell;
+backup dùng cùng wrapper và giữ project/volumes cũ. Helper PowerShell build
+Linux amd64 trên máy khác, export image cùng gói cấu hình và SHA256. Profile
+nhỏ loại bỏ build trên VPS. Đã kiểm tra cú pháp helper/wrapper, archive cấu
+hình và contract Compose; chưa build image vì Engine local chưa chạy.
+
+Kiểm thử: **754 unit đạt**, **76 tài khoản/vận hành**, **43 API/giao dịch/tải**,
+**4 pool/commit**, **29 readiness/vận hành**, **2 deployment contract** đạt;
+các nhóm có trùng nhau. **14 browser đạt** với frontend standalone/heap 192 MiB
+và backend một worker. Thử tải 10/25/50 học sinh trên DB test: 50/50 login,
+770 request ở mức 50 không lỗi, p95 khoảng 1,54 giây; thống kê khớp. Backend
+được giới hạn affinity ba logical CPU trên Windows, working set đỉnh lấy mẫu
+khoảng 174 MiB; chưa áp dụng cgroups hoặc đo tổng RAM cả stack.
+
+Hướng dẫn, lệnh build/upload/load/backup và giới hạn kiểm chứng:
+[deploy-small-vps.md](deploy-small-vps.md). Chưa triển khai/đo trên VPS thật.

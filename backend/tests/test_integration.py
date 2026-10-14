@@ -1,5 +1,5 @@
-from datetime import timedelta
-from uuid import uuid4
+from datetime import datetime, timedelta
+from uuid import UUID, uuid4
 
 import pytest
 from sqlalchemy import func, select
@@ -58,6 +58,67 @@ def test_login_logout_csrf_and_rbac(client):
     assert client.post("/api/v1/auth/logout").status_code == 200
     client.cookies.set("viettree_session", cookie)
     assert client.get("/api/v1/auth/me").status_code == 401
+
+
+def test_attempt_clock_repeat_save_and_server_deadline(logged_student, conn):
+    client = logged_student
+    attempt_id, assessment, _ = start(client)
+    assessments = db.table("assessments")
+    conn.execute(
+        assessments.update()
+        .where(assessments.c.id == assessment["id"])
+        .values(time_limit_seconds=60)
+    )
+    before = now()
+    data = client.get(f"/api/v1/attempts/{attempt_id}").json()
+    assert before <= datetime.fromisoformat(data["server_time"]) <= now()
+    assert datetime.fromisoformat(data["deadline"]) > datetime.fromisoformat(data["server_time"])
+    item = data["items"][0]
+    answer = {"option_id": item["content"]["options"][0]["id"]}
+    path = f"/api/v1/attempts/{attempt_id}/answers/{item['id']}"
+    for _ in range(2):
+        assert client.put(path, json={"answer": answer}).status_code == 200
+    answers = db.table("attempt_answers")
+    saved = conn.execute(select(answers).where(answers.c.attempt_id == attempt_id)).mappings().all()
+    assert len(saved) == 1 and saved[0]["student_answer"] == answer
+    assert client.get(f"/api/v1/attempts/{attempt_id}").json()["items"][0]["answer"] == answer
+    attempts = db.table("attempts")
+    conn.execute(
+        attempts.update()
+        .where(attempts.c.id == attempt_id)
+        .values(started_at=now() - timedelta(seconds=61))
+    )
+    assert client.put(path, json={"answer": answer}).status_code == 409
+    assert client.post(f"/api/v1/attempts/{attempt_id}/submit").status_code == 409
+
+
+def test_delayed_answer_cannot_overwrite_a_later_received_answer(logged_student, conn):
+    from fastapi import HTTPException
+
+    from app.schemas.attempts import AnswerInput
+    from app.services.attempts import save_answer
+
+    attempt_id, _, _ = start(logged_student)
+    item = logged_student.get(f"/api/v1/attempts/{attempt_id}").json()["items"][0]
+    user = logged_student.get("/api/v1/auth/me").json()
+    user["id"] = UUID(user["id"])
+    received = now()
+    latest = {"option_id": item["content"]["options"][1]["id"]}
+    save_answer(
+        conn, user, UUID(attempt_id), UUID(item["id"]), AnswerInput(answer=latest), received
+    )
+    with pytest.raises(HTTPException) as rejected:
+        save_answer(
+            conn,
+            user,
+            UUID(attempt_id),
+            UUID(item["id"]),
+            AnswerInput(answer={"option_id": item["content"]["options"][0]["id"]}),
+            received - timedelta(seconds=1),
+        )
+    assert rejected.value.status_code == 409
+    saved = logged_student.get(f"/api/v1/attempts/{attempt_id}").json()
+    assert saved["items"][0]["answer"] == latest
 
 
 def test_login_rate_limit_persists_failures(client):

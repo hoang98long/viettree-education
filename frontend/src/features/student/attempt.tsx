@@ -9,6 +9,9 @@ import { useResource } from "@/hooks/use-resource";
 import { Empty, ErrorState, Loading, PageTitle } from "@/components/ui";
 import { QuestionInput } from "@/components/question-input";
 import { LockedContent } from "@/features/membership/pages";
+import { useAnswerAutosave } from "@/hooks/use-answer-autosave";
+import { DeadlineClock } from "@/components/deadline-clock";
+import { QuestionPrompt } from "@/components/question-prompt";
 
 export function Quiz({ data }: { data: Attempt }) {
   const router = useRouter();
@@ -20,10 +23,9 @@ export function Quiz({ data }: { data: Attempt }) {
         .map((item) => [item.id, item.answer!]),
     ),
   );
-  const [dirty, setDirty] = useState<Set<string>>(new Set());
+  const autosave = useAnswerAutosave(data.id);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState("");
   const [review, setReview] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const item = data.items[index];
@@ -38,14 +40,7 @@ export function Quiz({ data }: { data: Attempt }) {
     );
   if (!item) return <Empty>Bài luyện tập chưa có câu hỏi.</Empty>;
   async function save() {
-    for (const id of dirty) {
-      await api(`/attempts/${data.id}/answers/${id}`, {
-        method: "PUT",
-        body: JSON.stringify({ answer: answers[id] }),
-      });
-    }
-    setDirty(new Set());
-    setMessage("Đã lưu câu trả lời. Em có thể quay lại bài này.");
+    await autosave.flush();
   }
   async function action(callback: () => void) {
     setBusy(true);
@@ -85,15 +80,25 @@ export function Quiz({ data }: { data: Attempt }) {
               style={{ width: `${((index + 1) / data.items.length) * 100}%` }}
             />
           </div>
-          <h2 className="question-prompt">{item.content.prompt}</h2>
+          {data.deadline && (
+            <DeadlineClock
+              key={`${data.deadline}:${data.server_time}`}
+              deadline={data.deadline}
+              serverTime={data.server_time}
+            />
+          )}
+          <QuestionPrompt
+            key={item.id}
+            text={item.content.prompt}
+            grade={data.grade}
+          />
           <QuestionInput
             item={item}
             answer={answers[item.id] || null}
             disabled={busy}
             onChange={(answer) => {
               setAnswers((previous) => ({ ...previous, [item.id]: answer }));
-              setDirty((previous) => new Set(previous).add(item.id));
-              setMessage("Chưa lưu thay đổi");
+              autosave.change(item.id, answer);
             }}
           />
           {error && (
@@ -101,9 +106,33 @@ export function Quiz({ data }: { data: Attempt }) {
               {error}
             </div>
           )}
+          {autosave.error && (
+            <div className="notice error" role="alert">
+              <p>{autosave.error}</p>
+              <p>
+                Câu trả lời vẫn ở trang này. Em giữ trang mở và thử lưu lại nhé.
+              </p>
+              <button
+                className="button secondary"
+                disabled={busy || autosave.saving}
+                onClick={() => void action(() => {})}
+              >
+                Thử lưu lại
+              </button>
+            </div>
+          )}
           <p className="save-message" role="status">
-            {message ||
-              "Câu trả lời sẽ được lưu khi em chuyển câu hoặc bấm Lưu bài."}
+            {autosave.saving
+              ? "Đang lưu…"
+              : autosave.error
+                ? "Chưa lưu được"
+                : autosave.pending
+                  ? "Chờ lưu câu trả lời…"
+                  : autosave.saved
+                    ? "Đã lưu câu trả lời. Em có thể quay lại bài này."
+                    : data.items.some((saved) => saved.answer)
+                      ? "Đã tải các câu trả lời đã lưu."
+                      : "Bài tự lưu sau khi em trả lời."}
           </p>
           <div className="quiz-actions">
             <button

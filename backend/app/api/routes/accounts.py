@@ -7,7 +7,14 @@ from sqlalchemy import func, select
 
 from app.core.config import settings
 from app.core.dependencies import database
-from app.core.security import admin_user, create_session, current_user, hasher, now, verify_password
+from app.core.security import (
+    admin_user,
+    create_session,
+    current_user,
+    hash_password,
+    now,
+    verify_password,
+)
 from app.db import db
 from app.schemas.accounts import (
     AccountCreate,
@@ -191,7 +198,7 @@ def change_password(
     accounts.bump(
         conn,
         user["id"],
-        password_hash=hasher.hash(payload.new_password),
+        password_hash=hash_password(payload.new_password),
         password_changed_at=now(),
         must_change_password=False,
     )

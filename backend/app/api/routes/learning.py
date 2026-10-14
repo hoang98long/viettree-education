@@ -217,7 +217,14 @@ def recommended(user=Depends(student_user), conn=database):
     "/students/me/dashboard", response_model=schemas_learning.DashboardResponse, tags=["student"]
 )
 def dashboard(user=Depends(student_user), conn=database):
-    profile = service.lock_student(conn, user["id"])
+    # A dashboard is a read. It must not block start/save while the browser
+    # navigates away or stops reading the response.
+    profiles = db.table("student_profiles")
+    profile = (
+        conn.execute(select(profiles).where(profiles.c.student_id == user["id"])).mappings().first()
+    )
+    if not profile:
+        raise HTTPException(403, "Chưa có hồ sơ học sinh")
     progress, lessons = db.table("student_lesson_progress"), db.table("lessons")
     continue_lesson = (
         conn.execute(
@@ -244,7 +251,7 @@ def dashboard(user=Depends(student_user), conn=database):
         subjects=subjects(profile["current_grade"], user, conn),
         history=history(None, None, user, conn),
         skills=skill_progress(user, conn),
-        recommendations=recommendations(conn, user["id"], profile["current_grade"]),
+        recommendations=recommendations(conn, user["id"], profile["current_grade"], persist=False),
         assignments=assignments(user, conn),
         continue_lesson=continue_lesson,
         completed_lessons=conn.execute(

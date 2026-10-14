@@ -10,6 +10,7 @@ services:
   db:
     image: postgres:18-alpine
     restart: unless-stopped
+    stop_grace_period: 60s
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Can mat khau PostgreSQL}
@@ -48,6 +49,7 @@ services:
       context: .
       dockerfile: deploy/backend.production.Dockerfile
     restart: unless-stopped
+    stop_grace_period: ${BACKEND_STOP_GRACE_PERIOD:-45s}
     environment:
       APP_ENV: production
       DB_HOST: db
@@ -58,6 +60,16 @@ services:
       ALLOWED_ORIGINS: https://${DOMAIN:?Can ten mien}
       COOKIE_SECURE: "true"
       SESSION_HOURS: ${SESSION_HOURS:-8}
+      DB_CONNECT_TIMEOUT: ${DB_CONNECT_TIMEOUT:-5}
+      DB_STATEMENT_TIMEOUT_MS: ${DB_STATEMENT_TIMEOUT_MS:-30000}
+      DB_LOCK_TIMEOUT_MS: ${DB_LOCK_TIMEOUT_MS:-5000}
+      DB_POOL_SIZE: ${DB_POOL_SIZE:-5}
+      DB_POOL_MAX_OVERFLOW: ${DB_POOL_MAX_OVERFLOW:-5}
+      DB_POOL_TIMEOUT: ${DB_POOL_TIMEOUT:-5}
+      SERVER_WORKERS: ${SERVER_WORKERS:-2}
+      SERVER_LIMIT_CONCURRENCY: ${SERVER_LIMIT_CONCURRENCY:-128}
+      SERVER_GRACEFUL_TIMEOUT: ${SERVER_GRACEFUL_TIMEOUT:-30}
+      PASSWORD_VERIFY_CONCURRENCY: ${PASSWORD_VERIFY_CONCURRENCY:-2}
       REMEMBER_SESSION_DAYS: ${REMEMBER_SESSION_DAYS:-7}
       AI_PROVIDER: ${AI_PROVIDER:-simulation}
       AI_TRAINING_ONLY: ${AI_TRAINING_ONLY:-true}
@@ -94,6 +106,7 @@ services:
       args:
         INTERNAL_API_URL: http://backend:8000
     restart: unless-stopped
+    stop_grace_period: 30s
     environment:
       NODE_ENV: production
       HOSTNAME: 0.0.0.0

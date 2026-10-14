@@ -1,0 +1,22 @@
+{
+  "backend_configuration": {
+    "environment": "Windows local / real PostgreSQL, no cgroup RAM limit",
+    "backend_cpu_affinity_logical_processors": 3,
+    "workers": 1,
+    "concurrency": 96,
+    "password_slots": 1,
+    "pool_size": 4,
+    "pool_overflow": 2,
+    "pool_timeout": 10
+  },
+  "backend_memory_sample": {
+    "environment": "Windows local; backend only, not container limits",
+    "seconds": 55,
+    "samples": 110,
+    "peak_working_set_mib": 173.61,
+    "peak_private_memory_mib": 157.16
+  },
+  "frontend_test_mode": "Next standalone / V8 max-old-space-size=192",
+  "container_quotas_applied": false,
+  "real_vps_tested": false
+}

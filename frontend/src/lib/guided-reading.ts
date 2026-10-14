@@ -1,7 +1,7 @@
 export function readingPages(text: string, limit = 55): string[] {
   const chunks = text
     .split(/(?<=\n)|(?<=[.!?])\s+/u)
-    .filter((part) => part.trim());
+    .filter((part) => part.length > 0);
   const pages: string[] = [];
   let current = "";
   for (const chunk of chunks) {

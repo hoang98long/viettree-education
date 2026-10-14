@@ -11,4 +11,4 @@ RUN pip install --no-cache-dir -r /workspace/backend/requirements-lock.txt \
 WORKDIR /workspace/backend
 USER app
 EXPOSE 8000
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2", "--proxy-headers", "--forwarded-allow-ips", "172.30.40.2", "--no-access-log"]
+CMD ["python", "scripts/serve.py"]

@@ -1,0 +1,251 @@
+{
+  "scope": "source_schema_and_inventory",
+  "semantic_accuracy": "Use independent answer tests and editorial review; schema validity alone does not prove correctness.",
+  "matrix": [
+    {
+      "grade": 1,
+      "subject": "MATH",
+      "plan": "free",
+      "lessons": 18,
+      "questions": 92,
+      "assessments": 14
+    },
+    {
+      "grade": 1,
+      "subject": "MATH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "plan": "free",
+      "lessons": 15,
+      "questions": 74,
+      "assessments": 11
+    },
+    {
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "plan": "vip",
+      "lessons": 8,
+      "questions": 56,
+      "assessments": 8
+    },
+    {
+      "grade": 1,
+      "subject": "ENGLISH",
+      "plan": "free",
+      "lessons": 13,
+      "questions": 62,
+      "assessments": 9
+    },
+    {
+      "grade": 1,
+      "subject": "ENGLISH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 2,
+      "subject": "MATH",
+      "plan": "free",
+      "lessons": 18,
+      "questions": 92,
+      "assessments": 14
+    },
+    {
+      "grade": 2,
+      "subject": "MATH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "plan": "free",
+      "lessons": 15,
+      "questions": 74,
+      "assessments": 11
+    },
+    {
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "plan": "vip",
+      "lessons": 8,
+      "questions": 56,
+      "assessments": 8
+    },
+    {
+      "grade": 2,
+      "subject": "ENGLISH",
+      "plan": "free",
+      "lessons": 13,
+      "questions": 62,
+      "assessments": 9
+    },
+    {
+      "grade": 2,
+      "subject": "ENGLISH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 3,
+      "subject": "MATH",
+      "plan": "free",
+      "lessons": 18,
+      "questions": 92,
+      "assessments": 14
+    },
+    {
+      "grade": 3,
+      "subject": "MATH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "plan": "free",
+      "lessons": 15,
+      "questions": 74,
+      "assessments": 11
+    },
+    {
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "plan": "vip",
+      "lessons": 8,
+      "questions": 56,
+      "assessments": 8
+    },
+    {
+      "grade": 3,
+      "subject": "ENGLISH",
+      "plan": "free",
+      "lessons": 13,
+      "questions": 62,
+      "assessments": 9
+    },
+    {
+      "grade": 3,
+      "subject": "ENGLISH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 4,
+      "subject": "MATH",
+      "plan": "free",
+      "lessons": 18,
+      "questions": 92,
+      "assessments": 14
+    },
+    {
+      "grade": 4,
+      "subject": "MATH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "plan": "free",
+      "lessons": 15,
+      "questions": 74,
+      "assessments": 11
+    },
+    {
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "plan": "vip",
+      "lessons": 8,
+      "questions": 56,
+      "assessments": 8
+    },
+    {
+      "grade": 4,
+      "subject": "ENGLISH",
+      "plan": "free",
+      "lessons": 13,
+      "questions": 62,
+      "assessments": 9
+    },
+    {
+      "grade": 4,
+      "subject": "ENGLISH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 5,
+      "subject": "MATH",
+      "plan": "free",
+      "lessons": 18,
+      "questions": 92,
+      "assessments": 14
+    },
+    {
+      "grade": 5,
+      "subject": "MATH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    },
+    {
+      "grade": 5,
+      "subject": "VIETNAMESE",
+      "plan": "free",
+      "lessons": 15,
+      "questions": 74,
+      "assessments": 11
+    },
+    {
+      "grade": 5,
+      "subject": "VIETNAMESE",
+      "plan": "vip",
+      "lessons": 8,
+      "questions": 56,
+      "assessments": 8
+    },
+    {
+      "grade": 5,
+      "subject": "ENGLISH",
+      "plan": "free",
+      "lessons": 13,
+      "questions": 62,
+      "assessments": 9
+    },
+    {
+      "grade": 5,
+      "subject": "ENGLISH",
+      "plan": "vip",
+      "lessons": 7,
+      "questions": 50,
+      "assessments": 7
+    }
+  ],
+  "issues": [],
+  "database": {
+    "published_assessment_versions": 1920,
+    "issues": []
+  }
+}

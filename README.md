@@ -11,6 +11,18 @@ tài khoản lớp 4; thêm bốn tài khoản lớp 5: [danh sách và mật kh
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**Rà soát học liệu và tải 50 học sinh (14/10/2026):** đối chiếu 1.920 câu Free/VIP,
+bổ sung kiểm tra đáp án Toán độc lập, đọc từng đoạn ngay trong câu hỏi và chấm
+linh hoạt cách viết số. Đã thử 50 lượt đăng nhập đồng thời và ba vòng lưu đủ
+câu/nộp bài, 2.310 request không lỗi trên local. Thống kê cập nhật theo các câu
+vừa làm, có giới hạn RAM xác thực và tham số vận hành VPS. Xem
+[báo cáo, số đo và giới hạn kiểm chứng](docs/content-load-vps-review.md).
+
+**Bài luyện tự lưu:** lưu sau khoảng 0,8 giây, giữ đáp án trên trang khi lỗi mạng,
+thử lại khi có mạng; chuyển câu/nộp bài chờ lưu hết. Bài có hạn giờ hiển thị
+đồng hồ theo mốc máy chủ. Admin có bảng rà soát độ dài, minh họa và phân bổ
+gợi ý trong trình soạn bài. [Cách dùng và giới hạn](docs/learning-reliability.md).
+
 **Ba môn lớp 1–5 đã có học liệu:** mỗi khối **68 bài / 384 câu / 56 đề**:
 Toán 25/142/21, Tiếng Việt 23/130/19, Tiếng Anh 20/112/16. Lớp 1–2 được
 biên soạn riêng theo chương trình Việt Nam: bài 6–8 phút, minh họa đếm/thẻ
@@ -41,6 +53,11 @@ minh họa phép cộng, các hàng của số và phân số. Nội dung đọc
 
 **Deploy lên VPS:** xem [hướng dẫn riêng](docs/deploy-vps.md) cho Ubuntu + Docker
 Compose production, HTTPS, chuyển dữ liệu, tài khoản thật, backup và cập nhật.
+
+**Gói VPS tiết kiệm 3 cores / RAM 2 GB / SSD 50 GB:** đã có profile `small`,
+giới hạn RAM dịch vụ, một worker, pool DB nhỏ và dùng image build trên máy khác.
+Giữ đầy đủ Free/VIP và học liệu; không cần migration mới.
+[Hướng dẫn cho gói VPS này](docs/deploy-small-vps.md).
 
 **Kiểm tra trước triển khai:** [bản rà soát và các bước xác nhận](docs/production-readiness.md).
 Admin có mục **Kiểm tra hệ thống** (`/admin/system`). Bộ production đã có trong
@@ -265,10 +282,10 @@ Seed bị chặn khi APP_ENV=production; ứng dụng không tự seed lúc kh�
 
 **Tài khoản DEV, chỉ dùng local:**
 
-| Tên đăng nhập | Mật khẩu ví dụ trong .env.example | Vai trò         |
-| ------------- | --------------------------------- | --------------- |
-| admin | `SEED_ADMIN_PASSWORD` trong `.env` | Quản trị        |
-| longnh | `SEED_STUDENT_PASSWORD` trong `.env` | Học sinh, lớp 4 |
+| Tên đăng nhập | Mật khẩu ví dụ trong .env.example    | Vai trò         |
+| ------------- | ------------------------------------ | --------------- |
+| admin         | `SEED_ADMIN_PASSWORD` trong `.env`   | Quản trị        |
+| longnh        | `SEED_STUDENT_PASSWORD` trong `.env` | Học sinh, lớp 4 |
 
 Postgres local trong `.env.example` dùng user `postgres`, password `123456` đúng
 cấu hình yêu cầu. Đổi toàn bộ thông tin demo và dùng DB role riêng trước khi đưa

@@ -1,5 +1,6 @@
 from datetime import timedelta
 from uuid import UUID
+from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException
 from sqlalchemy import func, select
@@ -278,9 +279,11 @@ def get_attempt(conn, user, attempt_id):
         assignment_id=attempt["assignment_id"],
         assessment_id=attempt["assessment_id"],
         title=assessment["title"],
+        grade=assessment["grade"],
         status=attempt["status"],
         started_at=attempt["started_at"].isoformat(),
         deadline=min(deadlines).isoformat() if deadlines else None,
+        server_time=now().isoformat(),
         items=[
             dict(
                 id=item["id"],
@@ -312,7 +315,8 @@ def writable_attempt(conn, user, attempt_id):
     return attempt
 
 
-def save_answer(conn, user, attempt_id, item_id, payload):
+def save_answer(conn, user, attempt_id, item_id, payload, received_at=None):
+    received_at = received_at or now()
     attempt = writable_attempt(conn, user, attempt_id)
     item = next(
         (row for row in attempt_items(conn, attempt["assessment_id"]) if row["id"] == item_id), None
@@ -328,7 +332,7 @@ def save_answer(conn, user, attempt_id, item_id, payload):
         question_version_id=item["question_version_id"],
         student_answer=answer,
         response_time_ms=payload.response_time_ms,
-        answered_at=now(),
+        answered_at=received_at,
     )
     statement = (
         insert(table)
@@ -338,11 +342,16 @@ def save_answer(conn, user, attempt_id, item_id, payload):
             set_={
                 "student_answer": answer,
                 "response_time_ms": payload.response_time_ms,
-                "answered_at": now(),
+                "answered_at": received_at,
             },
+            where=table.c.answered_at <= received_at,
         )
+        .returning(table.c.id)
     )
-    conn.execute(statement)
+    if conn.execute(statement).scalar_one_or_none() is None:
+        raise HTTPException(
+            409, "Đã có câu trả lời mới hơn. Em kiểm tra lựa chọn rồi thử lưu lại nhé."
+        )
     return {"saved": True}
 
 
@@ -397,7 +406,8 @@ def submit(conn, user, attempt_id):
         ).mappings()
     }
     total, maximum, correct_count, answered_count = 0, 0, 0, 0
-    for item in attempt_items(conn, attempt["assessment_id"]):
+    graded_items = attempt_items(conn, attempt["assessment_id"])
+    for item in graded_items:
         existing = saved.get(item["id"])
         answer = existing["student_answer"] if existing else None
         correct = grade_answer(item["question_type"], item["grading"], answer)
@@ -497,5 +507,11 @@ def submit(conn, user, attempt_id):
     if assessment["lesson_id"]:
         update_targets(conn, user["id"], lesson_id=assessment["lesson_id"])
     rebuild_student(conn, user["id"])
-    rebuild_statistics(conn)
+    rebuild_statistics(
+        conn,
+        question_version_ids=[item["question_version_id"] for item in graded_items],
+        student_id=user["id"],
+        day=at.astimezone(ZoneInfo("Asia/Bangkok")).date(),
+        subject_id=assessment["subject_id"],
+    )
     return result(conn, user, attempt_id)

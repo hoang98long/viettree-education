@@ -1,12 +1,16 @@
 # Hướng dẫn deploy VietTree Education lên VPS
 
-Cập nhật: **12/10/2026**. Hướng dẫn dành cho **Ubuntu Server 24.04 LTS**, một VPS,
+Cập nhật: **14/10/2026**. Hướng dẫn dành cho **Ubuntu Server 24.04 LTS**, một VPS,
 một tên miền và dữ liệu hiện tại của dự án. Các khối `bash` chạy trên VPS; các
 khối `powershell` chạy trên máy Windows đang chứa source code.
 
 Phương án sử dụng Docker Compose, PostgreSQL 18, backend FastAPI, frontend Next.js
 production và Caddy cấp/gia hạn HTTPS. Bộ cấu hình production đã có trong repo;
 `docker-compose.yml` và Dockerfile trong backend/frontend vẫn phục vụ development.
+
+Nếu thuê gói **3 cores / RAM 2 GB / SSD 50 GB**, dùng
+[hướng dẫn VPS nhỏ](deploy-small-vps.md): profile riêng và image build trên máy
+khác. Các lệnh build trong tài liệu chung dưới đây dành cho máy đủ RAM.
 
 Tài liệu đã được đối chiếu với code và tài liệu chính thức. Chưa chạy triển khai
 trên VPS thực tế của bạn; cần thực hiện các bước kiểm tra ở mục 10 trước khi mở
@@ -47,7 +51,13 @@ Hai lệnh không tạo demo, không đổi gói/mật khẩu/lịch sử, dùng
 | Dữ liệu bền vững      | Docker volumes cho PostgreSQL và chứng chỉ Caddy                                       |
 
 Đề xuất tài nguyên là mốc bắt đầu, chưa phải cam kết số người dùng đồng thời.
-Hệ thống hiện rebuild thống kê sau nộp bài; cần đo tải trước khi phục vụ nhiều lớp.
+Đã có [benchmark local với 50 học sinh](content-load-vps-review.md); cần đo lại
+trên VPS cùng cấu hình và HTTPS. Thống kê nộp bài chỉ tổng hợp các câu vừa làm
+và ngày/môn của học sinh. Compose có biến DB/worker/Argon2 trong env example;
+mặc định hai worker, tối đa 20 kết nối API và bốn phép xác thực Argon2 đồng thời.
+`BACKEND_STOP_GRACE_PERIOD=45s` phải lớn hơn `SERVER_GRACEFUL_TIMEOUT=30`.
+`DB_LOCK_TIMEOUT_MS=5000` giới hạn chờ khóa; khi DB bận, API trả 503 để thử
+lại. Log có SQLSTATE/mã hỗ trợ, không ghi dữ liệu bí mật.
 
 ```mermaid
 flowchart LR
@@ -132,8 +142,9 @@ tránh deploy thiếu chức năng vừa viết. Không đưa `.env` local, virt
 Trên Windows, tại một terminal mới:
 
 ```powershell
-tar -czf "$env:TEMP/viettree-source.tar.gz" --exclude=.git --exclude=.venv --exclude=node_modules --exclude=.next --exclude=.env --exclude='.env.*' --exclude=.tools --exclude=test-results --exclude=playwright-report --exclude=__pycache__ --exclude=.pytest_cache --exclude=.ruff_cache -C 'D:\01_viettree_code\viettree-education' .
+tar -czf "$env:TEMP/viettree-source.tar.gz" --exclude=.git --exclude=.venv --exclude=node_modules --exclude=.next --exclude=.env --exclude='.env.*' --exclude=.tools --exclude=.artifacts --exclude=var --exclude=test-results --exclude=playwright-report --exclude=__pycache__ --exclude=.pytest_cache --exclude=.ruff_cache -C 'D:\01_viettree_code\viettree-education' .
 scp "$env:TEMP/viettree-source.tar.gz" root@VPS_IP:/root/
+scp 'D:\01_viettree_code\viettree-education\.env.production.example' 'D:\01_viettree_code\viettree-education\.env.production.small.example' root@VPS_IP:/root/
 ```
 
 Trên VPS, dùng thư mục chưa chứa một bản triển khai khác:
@@ -224,7 +235,7 @@ thứ tự khởi động theo [Compose healthchecks](https://docs.docker.com/co
 
 ```bash
 dc() {
-  docker compose --project-name viettree --env-file .env.production -f docker-compose.production.yml "$@"
+  bash deploy/compose.sh "$@"
 }
 dc config --quiet
 dc build backend frontend

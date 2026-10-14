@@ -1,0 +1,83 @@
+{
+  "environment": "local HTTP / real PostgreSQL / synthetic learners",
+  "host": {
+    "os": "Windows",
+    "logical_cpus": 12
+  },
+  "learners": 50,
+  "plans": {
+    "free": 25,
+    "vip": 25
+  },
+  "answer_all": true,
+  "levels": [
+    {
+      "concurrent_learners": 10,
+      "seconds": 2.72,
+      "requests": 154,
+      "requests_per_second": 56.66,
+      "mean_ms": 169.29,
+      "p50_ms": 159.68,
+      "p95_ms": 338.27,
+      "p99_ms": 478.96,
+      "max_ms": 564.54,
+      "status_counts": {
+        "200": 154
+      },
+      "journeys_completed": 10,
+      "errors": {}
+    },
+    {
+      "concurrent_learners": 25,
+      "seconds": 6.35,
+      "requests": 385,
+      "requests_per_second": 60.65,
+      "mean_ms": 398.69,
+      "p50_ms": 371.86,
+      "p95_ms": 837.44,
+      "p99_ms": 1136.9,
+      "max_ms": 1208.15,
+      "status_counts": {
+        "200": 385
+      },
+      "journeys_completed": 25,
+      "errors": {}
+    },
+    {
+      "concurrent_learners": 50,
+      "seconds": 12.55,
+      "requests": 770,
+      "requests_per_second": 61.38,
+      "mean_ms": 789.81,
+      "p50_ms": 753.24,
+      "p95_ms": 1543.44,
+      "p99_ms": 2031.2,
+      "max_ms": 2258.59,
+      "status_counts": {
+        "200": 770
+      },
+      "journeys_completed": 50,
+      "errors": {}
+    }
+  ],
+  "readiness": {
+    "status": 200,
+    "seconds": 0.91
+  },
+  "authentication": {
+    "parallel": true,
+    "seconds": 4.36,
+    "successes": 50,
+    "p95_ms": 4059.02,
+    "status_counts": {
+      "200": 50
+    },
+    "errors": {}
+  },
+  "consistency": {
+    "question_statistic_mismatches": 0,
+    "graded_attempts": 85,
+    "daily_assessments_completed": 85,
+    "expected_attempts": 85
+  }
+}

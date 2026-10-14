@@ -92,7 +92,7 @@ def rebuild_student(conn, student_id):
     return states
 
 
-def recommendations(conn, student_id, grade):
+def recommendations(conn, student_id, grade, *, persist=True):
     rec, assessments, items, links, mastery, skills, prereqs, attempts = (
         db.table(name)
         for name in (
@@ -216,36 +216,37 @@ def recommendations(conn, student_id, grade):
             explanation = (
                 f"Ôn kỹ năng nền tảng {row['name']} trước để bài tiếp theo dễ hiểu hơn nhé."
             )
-        existing = conn.execute(
-            select(rec.c.id).where(
-                rec.c.student_id == student_id,
-                rec.c.assessment_id == row["id"],
-                rec.c.status.in_(["pending", "shown", "accepted"]),
-            )
-        ).scalar()
-        if existing:
-            conn.execute(
-                rec.update()
-                .where(rec.c.id == existing)
-                .values(
-                    skill_id=row["skill_id"],
-                    reason_code=reason,
-                    explanation=explanation,
-                    expires_at=current + timedelta(days=1),
+        if persist:
+            existing = conn.execute(
+                select(rec.c.id).where(
+                    rec.c.student_id == student_id,
+                    rec.c.assessment_id == row["id"],
+                    rec.c.status.in_(["pending", "shown", "accepted"]),
                 )
-            )
-        else:
-            conn.execute(
-                insert(rec).values(
-                    student_id=student_id,
-                    assessment_id=row["id"],
-                    skill_id=row["skill_id"],
-                    reason_code=reason,
-                    explanation=explanation,
-                    priority=80 - len(selected) * 10,
-                    expires_at=current + timedelta(days=1),
+            ).scalar()
+            if existing:
+                conn.execute(
+                    rec.update()
+                    .where(rec.c.id == existing)
+                    .values(
+                        skill_id=row["skill_id"],
+                        reason_code=reason,
+                        explanation=explanation,
+                        expires_at=current + timedelta(days=1),
+                    )
                 )
-            )
+            else:
+                conn.execute(
+                    insert(rec).values(
+                        student_id=student_id,
+                        assessment_id=row["id"],
+                        skill_id=row["skill_id"],
+                        reason_code=reason,
+                        explanation=explanation,
+                        priority=80 - len(selected) * 10,
+                        expires_at=current + timedelta(days=1),
+                    )
+                )
         selected.append(
             dict(
                 assessment_id=row["id"],
@@ -259,10 +260,29 @@ def recommendations(conn, student_id, grade):
     return selected
 
 
-def rebuild_statistics(conn):
+def rebuild_statistics(
+    conn, *, question_version_ids=None, student_id=None, day=None, subject_id=None
+):
     """Upsert tổng hợp từ lịch sử đã chấm; không DELETE/TRUNCATE."""
     # Tuần tự hóa snapshot + upsert để hai học sinh nộp cùng lúc không ghi đè tổng cũ.
-    conn.execute(text("SELECT pg_advisory_xact_lock(78249101)"))
+    if question_version_ids is None:
+        conn.execute(text("SELECT pg_advisory_xact_lock(78249101)"))
+    else:
+        # Incremental scopes can run together. A full repair takes the exclusive
+        # lock, so neither path overwrites a newer snapshot from the other path.
+        conn.execute(text("SELECT pg_advisory_xact_lock_shared(78249101)"))
+        for version in sorted(set(question_version_ids), key=str):
+            conn.execute(
+                text("SELECT pg_advisory_xact_lock(hashtextextended(:key, 0))"),
+                {"key": f"question-statistics:{version}"},
+            )
+        if student_id is not None and day is not None and subject_id is not None:
+            # A learner can submit two different exercises in separate tabs.
+            # Their daily total is shared even when the question sets differ.
+            conn.execute(
+                text("SELECT pg_advisory_xact_lock(hashtextextended(:key, 0))"),
+                {"key": f"daily-statistics:{student_id}:{day}:{subject_id}"},
+            )
     attempts, answers, assessments, question_stats, daily = (
         db.table(name)
         for name in (
@@ -274,7 +294,7 @@ def rebuild_statistics(conn):
         )
     )
     joined = answers.join(attempts, attempts.c.id == answers.c.attempt_id)
-    rows = conn.execute(
+    question_query = (
         select(
             answers.c.question_version_id,
             func.count().label("attempts_count"),
@@ -285,7 +305,12 @@ def rebuild_statistics(conn):
         .select_from(joined)
         .where(attempts.c.status == "graded")
         .group_by(answers.c.question_version_id)
-    ).mappings()
+    )
+    if question_version_ids is not None:
+        question_query = question_query.where(
+            answers.c.question_version_id.in_(question_version_ids)
+        )
+    rows = conn.execute(question_query).mappings()
     for row in rows:
         values = dict(row)
         statement = insert(question_stats).values(**values)
@@ -295,7 +320,7 @@ def rebuild_statistics(conn):
             )
         )
     stat_date = func.date(func.timezone("Asia/Bangkok", attempts.c.graded_at))
-    rows = conn.execute(
+    daily_query = (
         select(
             attempts.c.student_id,
             stat_date.label("stat_date"),
@@ -307,7 +332,14 @@ def rebuild_statistics(conn):
         .select_from(attempts.join(assessments, attempts.c.assessment_id == assessments.c.id))
         .where(attempts.c.status == "graded")
         .group_by(attempts.c.student_id, stat_date, assessments.c.subject_id)
-    ).mappings()
+    )
+    if student_id is not None:
+        daily_query = daily_query.where(attempts.c.student_id == student_id)
+    if day is not None:
+        daily_query = daily_query.where(stat_date == day)
+    if subject_id is not None:
+        daily_query = daily_query.where(assessments.c.subject_id == subject_id)
+    rows = conn.execute(daily_query).mappings()
     for row in rows:
         values = dict(row)
         statement = insert(daily).values(**values)

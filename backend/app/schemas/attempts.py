@@ -56,9 +56,11 @@ class AttemptResponse(BaseModel):
     assignment_id: UUID
     assessment_id: UUID
     title: str
+    grade: int = Field(ge=1, le=5)
     status: Literal["in_progress", "submitted", "graded", "abandoned"]
     started_at: str
     deadline: str | None
+    server_time: str
     items: list[AttemptItem]
 
 

@@ -1,5 +1,17 @@
 # Kiểm tra trước triển khai thực tế
 
+Profile mới cho **3 cores / RAM 2 GB / SSD 50 GB** tại
+[deploy-small-vps.md](deploy-small-vps.md), dùng image build trên máy khác.
+Pool chờ kết nối có limiter riêng; counter auth thêm một kết nối mỗi worker
+ngoài pool API. Đã kiểm tra tải local với một worker; chưa xác nhận quota
+container hoặc VPS thực tế.
+
+Cập nhật **14/10/2026**: [rà soát học liệu/tải/VPS](content-load-vps-review.md)
+ghi kết quả 50 học sinh Free/VIP trên local, kiểm tra dữ liệu và bộ giới hạn
+worker/DB/Argon2. Thống kê sau nộp bài đã giới hạn theo câu và ngày/môn của
+học sinh, thay vì tổng hợp toàn hệ thống ở mỗi lượt. Các ghi chú chưa có
+benchmark bên dưới là lịch sử trước thay đổi này. Chưa thử trên VPS thật.
+
 Đợt bổ sung 12/10/2026: head hiện tại `0011_classes_vip_training`, có lớp,
 thành tích, giá/ưu đãi và đào tạo AI Free/VIP. DB local đã backup/migrate và
 đối chiếu giữ mọi hàng/cột cũ. Giữ `AI_TRAINING_ONLY=true`; cấp runtime grant
@@ -77,8 +89,9 @@ Trước khi mở cho học sinh thật, thực hiện trên staging/VPS:
 3. Thử đọc bài, gợi ý, lưu/tải lại/nộp bài/xem kết quả trên điện thoại và desktop.
 4. Chạy backup và restore thực sự vào DB mới; có bản sao ngoài VPS, theo dõi
    health/error/dung lượng và diễn tập rollback với đúng migration head.
-5. Đo tải theo số lớp/người dùng dự kiến. Cá nhân hóa hiện rebuild thống kê từ
-   lịch sử sau nộp bài; chưa có benchmark chứng minh phục vụ tải lớn.
+5. Đo lại 50 người đồng thời trên staging/VPS với HTTPS và dữ liệu dự kiến.
+   Benchmark local đã có; thống kê câu phổ biến vẫn tổng hợp từ lịch sử của
+   câu đó, nên cần đo lại khi lịch sử tăng nhiều hoặc mở rộng số học sinh.
 6. Giáo viên rà soát học liệu/đáp án; đơn vị vận hành hoàn thành quy trình đồng ý
    sử dụng dữ liệu trẻ em và quyền truy cập trước khi cấp tài khoản thật.
 
@@ -87,16 +100,22 @@ audio và chấm tự luận chưa được triển khai; giao diện thể hi�
 
 ## Tham số vận hành
 
-| Biến backend              | Mặc định | Phạm vi     |
-| ------------------------- | -------- | ----------- |
-| `DB_CONNECT_TIMEOUT`      | 5 giây   | 1–30        |
-| `DB_STATEMENT_TIMEOUT_MS` | 30000 ms | 1000–300000 |
-| `DB_POOL_SIZE`            | 5/worker | 1–50        |
-| `DB_POOL_MAX_OVERFLOW`    | 5/worker | 0–50        |
-| `DB_POOL_TIMEOUT`         | 5 giây   | 1–30        |
-| `LOGIN_IP_LIMIT`          | 120/phút | 10–1000     |
-| `LOGIN_ACCOUNT_LIMIT`     | 10/phút  | 3–30        |
+| Biến backend                  | Mặc định   | Phạm vi     |
+| ----------------------------- | ---------- | ----------- |
+| `DB_CONNECT_TIMEOUT`          | 5 giây     | 1–30        |
+| `DB_STATEMENT_TIMEOUT_MS`     | 30000 ms   | 1000–300000 |
+| `DB_LOCK_TIMEOUT_MS`          | 5000 ms    | 1000–30000  |
+| `DB_POOL_SIZE`                | 5/worker   | 1–50        |
+| `DB_POOL_MAX_OVERFLOW`        | 5/worker   | 0–50        |
+| `DB_POOL_TIMEOUT`             | 5 giây     | 1–30        |
+| `LOGIN_IP_LIMIT`              | 120/phút   | 10–1000     |
+| `LOGIN_ACCOUNT_LIMIT`         | 10/phút    | 3–30        |
+| `SERVER_WORKERS`              | 2          | 1–8         |
+| `SERVER_LIMIT_CONCURRENCY`    | 128/worker | 16–2000     |
+| `PASSWORD_VERIFY_CONCURRENCY` | 2/worker   | 1–8         |
+| `SERVER_GRACEFUL_TIMEOUT`     | 30 giây    | 5–120       |
 
 Hai worker mặc định có thể dùng tối đa 20 kết nối DB, thêm kết nối cho công cụ
-vận hành/migration. Điều chỉnh theo phép đo và tài nguyên PostgreSQL; env trong
-Compose backend cần khai báo bổ sung nếu thay giá trị ngoài các mặc định này.
+vận hành/migration và một kết nối auth counter mỗi worker. Compose đã truyền các tham số DB/worker/Argon2 từ env;
+điều chỉnh theo phép đo và tài nguyên PostgreSQL. Docker chờ backend dừng 45s
+qua `BACKEND_STOP_GRACE_PERIOD`, cần lớn hơn timeout graceful của Uvicorn.
