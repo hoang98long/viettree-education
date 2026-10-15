@@ -44,6 +44,7 @@ class LessonSummaryResponse(CatalogAccess):
 
 
 class LessonResponse(LessonSummaryResponse):
+    is_bookmarked: bool = False
     content: dict
     hint_access: dict[str, int] = Field(default_factory=dict)
     grade: Grade

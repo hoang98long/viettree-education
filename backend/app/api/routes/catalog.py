@@ -12,6 +12,7 @@ from app.curriculum.lesson_content import distribute_hints, enrich
 from app.db import db
 from app.schemas.common import Grade
 from app.services import access
+from app.services.bookmarks import is_bookmarked
 
 router = APIRouter(prefix="/api/v1")
 
@@ -218,4 +219,7 @@ def lesson(lesson_id: UUID, user=Depends(current_user), conn=database):
         "practice": practice,
         "progress_status": progress_status,
         "next_lessons": next_lessons,
+        "is_bookmarked": is_bookmarked(conn, user["id"], lesson_id)
+        if "student" in user["roles"]
+        else False,
     }

@@ -138,9 +138,12 @@ services:
     environment:
       DOMAIN: ${DOMAIN:?Can ten mien}
       ACME_EMAIL: ${ACME_EMAIL:?Can email quan ly HTTPS}
+      MAINTENANCE_MODE: ${MAINTENANCE_MODE:-false}
+      MAINTENANCE_ALLOWED_IPS: ${MAINTENANCE_ALLOWED_IPS:-127.0.0.1/32 ::1/128}
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

@@ -1,10 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
+import { baseURL, localTLS } from "./e2e/environment";
 export default defineConfig({
   testDir: "./e2e",
   timeout: 120_000,
   workers: 1,
   use: {
-    baseURL: process.env.E2E_BASE_URL || "http://localhost:3000",
+    baseURL,
+    ignoreHTTPSErrors: localTLS,
+    timezoneId: process.env.E2E_TIMEZONE || "Asia/Ho_Chi_Minh",
     channel: "chrome",
     trace: "retain-on-failure",
   },

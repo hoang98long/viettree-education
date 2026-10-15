@@ -3,6 +3,13 @@
 Máy Windows hiện có `.env`, `.venv`, `frontend/node_modules` và PostgreSQL 18
 đang chạy. Dùng PowerShell; không cần Docker hoặc cài lại các thư viện.
 
+**Bản hiện tại:** local đã backup, migrate `0012_lesson_bookmarks`, nạp thêm
+15 bài/60 câu/15 đề và có **Bài học đã lưu** theo tài khoản. Khởi động lại hai
+server. Có đủ hai bộ bổ sung thì mỗi khối đạt 77 bài/426 câu/65 đề. Máy khác
+chạy `alembic upgrade head` và nạp `seed-supplement-content --release explorers-2026-01`.
+[Hướng dẫn bản mới](bookmarks-and-explorers.md). Các đoạn 68/384/56 và 74/414/62
+bên dưới là số liệu ở các mốc trước.
+
 Bản nâng cấp 14/10 bổ sung tự lưu bài luyện, đồng hồ thời hạn và rà soát học liệu.
 Không cần migration hoặc seed lại; khởi động lại cả hai server theo hướng dẫn
 dưới đây. [Cách dùng tự lưu](learning-reliability.md).
@@ -10,6 +17,12 @@ dưới đây. [Cách dùng tự lưu](learning-reliability.md).
 Bản 15/10 cải thiện xem lại đáp án/lời giải, hình minh họa, bộ đếm câu đã làm
 và xử lý lỗi mạng/database; cũng chỉ cần khởi động lại server, không seed lại.
 [Báo cáo kiểm thử](review-2026-10-15.md).
+
+Bộ tình huống mới đã nạp trên máy này: thêm 30 bài/150 câu/30 đề cho lớp 1–5.
+Khởi động lại hai server để dùng thư viện luyện tập mới (tìm không dấu, chọn bài
+ngắn và ôn thêm). Các số 68/384/56 bên dưới là bộ nền tảng; có bộ bổ sung thì
+mỗi khối thành 74/414/62. Máy khác nạp bằng `app.cli seed-applied-content` sau
+khi có bộ nền tảng. [Hướng dẫn và quyền Free/VIP](applied-learning.md).
 
 ## 1. Mở backend — terminal thứ nhất
 
@@ -38,7 +51,7 @@ Không đổi khối hay mật khẩu tài khoản hiện có tự động. Chi 
 
 Nâng cấp lớp 3 lần đầu: trước khi mở backend, chạy thêm
 `../.venv/Scripts/python.exe -m app.cli seed-grade3-content`.
-Head hiện tại `0011_classes_vip_training`, bao gồm lớp/thành tích/giá và gợi ý VIP. Admin tạo/chỉnh hồ sơ học sinh
+Head hiện tại `0012_lesson_bookmarks`, bao gồm lớp/thành tích/giá, gợi ý VIP và lưu bài. Admin tạo/chỉnh hồ sơ học sinh
 **Lớp 3**, rồi chọn lớp 3 trong học liệu. Mỗi bài lớp 3: Free 1 gợi ý, VIP 3;
 xem [học liệu lớp 3](grade3-curriculum.md). Không đổi tài khoản lớp 4 tự động.
 

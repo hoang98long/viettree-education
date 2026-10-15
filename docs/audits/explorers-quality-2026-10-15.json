@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-15",
+  "release": "explorers-2026-01",
+  "migration": "0012_lesson_bookmarks",
+  "added_active_curriculum": {
+    "lessons": 15,
+    "questions": 60,
+    "assessments": 15,
+    "free_lessons": 7,
+    "vip_lessons": 8,
+    "grades": [1, 2, 3, 4, 5]
+  },
+  "backend_non_integration": {
+    "passed": 810,
+    "skipped": 9,
+    "integration_deselected": 198
+  },
+  "targeted_backend": {
+    "passed_unique": 45,
+    "integration_included": 23,
+    "overlap_with_non_integration": 22,
+    "database": "viettree-education-test",
+    "files": [
+      "test_bookmarks.py",
+      "test_explorers_content.py",
+      "test_applied_content.py",
+      "test_practice_library.py",
+      "test_library_snapshot.py",
+      "test_grade5.py (library tests)"
+    ]
+  },
+  "frontend_unit": { "passed": 83 },
+  "browser": {
+    "passed": 12,
+    "new_scenarios": 10,
+    "regressions": 2,
+    "files": ["explorers-bookmarks.spec.ts", "grade5-library.spec.ts"],
+    "projects": ["desktop", "mobile"],
+    "database": "viettree-visual-browser-test",
+    "horizontal_overflow_widths_px": [320, 390, 768, 1280],
+    "checks": [
+      "Idempotent account bookmarks across independent login sessions",
+      "Network failure preserves prior bookmark state and supports retry",
+      "Removing the thirteenth bookmark returns page two to page one",
+      "Four real grade-three responses grade correctly",
+      "Grade-five dimensions and VIP hints",
+      "Admin inventory for both releases and all grades",
+      "Existing grade-five reading progress and VIP grant/revoke"
+    ]
+  },
+  "validation": {
+    "ruff": "passed",
+    "ruff_format": "passed",
+    "typescript": "passed",
+    "eslint": "passed",
+    "prettier": "passed",
+    "next_production_build": "passed",
+    "local_schema": "passed",
+    "both_supplements_verified_on_local_database": true
+  },
+  "data_preservation": [
+    "explorers-local-2026-10-15.json",
+    "explorers-editorial-2026-10-15.json"
+  ],
+  "limits": [
+    "Targeted PostgreSQL integrations ran; the full integration suite was not rerun.",
+    "Browser tests used development servers on isolated ports 8001 and 3001; production compilation was checked separately.",
+    "No new real-VPS load test or Vietnam-Japan network measurement.",
+    "An unused first-draft poem was archived and replaced; its four immutable question versions remain intact.",
+    "No new model provider, external image service, package dependency or background service."
+  ]
+}

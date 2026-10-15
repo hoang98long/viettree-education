@@ -1,5 +1,12 @@
 {
 	email {$ACME_EMAIL}
+	servers {
+		timeouts {
+			read_header 10s
+			read_body 30s
+			idle 2m
+		}
+	}
 }
 
 {$DOMAIN} {
@@ -16,26 +23,37 @@
 		-Server
 	}
 
-	@private path /docs /docs/* /redoc /redoc/* /openapi.json /ready
-	handle @private {
-		respond "Not found" 404
-	}
+	route {
+		@maintenance {
+			expression `"{$MAINTENANCE_MODE:false}" != "false"`
+			not remote_ip {$MAINTENANCE_ALLOWED_IPS:127.0.0.1/32 ::1/128}
+		}
+		handle @maintenance {
+			header Cache-Control "no-store"
+			header Retry-After "120"
+			respond "VietTree đang bảo trì. Em quay lại sau nhé." 503
+		}
+		@private path /docs /docs/* /redoc /redoc/* /openapi.json /ready
+		handle @private {
+			respond "Not found" 404
+		}
 
-	handle /api/v1/* {
-		reverse_proxy backend:8000 {
-			header_up X-Forwarded-For {http.request.remote.host}
-			transport http {
-				dial_timeout 5s
-				response_header_timeout 60s
+		handle /api/v1/* {
+			reverse_proxy backend:8000 {
+				header_up X-Forwarded-For {http.request.remote.host}
+				transport http {
+					dial_timeout 5s
+					response_header_timeout 60s
+				}
 			}
 		}
-	}
 
-	handle /health {
-		reverse_proxy backend:8000
-	}
+		handle /health {
+			reverse_proxy backend:8000
+		}
 
-	handle {
-		reverse_proxy frontend:3000
+		handle {
+			reverse_proxy frontend:3000
+		}
 	}
 }

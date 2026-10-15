@@ -6,6 +6,8 @@ from sqlalchemy import func, select
 from app.core.dependencies import database
 from app.core.security import admin_user, student_user
 from app.curriculum.registry import get_pack
+from app.curriculum.supplements.applied.pack import RELEASE, published_counts
+from app.curriculum.supplements.registry import releases
 from app.db import db
 from app.services import access
 from app.services.vip import profile
@@ -79,7 +81,24 @@ def curriculum_map(grade: int = Query(4, ge=1, le=5), user=Depends(admin_user), 
                     source_url=sources[subject_code],
                 )
             )
-    return {"grade": grade, "rows": rows}
+    return {
+        "grade": grade,
+        "rows": rows,
+        "supplements": [
+            {
+                "release": pack.code,
+                "title": pack.title,
+                "expected": pack.expected(grade),
+                "published": pack.published_counts(conn, grade),
+            }
+            for pack in releases().values()
+        ],
+        "supplement": {
+            "release": RELEASE,
+            "expected": {"lessons": 6, "questions": 30, "assessments": 6},
+            "published": published_counts(conn, grade),
+        },
+    }
 
 
 @router.get("/students/me/thinking", response_model=dict)

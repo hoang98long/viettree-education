@@ -1,12 +1,17 @@
 # Hướng dẫn deploy VietTree Education lên VPS
 
-Cập nhật: **14/10/2026**. Hướng dẫn dành cho **Ubuntu Server 24.04 LTS**, một VPS,
+Cập nhật: **15/10/2026**. Hướng dẫn dành cho **Ubuntu Server 24.04 LTS**, một VPS,
 một tên miền và dữ liệu hiện tại của dự án. Các khối `bash` chạy trên VPS; các
 khối `powershell` chạy trên máy Windows đang chứa source code.
 
 Phương án sử dụng Docker Compose, PostgreSQL 18, backend FastAPI, frontend Next.js
 production và Caddy cấp/gia hạn HTTPS. Bộ cấu hình production đã có trong repo;
 `docker-compose.yml` và Dockerfile trong backend/frontend vẫn phục vụ development.
+
+Gói hiện được chọn **4 vCPU / RAM 8 GB / SSD 100 GB đặt tại Nhật** dùng
+[profile và hướng dẫn mới](deploy-vps-japan.md), gồm kiểm tra mở web, múi giờ,
+cache và sao lưu. Dùng mẫu `.env.production.vps8gb.example` khi theo các bước
+chung bên dưới; wrapper tự chọn đúng profile.
 
 Nếu thuê gói **3 cores / RAM 2 GB / SSD 50 GB**, dùng
 [hướng dẫn VPS nhỏ](deploy-small-vps.md): profile riêng và image build trên máy
@@ -16,7 +21,7 @@ Tài liệu đã được đối chiếu với code và tài liệu chính thứ
 trên VPS thực tế của bạn; cần thực hiện các bước kiểm tra ở mục 10 trước khi mở
 cho học sinh sử dụng.
 
-Head hiện tại **0011_classes_vip_training**. Sau migrate, cấp lại quyền runtime
+Head hiện tại **0012_lesson_bookmarks**. Sau migrate, cấp lại quyền runtime
 bằng `deploy/grant-runtime.sql` để truy cập tám bảng mới. Giữ
 `AI_TRAINING_ONLY=true`: phân hệ AI học lý thuyết/bài tập nội bộ, không gọi model.
 Chạy `seed-ai-academy` nếu DB chưa có học liệu, `verify-ai-academy` để kiểm chứng.
@@ -93,6 +98,7 @@ timedatectl set-timezone Asia/Bangkok
 ufw allow 22/tcp
 ufw allow 80/tcp
 ufw allow 443/tcp
+ufw allow 443/udp
 ufw enable
 ufw status
 dig +short hoc.example.com A
@@ -102,6 +108,7 @@ Nếu SSH dùng cổng khác 22, mở đúng cổng đó trước khi bật UFW.
 ứng trong firewall/security group của nhà cung cấp. Không publish cổng 3000,
 8000 hoặc 5432 trong cấu hình bên dưới. Docker có thể bỏ qua quy tắc UFW đối với
 cổng container được publish; vì vậy không dựa riêng vào UFW để bảo vệ DB.
+UDP 443 phục vụ HTTP/3; HTTPS qua TCP 443 vẫn hoạt động khi mạng chặn QUIC.
 [Tài liệu Docker về firewall](https://docs.docker.com/engine/network/packet-filtering-firewalls/).
 
 ## 3. Cài Docker Engine và Compose
@@ -144,7 +151,7 @@ Trên Windows, tại một terminal mới:
 ```powershell
 tar -czf "$env:TEMP/viettree-source.tar.gz" --exclude=.git --exclude=.venv --exclude=node_modules --exclude=.next --exclude=.env --exclude='.env.*' --exclude=.tools --exclude=.artifacts --exclude=var --exclude=test-results --exclude=playwright-report --exclude=__pycache__ --exclude=.pytest_cache --exclude=.ruff_cache -C 'D:\01_viettree_code\viettree-education' .
 scp "$env:TEMP/viettree-source.tar.gz" root@VPS_IP:/root/
-scp 'D:\01_viettree_code\viettree-education\.env.production.example' 'D:\01_viettree_code\viettree-education\.env.production.small.example' root@VPS_IP:/root/
+scp 'D:\01_viettree_code\viettree-education\.env.production.example' 'D:\01_viettree_code\viettree-education\.env.production.small.example' 'D:\01_viettree_code\viettree-education\.env.production.vps8gb.example' root@VPS_IP:/root/
 ```
 
 Trên VPS, dùng thư mục chưa chứa một bản triển khai khác:
@@ -153,7 +160,11 @@ Trên VPS, dùng thư mục chưa chứa một bản triển khai khác:
 mkdir -p /opt/viettree-education
 tar -xzf /root/viettree-source.tar.gz -C /opt/viettree-education
 cd /opt/viettree-education
+cp /root/.env.production.example /root/.env.production.small.example /root/.env.production.vps8gb.example ./
 ```
+
+Các mẫu env được copy riêng vì archive nguồn chủ động loại toàn bộ `.env.*`.
+Không copy `.env` hoặc `.env.production` thật từ máy local sang thư mục source.
 
 ### Cách B — lấy release đã commit/push
 
@@ -329,7 +340,10 @@ dc exec -T db psql -X -v ON_ERROR_STOP=1 -U viettree_app -d viettree-education <
 BEGIN;
 UPDATE auth_sessions SET revoked_at = NOW() WHERE revoked_at IS NULL;
 UPDATE users SET is_active = FALSE
-WHERE LOWER(username) IN ('longnh', 'free4_01', 'free4_02', 'vip4_01', 'vip4_02');
+WHERE password_changed_at IS NULL AND (
+    LOWER(username) = 'longnh'
+    OR LOWER(username) ~ '^(free|vip)[1-5]_0[12]$'
+);
 COMMIT;
 SQL
 ```
@@ -373,6 +387,23 @@ VPS đã có bộ nền tảng: sau khi backup và rà soát bộ bổ sung, n�
 Để thêm lớp 3: `dc run --rm -T --no-deps backend python -m app.cli seed-grade3-content`.
 Để thêm lớp 5: `dc run --rm -T --no-deps backend python -m app.cli seed-grade-content --grade 5`.
 Lệnh này không cấp gói hay tạo tài khoản. Không cần migration mới ngoài head hiện tại.
+
+Bộ tình huống bổ sung lớp 1–5 được nạp riêng sau bộ nền tảng, khi đang bảo trì
+và đã backup:
+
+```bash
+dc run --rm -T --no-deps backend python -m app.cli seed-applied-content
+dc run --rm -T --no-deps backend python -m app.cli verify-applied-content
+```
+
+Thêm 30 bài/150 câu/30 đề; tổng bộ ba môn khi nạp đủ là 370 bài/2070 câu/310
+đề. Không tạo tài khoản hoặc đổi gói. [Danh mục, gợi ý và kiểm chứng](applied-learning.md).
+
+Bản mới thêm bảng lưu bài ở head `0012_lesson_bookmarks` và bộ Khám phá.
+Sau migration/grant, nạp bằng `dc run --rm -T --no-deps backend python -m app.cli seed-supplement-content --release explorers-2026-01`,
+rồi chạy `verify-supplement-content --release explorers-2026-01` theo cùng cách.
+Thêm 15 bài/60 câu/15 đề; tổng ba môn khi có cả hai bộ bổ sung là 385 bài/2130
+câu/325 đề đang hoạt động. [Chi tiết cập nhật](bookmarks-and-explorers.md).
 
 ## 8. Quản trị đầu tiên và tài khoản thật
 
@@ -427,7 +458,7 @@ dc exec -T db psql -X -U viettree_app -d viettree-education < database/seeds/ver
 
 Thay tên miền trong các lệnh. HTTP chuyển sang HTTPS; login và health trả 200;
 readiness nội bộ báo DB/schema sẵn sàng. Head hiện tại là
-`0011_classes_vip_training`; khi có release mới, dùng head của release đó.
+`0012_lesson_bookmarks`; khi có release mới, dùng head của release đó.
 Revision 0008 thêm ba cột quản trị tài khoản; 0009 bổ sung quyền gợi ý VIP.
 Các migration giữ mật khẩu/phiên/gói/lịch sử cũ;
 không seed/reset tài khoản khi nâng cấp. Mở **Quản trị tài khoản** để cấp tài
@@ -596,7 +627,7 @@ kiểm chứng local đã chạy và những kiểm tra cần hoàn thành trên
 
 # Bổ sung AI Academy · 12/10/2026
 
-Head hiện tại `0011_classes_vip_training` bao gồm `0010_ai_academy`; sau migration/grant chạy
+Head hiện tại `0012_lesson_bookmarks` bao gồm `0010_ai_academy`; sau migration/grant chạy
 `python -m app.cli seed-ai-academy`, rồi `verify-ai-academy`.
 Production Compose có volume riêng `academy_media`; script backup tạo cặp
 database dump và `media.tar.gz`, cần giữ/phục hồi cả hai. Các hướng dẫn cũ về

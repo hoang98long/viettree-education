@@ -215,7 +215,7 @@ def test_library_own_grade_pagination_filters_hints_live_membership(logged_stude
     assert "no-store" in first.headers["cache-control"]
     data = first.json()
     assert data["grade"] == 5 and data["summary"] == dict(
-        total=68, completed=0, in_progress=0, free=46, vip=22
+        total=68, completed=0, in_progress=0, free=46, vip=22, bookmarked=0
     )
     assert len(data["items"]) == 12
     seen = []

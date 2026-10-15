@@ -23,6 +23,7 @@ def main():
         choices=[
             "check-schema",
             "check-system",
+            "check-launch",
             "cleanup-auth",
             "bootstrap-admin",
             "import-schema",
@@ -36,6 +37,12 @@ def main():
             "seed-grade5-content",
             "seed-grade-content",
             "curriculum-inventory",
+            "applied-content-inventory",
+            "seed-applied-content",
+            "verify-applied-content",
+            "supplement-inventory",
+            "seed-supplement-content",
+            "verify-supplement-content",
             "seed-ai-academy",
             "verify-ai-academy",
             "verify-seed",
@@ -49,7 +56,7 @@ def main():
         type=int,
         nargs="+",
         choices=range(1, 6),
-        help="Khối tạo tài khoản demo; mặc định 1 2 3 4 5",
+        help="Khối cho tài khoản demo hoặc học liệu bổ sung; mặc định 1 2 3 4 5",
     )
     parser.add_argument(
         "--apply", action="store_true", help="Thực hiện cleanup-auth; mặc định chỉ thống kê"
@@ -57,11 +64,47 @@ def main():
     parser.add_argument("--username")
     parser.add_argument("--display-name")
     parser.add_argument("--retention-days", type=int, choices=range(1, 366), default=30)
+    from app.curriculum.supplements.registry import releases
+
+    parser.add_argument(
+        "--release", choices=tuple(releases()), help="Mã bộ học liệu cho các lệnh supplement"
+    )
     args = parser.parse_args()
     if args.apply and args.command != "cleanup-auth":
         parser.error("--apply chỉ dùng với cleanup-auth")
-    if args.grades is not None and args.command != "seed-demo-learners":
-        parser.error("--grades chỉ dùng với seed-demo-learners")
+    if args.grades is not None and args.command not in {
+        "seed-demo-learners",
+        "seed-applied-content",
+        "verify-applied-content",
+        "applied-content-inventory",
+        "supplement-inventory",
+        "seed-supplement-content",
+        "verify-supplement-content",
+    }:
+        parser.error("--grades chỉ dùng với seed-demo-learners hoặc các lệnh học liệu bổ sung")
+    supplement_commands = {
+        "supplement-inventory",
+        "seed-supplement-content",
+        "verify-supplement-content",
+    }
+    if args.command in supplement_commands and not args.release:
+        parser.error("Cần chọn bộ học liệu bằng --release")
+    if args.release and args.command not in supplement_commands:
+        parser.error("--release chỉ dùng với các lệnh supplement")
+    if args.command == "supplement-inventory":
+        from app.curriculum.supplements.registry import get_release
+
+        print(
+            json.dumps(
+                get_release(args.release).inventory(args.grades or range(1, 6)), ensure_ascii=False
+            )
+        )
+        return
+    if args.command == "applied-content-inventory":
+        from app.curriculum.supplements.applied.pack import inventory
+
+        print(json.dumps(inventory(args.grades or range(1, 6)), ensure_ascii=False))
+        return
     if args.command in {"seed-grade-content", "curriculum-inventory"}:
         from app.curriculum.registry import SUPPORTED_GRADES
 
@@ -102,7 +145,7 @@ def main():
         if args.command == "check-schema":
             db.validate(conn)
             print(
-                "Schema đúng: 34 bảng gốc + 2 bảng auth + 6 bảng gói học + 1 bảng quyền câu hỏi + 1 bảng nháp bài học + 29 bảng AI Academy + 8 bảng lớp/thành tích/giá, đủ cột quản trị tài khoản và quyền AI; database="
+                "Schema đúng: 34 bảng gốc + 2 bảng auth + 6 bảng gói học + 1 bảng quyền câu hỏi + 1 bảng nháp bài học + 29 bảng AI Academy + 8 bảng lớp/thành tích/giá + 1 bảng lưu bài, đủ cột quản trị tài khoản và quyền AI; database="
                 + engine().url.database
             )
         else:
@@ -119,10 +162,12 @@ def main():
                 except ValueError as error:
                     raise SystemExit(str(error)) from None
                 print("Đã tạo quản trị đầu tiên. Mật khẩu không được in hoặc lưu vào nhật ký")
-            elif args.command == "check-system":
-                from app.operations import system_report
+            elif args.command in {"check-system", "check-launch"}:
+                from app.operations import launch_report, system_report
 
-                report = system_report(conn)
+                report = (
+                    launch_report(conn) if args.command == "check-launch" else system_report(conn)
+                )
                 print(json.dumps(report, ensure_ascii=False, default=str))
                 if report["status"] != "ok":
                     raise SystemExit(1)
@@ -132,6 +177,30 @@ def main():
                 print(json.dumps(cleanup_auth(conn, args.retention_days, args.apply)))
             elif args.command == "seed":
                 print(json.dumps(seed(conn, args.reset_demo_passwords), ensure_ascii=False))
+            elif args.command in {"seed-applied-content", "verify-applied-content"}:
+                from app.curriculum.supplements.applied.pack import seed as applied_seed
+                from app.curriculum.supplements.applied.pack import verify as applied_verify
+
+                try:
+                    report = (
+                        applied_seed if args.command == "seed-applied-content" else applied_verify
+                    )(conn, args.grades or range(1, 6))
+                except ValueError as error:
+                    raise SystemExit(str(error)) from None
+                print(json.dumps(report, ensure_ascii=False))
+            elif args.command in {"seed-supplement-content", "verify-supplement-content"}:
+                from app.curriculum.supplements.registry import get_release
+
+                release = get_release(args.release)
+                try:
+                    report = (
+                        release.seed
+                        if args.command == "seed-supplement-content"
+                        else release.verify
+                    )(conn, args.grades or range(1, 6))
+                except ValueError as error:
+                    raise SystemExit(str(error)) from None
+                print(json.dumps(report, ensure_ascii=False))
             elif args.command in {"seed-ai-academy", "verify-ai-academy"}:
                 from app.academy.seed import seed as academy_seed
                 from app.academy.seed import verify as academy_verify

@@ -35,9 +35,6 @@ export function StudentDashboard() {
   return (
     <Resource<Dashboard> path="/students/me/dashboard">
       {(data) => {
-        const completed = data.history.filter(
-          (attempt) => attempt.status === "graded",
-        );
         const active = data.history.find(
           (attempt) => attempt.status === "in_progress",
         );
@@ -78,7 +75,7 @@ export function StudentDashboard() {
                   <Check />
                 </span>
                 <div>
-                  <strong>{completed.length}</strong>
+                  <strong>{data.graded_attempt_count}</strong>
                   <span>Bài luyện tập đã nộp</span>
                 </div>
               </div>
@@ -131,6 +128,9 @@ export function StudentDashboard() {
                 <p>Chọn môn, Free/VIP hoặc bài đang đọc để học tiếp.</p>
               </div>
               <ArrowRight size={22} />
+            </Link>
+            <Link className="card-link" href="/student/saved-lessons">
+              Mở bài học đã lưu <ArrowRight size={17} />
             </Link>
             <div className="two-columns">
               <section className="panel">

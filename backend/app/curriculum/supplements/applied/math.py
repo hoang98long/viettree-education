@@ -1,0 +1,502 @@
+"""Ten original short maths units. Every question states its own givens."""
+
+from app.curriculum.supplements.applied.builders import cards, unit
+
+
+def content(grade):
+    data = {
+        1: (
+            (
+                "wordproblems",
+                "fruit",
+                "Giỏ quả của em",
+                "Đếm quả đang có. Thêm thì cộng, bớt thì trừ.",
+                "Có 4 quả, thêm 2 quả: 4 + 2 = 6 quả.",
+                "Đọc từ thêm hoặc bớt trước khi tính.",
+                [
+                    "Chỉ vào từng quả và đếm một lần.",
+                    "Vẽ chấm tròn thay cho quả.",
+                    "Thử đếm lại sau khi thêm hoặc bớt.",
+                ],
+                {
+                    "kind": "counters",
+                    "count": 6,
+                    "caption": "Sáu chấm tròn: có bốn chấm rồi thêm hai chấm.",
+                },
+                [
+                    (
+                        "Có 5 quả cam, thêm 3 quả. Có tất cả bao nhiêu quả?",
+                        "8 quả",
+                        ["2 quả", "7 quả"],
+                        "Thêm 3 vào 5: 5 + 3 = 8 quả.",
+                    ),
+                    (
+                        "Có 9 quả táo, lấy ra 4 quả. Còn bao nhiêu quả?",
+                        "5 quả",
+                        ["4 quả", "13 quả"],
+                        "Lấy ra là bớt đi: 9 − 4 = 5 quả.",
+                    ),
+                    (
+                        "Giỏ có 6 quả. Muốn có 10 quả thì cần thêm mấy quả?",
+                        "4 quả",
+                        ["3 quả", "6 quả"],
+                        "Đếm tiếp 7, 8, 9, 10: cần thêm 4 quả.",
+                    ),
+                    (
+                        "Có 7 quả lê. Ăn 2 quả thì còn mấy quả?",
+                        "5 quả",
+                        ["9 quả", "4 quả"],
+                        "7 − 2 = 5 quả lê.",
+                    ),
+                ],
+            ),
+            (
+                "patterns",
+                "beads",
+                "Thám tử chuỗi hạt",
+                "Một nhóm hạt có thể lặp lại nhiều lần. Tìm nhóm nhỏ đang lặp.",
+                "Đỏ – xanh – đỏ – xanh: hạt tiếp theo màu đỏ.",
+                "Đọc mẫu từ đầu và theo đúng thứ tự.",
+                [
+                    "Tìm hai hạt đầu của mẫu.",
+                    "Ghép các hạt thành từng nhóm giống nhau.",
+                    "Đặt hạt mới ngay sau hạt cuối của nhóm.",
+                ],
+                cards("Đỏ", "Xanh", "Đỏ", "Xanh"),
+                [
+                    (
+                        "Đỏ – xanh – đỏ – xanh – ... Hạt tiếp theo màu gì?",
+                        "Đỏ",
+                        ["Xanh", "Vàng"],
+                        "Nhóm đỏ – xanh lặp lại; sau xanh là đỏ.",
+                    ),
+                    (
+                        "Tròn – vuông – tròn – vuông – ... Hình tiếp theo là gì?",
+                        "Tròn",
+                        ["Vuông", "Tam giác"],
+                        "Nhóm tròn – vuông lặp lại.",
+                    ),
+                    (
+                        "Vàng – vàng – xanh – vàng – vàng – ... Hạt tiếp theo màu gì?",
+                        "Xanh",
+                        ["Vàng", "Đỏ"],
+                        "Nhóm vàng – vàng – xanh; sau hai hạt vàng là xanh.",
+                    ),
+                    (
+                        "Một nhóm có 1 hạt đỏ và 1 hạt xanh. Hai nhóm như vậy có mấy hạt?",
+                        "4 hạt",
+                        ["2 hạt", "3 hạt"],
+                        "Mỗi nhóm có 2 hạt; hai nhóm có 2 + 2 = 4 hạt.",
+                    ),
+                    (
+                        "Đỏ – xanh – đỏ – xanh – đỏ – xanh. Có mấy hạt đỏ?",
+                        "3 hạt",
+                        ["2 hạt", "6 hạt"],
+                        "Đếm riêng các hạt đỏ: 1, 2, 3.",
+                    ),
+                    (
+                        "Mẫu đúng là tròn – vuông lặp lại. Dãy nào đúng mẫu?",
+                        "Tròn – vuông – tròn – vuông",
+                        ["Tròn – tròn – vuông – vuông", "Vuông – tròn – tròn – vuông"],
+                        "Chỉ dãy tròn – vuông – tròn – vuông giữ nguyên nhóm lặp.",
+                    ),
+                ],
+            ),
+        ),
+        2: (
+            (
+                "groups",
+                "pencils",
+                "Chia bút cho các bạn",
+                "Các nhóm bằng nhau giúp em dùng phép nhân và phép chia trong bảng 2, bảng 5.",
+                "3 hộp, mỗi hộp 2 bút: 2 × 3 = 6 bút.",
+                "Các nhóm phải có số bút bằng nhau.",
+                [
+                    "Đếm số bút trong một nhóm.",
+                    "Đếm có bao nhiêu nhóm bằng nhau.",
+                    "Chia xong, kiểm tra mỗi bạn nhận bằng nhau.",
+                ],
+                {
+                    "kind": "counters",
+                    "count": 6,
+                    "caption": "Sáu chấm tròn tượng trưng cho sáu chiếc bút.",
+                },
+                [
+                    (
+                        "Có 4 hộp, mỗi hộp 2 bút. Có tất cả mấy bút?",
+                        "8 bút",
+                        ["6 bút", "4 bút"],
+                        "2 × 4 = 8 bút.",
+                    ),
+                    (
+                        "Chia đều 10 bút cho 2 bạn. Mỗi bạn có mấy bút?",
+                        "5 bút",
+                        ["2 bút", "8 bút"],
+                        "10 : 2 = 5 bút cho mỗi bạn.",
+                    ),
+                    (
+                        "Có 3 hộp, mỗi hộp 5 bút. Có tất cả mấy bút?",
+                        "15 bút",
+                        ["8 bút", "10 bút"],
+                        "5 × 3 = 15 bút.",
+                    ),
+                    (
+                        "Xếp 20 bút vào các hộp, mỗi hộp 5 bút. Cần mấy hộp?",
+                        "4 hộp",
+                        ["5 hộp", "15 hộp"],
+                        "20 : 5 = 4 hộp.",
+                    ),
+                ],
+            ),
+            (
+                "time",
+                "morning",
+                "Sắp lịch buổi sáng",
+                "Nhìn kim phút rồi kim giờ. Phân biệt trước, sau và đúng giờ.",
+                "Kim phút chỉ số 6, kim giờ giữa 7 và 8: 7 giờ 30 phút.",
+                "Một giờ có 60 phút; nửa giờ có 30 phút.",
+                [
+                    "Kim dài là kim phút.",
+                    "Kim phút chỉ số 3 là 15 phút, số 6 là 30 phút.",
+                    "Vẽ một đường thời gian để xem việc nào trước.",
+                ],
+                {"kind": "clock", "hour": 7, "minute": 30, "caption": "Đồng hồ chỉ 7 giờ 30 phút."},
+                [
+                    (
+                        "Kim phút chỉ số 3, kim giờ vừa qua số 8. Đồng hồ chỉ mấy giờ?",
+                        "8 giờ 15 phút",
+                        ["8 giờ 30 phút", "3 giờ 8 phút"],
+                        "Kim phút ở số 3 nghĩa là 15 phút; kim giờ vừa qua 8.",
+                    ),
+                    (
+                        "Lan ăn sáng lúc 7 giờ, đi học lúc 7 giờ 30 phút. Việc nào trước?",
+                        "Ăn sáng",
+                        ["Đi học", "Hai việc cùng lúc"],
+                        "7 giờ sớm hơn 7 giờ 30 phút.",
+                    ),
+                    (
+                        "Bắt đầu đọc sách lúc 8 giờ. Đọc 30 phút thì đến mấy giờ?",
+                        "8 giờ 30 phút",
+                        ["8 giờ 15 phút", "9 giờ 30 phút"],
+                        "Từ 8 giờ thêm nửa giờ là 8 giờ 30 phút.",
+                    ),
+                    (
+                        "Từ 9 giờ đến 10 giờ là bao lâu?",
+                        "1 giờ",
+                        ["2 giờ", "30 phút"],
+                        "Hai giờ liền nhau cách nhau 1 giờ.",
+                    ),
+                    (
+                        "Hôm nay là thứ Ba. Ngày mai là thứ mấy?",
+                        "Thứ Tư",
+                        ["Thứ Hai", "Thứ Năm"],
+                        "Sau thứ Ba là thứ Tư.",
+                    ),
+                    (
+                        "Lớp bắt đầu lúc 8 giờ. An đến lúc 7 giờ 45 phút. An đến thế nào?",
+                        "Trước giờ học",
+                        ["Sau giờ học", "Đúng 8 giờ"],
+                        "7 giờ 45 phút sớm hơn 8 giờ.",
+                    ),
+                ],
+            ),
+        ),
+        3: (
+            (
+                "statistics",
+                "library",
+                "Thư viện nhỏ của lớp",
+                "Đọc tên nhóm và số lượng. So sánh rồi mới cộng hoặc trừ.",
+                "Tổ Một có 12 sách, tổ Hai có 8 sách. Hai tổ có 12 + 8 = 20 sách.",
+                "Đọc đúng tên tổ đi kèm với số sách.",
+                [
+                    "Tìm số sách của từng tổ.",
+                    "Tất cả thì cộng, nhiều hơn bao nhiêu thì trừ.",
+                    "Kiểm tra kết quả có hợp với số sách từng tổ không.",
+                ],
+                {
+                    "kind": "bars",
+                    "labels": ["Tổ Một", "Tổ Hai", "Tổ Ba"],
+                    "values": [12, 8, 10],
+                    "caption": "Số sách: tổ Một 12, tổ Hai 8, tổ Ba 10.",
+                },
+                [
+                    (
+                        "Tổ Một có 12 sách, tổ Hai có 8 sách, tổ Ba có 10 sách. Tổ nào có nhiều nhất?",
+                        "Tổ Một",
+                        ["Tổ Hai", "Tổ Ba"],
+                        "12 lớn hơn 8 và 10 nên tổ Một nhiều sách nhất.",
+                    ),
+                    (
+                        "Tổ Một có 12 sách, tổ Hai có 8 sách. Hai tổ có tất cả mấy sách?",
+                        "20 sách",
+                        ["4 sách", "18 sách"],
+                        "12 + 8 = 20 sách.",
+                    ),
+                    (
+                        "Tổ Một có 12 sách, tổ Hai có 8 sách. Tổ Một nhiều hơn mấy sách?",
+                        "4 sách",
+                        ["20 sách", "6 sách"],
+                        "12 − 8 = 4 sách.",
+                    ),
+                    (
+                        "Có 30 sách, chia đều vào 3 ngăn. Mỗi ngăn có mấy sách?",
+                        "10 sách",
+                        ["3 sách", "9 sách"],
+                        "30 : 3 = 10 sách mỗi ngăn.",
+                    ),
+                ],
+            ),
+            (
+                "wordproblems",
+                "picnic",
+                "Đủ chỗ cho chuyến đi",
+                "Khi chia có dư, xem phần còn lại có cần thêm một nhóm hay không.",
+                "13 bạn, mỗi bàn nhiều nhất 4 bạn: 3 bàn chỉ đủ 12 bạn, nên cần ít nhất 4 bàn.",
+                "Kiểm tra cả những bạn còn dư.",
+                [
+                    "Tính số chỗ của số bàn em định chọn.",
+                    "So số chỗ với số bạn.",
+                    "Nếu vẫn còn bạn chưa có chỗ, cần thêm một bàn.",
+                ],
+                cards("Số bạn", "Số chỗ", "Kiểm tra"),
+                [
+                    (
+                        "17 bạn ngồi xe, mỗi xe nhiều nhất 5 bạn. Cần ít nhất mấy xe?",
+                        "4 xe",
+                        ["3 xe", "5 xe"],
+                        "3 xe chỉ có 15 chỗ; 4 xe có 20 chỗ, đủ 17 bạn.",
+                    ),
+                    (
+                        "Có 4 xe, mỗi xe 5 chỗ cho học sinh. Có tất cả mấy chỗ?",
+                        "20 chỗ",
+                        ["9 chỗ", "15 chỗ"],
+                        "5 × 4 = 20 chỗ.",
+                    ),
+                    (
+                        "20 chỗ cho 17 bạn. Còn trống mấy chỗ?",
+                        "3 chỗ",
+                        ["4 chỗ", "37 chỗ"],
+                        "20 − 17 = 3 chỗ trống.",
+                    ),
+                    (
+                        "Xếp 23 bánh vào hộp, mỗi hộp nhiều nhất 6 bánh. Cần ít nhất mấy hộp?",
+                        "4 hộp",
+                        ["3 hộp", "5 hộp"],
+                        "3 hộp chỉ chứa 18 bánh; 4 hộp chứa được 24 bánh.",
+                    ),
+                    (
+                        "24 bánh chia đều vào 4 hộp. Mỗi hộp có mấy bánh?",
+                        "6 bánh",
+                        ["4 bánh", "8 bánh"],
+                        "24 : 4 = 6 bánh.",
+                    ),
+                    (
+                        "Một bạn nói: 17 : 5 dư 2 nên 3 xe, mỗi xe 5 chỗ, là đủ cho 17 bạn. Bạn sai ở đâu?",
+                        "Còn 2 bạn chưa có chỗ",
+                        ["Mỗi xe có 17 chỗ", "Có quá nhiều xe"],
+                        "3 xe chỉ có 15 chỗ, còn 2 bạn nên phải thêm xe.",
+                    ),
+                ],
+            ),
+        ),
+        4: (
+            (
+                "fractions",
+                "ribbon",
+                "Chia dải ruy băng",
+                "Phân số cho biết số phần được lấy trong các phần bằng nhau.",
+                "Dải băng chia 8 phần bằng nhau. Lấy 3 phần là lấy 3/8 dải.",
+                "Chỉ cộng, trừ tử số khi hai phân số cùng mẫu.",
+                [
+                    "Xem dải được chia thành bao nhiêu phần bằng nhau.",
+                    "Tìm số phần đã dùng và còn lại.",
+                    "Cộng phần dùng với phần còn lại để kiểm tra đủ một dải.",
+                ],
+                {
+                    "kind": "fraction",
+                    "numerator": 3,
+                    "denominator": 8,
+                    "caption": "Dải chia tám phần bằng nhau, tô ba phần: ba phần tám.",
+                },
+                [
+                    (
+                        "Dải băng chia 8 phần bằng nhau, dùng 3 phần. Đã dùng bao nhiêu dải?",
+                        "3/8 dải",
+                        ["8/3 dải", "5/8 dải"],
+                        "Lấy 3 trong 8 phần bằng nhau nên là 3/8.",
+                    ),
+                    (
+                        "Dùng 3/8 dải băng. Còn lại bao nhiêu dải?",
+                        "5/8 dải",
+                        ["3/8 dải", "5/5 dải"],
+                        "Một dải là 8/8; 8/8 − 3/8 = 5/8.",
+                    ),
+                    (
+                        "Lan dùng 2/8 dải, Mai dùng 3/8 dải. Cả hai dùng bao nhiêu dải?",
+                        "5/8 dải",
+                        ["5/16 dải", "1/8 dải"],
+                        "Cùng mẫu 8: cộng tử số 2 + 3 = 5, giữ mẫu 8.",
+                    ),
+                    (
+                        "Có 24 nhãn vở, dùng 1/3 số nhãn. Đã dùng mấy nhãn?",
+                        "8 nhãn",
+                        ["3 nhãn", "12 nhãn"],
+                        "Một phần ba của 24 là 24 : 3 = 8 nhãn.",
+                    ),
+                ],
+            ),
+            (
+                "wordproblems",
+                "seedlings",
+                "Hai luống cây bí mật",
+                "Biết tổng và hiệu, em có thể tìm hai số bằng sơ đồ đoạn thẳng.",
+                "Hai luống có 30 cây, luống lớn hơn 6 cây. Luống bé có (30 − 6) : 2 = 12 cây.",
+                "Tìm xong, thử lại cả tổng lẫn hiệu.",
+                [
+                    "Bớt phần hơn để hai luống bằng nhau.",
+                    "Số cây luống bé = (tổng − hiệu) : 2.",
+                    "Cộng hai kết quả và lấy số lớn trừ số bé để kiểm tra.",
+                ],
+                cards("Tổng 30 cây", "Hơn 6 cây", "Tìm hai luống"),
+                [
+                    (
+                        "Hai luống có 30 cây. Luống lớn hơn luống bé 6 cây. Luống bé có mấy cây?",
+                        "12 cây",
+                        ["18 cây", "24 cây"],
+                        "Bớt 6 cây rồi chia đôi: (30 − 6) : 2 = 12 cây.",
+                    ),
+                    (
+                        "Hai luống có 30 cây, luống bé có 12 cây. Luống lớn có mấy cây?",
+                        "18 cây",
+                        ["12 cây", "42 cây"],
+                        "30 − 12 = 18 cây.",
+                    ),
+                    (
+                        "Hai nhóm có 42 hạt, nhóm nhiều hơn 8 hạt. Nhóm ít có mấy hạt?",
+                        "17 hạt",
+                        ["25 hạt", "34 hạt"],
+                        "(42 − 8) : 2 = 17 hạt.",
+                    ),
+                    (
+                        "Hai nhóm có 17 hạt và 25 hạt. Hiệu số hạt là bao nhiêu?",
+                        "8 hạt",
+                        ["42 hạt", "7 hạt"],
+                        "25 − 17 = 8 hạt.",
+                    ),
+                    (
+                        "Hai giỏ có 36 quả, mỗi giỏ bằng nhau. Mỗi giỏ có mấy quả?",
+                        "18 quả",
+                        ["36 quả", "9 quả"],
+                        "Hiệu bằng 0, chia đều: 36 : 2 = 18 quả.",
+                    ),
+                    (
+                        "Hai số có tổng 50, hiệu 10. Cặp số nào thỏa cả hai điều kiện?",
+                        "30 và 20",
+                        ["35 và 15", "25 và 15"],
+                        "30 + 20 = 50 và 30 − 20 = 10; hai cặp còn lại không thỏa đủ.",
+                    ),
+                ],
+            ),
+        ),
+        5: (
+            (
+                "decimals",
+                "water",
+                "Đong nước cho vườn cây",
+                "Đọc đúng hàng thập phân và nhớ đổi về cùng đơn vị trước khi so sánh.",
+                "1,5 lít = 1500 ml; 0,5 lít = 500 ml.",
+                "Một lít bằng 1000 ml. Khi cộng, đặt các dấu phẩy thẳng cột.",
+                [
+                    "Ghi đơn vị cạnh từng số.",
+                    "Đổi lít sang ml bằng cách nhân với 1000.",
+                    "Ước lượng: kết quả có lớn hơn lượng nước ban đầu khi được thêm không?",
+                ],
+                cards("1 l = 1000 ml", "0,5 l = 500 ml"),
+                [
+                    (
+                        "Bình có 1,5 lít nước, thêm 0,5 lít. Có tất cả bao nhiêu lít?",
+                        "2 lít",
+                        ["1,10 lít", "1 lít"],
+                        "1,5 + 0,5 = 2 lít.",
+                    ),
+                    (
+                        "2,5 lít nước bằng bao nhiêu ml?",
+                        "2500 ml",
+                        ["250 ml", "25 ml"],
+                        "2,5 × 1000 = 2500 ml.",
+                    ),
+                    (
+                        "Bình A có 1,25 lít, bình B có 1,5 lít. Bình nào nhiều nước hơn?",
+                        "Bình B",
+                        ["Bình A", "Bằng nhau"],
+                        "1,5 = 1,50; 1,50 > 1,25.",
+                    ),
+                    (
+                        "Có 3 lít nước, tưới hết 1,2 lít. Còn bao nhiêu lít?",
+                        "1,8 lít",
+                        ["2,2 lít", "4,2 lít"],
+                        "3 − 1,2 = 1,8 lít.",
+                    ),
+                ],
+            ),
+            (
+                "ratio",
+                "bookfair",
+                "Gian sách giảm giá",
+                "Giảm giá theo phần trăm là bớt một phần của giá gốc. Tính tiền giảm rồi trừ đi.",
+                "Sách giá 40 000 đồng, giảm 10%: giảm 4000 đồng, còn 36 000 đồng.",
+                "Phân biệt tiền được giảm với số tiền phải trả.",
+                [
+                    "Giá gốc ứng với 100%.",
+                    "Tiền giảm = giá gốc × tỉ lệ giảm.",
+                    "Tiền phải trả + tiền giảm phải bằng giá gốc.",
+                ],
+                {
+                    "kind": "pie",
+                    "labels": ["Phải trả", "Giảm"],
+                    "values": [80, 20],
+                    "caption": "Giảm 20% giá gốc thì trả 80% giá gốc.",
+                },
+                [
+                    (
+                        "Sách giá 50 000 đồng, giảm 20%. Được giảm bao nhiêu tiền?",
+                        "10 000 đồng",
+                        ["40 000 đồng", "20 000 đồng"],
+                        "50 000 × 20 : 100 = 10 000 đồng được giảm.",
+                    ),
+                    (
+                        "Sách giá 50 000 đồng, được giảm 10 000 đồng. Phải trả bao nhiêu?",
+                        "40 000 đồng",
+                        ["60 000 đồng", "10 000 đồng"],
+                        "50 000 − 10 000 = 40 000 đồng.",
+                    ),
+                    (
+                        "Giảm 25% giá gốc thì phải trả bao nhiêu phần trăm giá gốc?",
+                        "75%",
+                        ["25%", "125%"],
+                        "100% − 25% = 75%.",
+                    ),
+                    (
+                        "Bút giá 20 000 đồng, giảm 10%. Giá sau giảm là bao nhiêu?",
+                        "18 000 đồng",
+                        ["2000 đồng", "19 000 đồng"],
+                        "Giảm 20 000 × 10 : 100 = 2000 đồng; còn 18 000 đồng.",
+                    ),
+                    (
+                        "Có 60 000 đồng, mua sách hết 40 000 đồng. Còn lại bao nhiêu?",
+                        "20 000 đồng",
+                        ["100 000 đồng", "10 000 đồng"],
+                        "60 000 − 40 000 = 20 000 đồng.",
+                    ),
+                    (
+                        "Một sách giá gốc 80 000 đồng. Giảm 25% hoặc giảm 15 000 đồng, chỉ được chọn một. Cách nào trả ít hơn?",
+                        "Giảm 25%",
+                        ["Giảm 15 000 đồng", "Hai cách bằng nhau"],
+                        "25% của 80 000 là 20 000 đồng, lớn hơn 15 000 đồng; nên giảm 25% trả ít hơn.",
+                    ),
+                ],
+            ),
+        ),
+    }
+    return [unit(grade, *row, vip=bool(index)) for index, row in enumerate(data[grade])]

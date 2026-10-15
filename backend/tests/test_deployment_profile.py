@@ -39,7 +39,7 @@ def run_wrapper(tmp_path, profile, *arguments):
 def test_unknown_profile_fails_before_using_docker(tmp_path):
     response = run_wrapper(tmp_path, "mistyped-profile", "config", "--quiet")
     assert response.returncode == 64
-    assert "must be standard or small" in response.stderr
+    assert "must be standard, small or vps8gb" in response.stderr
 
 
 def test_small_profile_keeps_storage_private_ports_and_bounded_resources(tmp_path):
@@ -68,3 +68,32 @@ def test_small_profile_keeps_storage_private_ports_and_bounded_resources(tmp_pat
     assert "fsync=off" not in pg_options and "synchronous_commit=off" not in pg_options
     assert "max_connections=30" in pg_options
     assert services["caddy"]["networks"] == standard["services"]["caddy"]["networks"]
+
+
+def test_vps8gb_profile_budget_database_and_private_network(tmp_path):
+    if not shutil.which("docker"):
+        pytest.skip("Docker Compose CLI required; Engine not required")
+    result = run_wrapper(tmp_path, "vps8gb", "config", "--format", "json")
+    assert result.returncode == 0, result.stderr
+    merged = json.loads(result.stdout)
+    assert merged["name"] == "viettree"
+    services = merged["services"]
+    caps = sum(int(services[name]["mem_limit"]) for name in ("db", "backend", "frontend", "caddy"))
+    assert caps == 4864 * 1024 * 1024
+    for name in ("db", "backend", "frontend"):
+        assert not services[name].get("ports")
+        assert services[name]["pids_limit"] <= 256
+    environment = services["backend"]["environment"]
+    assert environment["SERVER_WORKERS"] == "2"
+    assert int(environment["DB_POOL_SIZE"]) + int(environment["DB_POOL_MAX_OVERFLOW"]) == 6
+    assert environment["AI_TRAINING_ONLY"] == "true"
+    assert services["db"]["environment"]["TZ"] == "UTC"
+    pg_options = services["db"]["command"]
+    assert "shared_buffers=512MB" in pg_options and "max_connections=60" in pg_options
+    assert not any(value in pg_options for value in ("fsync=off", "synchronous_commit=off"))
+    assert services["caddy"]["networks"]["app"]["ipv4_address"] == "172.30.40.2"
+    assert services["caddy"]["environment"]["MAINTENANCE_MODE"] == "true"
+    assert any(
+        item.get("protocol") == "udp" and item["target"] == 443
+        for item in services["caddy"]["ports"]
+    )

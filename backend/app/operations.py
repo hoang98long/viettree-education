@@ -196,3 +196,81 @@ def system_report(conn):
         "checks": checks,
         "cleanup": cleanup_auth(conn),
     }
+
+
+def launch_report(conn):
+    """Additional read-only gates for a public installation, separate from /ready."""
+    report = system_report(conn)
+    users, roles = db.table("users"), db.table("user_roles")
+    demo_names = ["longnh"] + [
+        f"{plan}{grade}_{number:02}"
+        for plan in ("free", "vip")
+        for grade in range(1, 6)
+        for number in (1, 2)
+    ]
+    unreviewed = conn.execute(
+        select(func.count())
+        .select_from(users)
+        .where(
+            func.lower(users.c.username).in_(demo_names),
+            users.c.is_active.is_(True),
+            users.c.password_changed_at.is_(None),
+        )
+    ).scalar_one()
+    ready_admins = conn.execute(
+        select(func.count())
+        .select_from(users)
+        .where(
+            users.c.is_active.is_(True),
+            users.c.password_hash.is_not(None),
+            users.c.password_hash != "",
+            users.c.password_changed_at.is_not(None),
+            users.c.must_change_password.is_(False),
+            select(roles.c.user_id)
+            .where(roles.c.user_id == users.c.id, roles.c.role == "admin")
+            .exists(),
+        )
+    ).scalar_one()
+    privileges = (
+        conn.execute(
+            text("""
+        SELECT rolsuper, rolcreatedb, rolcreaterole,
+               has_schema_privilege(current_user, 'public', 'CREATE') AS can_create,
+               (SELECT count(*) FROM pg_tables WHERE schemaname='public' AND tableowner=current_user) AS owned_tables
+        FROM pg_roles WHERE rolname=current_user
+    """)
+        )
+        .mappings()
+        .one()
+    )
+    minimal_role = not any(privileges.values())
+    report["checks"].extend(
+        [
+            {
+                "code": "production_mode",
+                "label": "Chế độ production",
+                "ok": settings().app_env == "production",
+                "count": None,
+            },
+            {
+                "code": "review_demo_accounts",
+                "label": "Tài khoản demo chưa khóa hoặc đổi mật khẩu qua quản trị",
+                "ok": unreviewed == 0,
+                "count": unreviewed,
+            },
+            {
+                "code": "ready_admin",
+                "label": "Có quản trị đã đặt mật khẩu riêng",
+                "ok": ready_admins > 0,
+                "count": ready_admins,
+            },
+            {
+                "code": "runtime_db_role",
+                "label": "DB runtime không là superuser/owner và không có quyền tạo cấu trúc",
+                "ok": minimal_role,
+                "count": None,
+            },
+        ]
+    )
+    report["status"] = "ok" if all(item["ok"] for item in report["checks"]) else "attention"
+    return report

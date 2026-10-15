@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-15",
+  "database": "viettree-education",
+  "migration": {
+    "from": "0011_classes_vip_training",
+    "to": "0012_lesson_bookmarks"
+  },
+  "release": {
+    "release": "explorers-2026-01",
+    "grades": {
+      "1": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      },
+      "2": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      },
+      "3": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      },
+      "4": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      },
+      "5": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      }
+    }
+  },
+  "backup": {
+    "path": ".tools\\backups\\before-explorers-bookmarks-2026-10-15-701d5b1ca32c4a1fa88de8925eceb042.dump",
+    "sha256": "be29519c9b2e6d837e1a60947b0d19e8b5ab7a9fe61b1d5480e03f208b130dcf",
+    "pg_restore_list": "passed"
+  },
+  "preserved_pre_migration_tables": 81,
+  "preserved_pre_migration_rows": 21910,
+  "added_rows": {
+    "lessons": 15,
+    "lesson_skills": 15,
+    "questions": 60,
+    "question_versions": 60,
+    "question_skills": 60,
+    "lesson_questions": 60,
+    "assessments": 15,
+    "assessment_items": 60,
+    "content_access_policies": 30,
+    "question_version_access_policies": 60
+  },
+  "existing_accounts_sessions_vip_history_lessons": "unchanged"
+}

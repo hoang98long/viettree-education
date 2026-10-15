@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { expectedSeedQuestions, login } from "./helpers";
 
 for (const grade of [1, 2]) {
   test(`Lớp ${grade}: ba môn, bài ngắn/minh họa, lưu bài và quyền gợi ý`, async ({
@@ -140,7 +140,7 @@ for (const grade of [1, 2]) {
           (n: number, r: { questions: number }) => n + r.questions,
           0,
         ),
-      ).toBe(384);
+      ).toBe(expectedSeedQuestions(map));
       const token = (await adminContext.cookies()).find(
         (c) => c.name === "viettree_csrf",
       )!.value;

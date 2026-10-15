@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { expectedSeedQuestions, login } from "./helpers";
 
 test("lớp 3: ba môn, quản trị học liệu và gợi ý Free/VIP cấp rồi thu hồi", async ({
   page,
@@ -79,7 +79,7 @@ test("lớp 3: ba môn, quản trị học liệu và gợi ý Free/VIP cấp r�
         (n: number, r: { questions: number }) => n + r.questions,
         0,
       ),
-    ).toBe(384);
+    ).toBe(expectedSeedQuestions(map));
     await admin.goto(`/admin/lessons/${free.id}/edit`);
     await expect(admin.getByLabel("Số gợi ý miễn phí")).toHaveValue("1");
     const csrf = (await adminContext.cookies()).find(

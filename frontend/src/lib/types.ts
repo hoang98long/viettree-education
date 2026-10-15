@@ -101,6 +101,7 @@ export type Dashboard = {
   recommendations: Recommendation[];
   assignments: Assignment[];
   completed_lessons: number;
+  graded_attempt_count: number;
   continue_lesson: { id: string; title: string } | null;
 };
 export type QuestionKind =
@@ -151,6 +152,7 @@ export type Result = {
   })[];
 };
 export type Lesson = LessonSummary & {
+  is_bookmarked?: boolean;
   progress_status: "not_started" | "in_progress" | "completed";
   content: LessonContent;
   hint_access?: { available: number; total: number; vip_locked: number };

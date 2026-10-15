@@ -6,12 +6,22 @@ import type { MapRow } from "@/features/curriculum/types";
 import { subjects } from "@/features/curriculum/constants";
 import { downloadCsv } from "@/lib/csv";
 
+type ReleaseStatus = {
+  release: string;
+  title?: string;
+  expected: { lessons: number; questions: number; assessments: number };
+  published: { lessons: number; questions: number; assessments: number };
+};
+
 export function CurriculumMapPanel({ grade = 4 }: { grade?: number }) {
   const [subject, setSubject] = useState(""),
     [gaps, setGaps] = useState(false);
-  const resource = useResource<{ grade: number; rows: MapRow[] }>(
-    `/admin/curriculum-map?grade=${grade}`,
-  );
+  const resource = useResource<{
+    grade: number;
+    rows: MapRow[];
+    supplement?: ReleaseStatus;
+    supplements?: ReleaseStatus[];
+  }>(`/admin/curriculum-map?grade=${grade}`);
   const rows = (resource.data?.rows || []).filter(
     (row) =>
       (!subject || row.subject_code === subject) &&
@@ -95,6 +105,28 @@ export function CurriculumMapPanel({ grade = 4 }: { grade?: number }) {
         <ErrorState message={resource.error} retry={resource.retry} />
       ) : (
         <>
+          {(
+            resource.data.supplements ??
+            (resource.data.supplement ? [resource.data.supplement] : [])
+          ).map((release) => (
+            <p
+              key={release.release}
+              className="notice"
+              aria-label={
+                release.release === "applied-2026-01"
+                  ? "Học liệu tình huống bổ sung"
+                  : "Học liệu khám phá bổ sung"
+              }
+            >
+              <strong>
+                {release.title || "Tình huống gần gũi"} · Lớp {grade}:
+              </strong>{" "}
+              {release.published.lessons}/{release.expected.lessons} bài ·{" "}
+              {release.published.questions}/{release.expected.questions} câu hỏi
+              · {release.published.assessments}/{release.expected.assessments}{" "}
+              đề đã xuất bản.
+            </p>
+          ))}
           <p className="notice" aria-live="polite">
             {rows.length} mạch · {rows.reduce((n, r) => n + r.free_lessons, 0)}{" "}
             bài Free · {rows.reduce((n, r) => n + r.vip_lessons, 0)} bài VIP ·{" "}

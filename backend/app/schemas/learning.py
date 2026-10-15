@@ -90,6 +90,7 @@ class DashboardResponse(BaseModel):
     assignments: list[AssignmentResponse]
     continue_lesson: dict | None
     completed_lessons: int
+    graded_attempt_count: int
 
 
 class ProfileResponse(UserResponse):

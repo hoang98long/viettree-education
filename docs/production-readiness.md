@@ -1,5 +1,16 @@
 # Kiểm tra trước triển khai thực tế
 
+Bản ứng dụng hiện tại có head `0012_lesson_bookmarks`: lưu bài theo tài khoản
+và 15 bài Khám phá mới. Cần migrate/grant khi cập nhật VPS; xem
+[quy trình và kiểm chứng tính năng](bookmarks-and-explorers.md). Các phép đo tải
+và HTTPS bên dưới thuộc đợt chuẩn bị VPS trước.
+
+**15/10/2026 — VPS tại Nhật, 4 vCPU / RAM 8 GB / SSD 100 GB:** dùng profile
+`vps8gb`, [hướng dẫn triển khai](deploy-vps-japan.md) và
+[báo cáo kiểm chứng mới](release-readiness-2026-10-15.md). `check-launch`
+kiểm tra thêm admin, tài khoản demo và quyền DB runtime; `smoke.sh` kiểm tra
+HTTPS/cache/container/backup sau deploy. Các ghi chú bên dưới ghi lại đợt cũ.
+
 Profile mới cho **3 cores / RAM 2 GB / SSD 50 GB** tại
 [deploy-small-vps.md](deploy-small-vps.md), dùng image build trên máy khác.
 Pool chờ kết nối có limiter riêng; counter auth thêm một kết nối mỗi worker

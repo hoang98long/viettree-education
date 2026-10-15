@@ -1,0 +1,13 @@
+{
+  "scope": "local PostgreSQL 18 / separate synthetic test database",
+  "consistent_snapshot": true,
+  "tables_compared": 82,
+  "count_mismatches": 0,
+  "schema_valid": true,
+  "migration_heads": ["0011_classes_vip_training"],
+  "archive_bytes": 2467964,
+  "source_database": "viettree-visual-browser-test",
+  "restored_test_database": "viettree-restore-test-20261015-9bf94b21f4",
+  "real_vps_tested": false,
+  "temporary_restore_database_removed": true
+}

@@ -33,6 +33,8 @@ export default function Page() {
         return <Grades />;
       case "lessons":
         return <LessonLibraryPage />;
+      case "saved-lessons":
+        return <LessonLibraryPage savedOnly />;
       case "history":
         return <HistoryPage />;
       case "progress":

@@ -1,5 +1,20 @@
 import { expect, type Page } from "@playwright/test";
 
+export function expectedSeedQuestions(mapping: {
+  supplement?: { published: { questions: number } };
+  supplements?: { published: { questions: number } }[];
+}) {
+  return (
+    384 +
+    (mapping.supplements?.reduce(
+      (sum, release) => sum + release.published.questions,
+      0,
+    ) ??
+      mapping.supplement?.published.questions ??
+      0)
+  );
+}
+
 export async function login(
   page: Page,
   username: string,

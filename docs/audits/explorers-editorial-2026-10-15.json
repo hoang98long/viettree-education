@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-15",
+  "reason": "Refine the wording of an unused first-draft poem before release",
+  "archived_unused_lesson": "VT3-VIETNAMESE-explorers-2026-01-words-around-us-lesson",
+  "active_replacement": "VT3-VIETNAMESE-explorers-2026-01-words-around-us-r2-lesson",
+  "old_question_versions": "4 preserved without modification",
+  "old_attempts_or_progress": 0,
+  "backup": {
+    "path": ".tools\\backups\\before-explorer-editorial-84e513ec33fb4286a2057b1470ac5f34.dump",
+    "sha256": "4637c78dcb7880a39cc7e1a8e2f6aae04dfdf8df920e850945cbe6fe6b9d953e",
+    "pg_restore_list": "passed"
+  },
+  "release": {
+    "release": "explorers-2026-01",
+    "grades": {
+      "3": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "local Caddy HTTPS / trusted local CA",
+  "maintenance_blocks_pages_and_api": true,
+  "spoofed_forwarded_ip_does_not_bypass": true,
+  "invalid_mode_stays_closed": true,
+  "allowlisted_operator_can_access": true,
+  "explicit_false_reopens_public_access": true,
+  "real_vps_tested": false
+}

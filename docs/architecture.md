@@ -17,6 +17,10 @@ backend/app/
 │   ├── registry.py             # chọn bộ, inventory và map theo khối
 │   ├── seeding.py              # chỉ nạp học liệu, không tạo tài khoản
 │   ├── lesson_content.py       # chuẩn hóa nội dung và phân bổ gợi ý khi đọc
+│   ├── supplements/applied/    # pack tình huống riêng: builders, 3 môn, seed/inventory
+│   ├── supplements/explorers/  # bài khám phá ngắn theo môn/khối
+│   ├── supplements/release.py # cơ chế inventory/seed/verify dùng chung
+│   ├── supplements/registry.py # đăng ký release cho CLI và quản trị
 │   └── grades/
 │       ├── early_primary/      # lớp 1–2: pack, math, vietnamese, english, builders
 │       ├── grade_03/           # lớp 3: pack, math, vietnamese, english, builders
@@ -83,7 +87,7 @@ minh họa trong schema JSON. API mới chỉ trả metadata và tiến độ c�
 hiện tại; quyền nội dung vẫn kiểm tra tại backend. Xem [chi tiết lớp 5](grade5-curriculum.md).
 
 SQL gốc `database/viettree_education_schema.sql` có 34 bảng, giữ nguyên; head
-Alembic `0011_classes_vip_training` bổ sung auth/gói/nháp/AI/lớp/thành tích.
+Alembic `0012_lesson_bookmarks` bổ sung auth/gói/nháp/AI/lớp/thành tích/lưu bài.
 SQLAlchemy Core reflection bảng thật, không `create_all`; `/ready`,
 `check-schema`, `check-system` kiểm tra schema/quyền/đề. Không reset/DROP/TRUNCATE.
 UUID/codes và các FK ghép của attempt/answer giữ nguyên. Đề ghim đúng phiên bản

@@ -8,6 +8,7 @@ import { useResource } from "@/hooks/use-resource";
 import { ErrorState, Loading, PageTitle } from "@/components/ui";
 import { LessonBody } from "@/components/lesson-body";
 import { LessonPreviewPanel } from "@/features/membership/pages";
+import { BookmarkButton } from "@/features/lessons/bookmark-button";
 
 export function LessonContent({ data }: { data: Lesson }) {
   const [completed, setCompleted] = useState(
@@ -25,6 +26,19 @@ export function LessonContent({ data }: { data: Lesson }) {
         title={data.title}
         description={`${data.estimated_minutes} phút · Đọc chậm rãi theo nhịp của em`}
       />
+      <section
+        className="panel library-actions"
+        aria-label="Lưu bài để học lại"
+      >
+        <BookmarkButton
+          key={`${data.id}:${data.is_bookmarked}`}
+          lessonId={data.id}
+          initialSaved={data.is_bookmarked ?? false}
+        />
+        <Link href="/student/saved-lessons" className="card-link">
+          Xem bài đã lưu
+        </Link>
+      </section>
       <LessonBody
         content={data.content}
         hintAccess={data.hint_access}

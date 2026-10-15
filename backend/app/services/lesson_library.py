@@ -23,10 +23,18 @@ BASE_LETTERS = "".join(fold(char) for char in ACCENTS)
 
 
 def lesson_library(
-    conn, user, subject_code=None, plan="all", progress="all", category="all", search="", page=1
+    conn,
+    user,
+    subject_code=None,
+    plan="all",
+    progress="all",
+    category="all",
+    search="",
+    page=1,
+    bookmarked_only=False,
 ):
     grade = profile(conn, user["id"])
-    lessons, topics, subjects, policies, progress_rows = (
+    lessons, topics, subjects, policies, progress_rows, bookmarks = (
         db.table(name)
         for name in (
             "lessons",
@@ -34,10 +42,12 @@ def lesson_library(
             "subjects",
             "content_access_policies",
             "student_lesson_progress",
+            "student_lesson_bookmarks",
         )
     )
     progress_status = func.coalesce(progress_rows.c.status, "not_started")
     category_value = func.coalesce(lessons.c.content["category"].astext, "core")
+    bookmarked = bookmarks.c.lesson_id.is_not(None)
     scope = (
         lessons.join(topics)
         .join(subjects, subjects.c.id == topics.c.subject_id)
@@ -46,6 +56,10 @@ def lesson_library(
             progress_rows,
             (progress_rows.c.lesson_id == lessons.c.id)
             & (progress_rows.c.student_id == user["id"]),
+        )
+        .outerjoin(
+            bookmarks,
+            (bookmarks.c.lesson_id == lessons.c.id) & (bookmarks.c.student_id == user["id"]),
         )
     )
     predicates = [
@@ -62,6 +76,8 @@ def lesson_library(
         predicates.append(progress_status == progress)
     if category != "all":
         predicates.append(category_value == category)
+    if bookmarked_only:
+        predicates.append(bookmarked)
     search = fold(search.strip())
     if search:
         escaped = search.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
@@ -87,6 +103,7 @@ def lesson_library(
             subjects.c.name_vi.label("subject_name"),
             progress_status.label("progress_status"),
             category_value.label("category"),
+            bookmarked.label("is_bookmarked"),
             policies.c.minimum_plan_code,
             subjects.c.sort_order.label("subject_order"),
             topics.c.sort_order.label("topic_order"),
@@ -103,6 +120,7 @@ def lesson_library(
             func.count().filter(filtered.c.progress_status == "in_progress").label("in_progress"),
             func.count().filter(filtered.c.minimum_plan_code == "free").label("free"),
             func.count().filter(filtered.c.minimum_plan_code == "vip").label("vip"),
+            func.count().filter(filtered.c.is_bookmarked).label("bookmarked"),
         )
         .select_from(filtered)
         .subquery("library_counts")
@@ -116,6 +134,7 @@ def lesson_library(
         "subject_name",
         "progress_status",
         "category",
+        "is_bookmarked",
     ]
     page_rows = (
         select(
@@ -149,7 +168,8 @@ def lesson_library(
         .all()
     )
     totals = {
-        name: result[0][name] for name in ["total", "completed", "in_progress", "free", "vip"]
+        name: result[0][name]
+        for name in ["total", "completed", "in_progress", "free", "vip", "bookmarked"]
     }
     rows = [{name: row[name] for name in fields} for row in result if row["id"] is not None]
     membership = access.resolve_membership(conn, user["id"])

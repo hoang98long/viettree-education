@@ -1,5 +1,25 @@
 # API và các luồng thật
 
+`PUT /api/v1/students/me/lessons/{lesson_id}/bookmark` nhận `{"saved": true|false}`,
+trả trạng thái đã lưu; chủ tài khoản lấy từ phiên, kiểm tra CSRF/Origin, không
+nhận `student_id`. Lưu mới yêu cầu đúng lớp, đã xuất bản và có quyền học;
+bỏ lưu vẫn được phép sau thu hồi VIP/đổi lớp. Thư viện bài học thêm
+`bookmarked_only=true`, item `is_bookmarked`, thống kê `bookmarked`.
+Chi tiết bài học thêm `is_bookmarked`; dashboard thêm `graded_attempt_count`
+đếm toàn bộ lượt đã chấm của học sinh, độc lập giới hạn 200 dòng lịch sử.
+Admin curriculum-map thêm `supplements[]` cho từng release, giữ `supplement`
+cũ để tương thích. [Thiết kế và vận hành](bookmarks-and-explorers.md).
+
+`GET /api/v1/students/me/practice-library` dành cho học sinh đăng nhập: khối
+lấy từ hồ sơ, trả `summary` và tối đa 12 `items` mỗi trang. Tham số `page`,
+`subject_code`, `plan=all|free|vip`, `progress=all|not_started|review|mastered`,
+`max_questions=1..8`, `search` tối đa 80 ký tự (có/không dấu),
+`kind=all|practice|homework|quiz|test|placement|adaptive`. Item có thông tin
+quyền, số câu, số lần đã chấm, điểm phần trăm tốt nhất/gần nhất; không có đáp án.
+`review` lấy lần nộp đã chấm gần nhất dưới 80%; bài đang làm/chưa chấm không
+tính điểm. API không cache và chỉ dùng lượt làm của chính người gọi.
+`GET /admin/curriculum-map` thêm `supplement` (mã release, dự kiến và đã xuất bản).
+
 Swagger `/docs`, OpenAPI `/openapi.json` trên backend cổng 8000. Tiền tố `/api/v1`.
 Pydantic validates request và response; endpoint học sinh dùng whitelist response
 trước nộp. UUID không hợp lệ/extra fields đáp án → 422; không phản chiếu input.

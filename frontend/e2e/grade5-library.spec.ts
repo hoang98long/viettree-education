@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { login } from "./helpers";
+import { expectedSeedQuestions, login } from "./helpers";
+import { localTLS } from "./environment";
 
 test("Lớp 5: thư viện, hình học, tiến độ, bài thập phân và cấp/thu hồi VIP", async ({
   page,
@@ -18,14 +19,24 @@ test("Lớp 5: thư viện, hình học, tiến độ, bài thập phân và c�
   await page
     .getByRole("link", { name: "Thư viện bài học", exact: true })
     .click();
-  await expect(page.getByText("68 bài phù hợp", { exact: true })).toBeVisible();
+  const library = await (
+    await page.request.get("/api/v1/students/me/lesson-library")
+  ).json();
+  expect(library.summary.total).toBeGreaterThanOrEqual(68);
+  await expect(
+    page.getByText(`${library.summary.total} bài phù hợp`, { exact: true }),
+  ).toBeVisible();
   await expect(page.locator(".library-card")).toHaveCount(12);
   await page.screenshot({
     path: `test-results/grade5-library-all-${suffix}.png`,
     fullPage: true,
   });
   await page.getByRole("button", { name: "Trang sau", exact: true }).click();
-  await expect(page.getByText("Trang 2/6", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(`Trang 2/${Math.ceil(library.summary.total / 12)}`, {
+      exact: true,
+    }),
+  ).toBeVisible();
   await page.getByLabel("Tên bài hoặc chủ đề").fill("dien tich tam giac");
   await page.getByRole("button", { name: "Tìm bài", exact: true }).click();
   await expect(page.getByText("1 bài phù hợp", { exact: true })).toBeVisible();
@@ -56,12 +67,15 @@ test("Lớp 5: thư viện, hình học, tiến độ, bài thập phân và c�
   await page
     .getByRole("link", { name: "Thư viện bài học", exact: true })
     .click();
+  await page.getByText("Chọn thêm bộ lọc", { exact: true }).click();
   await page.getByLabel("Tiến độ đọc").selectOption("completed");
   await expect(page.getByText("1 bài phù hợp", { exact: true })).toBeVisible();
   await expect(page.locator(".library-card-meta")).toContainText("Đã đọc xong");
   await page.getByRole("button", { name: "Xóa bộ lọc", exact: true }).click();
   await page.getByLabel("Gói bài học").selectOption("vip");
-  await expect(page.getByText("22 bài phù hợp", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(`${library.summary.vip} bài phù hợp`, { exact: true }),
+  ).toBeVisible();
   await page.screenshot({
     path: `test-results/grade5-library-${suffix}.png`,
     fullPage: true,
@@ -82,6 +96,7 @@ test("Lớp 5: thư viện, hình học, tiến độ, bài thập phân và c�
   ).toBe(403);
   const adminContext = await browser.newContext({
     baseURL: process.env.E2E_BASE_URL,
+    ignoreHTTPSErrors: localTLS,
   });
   try {
     const admin = await adminContext.newPage();
@@ -105,7 +120,7 @@ test("Lớp 5: thư viện, hình học, tiến độ, bài thập phân và c�
         (n: number, r: { questions: number }) => n + r.questions,
         0,
       ),
-    ).toBe(384);
+    ).toBe(expectedSeedQuestions(mapping));
     const downloadEvent = admin.waitForEvent("download");
     await admin
       .getByRole("button", { name: "Xuất học liệu CSV", exact: true })
@@ -164,6 +179,7 @@ test("Lớp 5: thư viện, hình học, tiến độ, bài thập phân và c�
       page.getByRole("link", { name: "Xem gói học cùng phụ huynh" }),
     ).toBeVisible();
     await page.goto("/student/lessons");
+    await page.getByText("Chọn thêm bộ lọc", { exact: true }).click();
     await page.getByLabel("Gói bài học").selectOption("vip");
     await expect(
       page.getByRole("link", { name: "Xem giới thiệu", exact: true }),

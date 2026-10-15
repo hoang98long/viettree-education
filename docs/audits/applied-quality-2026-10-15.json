@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-15",
+  "release": "applied-2026-01",
+  "added_curriculum": {
+    "grades": [1, 2, 3, 4, 5],
+    "lessons": 30,
+    "free_lessons": 15,
+    "vip_lessons": 15,
+    "questions": 150,
+    "assessments": 30
+  },
+  "backend_non_integration": {
+    "passed": 799,
+    "skipped": 9,
+    "integration_deselected": 187
+  },
+  "targeted_backend": {
+    "passed": 21,
+    "integration_included": 10,
+    "overlap_with_non_integration": 11,
+    "files": [
+      "test_applied_content.py",
+      "test_practice_library.py",
+      "test_library_snapshot.py"
+    ],
+    "database": "viettree-education-test"
+  },
+  "frontend_unit": { "passed": 80 },
+  "browser": {
+    "database": "viettree-visual-browser-test",
+    "new_scenarios_passed": 6,
+    "grade_five_regressions_passed": 2,
+    "projects": ["desktop", "mobile"],
+    "new_files": ["applied-practice.spec.ts"],
+    "regression_files": ["grade5-library.spec.ts"],
+    "horizontal_overflow_checked_at_px": [320, 390, 768, 1280],
+    "runtime": "local Next dev and FastAPI on isolated ports 3001 and 8001"
+  },
+  "checks": {
+    "ruff": "passed",
+    "ruff_format": "passed",
+    "typescript": "passed",
+    "eslint": "passed",
+    "prettier": "passed",
+    "next_production_build": "passed"
+  },
+  "preservation_evidence": "applied-local-2026-10-15.json",
+  "limits": [
+    "Full integration suite not rerun; targeted integration and prior grade-five browser flows were checked.",
+    "No new VPS load measurement or Vietnam-Japan network test in this release.",
+    "Browser flows used local development servers; production compilation was checked separately.",
+    "No new database migration, dependency or external model service."
+  ]
+}

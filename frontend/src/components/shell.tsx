@@ -4,6 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createContext, useContext, useEffect } from "react";
 import {
   BookOpen,
+  Bookmark,
   ChartNoAxesCombined,
   Clock,
   GraduationCap,
@@ -41,6 +42,7 @@ const studentMenu = [
   ["learning-plan", "Kế hoạch học", ListChecks],
   ["grades", "Khám phá lớp học", GraduationCap],
   ["lessons", "Thư viện bài học", BookOpen],
+  ["saved-lessons", "Bài học đã lưu", Bookmark],
   ["practice", "Thư viện luyện tập", BookOpen],
   ["thinking", "Góc tư duy", Lightbulb],
   ["history", "Lịch sử luyện tập", Clock],

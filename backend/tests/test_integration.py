@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from uuid import UUID, uuid4
 
 import pytest
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 
 from app.core.config import settings
 from app.core.security import hasher, now
@@ -150,6 +150,36 @@ def test_cleared_saved_answers_not_counted_and_archived_result_stays_readable(lo
     history = client.get(f"/api/v1/attempts/{attempt_id}/result")
     assert history.status_code == 200, history.text
     assert history.json() == result.json()
+
+
+def test_study_day_and_history_use_vietnam_time_when_database_is_in_japan(
+    logged_student, conn, monkeypatch
+):
+    # 16:30 UTC is 23:30 in Vietnam, 01:30 the following day in Japan.
+    from datetime import UTC, time
+
+    at = datetime.combine(now().date() + timedelta(days=1), time(16, 30), UTC)
+    conn.execute(text("SET LOCAL TIME ZONE 'Asia/Tokyo'"))
+    client = logged_student
+    attempt_id, _, _ = start(client)
+    attempts = db.table("attempts")
+    conn.execute(attempts.update().where(attempts.c.id == attempt_id).values(started_at=at))
+    monkeypatch.setattr("app.services.attempts.now", lambda: at)
+    response = client.post(f"/api/v1/attempts/{attempt_id}/submit")
+    assert response.status_code == 200, response.text
+    local_date = at.date().isoformat()
+    japan_date = (at + timedelta(days=1)).date().isoformat()
+    local_day = client.get(f"/api/v1/students/me/history?date={local_date}").json()
+    japan_day = client.get(f"/api/v1/students/me/history?date={japan_date}").json()
+    assert any(item["id"] == attempt_id for item in local_day)
+    assert not any(item["id"] == attempt_id for item in japan_day)
+    daily = db.table("student_daily_statistics")
+    student_id = UUID(client.get("/api/v1/auth/me").json()["id"])
+    days = list(
+        conn.execute(select(daily.c.stat_date).where(daily.c.student_id == student_id)).scalars()
+    )
+    assert at.date() in days
+    assert conn.execute(text("SHOW TIME ZONE")).scalar_one() == "Asia/Tokyo"
 
 
 def test_login_rate_limit_persists_failures(client):

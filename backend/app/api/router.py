@@ -10,6 +10,7 @@ from app.api.routes.assessments import router as assessments_router
 from app.api.routes.attempts import router as attempts_router
 from app.api.routes.auth import router as auth_router
 from app.api.routes.authoring import router as authoring_router
+from app.api.routes.bookmarks import router as bookmarks_router
 from app.api.routes.catalog import router as catalog_router
 from app.api.routes.curriculum import router as curriculum_router
 from app.api.routes.learning import router as learning_router
@@ -17,11 +18,14 @@ from app.api.routes.lesson_library import router as lesson_library_router
 from app.api.routes.lesson_studio import router as lesson_studio_router
 from app.api.routes.memberships import router as memberships_router
 from app.api.routes.operations import router as operations_router
+from app.api.routes.practice_library import router as practice_library_router
 from app.api.routes.vip import router as vip_router
 from app.classroom.api import router as classroom_router
 
 router = APIRouter()
 router.include_router(lesson_library_router)
+router.include_router(bookmarks_router)
+router.include_router(practice_library_router)
 router.include_router(auth_router)
 router.include_router(catalog_router)
 router.include_router(learning_router)

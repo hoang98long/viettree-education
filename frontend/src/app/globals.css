@@ -45,6 +45,35 @@
   display: grid;
   gap: 8px;
 }
+.library-filters.practice-filters {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.practice-shortcuts {
+  margin-block: 18px;
+}
+.practice-shortcuts button[aria-pressed="true"] {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+.practice-filter-details,
+.library-filter-details {
+  margin-bottom: 18px;
+}
+.practice-filter-details summary,
+.library-filter-details summary {
+  cursor: pointer;
+  padding-block: 10px;
+  font-weight: 600;
+}
+.library-saved-toggle {
+  margin-bottom: 16px;
+}
+.library-saved-toggle[aria-pressed="true"] {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
 .library-actions,
 .library-card-meta,
 .library-card-top,
@@ -169,7 +198,8 @@
   .lesson-library-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .library-filters {
+  .library-filters,
+  .library-filters.practice-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -180,7 +210,8 @@
   .library-search > div {
     flex-direction: column;
   }
-  .library-filters {
+  .library-filters,
+  .library-filters.practice-filters {
     grid-template-columns: 1fr;
   }
   .library-card {

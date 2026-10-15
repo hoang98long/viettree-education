@@ -58,7 +58,7 @@ try {
     [IO.File]::WriteAllText("$archivePath.sha256", "$hash  $archiveName`n", [Text.Encoding]::ASCII)
     $configArchiveName = "viettree-$Release-deployment.tar.gz"
     $configArchivePath = Join-Path $artifactDirectory $configArchiveName
-    & tar -czf $configArchivePath -C $repoRoot -- docker-compose.production.yml docker-compose.small-vps.yml .env.production.example .env.production.small.example deploy database/viettree_education_schema.sql
+    & tar -czf $configArchivePath -C $repoRoot -- docker-compose.production.yml docker-compose.small-vps.yml docker-compose.vps8gb.yml .env.production.example .env.production.small.example .env.production.vps8gb.example deploy database/viettree_education_schema.sql database/seeds/verify.sql
     if ($LASTEXITCODE -ne 0) { throw 'Deployment configuration archive failed.' }
     $configHash = (Get-FileHash -LiteralPath $configArchivePath -Algorithm SHA256).Hash.ToLowerInvariant()
     [IO.File]::WriteAllText("$configArchivePath.sha256", "$configHash  $configArchiveName`n", [Text.Encoding]::ASCII)

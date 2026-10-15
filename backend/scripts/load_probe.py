@@ -5,6 +5,7 @@ import json
 import os
 import platform
 import secrets
+import ssl
 import time
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
@@ -33,6 +34,14 @@ def percentile(values, fraction):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--base-url", default="http://127.0.0.1:8001")
+    parser.add_argument(
+        "--readiness-base-url", help="Private API URL when /ready is hidden by the HTTPS proxy"
+    )
+    parser.add_argument(
+        "--ca-bundle",
+        type=Path,
+        help="Trusted CA file for local HTTPS; never disables certificate verification",
+    )
     parser.add_argument("--levels", type=int, nargs="+", default=[10, 25, 50])
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--parallel-login", action="store_true")
@@ -40,8 +49,17 @@ def main():
     args = parser.parse_args()
     if engine().url.database == "viettree-education" or "test" not in engine().url.database.lower():
         raise SystemExit("Chỉ chạy load probe trên database test riêng")
-    if httpx.URL(args.base_url).host not in {"127.0.0.1", "localhost", "backend"}:
-        raise SystemExit("Probe chỉ gọi backend local trong môi trường test/staging")
+    readiness_base = args.readiness_base_url or args.base_url
+    for address in (args.base_url, readiness_base):
+        url = httpx.URL(address)
+        if (
+            url.host not in {"127.0.0.1", "localhost", "backend"}
+            or url.scheme not in {"http", "https"}
+            or url.username
+            or url.password
+        ):
+            raise SystemExit("Probe chỉ gọi backend/proxy local trong môi trường test/staging")
+    verification = ssl.create_default_context(cafile=args.ca_bundle) if args.ca_bundle else True
     if not args.levels or min(args.levels) < 1 or max(args.levels) > 100:
         raise SystemExit("Mỗi mức phải từ 1 đến 100")
     password = secrets.token_urlsafe(32)
@@ -111,7 +129,13 @@ def main():
             )
     clients = []
     report = {
-        "environment": "local HTTP / real PostgreSQL / synthetic learners",
+        "environment": f"local {httpx.URL(args.base_url).scheme.upper()} / real PostgreSQL / synthetic learners",
+        "transport": {
+            "workload_scheme": httpx.URL(args.base_url).scheme,
+            "private_readiness": readiness_base != args.base_url,
+            "certificate_verification": True,
+            "custom_ca": bool(args.ca_bundle),
+        },
         "host": {"os": platform.system(), "logical_cpus": os.cpu_count()},
         "learners": len(learners),
         "plans": dict(Counter(row["plan"] for row in learners)),
@@ -121,7 +145,7 @@ def main():
     # Match production startup order: private /ready must succeed before Caddy
     # exposes the application. Include cold-start warm-up separately from load.
     ready_started = time.perf_counter()
-    with httpx.Client(base_url=args.base_url, timeout=60) as readiness_client:
+    with httpx.Client(base_url=readiness_base, timeout=60, verify=verification) as readiness_client:
         readiness_response = readiness_client.get("/ready")
         readiness_response.raise_for_status()
     report["readiness"] = {
@@ -146,7 +170,9 @@ def main():
 
     try:
         for learner in learners:
-            client = httpx.Client(base_url=args.base_url + "/api/v1", timeout=45)
+            client = httpx.Client(
+                base_url=args.base_url + "/api/v1", timeout=45, verify=verification
+            )
             clients.append(client)
 
         def signin(index):

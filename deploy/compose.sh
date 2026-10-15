@@ -16,6 +16,7 @@ args=(--project-name viettree --env-file "$env_file" -f docker-compose.productio
 case "$profile" in
   ''|standard|'"standard"'|"'standard'") ;;
   small|'"small"'|"'small'") args+=(-f docker-compose.small-vps.yml) ;;
-  *) printf 'VIETTREE_DEPLOY_PROFILE must be standard or small.\n' >&2; exit 64 ;;
+  vps8gb|'"vps8gb"'|"'vps8gb'") args+=(-f docker-compose.vps8gb.yml) ;;
+  *) printf 'VIETTREE_DEPLOY_PROFILE must be standard, small or vps8gb.\n' >&2; exit 64 ;;
 esac
 exec docker compose "${args[@]}" "$@"

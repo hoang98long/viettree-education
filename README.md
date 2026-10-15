@@ -11,6 +11,25 @@ tài khoản lớp 4; thêm bốn tài khoản lớp 5: [danh sách và mật kh
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**Bài học đã lưu và bộ Khám phá:** lưu bài theo tài khoản, đồng bộ giữa các
+phiên/thiết bị; thêm 15 bài luyện ngắn, 60 câu hỏi và 15 đề cho lớp 1–5.
+Admin theo dõi từng bộ học liệu; trang chủ đếm đủ lượt đã nộp vượt giới hạn
+lịch sử 200 dòng. Local đã backup, migrate `0012_lesson_bookmarks` và nạp.
+[Cách dùng, nội dung và cập nhật VPS](docs/bookmarks-and-explorers.md).
+
+**Học liệu tình huống và luyện tập:** thêm 30 bài/150 câu/30 đề cho lớp 1–5,
+mỗi môn có bài Free và VIP, tranh/thẻ minh họa và gợi ý theo bước. Database
+local đã nạp sau backup. Thư viện luyện tập có tìm không dấu, bài ngắn, phần
+cần ôn và kết quả gần nhất/tốt nhất; admin theo dõi số học liệu bổ sung từng khối.
+[Nội dung, cách dùng và nạp sang VPS](docs/applied-learning.md).
+
+**VPS tại Nhật 4 vCPU / RAM 8 GB / SSD 100 GB:** đã có profile `vps8gb`,
+kiểm tra trước mở web `check-launch`, kiểm tra sau deploy `deploy/smoke.sh`,
+sao lưu kèm SHA256 và phát hiện backup quá hạn. Đã kiểm tra HTTPS qua Caddy
+local, database runtime ít quyền và mạng có độ trễ.
+[Hướng dẫn triển khai gói VPS đã chọn](docs/deploy-vps-japan.md) ·
+[Báo cáo kiểm chứng](docs/release-readiness-2026-10-15.md).
+
 **Cập nhật 15/10/2026:** xem lại bài có đáp án đúng và lời giải chia đoạn,
 minh họa ô vuông đúng tỉ lệ; sửa đếm câu đã xóa đáp án, thêm thời hạn chờ mạng
 và phục hồi khi tải cấu trúc database bị gián đoạn. Ba đợt 50 học sinh với
@@ -69,7 +88,7 @@ Giữ đầy đủ Free/VIP và học liệu; không cần migration mới.
 Admin có mục **Kiểm tra hệ thống** (`/admin/system`). Bộ production đã có trong
 `docker-compose.production.yml` và `deploy/`; local tiếp tục dùng cấu hình development.
 CLI `check-system` chỉ đọc, `cleanup-auth` mặc định dry-run. Head hiện tại
-`0011_classes_vip_training`; nạp module lần đầu bằng `seed-ai-academy`.
+`0012_lesson_bookmarks`; nạp AI lần đầu bằng `seed-ai-academy`.
 
 **Chạy trên máy hiện tại:** xem [hướng dẫn local ngắn](docs/run-local.md) với hai
 terminal PowerShell cho backend và frontend.
@@ -100,6 +119,7 @@ bao gồm dấu gạch ngang. Alembic bổ sung hai bảng auth và sáu bảng 
 `0009_guided_hints` thêm quyền gợi ý theo bước cho VIP; `0010_ai_academy`
 thêm 29 bảng riêng và tái sử dụng tài khoản/lớp/media/consent. `0011_classes_vip_training`
 thêm 8 bảng quản lý giao bài, tuyên dương và giá VIP, cùng chính sách đào tạo AI.
+`0012_lesson_bookmarks` thêm bảng lưu bài theo tài khoản.
 Migration tài khoản thêm vòng đời mật khẩu tạm và revision tài khoản,
 giữ mật khẩu, phiên và lịch sử cũ. Bảng nháp bài học tiếp tục tách bản xuất bản.
 
@@ -108,12 +128,12 @@ giữ mật khẩu, phiên và lịch sử cũ. Bảng nháp bài học tiếp t
 Admin có **Quản trị tài khoản**: tạo/sửa, phân vai trò, khóa/mở, đặt lại mật khẩu,
 thu hồi phiên và nhật ký. Mọi người dùng có **Bảo mật tài khoản** để tự đổi mật
 khẩu, đăng xuất phiên khác. Mật khẩu tạm bắt buộc đổi trước khi sử dụng. Nâng cấp
-chạy `alembic upgrade head` (head `0011_classes_vip_training`), khởi động lại server;
+chạy `alembic upgrade head` (head `0012_lesson_bookmarks`), khởi động lại server;
 không cần seed/reset tài khoản. Xem [quản trị tài khoản](docs/account-management.md).
 
 ## Gói học Free / VIP
 
-Mỗi khối 1–5 có 46 bài học và 34 đề miễn phí. VIP mở thêm 22 bài vận dụng, 22 đề thử thách mỗi khối
+Bộ nền tảng mỗi khối 1–5 có 46 bài học và 34 đề miễn phí. VIP mở thêm 22 bài vận dụng, 22 đề thử thách mỗi khối
 và kế hoạch theo kỹ năng cần ôn (`plan_v2`). Cách chấm điểm và quyền
 xem kết quả của chính học sinh giống nhau giữa hai gói.
 

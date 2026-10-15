@@ -15,6 +15,7 @@ class LessonLibraryItem(CatalogAccess):
     subject_name: str
     progress_status: Literal["not_started", "in_progress", "completed"]
     category: str
+    is_bookmarked: bool
 
 
 class LibrarySummary(BaseModel):
@@ -23,6 +24,7 @@ class LibrarySummary(BaseModel):
     in_progress: int
     free: int
     vip: int
+    bookmarked: int
 
 
 class LessonLibraryResponse(BaseModel):

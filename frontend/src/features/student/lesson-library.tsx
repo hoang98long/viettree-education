@@ -9,12 +9,14 @@ import {
   Lightbulb,
   RefreshCw,
   Search,
+  Bookmark,
 } from "lucide-react";
 import { Empty, ErrorState, Loading, PageTitle } from "@/components/ui";
 import { useUser } from "@/components/shell";
 import { useResource } from "@/hooks/use-resource";
 import { AccessBadge } from "@/features/membership/pages";
 import type { ContentAccess } from "@/lib/types";
+import { BookmarkButton } from "@/features/lessons/bookmark-button";
 
 type Library = {
   grade: number;
@@ -26,6 +28,7 @@ type Library = {
     in_progress: number;
     free: number;
     vip: number;
+    bookmarked: number;
   };
   items: (ContentAccess & {
     id: string;
@@ -36,10 +39,12 @@ type Library = {
     subject_name: string;
     progress_status: string;
     category: string;
+    is_bookmarked: boolean;
   })[];
 };
 
-function LibraryContent() {
+function LibraryContent({ savedOnly }: { savedOnly: boolean }) {
+  const [bookmarkedOnly, setBookmarkedOnly] = useState(savedOnly);
   const [filters, setFilters] = useState({
     subject_code: "",
     plan: "all",
@@ -55,28 +60,55 @@ function LibraryContent() {
     category: filters.category,
     search: filters.search,
     page: String(page),
+    bookmarked_only: String(bookmarkedOnly),
   });
   if (filters.subject_code) query.set("subject_code", filters.subject_code);
-  const resource = useResource<Library>(`/students/me/lesson-library?${query}`);
+  const resource = useResource<Library>(
+    `/students/me/lesson-library?${query}`,
+    true,
+  );
   useEffect(() => {
     // A learner may open this page while the preceding completion is still saving.
     window.addEventListener("viettree:learning-progress", resource.retry);
-    return () =>
+    window.addEventListener("viettree:lesson-bookmarks", resource.retry);
+    return () => {
       window.removeEventListener("viettree:learning-progress", resource.retry);
+      window.removeEventListener("viettree:lesson-bookmarks", resource.retry);
+    };
   }, [resource.retry]);
   const update = (key: keyof typeof filters, value: string) => {
     setFilters((old) => ({ ...old, [key]: value }));
     setPage(1);
   };
   const data = resource.data;
+  if (data && !resource.loading) {
+    const lastPage = Math.max(
+      1,
+      Math.ceil(data.summary.total / data.page_size),
+    );
+    // Removing the last saved card on a page can shrink the page count.
+    if (page > lastPage) setPage(lastPage);
+  }
   return (
     <>
       <PageTitle
         eyebrow={data ? `BÀI HỌC CỦA EM · LỚP ${data.grade}` : "BÀI HỌC CỦA EM"}
-        title="Thư viện bài học"
+        title={bookmarkedOnly ? "Bài học đã lưu" : "Thư viện bài học"}
         description="Tìm bài, đọc theo nhịp của em và quay lại phần đang học. Tìm kiếm có thể nhập không dấu."
       />
       <section className="library-toolbar panel" aria-label="Bộ lọc bài học">
+        <button
+          type="button"
+          className="button secondary library-saved-toggle"
+          aria-pressed={bookmarkedOnly}
+          onClick={() => {
+            setBookmarkedOnly((old) => !old);
+            setPage(1);
+          }}
+        >
+          <Bookmark size={18} />
+          Chỉ bài đã lưu
+        </button>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -99,54 +131,57 @@ function LibraryContent() {
             </button>
           </div>
         </form>
-        <div className="library-filters">
-          <label>
-            Môn học
-            <select
-              value={filters.subject_code}
-              onChange={(e) => update("subject_code", e.target.value)}
-            >
-              <option value="">Ba môn</option>
-              <option value="MATH">Toán</option>
-              <option value="VIETNAMESE">Tiếng Việt</option>
-              <option value="ENGLISH">Tiếng Anh</option>
-            </select>
-          </label>
-          <label>
-            Gói bài học
-            <select
-              value={filters.plan}
-              onChange={(e) => update("plan", e.target.value)}
-            >
-              <option value="all">Free và VIP</option>
-              <option value="free">Miễn phí</option>
-              <option value="vip">VIP</option>
-            </select>
-          </label>
-          <label>
-            Tiến độ đọc
-            <select
-              value={filters.progress}
-              onChange={(e) => update("progress", e.target.value)}
-            >
-              <option value="all">Tất cả</option>
-              <option value="not_started">Chưa đọc</option>
-              <option value="in_progress">Đang đọc</option>
-              <option value="completed">Đã đọc xong</option>
-            </select>
-          </label>
-          <label>
-            Nội dung
-            <select
-              value={filters.category}
-              onChange={(e) => update("category", e.target.value)}
-            >
-              <option value="all">Tất cả bài</option>
-              <option value="core">Nền tảng</option>
-              <option value="thinking">Tư duy, vận dụng</option>
-            </select>
-          </label>
-        </div>
+        <details className="library-filter-details">
+          <summary>Chọn thêm bộ lọc</summary>
+          <div className="library-filters">
+            <label>
+              Môn học
+              <select
+                value={filters.subject_code}
+                onChange={(e) => update("subject_code", e.target.value)}
+              >
+                <option value="">Ba môn</option>
+                <option value="MATH">Toán</option>
+                <option value="VIETNAMESE">Tiếng Việt</option>
+                <option value="ENGLISH">Tiếng Anh</option>
+              </select>
+            </label>
+            <label>
+              Gói bài học
+              <select
+                value={filters.plan}
+                onChange={(e) => update("plan", e.target.value)}
+              >
+                <option value="all">Free và VIP</option>
+                <option value="free">Miễn phí</option>
+                <option value="vip">VIP</option>
+              </select>
+            </label>
+            <label>
+              Tiến độ đọc
+              <select
+                value={filters.progress}
+                onChange={(e) => update("progress", e.target.value)}
+              >
+                <option value="all">Tất cả</option>
+                <option value="not_started">Chưa đọc</option>
+                <option value="in_progress">Đang đọc</option>
+                <option value="completed">Đã đọc xong</option>
+              </select>
+            </label>
+            <label>
+              Nội dung
+              <select
+                value={filters.category}
+                onChange={(e) => update("category", e.target.value)}
+              >
+                <option value="all">Tất cả bài</option>
+                <option value="core">Nền tảng</option>
+                <option value="thinking">Tư duy, vận dụng</option>
+              </select>
+            </label>
+          </div>
+        </details>
         <div className="library-actions">
           <button
             type="button"
@@ -160,6 +195,7 @@ function LibraryContent() {
                 search: "",
               });
               setDraft("");
+              setBookmarkedOnly(savedOnly);
               setPage(1);
             }}
           >
@@ -175,7 +211,7 @@ function LibraryContent() {
           </button>
         </div>
       </section>
-      {resource.loading ? (
+      {resource.loading && !data ? (
         <Loading />
       ) : resource.error || !data ? (
         <ErrorState message={resource.error} retry={resource.retry} />
@@ -189,6 +225,8 @@ function LibraryContent() {
             <span>
               {data.summary.completed} đã đọc xong · {data.summary.in_progress}{" "}
               đang đọc
+              {" · "}
+              {data.summary.bookmarked} đã lưu
             </span>
           </div>
           {!data.items.length ? (
@@ -244,6 +282,12 @@ function LibraryContent() {
                         ? "Đọc tiếp"
                         : "Mở bài học"}
                   </Link>
+                  <BookmarkButton
+                    key={`${item.id}:${item.is_bookmarked}`}
+                    lessonId={item.id}
+                    initialSaved={item.is_bookmarked}
+                    locked={item.locked}
+                  />
                 </article>
               ))}
             </div>
@@ -278,7 +322,13 @@ function LibraryContent() {
   );
 }
 
-export function LessonLibraryPage() {
+export function LessonLibraryPage({
+  savedOnly = false,
+}: {
+  savedOnly?: boolean;
+}) {
   const user = useUser();
-  return <LibraryContent key={user.id} />;
+  return (
+    <LibraryContent key={`${user.id}:${savedOnly}`} savedOnly={savedOnly} />
+  );
 }

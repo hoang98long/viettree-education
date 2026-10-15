@@ -259,6 +259,14 @@ def dashboard(user=Depends(student_user), conn=database):
             .select_from(progress)
             .where(progress.c.student_id == user["id"], progress.c.status == "completed")
         ).scalar_one(),
+        graded_attempt_count=conn.execute(
+            select(func.count())
+            .select_from(db.table("attempts"))
+            .where(
+                db.table("attempts").c.student_id == user["id"],
+                db.table("attempts").c.status == "graded",
+            )
+        ).scalar_one(),
     )
 
 

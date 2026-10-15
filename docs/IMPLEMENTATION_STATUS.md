@@ -942,3 +942,68 @@ local với API một worker, ba logical CPU; 150 bài chấm khớp thống kê
 DB đang dùng chỉ đọc để kiểm tra: 1.920 câu trong đề xuất bản hợp lệ về schema,
 `check-system` đạt. Không có migration mới hoặc ghi đè học liệu đã xuất bản.
 [Báo cáo và giới hạn](review-2026-10-15.md).
+
+## Bản triển khai VPS Nhật: 4 vCPU / RAM 8 GB / SSD 100 GB
+
+Profile `vps8gb` giới hạn runtime tổng 4,75 GiB, hai worker, tối đa 14 kết nối
+API/counter và PostgreSQL trong 2 GiB. Cache SVG công khai một giờ; Caddy có
+timeout đọc và UDP 443 cho HTTP/3. Profile mới mở đầu bằng bảo trì/allowlist IP;
+`check-launch` rà soát admin/demo/quyền DB trước khi công khai. DB local còn
+21 demo chưa ghi nhận đổi mật khẩu, admin cần xử lý theo hướng dẫn sau restore;
+không đổi hoặc khóa tài khoản trên DB local trong đợt này.
+
+Backup có khóa chống trùng, kiểm tra payload/trailer gzip, SHA256 và dấu lần
+thành công; `smoke.sh --require-backup` kiểm tra container/HTTPS/cache và backup
+quá 26 giờ. Có cấu hình xoay log, helper build đóng gói đủ ba profile và workflow
+CI chờ chạy trên GitHub. Thêm quy tắc LF cho script/config Linux khi làm ở Windows.
+
+788 kiểm thử không integration, 77 frontend, 18 browser HTTPS đạt; các nhóm API
+hiện có 57 đạt, biên ngày Nhật/Việt và launch mới 3 đạt. Gate bảo trì kiểm tra
+thực tế trên Caddy local, gồm thử giả IP. Tải qua HTTPS local ba lần 50 học sinh:
+2.310 request không lỗi, 150 bài khớp thống kê, p95 1,03–1,08 giây. Restore thật
+database test đối chiếu 82 bảng không lệch. npm/pip audit không có advisory
+được phát hiện tại thời điểm kiểm tra; chưa scan OS của image Linux.
+
+Chưa có VPS/SSH; chưa build/run image Linux vì Docker Engine local không chạy
+được. Không coi profile/cấu hình hoặc CA HTTPS local là xác nhận quota VPS,
+Let's Encrypt hay tuyến mạng Việt–Nhật. Xem
+[deploy-vps-japan.md](deploy-vps-japan.md),
+[báo cáo và bằng chứng](release-readiness-2026-10-15.md).
+
+## Học liệu tình huống và thư viện luyện tập — 15/10/2026
+
+Thêm 30 bài, 150 câu hỏi và 30 đề cho lớp 1–5, chia đều ba môn và Free/VIP.
+Mỗi bài có hình/thẻ minh họa, ba phần ngắn, gợi ý phân quyền 1/3 và lời giải
+từng câu. Bộ bổ sung có inventory/seed/verify riêng, giữ mốc kiểm kê bộ nền
+tảng. Database local đã nạp sau backup: 81 bảng/20.860 dòng dữ liệu cũ giữ nguyên.
+
+Thư viện luyện tập dùng API phân trang 12 bài, tìm không dấu, lọc môn/gói/loại
+đề/số câu/kết quả, nút chọn nhanh trên điện thoại; kết quả gần nhất quyết định
+bài cần ôn dưới 80%, điểm tốt nhất giữ riêng. Khối và lịch sử lấy theo học sinh
+đăng nhập; response không chứa đáp án và không cache. Admin xem được số học
+liệu bổ sung đã xuất bản từng khối.
+
+799 backend không integration, 21 kiểm thử nội dung/API liên quan (gồm 10
+integration PostgreSQL), 80 frontend, 6 browser mới và 2 browser hồi quy đạt.
+Type/lint/format/build đạt. Không đo lại sức tải VPS trong đợt này. Xem
+[nội dung, triển khai và giới hạn](applied-learning.md),
+[bằng chứng nạp local](audits/applied-local-2026-10-15.json).
+
+## Lưu bài và bộ Khám phá — 15/10/2026
+
+Migration `0012_lesson_bookmarks` thêm lưu bài theo tài khoản, khóa chính ghép
+và khóa ngoại. Thư viện/bài học có lưu/bỏ lưu, danh sách riêng và đồng bộ khi
+đăng nhập thiết bị khác; không mở khóa nội dung VIP. Bộ lọc thu gọn trên điện
+thoại; bỏ thẻ cuối trang tự trở về trang còn bài. Sửa bộ đếm dashboard dùng
+toàn bộ lượt đã chấm, thay vì tối đa 200 dòng lịch sử.
+
+Thêm 15 bài/60 câu/15 đề cho lớp 1–5, gồm 7 Free/8 VIP, mỗi bài bốn câu và gợi
+ý 1/3 theo gói. Chung cơ chế release inventory/seed/verify cho hai bộ bổ sung;
+admin theo dõi từng bộ. Đã backup, migrate và nạp local, giữ nguyên 81 bảng và
+21.910 dòng có trước đợt này. Bản thơ nháp chưa có lượt học được biên tập qua
+bài thay thế, giữ nguyên bốn phiên bản câu hỏi cũ.
+
+810 backend không integration; 45 kiểm thử nội dung/API liên quan (gồm 23
+integration); 83 frontend; 12 browser desktop/mobile đạt. Các nhóm backend có
+22 ca trùng nhau. Type/lint/format/build đạt; không đo lại VPS trong đợt này.
+[Hướng dẫn, danh mục và kiểm chứng](bookmarks-and-explorers.md).
