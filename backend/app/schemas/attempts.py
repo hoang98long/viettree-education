@@ -79,6 +79,7 @@ class ResultItem(BaseModel):
 
 class ResultResponse(BaseModel):
     id: UUID
+    grade: int = Field(ge=1, le=5)
     total_score: float
     max_score: float
     correct_count: int

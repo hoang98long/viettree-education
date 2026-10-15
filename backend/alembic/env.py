@@ -1,5 +1,4 @@
 from alembic import context
-
 from app.db import engine
 
 if context.is_offline_mode():

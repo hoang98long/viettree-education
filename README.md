@@ -11,6 +11,12 @@ tài khoản lớp 4; thêm bốn tài khoản lớp 5: [danh sách và mật kh
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**Cập nhật 15/10/2026:** xem lại bài có đáp án đúng và lời giải chia đoạn,
+minh họa ô vuông đúng tỉ lệ; sửa đếm câu đã xóa đáp án, thêm thời hạn chờ mạng
+và phục hồi khi tải cấu trúc database bị gián đoạn. Ba đợt 50 học sinh với
+API một worker: 2.310 request học tập không lỗi trên local.
+[Chi tiết thay đổi, kiểm thử và giới hạn](docs/review-2026-10-15.md).
+
 **Rà soát học liệu và tải 50 học sinh (14/10/2026):** đối chiếu 1.920 câu Free/VIP,
 bổ sung kiểm tra đáp án Toán độc lập, đọc từng đoạn ngay trong câu hỏi và chấm
 linh hoạt cách viết số. Đã thử 50 lượt đăng nhập đồng thời và ba vòng lưu đủ

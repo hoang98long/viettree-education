@@ -925,3 +925,20 @@ khoảng 174 MiB; chưa áp dụng cgroups hoặc đo tổng RAM cả stack.
 
 Hướng dẫn, lệnh build/upload/load/backup và giới hạn kiểm chứng:
 [deploy-small-vps.md](deploy-small-vps.md). Chưa triển khai/đo trên VPS thật.
+
+## Rà soát tiếp ngày 15/10/2026
+
+Kết quả học tập có đáp án đúng theo khóa chấm chính thức, giữ ngữ liệu riêng
+và chia lời giải theo khối lớp. Hình luống rau dùng ô vuông đúng tỉ lệ; bộ
+minh họa tránh diễn giải ngày/phân số âm/hỗn số thành phần tô màu dương.
+Bộ đếm và bài nộp mới loại các câu đã xóa hết nội dung, vẫn giữ thao tác xóa
+trong tự lưu. API frontend có timeout gồm tải JSON, giữ hủy request và không
+tự lặp lệnh ghi. Metadata DB chỉ đưa vào sử dụng sau khi phản chiếu thành công.
+
+764 kiểm thử backend, 77 frontend và 14 browser đạt; nhóm tập trung
+API/giao dịch/phục hồi/định dạng đáp án 53 đạt (có giao nhau với nhóm backend).
+Ba đợt 50 học sinh, 2.310 request học tập không lỗi, p95 1,55–1,69 giây trên
+local với API một worker, ba logical CPU; 150 bài chấm khớp thống kê.
+DB đang dùng chỉ đọc để kiểm tra: 1.920 câu trong đề xuất bản hợp lệ về schema,
+`check-system` đạt. Không có migration mới hoặc ghi đè học liệu đã xuất bản.
+[Báo cáo và giới hạn](review-2026-10-15.md).

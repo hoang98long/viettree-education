@@ -66,6 +66,21 @@ def validate_answer(kind: str, content: dict, answer: dict):
     return validated
 
 
+def has_answer(kind: str, answer: dict | None) -> bool:
+    """An autosaved cleared input is still unanswered; retain its row for ordering."""
+    if not answer:
+        return False
+    if kind in ("fill_blank", "free_text"):
+        return bool(answer.get("text", "").strip())
+    if kind == "single_choice":
+        return bool(answer.get("option_id"))
+    if kind == "multiple_choice":
+        return bool(answer.get("option_ids"))
+    if kind == "ordering":
+        return bool(answer.get("ordered_ids"))
+    return False
+
+
 def grade_answer(kind: str, grading: dict, answer: dict | None) -> bool | None:
     if kind == "free_text":
         return None

@@ -121,6 +121,37 @@ def test_delayed_answer_cannot_overwrite_a_later_received_answer(logged_student,
     assert saved["items"][0]["answer"] == latest
 
 
+def test_cleared_saved_answers_not_counted_and_archived_result_stays_readable(logged_student, conn):
+    client = logged_student
+    attempt_id, assessment, _ = start(client)
+    items = client.get(f"/api/v1/attempts/{attempt_id}").json()["items"]
+    cleared = []
+    for item in items:
+        if item["question_type"] == "fill_blank":
+            answer = {"text": " \n "}
+        elif item["question_type"] == "multiple_choice":
+            answer = {"option_ids": []}
+        else:
+            continue
+        path = f"/api/v1/attempts/{attempt_id}/answers/{item['id']}"
+        assert client.put(path, json={"answer": answer}).status_code == 200
+        cleared.append(item["id"])
+    assert len(cleared) >= 2
+    result = client.post(f"/api/v1/attempts/{attempt_id}/submit")
+    assert result.status_code == 200, result.text
+    assert result.json()["answered_count"] == 0
+    assert result.json()["grade"] == 4
+    assert result.json()["correct_count"] == 0
+    assert client.post(f"/api/v1/attempts/{attempt_id}/submit").json() == result.json()
+    assessments = db.table("assessments")
+    conn.execute(
+        assessments.update().where(assessments.c.id == assessment["id"]).values(status="archived")
+    )
+    history = client.get(f"/api/v1/attempts/{attempt_id}/result")
+    assert history.status_code == 200, history.text
+    assert history.json() == result.json()
+
+
 def test_login_rate_limit_persists_failures(client):
     for _ in range(10):
         assert (

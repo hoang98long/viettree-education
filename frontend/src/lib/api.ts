@@ -12,9 +12,53 @@ export class ApiError extends Error {
 
 export async function api<T>(
   path: string,
-  options: RequestInit & { redirectOnUnauthorized?: boolean } = {},
+  options: RequestInit & {
+    redirectOnUnauthorized?: boolean;
+    timeoutMs?: number;
+  } = {},
 ): Promise<T> {
-  const { redirectOnUnauthorized = true, ...requestOptions } = options;
+  const {
+    redirectOnUnauthorized = true,
+    timeoutMs = 45000,
+    ...requestOptions
+  } = options;
+  const controller = new AbortController();
+  const callerSignal = requestOptions.signal;
+  const abort = () => controller.abort(callerSignal?.reason);
+  callerSignal?.addEventListener("abort", abort, { once: true });
+  if (callerSignal?.aborted) abort();
+  let timedOut = false;
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
+  try {
+    return await performRequest<T>(
+      path,
+      requestOptions,
+      controller.signal,
+      redirectOnUnauthorized,
+    );
+  } catch (error) {
+    if (timedOut && !callerSignal?.aborted)
+      throw new ApiError(
+        0,
+        "Chờ lâu hơn dự kiến. Em hãy kiểm tra mạng rồi thử lại nhé.",
+        "REQUEST_TIMEOUT",
+      );
+    throw error;
+  } finally {
+    clearTimeout(timer);
+    callerSignal?.removeEventListener("abort", abort);
+  }
+}
+
+async function performRequest<T>(
+  path: string,
+  requestOptions: RequestInit,
+  signal: AbortSignal,
+  redirectOnUnauthorized: boolean,
+): Promise<T> {
   const csrf =
     typeof document === "undefined"
       ? ""
@@ -28,6 +72,7 @@ export async function api<T>(
   try {
     response = await fetch(`/api/v1${path}`, {
       ...requestOptions,
+      signal,
       credentials: "same-origin",
       cache: "no-store",
       headers: {
@@ -37,6 +82,7 @@ export async function api<T>(
       },
     });
   } catch (error) {
+    if (signal.aborted) throw signal.reason;
     if (error instanceof Error && error.name === "AbortError") throw error;
     throw new ApiError(
       0,
@@ -44,7 +90,11 @@ export async function api<T>(
     );
   }
   if (!response.ok) {
-    const body = await response.json().catch(() => null);
+    const body = await response.json().catch((error: unknown) => {
+      if (signal.aborted) throw error;
+      return null;
+    });
+    signal.throwIfAborted();
     if (
       body?.detail?.code === "PASSWORD_CHANGE_REQUIRED" &&
       typeof window !== "undefined"
@@ -72,7 +122,18 @@ export async function api<T>(
       response.headers.get("x-request-id") || undefined,
     );
   }
-  return response.json() as Promise<T>;
+  try {
+    const body = (await response.json()) as T;
+    signal.throwIfAborted();
+    return body;
+  } catch (error) {
+    if (signal.aborted) throw error;
+    throw new ApiError(
+      response.status,
+      "Dữ liệu chưa tải đủ. Em hãy thử lại nhé.",
+      "INVALID_RESPONSE",
+    );
+  }
 }
 
 export function dateLabel(value: string | null) {

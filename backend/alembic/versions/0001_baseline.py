@@ -1,6 +1,6 @@
 """Baseline 34 bảng đã import; tuyệt đối không tạo/xóa schema gốc."""
-from alembic import op
 
+from alembic import op
 from app.db import Database
 
 revision = "0001_baseline"

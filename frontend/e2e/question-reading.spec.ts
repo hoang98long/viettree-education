@@ -97,6 +97,42 @@ for (const grade of [1, 5]) {
       await page.locator(".quiz").screenshot({
         path: `test-results/question-reading-g${grade}-${plan}-${info.project.name}.png`,
       });
+      await page.getByRole("button", { name: "Xem lại trước khi nộp" }).click();
+      await page.getByRole("button", { name: "Nộp bài", exact: true }).click();
+      await page
+        .getByRole("button", { name: "Xác nhận nộp", exact: true })
+        .click();
+      await expect(page).toHaveURL(`/student/results/${attemptId}`);
+      const result = await (
+        await page.request.get(`/api/v1/attempts/${attemptId}/result`)
+      ).json();
+      expect(result.grade).toBe(grade);
+      expect(result.answered_count).toBe(1);
+      const firstReview = page.locator(".result-item").first();
+      if (
+        !(await firstReview.evaluate(
+          (node) => (node as HTMLDetailsElement).open,
+        ))
+      )
+        await firstReview.locator(":scope > summary").click();
+      await expect(firstReview.getByRole("heading", { level: 3 })).toHaveText(
+        authored.slice(boundary + 2),
+      );
+      await expect(
+        firstReview.getByText("Đáp án đúng:", { exact: true }),
+      ).toBeVisible();
+      await expect(firstReview.locator(".question-reading")).toBeVisible();
+      await expect(firstReview.locator(".explanation")).toContainText(
+        "Cùng hiểu cách làm",
+      );
+      for (const width of [320, 390, 1280]) {
+        await page.setViewportSize({ width, height: 850 });
+        expect(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth <= window.innerWidth,
+          ),
+        ).toBe(true);
+      }
     });
   }
 }

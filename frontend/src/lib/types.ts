@@ -136,6 +136,7 @@ export type Attempt = {
 };
 export type Result = {
   id: string;
+  grade?: number;
   total_score: number;
   max_score: number;
   correct_count: number;

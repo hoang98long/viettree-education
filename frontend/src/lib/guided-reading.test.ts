@@ -64,5 +64,24 @@ describe("Đọc theo đoạn và tranh có nghĩa", () => {
     });
     expect(fractionPicture("3/0")).toBeNull();
     expect(fractionPicture("5/3")).toBeNull();
+    for (const text of [
+      "-3/8",
+      "−3/8",
+      "- 3/8",
+      "Ngày 3/8",
+      "on 3/8",
+      "2 3/8",
+      "3/8.5",
+      "3/8,5",
+    ])
+      expect(fractionPicture(text)).toBeNull();
+    expect(fractionPicture("The fraction 3/8.")).toEqual({
+      numerator: 3,
+      denominator: 8,
+    });
+    expect(fractionPicture("Ví dụ 0/8 số ô được tô.")).toEqual({
+      numerator: 0,
+      denominator: 8,
+    });
   });
 });

@@ -7,6 +7,10 @@ Bản nâng cấp 14/10 bổ sung tự lưu bài luyện, đồng hồ thời h�
 Không cần migration hoặc seed lại; khởi động lại cả hai server theo hướng dẫn
 dưới đây. [Cách dùng tự lưu](learning-reliability.md).
 
+Bản 15/10 cải thiện xem lại đáp án/lời giải, hình minh họa, bộ đếm câu đã làm
+và xử lý lỗi mạng/database; cũng chỉ cần khởi động lại server, không seed lại.
+[Báo cáo kiểm thử](review-2026-10-15.md).
+
 ## 1. Mở backend — terminal thứ nhất
 
 ```powershell

@@ -1,6 +1,24 @@
 import pytest
 
-from app.services.grading import grade_answer
+from app.services.grading import grade_answer, has_answer
+
+
+@pytest.mark.parametrize(
+    "kind,answer,expected",
+    [
+        ("fill_blank", {"text": " \n\t "}, False),
+        ("fill_blank", {"text": "0"}, True),
+        ("fill_blank", {"text": "cá"}, True),
+        ("multiple_choice", {"option_ids": []}, False),
+        ("multiple_choice", {"option_ids": ["a"]}, True),
+        ("ordering", {"ordered_ids": ["b", "a"]}, True),
+        ("single_choice", {"option_id": "a"}, True),
+        ("single_choice", {}, False),
+        ("fill_blank", None, False),
+    ],
+)
+def test_cleared_autosaved_answers_are_unanswered(kind, answer, expected):
+    assert has_answer(kind, answer) is expected
 
 
 @pytest.mark.parametrize(

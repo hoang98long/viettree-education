@@ -227,10 +227,12 @@ export function LessonFigure({ value }: { value: LessonIllustration }) {
               Luống rau: mỗi ô là 1 m²
             </text>
             {Array.from({ length: rows * cols }, (_, i) => {
-              const w = 360 / cols,
-                h = 150 / rows,
-                x = 120 + (i % cols) * w,
-                y = 54 + Math.floor(i / cols) * h;
+              // Each cell represents 1 m²: preserve equal side lengths at
+              // every row/column ratio instead of stretching into rectangles.
+              const w = Math.min(360 / cols, 150 / rows),
+                h = w,
+                x = (600 - cols * w) / 2 + (i % cols) * w,
+                y = 54 + (150 - rows * h) / 2 + Math.floor(i / cols) * h;
               return (
                 <g key={i}>
                   <rect

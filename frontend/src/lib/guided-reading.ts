@@ -28,8 +28,18 @@ export function smallSum(text: string) {
 }
 
 export function fractionPicture(text: string) {
-  const match = /(?:^|[^\d/.,])(\d{1,2})\/(\d{1,2})(?![\d/.,])/u.exec(text);
+  // A date, negative fraction or part of a mixed number must not be shown as
+  // an unrelated positive part of one whole.
+  const match = /(?:^|[^\d/.,−-])(\d{1,2})\/(\d{1,2})(?![\d/]|[.,]\d)/u.exec(
+    text,
+  );
   if (!match) return null;
+  const before = text.slice(0, match.index + match[0].indexOf(match[1]));
+  if (
+    /(?:^|[^\p{L}])(?:ngày|tháng|date|on)\s*$/iu.test(before) ||
+    /(?:\d\s+|[−-]\s*)$/u.test(before)
+  )
+    return null;
   const numerator = Number(match[1]),
     denominator = Number(match[2]);
   return denominator >= 2 &&

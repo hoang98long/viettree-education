@@ -164,7 +164,12 @@ class Database:
         with self._lock:
             if not self.metadata.tables:
                 self.validate(connection)
-                self.metadata.reflect(connection, only=TABLE_NAMES + EXTRA_TABLES)
+                # Reflection can fail halfway through a DB restart or timeout.
+                # Publish metadata only after every table has loaded, so the
+                # next request retries instead of keeping a partial schema.
+                loaded = MetaData()
+                loaded.reflect(connection, only=TABLE_NAMES + EXTRA_TABLES)
+                self.metadata = loaded
 
     def table(self, name: str):
         return self.metadata.tables[name]

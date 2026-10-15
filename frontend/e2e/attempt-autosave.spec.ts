@@ -109,5 +109,43 @@ test("tự lưu: reload, lỗi mạng, phản hồi chậm và chuyển trang v�
   await page
     .locator(".quiz")
     .screenshot({ path: `test-results/autosave-${info.project.name}.png` });
+  const blank = data.items.find(
+    (item: { question_type: string }) => item.question_type === "fill_blank",
+  );
+  const multiple = data.items.find(
+    (item: { question_type: string }) =>
+      item.question_type === "multiple_choice",
+  );
+  expect(blank).toBeTruthy();
+  expect(multiple).toBeTruthy();
+  await page
+    .getByRole("button", { name: new RegExp(`^Câu ${blank.position},`) })
+    .click();
+  await page.getByLabel("Câu trả lời của em", { exact: true }).fill("123");
+  await expect(page.locator(".quiz-header")).toContainText("2 câu đã trả lời");
+  await expect(page.locator(".save-message")).toContainText("Đã lưu");
+  await page.getByLabel("Câu trả lời của em", { exact: true }).fill(" ");
+  await expect(page.locator(".quiz-header")).toContainText("1 câu đã trả lời");
+  await expect(page.locator(".save-message")).toContainText("Đã lưu");
+  await page.reload();
+  await expect(page.locator(".quiz-header")).toContainText("1 câu đã trả lời");
+  await page
+    .getByRole("button", { name: new RegExp(`^Câu ${multiple.position},`) })
+    .click();
+  await page.getByRole("checkbox").first().check();
+  await expect(page.locator(".quiz-header")).toContainText("2 câu đã trả lời");
+  await page.getByRole("checkbox").first().uncheck();
+  await expect(page.locator(".quiz-header")).toContainText("1 câu đã trả lời");
+  await page.getByRole("button", { name: "Xem lại trước khi nộp" }).click();
+  await page.getByRole("button", { name: "Nộp bài", exact: true }).click();
+  await expect(page.getByRole("dialog")).toContainText(
+    `Có ${data.items.length - 1} câu chưa trả lời`,
+  );
+  await page.getByRole("button", { name: "Xác nhận nộp", exact: true }).click();
+  await expect(page).toHaveURL(`/student/results/${attempt.id}`);
+  const result = await (
+    await page.request.get(`/api/v1/attempts/${attempt.id}/result`)
+  ).json();
+  expect(result.answered_count).toBe(1);
   expect(errors).toEqual([]);
 });

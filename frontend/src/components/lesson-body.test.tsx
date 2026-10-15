@@ -27,6 +27,29 @@ const content: LessonContent = {
 };
 
 describe("Bài học có minh họa và hướng dẫn", () => {
+  it("ô vuông 1 m² có hai cạnh bằng nhau ở cả luống dài và luống cao", () => {
+    const figure = { ...content.illustration!, kind: "garden" as const };
+    const { container, rerender } = render(<LessonFigure value={figure} />);
+    for (const [rows, columns] of [
+      [3, 4],
+      [1, 8],
+      [6, 1],
+    ]) {
+      rerender(<LessonFigure value={{ ...figure, rows, columns }} />);
+      const cells = container.querySelectorAll("svg g rect");
+      expect(cells).toHaveLength(rows * columns);
+      for (const cell of cells) {
+        expect(cell.getAttribute("width")).toBe(cell.getAttribute("height"));
+        expect(Number(cell.getAttribute("x"))).toBeGreaterThanOrEqual(0);
+        expect(Number(cell.getAttribute("y"))).toBeGreaterThanOrEqual(54);
+      }
+      expect(
+        screen.getByText(
+          `${rows} × ${columns} = ${rows * columns} m² · Chu vi: ${2 * (rows + columns)} m`,
+        ),
+      ).toBeVisible();
+    }
+  });
   it("chỉ mở gợi ý backend đã cấp và hiển thị quyền lợi VIP", () => {
     render(
       <LessonBody

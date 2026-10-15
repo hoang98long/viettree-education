@@ -12,6 +12,7 @@ import { LockedContent } from "@/features/membership/pages";
 import { useAnswerAutosave } from "@/hooks/use-answer-autosave";
 import { DeadlineClock } from "@/components/deadline-clock";
 import { QuestionPrompt } from "@/components/question-prompt";
+import { hasAnswer } from "@/lib/answers";
 
 export function Quiz({ data }: { data: Attempt }) {
   const router = useRouter();
@@ -28,6 +29,9 @@ export function Quiz({ data }: { data: Attempt }) {
   const [busy, setBusy] = useState(false);
   const [review, setReview] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const answeredCount = data.items.filter((question) =>
+    hasAnswer(answers[question.id]),
+  ).length;
   const item = data.items[index];
   if (data.status === "graded")
     return (
@@ -71,9 +75,7 @@ export function Quiz({ data }: { data: Attempt }) {
             <span>
               Câu {index + 1} / {data.items.length}
             </span>
-            <span className="badge">
-              {Object.keys(answers).length} câu đã trả lời
-            </span>
+            <span className="badge">{answeredCount} câu đã trả lời</span>
           </div>
           <div className="progress-track">
             <span
@@ -172,9 +174,9 @@ export function Quiz({ data }: { data: Attempt }) {
             {data.items.map((question, number) => (
               <button
                 disabled={busy}
-                aria-label={`Câu ${number + 1}${answers[question.id] ? ", đã trả lời" : ", chưa trả lời"}`}
+                aria-label={`Câu ${number + 1}${hasAnswer(answers[question.id]) ? ", đã trả lời" : ", chưa trả lời"}`}
                 aria-current={number === index ? "step" : undefined}
-                className={`${number === index ? "current" : ""} ${answers[question.id] ? "answered" : ""}`}
+                className={`${number === index ? "current" : ""} ${hasAnswer(answers[question.id]) ? "answered" : ""}`}
                 key={question.id}
                 onClick={() =>
                   action(() => {
@@ -187,9 +189,7 @@ export function Quiz({ data }: { data: Attempt }) {
               </button>
             ))}
           </div>
-          <p>
-            {data.items.length - Object.keys(answers).length} câu chưa trả lời
-          </p>
+          <p>{data.items.length - answeredCount} câu chưa trả lời</p>
           <button
             className="button secondary"
             disabled={busy}
@@ -203,8 +203,8 @@ export function Quiz({ data }: { data: Attempt }) {
         <section className="panel review">
           <h2>Kiểm tra bài của em</h2>
           <p>
-            {Object.keys(answers).length}/{data.items.length} câu đã trả lời. Em
-            có thể chọn số câu để kiểm tra lại.
+            {answeredCount}/{data.items.length} câu đã trả lời. Em có thể chọn
+            số câu để kiểm tra lại.
           </p>
           <div>
             {data.items.map((question, number) => (
@@ -221,7 +221,9 @@ export function Quiz({ data }: { data: Attempt }) {
               >
                 <span>Câu {number + 1}</span>
                 <span className="badge">
-                  {answers[question.id] ? "Đã trả lời" : "Chưa trả lời"}
+                  {hasAnswer(answers[question.id])
+                    ? "Đã trả lời"
+                    : "Chưa trả lời"}
                 </span>
               </button>
             ))}
@@ -245,8 +247,8 @@ export function Quiz({ data }: { data: Attempt }) {
           >
             <h2 id="submit-title">Em muốn nộp bài chứ?</h2>
             <p>
-              Có {data.items.length - Object.keys(answers).length} câu chưa trả
-              lời. Sau khi nộp, em sẽ xem được kết quả và lời giải.
+              Có {data.items.length - answeredCount} câu chưa trả lời. Sau khi
+              nộp, em sẽ xem được kết quả và lời giải.
             </p>
             {error && <p role="alert">{error}</p>}
             <div className="quiz-actions">

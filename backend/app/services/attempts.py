@@ -10,7 +10,7 @@ from app.core.security import now
 from app.db import db
 from app.personalization.engine import rebuild_statistics, rebuild_student
 from app.services import access
-from app.services.grading import grade_answer, safe_content, validate_answer
+from app.services.grading import grade_answer, has_answer, safe_content, validate_answer
 from app.services.learning import update_targets
 
 
@@ -368,6 +368,11 @@ def result(conn, user, attempt_id):
     }
     return dict(
         id=attempt_id,
+        grade=conn.execute(
+            select(db.table("assessments").c.grade).where(
+                db.table("assessments").c.id == attempt["assessment_id"]
+            )
+        ).scalar_one(),
         total_score=attempt["total_score"],
         max_score=attempt["max_score"],
         correct_count=attempt["correct_count"],
@@ -415,7 +420,7 @@ def submit(conn, user, attempt_id):
         total += points
         maximum += item["points"]
         correct_count += int(bool(correct))
-        answered_count += int(existing is not None)
+        answered_count += int(has_answer(item["question_type"], answer))
         values = dict(
             attempt_id=attempt_id,
             assessment_id=attempt["assessment_id"],
