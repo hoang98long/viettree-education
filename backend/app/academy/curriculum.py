@@ -21,6 +21,7 @@ COMPETENCIES = {
     "creative": "Thiết kế và cải tiến sản phẩm",
     "safety": "Bảo vệ thông tin và tôn trọng nguồn",
     "project": "Hợp tác, thử nghiệm và trình bày",
+    "verify": "Thử bằng dữ liệu mới và nêu giới hạn kết luận",
 }
 
 
@@ -461,6 +462,7 @@ def records():
     from app.academy.curriculum_primary import records_for_grade
     from app.academy.curriculum_projects import LESSONS as projects
     from app.academy.curriculum_subjects import LESSONS as subjects
+    from app.academy.curriculum_verification import records as investigations
 
     all_lessons = LESSONS + subjects + projects
     if [row["number"] for row in all_lessons] != list(range(1, 37)):
@@ -485,6 +487,7 @@ def records():
             cursor += count
     for grade in [1, 2, 3, 5]:
         output.extend(records_for_grade(grade, UNITS))
+    output.extend(investigations())
     for row in output:
         row["visual_prefix"] = row["code"] + "-v2"
         if (
@@ -516,7 +519,8 @@ def content(row):
             q["options"].reverse()
             q["answer"] = 1
     data = dict(
-        objectives=[
+        objectives=row.get("objectives")
+        or [
             f"Giải thích ý chính: {row['title']}.",
             "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
             "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần.",

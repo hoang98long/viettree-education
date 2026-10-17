@@ -115,7 +115,9 @@ export function CurriculumMapPanel({ grade = 4 }: { grade?: number }) {
               aria-label={
                 release.release === "applied-2026-01"
                   ? "Học liệu tình huống bổ sung"
-                  : "Học liệu khám phá bổ sung"
+                  : release.release === "explorers-2026-01"
+                    ? "Học liệu khám phá bổ sung"
+                    : `Học liệu bổ sung ${release.release}`
               }
             >
               <strong>

@@ -55,7 +55,11 @@ Head hiện tại `0012_lesson_bookmarks`, bao gồm lớp/thành tích/giá, g�
 **Lớp 3**, rồi chọn lớp 3 trong học liệu. Mỗi bài lớp 3: Free 1 gợi ý, VIP 3;
 xem [học liệu lớp 3](grade3-curriculum.md). Không đổi tài khoản lớp 4 tự động.
 
-AI Academy có 180 bài cho lớp 1–5 và 1547 hình trong thư viện. Với máy
+Đợt 16/10 có thêm bộ ôn tập `review-2026-02` (15 bài/60 câu/15 đề),
+10 bài AI và sửa quyền gợi ý/gửi lại sau lỗi mạng.
+[Nội dung và lệnh cập nhật](learning-upgrade-2026-10-16.md).
+
+AI Academy có 190 bài cho lớp 1–5 và 1625 hình trong thư viện. Với máy
 khác hoặc lần nâng cấp đầu, cài thêm dependencies và nạp module trước khi chạy:
 
 ```powershell

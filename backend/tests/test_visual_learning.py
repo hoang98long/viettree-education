@@ -23,12 +23,12 @@ def test_archiving_a_vip_version_does_not_make_its_illustrations_free(logged_stu
 
 def test_every_grade_has_full_distinct_course_with_free_introduction():
     rows = records()
-    assert Counter(row["grade"] for row in rows) == {grade: 36 for grade in range(1, 6)}
+    assert Counter(row["grade"] for row in rows) == {grade: 38 for grade in range(1, 6)}
     for grade in range(1, 6):
         selected = [row for row in rows if row["grade"] == grade]
-        assert len({row["unit_code"] for row in selected}) == 9
-        assert len({row["title"] for row in selected}) == 36
-        assert sum(row["code"] in FREE_CODES for row in selected) == 3
+        assert len({row["unit_code"] for row in selected}) == 10
+        assert len({row["title"] for row in selected}) == 38
+        assert sum(row["code"] in FREE_CODES for row in selected) == 4
     young = [content(row) for row in rows if row["grade"] <= 2]
     assert all(payload["estimated_minutes"] == 10 for payload in young)
     assert all(
@@ -138,7 +138,7 @@ def test_free_visual_course_can_be_completed_and_vip_content_stays_locked(
         profiles.update().where(profiles.c.student_id == student_id).values(current_grade=grade)
     )
     catalog = client.get(f"/api/v1/ai-academy/catalog?grade={grade}").json()
-    assert len(catalog) == 36
+    assert len(catalog) == 38
     lesson_id = uid(f"AI{grade}-01")
     result = client.post(f"/api/v1/ai-academy/lessons/{lesson_id}/start")
     assert result.status_code == 200, result.text

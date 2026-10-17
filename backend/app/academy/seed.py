@@ -28,6 +28,7 @@ def add(conn, name, values):
 
 def seed(conn):
     conn.execute(text("SELECT pg_advisory_xact_lock(78249102)"))
+    curriculum = records()
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     validate_manifest()
     program_id = uid("program")
@@ -54,7 +55,7 @@ def seed(conn):
                     "reading": "Tranh và câu ngắn, người lớn hỗ trợ đọc"
                     if grade < 3
                     else "Đọc tình huống, thực hành và giải thích căn cứ",
-                    "coverage": "36 bài · 9 chủ đề · học bằng tranh và thao tác chạm",
+                    "coverage": "38 bài · 10 chủ đề · học bằng tranh và thao tác chạm",
                     "annual_outline": [dict(code=k, title=v) for k, v in COMPETENCIES.items()],
                 },
             ),
@@ -63,14 +64,20 @@ def seed(conn):
         previous = conn.execute(
             select(grades.c.curriculum).where(grades.c.grade == grade)
         ).scalar_one()
-        if previous.get("coverage") in {"36 tiết đầy đủ", "Khung năm học và 3 bài mẫu"}:
+        if previous.get("coverage") in {
+            "36 tiết đầy đủ",
+            "Khung năm học và 3 bài mẫu",
+            "36 bài · 9 chủ đề · học bằng tranh và thao tác chạm",
+        }:
             conn.execute(
                 grades.update()
                 .where(grades.c.grade == grade)
                 .values(
                     curriculum={
                         **previous,
-                        "coverage": "36 bài · 9 chủ đề · học bằng tranh và thao tác chạm",
+                        "coverage": "38 bài · 10 chủ đề · học bằng tranh và thao tác chạm",
+                        "competencies": COMPETENCIES,
+                        "annual_outline": [dict(code=k, title=v) for k, v in COMPETENCIES.items()],
                     }
                 )
             )
@@ -118,7 +125,7 @@ def seed(conn):
                 file_size_bytes=asset["bytes"],
             ),
         )
-    for row in records():
+    for row in curriculum:
         unit_id = uid(row["unit_code"])
         units = db.table("ai_units")
         occupied = conn.execute(

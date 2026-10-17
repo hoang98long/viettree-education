@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import type { Activity, Feedback, Question } from "./types";
 import { AcademyImage } from "./shared";
@@ -28,6 +28,7 @@ export function ActivityBoard({
   const [result, setResult] = useState<Feedback | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const submission = useRef<{ signature: string; key: string } | null>(null);
   const items = activity
     ? level < 3
       ? activity.items.slice(0, level + 1)
@@ -49,13 +50,17 @@ export function ActivityBoard({
     setBusy(true);
     setError("");
     try {
+      const signature = JSON.stringify({ lessonId, stepId, level, answers });
+      if (submission.current?.signature !== signature) {
+        submission.current = { signature, key: crypto.randomUUID() };
+      }
       const body = await api<Feedback>(
         `/ai-academy/lessons/${lessonId}/attempts`,
         {
           method: "POST",
           body: JSON.stringify({
             step_id: stepId,
-            idempotency_key: crypto.randomUUID(),
+            idempotency_key: submission.current.key,
             level,
             answers,
           }),

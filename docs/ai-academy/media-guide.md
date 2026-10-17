@@ -1,7 +1,7 @@
 # Hướng dẫn media
 
-1547 SVG được tạo bằng code: 8 trạng thái Mầm AI, 45 bìa chủ đề, 231 hero,
-1150 minh họa nội dung/thẻ theo bài, 72 thẻ chung (24 đối tượng × 3 biến thể), 12 huy hiệu,
+1625 SVG được tạo bằng code: 8 trạng thái Mầm AI, 50 bìa chủ đề, 241 hero,
+1230 minh họa nội dung/thẻ theo bài, 72 thẻ chung (24 đối tượng × 3 biến thể), 12 huy hiệu,
 12 asset UI. Không gọi dịch vụ trả phí. Phong cách vector pastel, hình dễ đọc,
 không dùng nhân vật có bản quyền hoặc ảnh nhận dạng học sinh.
 

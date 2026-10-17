@@ -9,7 +9,7 @@ async function staffLogin(page: Page, username: string, password: string) {
   await expect(page).toHaveURL(/\/(teacher|guardian)\/dashboard$/);
 }
 
-test("AI Academy: 36 tiết, học/chấm/resume, lab, an toàn, sản phẩm và huy hiệu", async ({
+test("AI Academy: học/chấm/resume, lab, an toàn, sản phẩm và huy hiệu", async ({
   page,
 }, info) => {
   const suffix = info.project.name === "mobile" ? "MOBILE" : "DESKTOP";
@@ -26,7 +26,7 @@ test("AI Academy: 36 tiết, học/chấm/resume, lab, an toàn, sản phẩm v�
   const catalog = await (
     await page.request.get("/api/v1/ai-academy/catalog?grade=4")
   ).json();
-  expect(catalog).toHaveLength(36);
+  expect(catalog).toHaveLength(38);
   const lesson = catalog.find((l: { code: string }) => l.code === "AI4-01");
   await page.goto("/ai-academy/lessons/" + lesson.id);
   await expect(

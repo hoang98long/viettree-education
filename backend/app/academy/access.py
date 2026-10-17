@@ -5,11 +5,15 @@ from sqlalchemy import select
 from app.db import db
 from app.services.access import denied, require_feature, resolve_membership
 
-FREE_CODES = {f"AI{grade}-{number:02}" for grade in [1, 2, 3, 5] for number in [1, 2, 3]} | {
-    "AI4-01",
-    "AI4-04",
-    "AI4-27",
-}
+FREE_CODES = (
+    {f"AI{grade}-{number:02}" for grade in [1, 2, 3, 5] for number in [1, 2, 3]}
+    | {
+        "AI4-01",
+        "AI4-04",
+        "AI4-27",
+    }
+    | {f"AI{grade}-37" for grade in range(1, 6)}
+)
 
 
 def lesson_access(conn, user, lesson):

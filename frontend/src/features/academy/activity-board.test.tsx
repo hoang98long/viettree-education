@@ -82,3 +82,36 @@ it("checkpoint hiện lần lượt, không chấm trước khi đã chọn đ�
   fireEvent.click(screen.getByRole("radio", { name: "Không" }));
   expect(screen.getByText("Kiểm tra lựa chọn")).toBeEnabled();
 });
+
+it("gửi lại sau lỗi mạng dùng cùng mã; đổi đáp án tạo mã mới", async () => {
+  mockApi.mockRejectedValueOnce(new Error("Mạng gián đoạn"));
+  mockApi.mockResolvedValue({
+    score: 0,
+    feedback: { passed: false, message: "Thử lại", items: [] },
+  });
+  render(
+    <ActivityBoard
+      lessonId="lesson"
+      stepId="practice"
+      activity={activity}
+      questions={[]}
+      onPass={vi.fn()}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Con vật" }));
+  fireEvent.click(screen.getByText("Thẻ tiếp"));
+  fireEvent.click(screen.getByRole("button", { name: "Trái cây" }));
+  fireEvent.click(screen.getByText("Kiểm tra lựa chọn"));
+  await screen.findByRole("alert");
+  fireEvent.click(screen.getByText("Kiểm tra lựa chọn"));
+  await screen.findByRole("status");
+  const submitted = () =>
+    mockApi.mock.calls.map((call) => JSON.parse(call[1]!.body as string));
+  expect(submitted()[0].idempotency_key).toBe(submitted()[1].idempotency_key);
+  fireEvent.click(screen.getByRole("button", { name: "Con vật" }));
+  fireEvent.click(screen.getByText("Kiểm tra lựa chọn"));
+  await waitFor(() => expect(mockApi).toHaveBeenCalledTimes(3));
+  expect(submitted()[2].idempotency_key).not.toBe(
+    submitted()[1].idempotency_key,
+  );
+});

@@ -1,17 +1,17 @@
 # AI Academy ưu tiên đào tạo, Free và VIP
 
 Chính sách mới 12/10/2026 thay mô tả “toàn bộ nền tảng Academy miễn phí” trước
-đây. Cập nhật 13/10/2026: 180 bài/1547 SVG; tập trung lý thuyết, quan sát, câu hỏi lựa chọn/ghép/
+đây. Cập nhật 16/10/2026: 190 bài/1625 SVG; tập trung lý thuyết, quan sát, câu hỏi lựa chọn/ghép/
 xếp bước và bài thực hành dữ liệu mô phỏng. Không cần tài khoản model hay
 API trả phí để học.
 
 ## Phân bổ quyền mặc định
 
-| Khối        | Miễn phí                                                        | VIP                          |
-| ----------- | --------------------------------------------------------------- | ---------------------------- |
-| Lớp 4       | AI4-01 nhận biết AI, AI4-04 dữ liệu, AI4-27 giữ thông tin riêng | 33 tiết còn lại              |
-| Lớp 1/2/3/5 | Ba bài đầu mỗi khối                                             | 33 bài còn lại mỗi khối |
-| Tổng        | 15 bài                                                          | 165 bài                      |
+| Khối        | Miễn phí                                                                           | VIP                     |
+| ----------- | ---------------------------------------------------------------------------------- | ----------------------- |
+| Lớp 4       | AI4-01 nhận biết AI, AI4-04 dữ liệu, AI4-27 giữ thông tin riêng, AI4-37 kiểm chứng | 34 bài còn lại          |
+| Lớp 1/2/3/5 | Ba bài đầu và bài số 37 mỗi khối                                                   | 34 bài còn lại mỗi khối |
+| Tổng        | 20 bài                                                                             | 170 bài                 |
 
 VIP còn có lab phân loại/bias bằng thuật toán đơn giản, Prompt Builder,
 xưởng comic/poster/quiz/báo cáo từ mẫu, dự án nộp giáo viên. Free xem bìa/tên/
@@ -50,7 +50,7 @@ Lab là so đặc điểm của thẻ, không model nhận dạng ảnh. Studio 
 viết/sửa, không giả vờ AI tạo sản phẩm. Đọc nội dung bằng giọng local tùy chọn
 không thu âm/gửi giọng; chữ/tranh luôn dùng được.
 
-Triển khai: `alembic upgrade head` (0011), khởi động lại backend/frontend.
+Triển khai: `alembic upgrade head` (0012), khởi động lại backend/frontend.
 DB hiện tại đã migrate, không cần reset/seed lại tài khoản. Nếu cài mới:
 import SQL gốc, migrate rồi seed theo README, nạp `seed-ai-academy`. Seed chọn
 Free/VIP cho bài mới và không ghi đè chính sách admin đã chỉnh.

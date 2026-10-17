@@ -120,8 +120,8 @@ export function AcademyAdmin({
               </p>
             ))}
             <p>
-              Kiểm tra lớp 4 phải có 36 bài published thuộc 9 chủ đề; bài
-              mới/draft không thay bài đang học.
+              Đối chiếu bài published của các khối với danh mục học liệu hiện
+              tại; bài mới/draft không thay bài đang học.
             </p>
             <p>
               Không coi số lượt làm là chẩn đoán năng lực. Provider cần flag,

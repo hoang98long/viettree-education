@@ -53,6 +53,7 @@ export type LessonContent = {
   [key: string]: unknown;
 };
 export type PlayerData = {
+  hint_limit?: number;
   passed_steps?: string[];
   flags?: Record<string, boolean>;
   lesson: { id: string; code: string; title: string; grade: number };

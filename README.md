@@ -11,6 +11,11 @@ tài khoản lớp 4; thêm bốn tài khoản lớp 5: [danh sách và mật kh
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**Nâng cấp 16/10: học AI và tự kiểm tra:** thêm 10 bài AI, 15 bài ba môn,
+60 câu hỏi và 78 hình SVG cho lớp 1–5. Gợi ý AI theo quyền Free/VIP;
+gửi lại sau lỗi mạng giữ cùng mã lượt nộp để tránh trùng.
+[Nội dung, kiểm thử và cách cập nhật](docs/learning-upgrade-2026-10-16.md).
+
 **Bài học đã lưu và bộ Khám phá:** lưu bài theo tài khoản, đồng bộ giữa các
 phiên/thiết bị; thêm 15 bài luyện ngắn, 60 câu hỏi và 15 đề cho lớp 1–5.
 Admin theo dõi từng bộ học liệu; trang chủ đếm đủ lượt đã nộp vượt giới hạn

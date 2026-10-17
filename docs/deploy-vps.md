@@ -1,5 +1,7 @@
 # Hướng dẫn deploy VietTree Education lên VPS
 
+Học liệu ngày 16/10: [10 bài AI, bộ review và lệnh seed khi nâng cấp](learning-upgrade-2026-10-16.md).
+
 Cập nhật: **15/10/2026**. Hướng dẫn dành cho **Ubuntu Server 24.04 LTS**, một VPS,
 một tên miền và dữ liệu hiện tại của dự án. Các khối `bash` chạy trên VPS; các
 khối `powershell` chạy trên máy Windows đang chứa source code.

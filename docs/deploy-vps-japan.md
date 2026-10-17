@@ -223,6 +223,11 @@ Không tự xóa backup hay thay cấu hình SSH bằng script này.
 
 ## 5. Phạm vi đã kiểm chứng và bước cuối trên VPS
 
+Bản học liệu 16/10 thêm 10 bài AI và 15 bài ba môn; build lại để kèm SVG/code,
+nạp bằng [các lệnh cập nhật](learning-upgrade-2026-10-16.md). Không có migration mới.
+[Kiểm chứng local mới nhất](audits/verification-quality-2026-10-16.md) gồm tải 50
+học sinh; không thay cho kiểm chứng trên VPS đích.
+
 Đọc [báo cáo kiểm chứng](release-readiness-2026-10-15.md) để phân biệt kiểm thử
 local với VPS thật. Sau khi có server, cần chạy bộ image Linux và `smoke.sh`
 trên VPS, kiểm tra chứng chỉ công khai, firewall nhà cung cấp, backup/restore

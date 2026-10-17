@@ -17,7 +17,7 @@ from app.db import db
 
 
 @pytest.mark.parametrize("source", records(), ids=lambda r: r["code"])
-def test_all_180_curriculum_lessons_have_valid_educational_content(source):
+def test_all_curriculum_lessons_have_valid_educational_content(source):
     payload = LessonContent.model_validate(content(source))
     assert len(payload.steps) == 7
     assert len(payload.objectives) >= 3
@@ -46,7 +46,7 @@ def test_media_manifest_and_required_counts():
         "ui": 12,
     }.items():
         assert result["categories"][kind] >= minimum
-    assert result["lessons"] == 180
+    assert result["lessons"] == 190
 
 
 def test_nearest_neighbor_simulation_and_missing_examples():

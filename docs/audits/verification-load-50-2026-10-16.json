@@ -1,0 +1,57 @@
+{
+  "environment": "local HTTP / real PostgreSQL / synthetic learners",
+  "transport": {
+    "workload_scheme": "http",
+    "private_readiness": false,
+    "certificate_verification": true,
+    "custom_ca": false
+  },
+  "host": {
+    "os": "Windows",
+    "logical_cpus": 12
+  },
+  "learners": 50,
+  "plans": {
+    "free": 25,
+    "vip": 25
+  },
+  "answer_all": true,
+  "levels": [
+    {
+      "concurrent_learners": 50,
+      "seconds": 12.76,
+      "requests": 700,
+      "requests_per_second": 54.86,
+      "mean_ms": 861.4,
+      "p50_ms": 835.36,
+      "p95_ms": 1708.05,
+      "p99_ms": 2296.98,
+      "max_ms": 2573.48,
+      "status_counts": {
+        "200": 700
+      },
+      "journeys_completed": 50,
+      "errors": {}
+    }
+  ],
+  "readiness": {
+    "status": 200,
+    "seconds": 0.46
+  },
+  "authentication": {
+    "parallel": false,
+    "seconds": 4.22,
+    "successes": 50,
+    "p95_ms": 97.12,
+    "status_counts": {
+      "200": 50
+    },
+    "errors": {}
+  },
+  "consistency": {
+    "question_statistic_mismatches": 0,
+    "graded_attempts": 50,
+    "daily_assessments_completed": 50,
+    "expected_attempts": 50
+  }
+}

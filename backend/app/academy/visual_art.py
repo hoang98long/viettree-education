@@ -110,13 +110,19 @@ def icon_art(kind, variant=0):
     )
 
 
+def uses_counters(text):
+    match = re.search(r"(?<![\d.,−-])(\d{1,2})\s*(?:quả và|\+)\s*(\d{1,2})(?![\d.,])", text)
+    return bool(match and int(match[1]) + int(match[2]) <= 20)
+
+
 def labelled_picture(text, variant=0, code=""):
     # Labels remain real SVG text and an accessible caption, never an image of a paragraph.
     from app.academy.media import circle, rect
 
     body = rect(12, 12, 276, 276, "#edf7f2", 28)
     body += example_art(text, variant)
-    body += circle(270, 27, 7 + variant % 4, ["#38a99a", "#f7b84b", "#6879cf"][variant % 3])
+    if not uses_counters(text):
+        body += circle(270, 27, 7 + variant % 4, ["#38a99a", "#f7b84b", "#6879cf"][variant % 3])
     return "<title>" + escape(text) + "</title><desc>" + escape(code) + "</desc>" + body
 
 
@@ -145,9 +151,8 @@ def example_art(text, variant=0):
             for i in range(a + b)
         )
     art = icon_art(kind, variant)
-    if re.search(r"(?<!\w)(đỏ|red)(?!\w)", text.casefold()) and kind in {
-        code for code, _, _ in OBJECTS
-    }:
+    color_match = re.search(r"(?<!\w)(đỏ|red|xanh|green|blue)(?!\w)", text.casefold())
+    if color_match and kind in {code for code, _, _ in OBJECTS}:
         from app.academy.media import COLORS
 
         colors = [COLORS[variant % len(COLORS)]]
@@ -155,9 +160,16 @@ def example_art(text, variant=0):
             colors.append("#f0bc58")
         if kind == "apple":
             colors.append("#ed8a7d")
+        target = (
+            "#e87969"
+            if color_match[1] in {"đỏ", "red"}
+            else "#83af56"
+            if color_match[1] == "green" or (color_match[1] == "xanh" and kind == "apple")
+            else "#45a7cb"
+        )
         for color in colors:
-            art = art.replace(f'fill="{color}"', 'fill="#e87969"').replace(
-                f'stroke="{color}"', 'stroke="#e87969"'
+            art = art.replace(f'fill="{color}"', f'fill="{target}"').replace(
+                f'stroke="{color}"', f'stroke="{target}"'
             )
     return art
 
@@ -198,7 +210,7 @@ def lesson_scene(row, variant=0):
         lines.append(line)
         for j, text in enumerate(lines[:3]):
             body += f'<text x="{x + (width - 12) / 2}" y="{258 + j * 26}" font-family="sans-serif" font-size="20" fill="#26475c" text-anchor="middle">{escape(text)}</text>'
-        if variant:
+        if variant and not uses_counters(item["text"]):
             body += circle(x + width - 32, 65, 10, ["#38a99a", "#f7b84b", "#6879cf"][variant - 1])
     if len(items) == 2:
         body += path("M281 148H313M305 140L313 148L305 156", stroke="#6879cf", width=3)

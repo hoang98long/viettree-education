@@ -1,5 +1,8 @@
 # Học bằng hình và AI Academy lớp 1–5
 
+Số liệu bên dưới ghi nhận đợt 13/10. Cập nhật 16/10: **190 bài AI, 1625 SVG**,
+4 Free/34 VIP mỗi khối; xem [học liệu và kiểm chứng mới](learning-upgrade-2026-10-16.md).
+
 Cập nhật 13/10/2026. Mục tiêu: trẻ nhìn tranh, thử một việc nhỏ và tự kiểm tra;
 không phải đọc một màn hình dài hay biết nhập yêu cầu vào công cụ AI.
 
@@ -34,12 +37,12 @@ trong thư mục `frontend`. Không thay đổi thư viện ảnh AI có gắn l
 dùng làm nội dung sao chép. Học liệu và SVG VietTree được viết/vẽ mới. Đây là
 thiết kế tham khảo, không phải chứng nhận hoặc bản dịch chính thức của tổ chức nào.
 
-| Nguồn | Điều đối chiếu | Cách áp dụng |
-| --- | --- | --- |
-| [Day of AI: Grade 1 – Learning from Patterns](https://dayofai.org/units/grade-1-learning-from-patterns) | Lứa 6–7, học qua ví dụ, quy luật và dự đoán; con người cung cấp thông tin | Lớp 1 xem hai thẻ, tìm điểm giống/khác, phát hiện máy có thể nhầm |
-| [Day of AI: Grade 2 – Data All Around Us](https://dayofai.org/units/grade-2-data-all-around-us) | Lứa 7–8, thu thập/sắp xếp dữ liệu, ví dụ và sáng tạo | Lớp 2 xếp bộ sưu tập, sửa nhãn, thử tranh mới và kể ba sự kiện |
-| [AI4K12: Grade Band Progression Charts](https://ai4k12.org/gradeband-progression-charts/) | Khung dự thảo K–2 và 3–5, năm ý lớn: cảm nhận, biểu diễn/lập luận, học, tương tác và tác động xã hội | Chia mức theo khối; nối quan sát, nhóm dữ liệu, lời nhắc rõ, kiểm chứng và an toàn |
-| [Raspberry Pi Foundation: Discovering AI (8–12)](https://experience-ai.org/en/lessons/36) | Dữ liệu, quy luật, dự đoán, nhiệm vụ và câu kiểm tra cuối bài | Lớp 3–5 tập nhận đầu vào/đầu ra, kiểm tra nhãn/dự đoán và giải thích giới hạn |
+| Nguồn                                                                                                   | Điều đối chiếu                                                                                       | Cách áp dụng                                                                       |
+| ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [Day of AI: Grade 1 – Learning from Patterns](https://dayofai.org/units/grade-1-learning-from-patterns) | Lứa 6–7, học qua ví dụ, quy luật và dự đoán; con người cung cấp thông tin                            | Lớp 1 xem hai thẻ, tìm điểm giống/khác, phát hiện máy có thể nhầm                  |
+| [Day of AI: Grade 2 – Data All Around Us](https://dayofai.org/units/grade-2-data-all-around-us)         | Lứa 7–8, thu thập/sắp xếp dữ liệu, ví dụ và sáng tạo                                                 | Lớp 2 xếp bộ sưu tập, sửa nhãn, thử tranh mới và kể ba sự kiện                     |
+| [AI4K12: Grade Band Progression Charts](https://ai4k12.org/gradeband-progression-charts/)               | Khung dự thảo K–2 và 3–5, năm ý lớn: cảm nhận, biểu diễn/lập luận, học, tương tác và tác động xã hội | Chia mức theo khối; nối quan sát, nhóm dữ liệu, lời nhắc rõ, kiểm chứng và an toàn |
+| [Raspberry Pi Foundation: Discovering AI (8–12)](https://experience-ai.org/en/lessons/36)               | Dữ liệu, quy luật, dự đoán, nhiệm vụ và câu kiểm tra cuối bài                                        | Lớp 3–5 tập nhận đầu vào/đầu ra, kiểm tra nhãn/dự đoán và giải thích giới hạn      |
 
 Các mô-đun Experience AI 11–14 không được đưa nguyên mức độ vào lớp 1–2.
 Chương trình trong app hiện là lý thuyết, hoạt động theo quy tắc và dữ liệu mẫu;
@@ -47,13 +50,13 @@ không huấn luyện mô hình hay gửi dữ liệu trẻ ra dịch vụ ngoà
 
 ## Quy mô và mức theo khối
 
-| Khối | Chủ đề / bài | Free / VIP baseline | Thời lượng gợi ý | Mức học |
-| --- | --- | --- | --- | --- |
-| 1 | 9 / 36 | 3 / 33 | 10 phút/bài | Hai thẻ, tranh và câu ngắn; người lớn hỗ trợ đọc |
-| 2 | 9 / 36 | 3 / 33 | 10 phút/bài | Nhãn, phân loại, thử lại, kể theo thứ tự |
-| 3 | 9 / 36 | 3 / 33 | 15 phút/bài | Quy tắc, dữ liệu, lời nhắc, tự đối chiếu |
-| 4 | 9 / 36 | 3 / 33 | 15 phút/bài | Giữ 36 nội dung đã có, trình bày ngắn và nhiều tranh hơn |
-| 5 | 9 / 36 | 3 / 33 | 15 phút/bài | Chất lượng nhãn, nhiều tình huống, mẫu học/mẫu thử, tiêu chí và giới hạn |
+| Khối | Chủ đề / bài | Free / VIP baseline | Thời lượng gợi ý | Mức học                                                                  |
+| ---- | ------------ | ------------------- | ---------------- | ------------------------------------------------------------------------ |
+| 1    | 9 / 36       | 3 / 33              | 10 phút/bài      | Hai thẻ, tranh và câu ngắn; người lớn hỗ trợ đọc                         |
+| 2    | 9 / 36       | 3 / 33              | 10 phút/bài      | Nhãn, phân loại, thử lại, kể theo thứ tự                                 |
+| 3    | 9 / 36       | 3 / 33              | 15 phút/bài      | Quy tắc, dữ liệu, lời nhắc, tự đối chiếu                                 |
+| 4    | 9 / 36       | 3 / 33              | 15 phút/bài      | Giữ 36 nội dung đã có, trình bày ngắn và nhiều tranh hơn                 |
+| 5    | 9 / 36       | 3 / 33              | 15 phút/bài      | Chất lượng nhãn, nhiều tình huống, mẫu học/mẫu thử, tiêu chí và giới hạn |
 
 Tổng **180 bài / 1260 bước / 540 câu checkpoint**. Chín nhóm: AI quanh em,
 dữ liệu, giao tiếp, Toán, Tiếng Việt, Tiếng Anh, sáng tạo, an toàn, dự án.

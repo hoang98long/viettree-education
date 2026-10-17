@@ -88,7 +88,8 @@ def allowed_lesson(conn, user, identifier):
 def public_content(payload):
     data = deepcopy(payload)
     # Remove grading and teacher-only instructions before JSON reaches students.
-    for key in ("teacher_guide", "misconceptions"):
+    # The latter two are hint levels 2/3: deliver them only through the gated hint endpoint.
+    for key in ("teacher_guide", "misconceptions", "standard", "advanced"):
         data.pop(key, None)
     for step in data["steps"]:
         for q in step.get("questions", []):

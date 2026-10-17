@@ -1,6 +1,6 @@
 # Database và migration
 
-Head hiện tại `0011_classes_vip_training`: thêm chính sách Free/VIP trên
+Head hiện tại `0012_lesson_bookmarks`. Migration 0011 trước đó thêm chính sách Free/VIP trên
 `ai_lessons`, cài đặt lớp, giao bài và tuyên dương. Xem
 [database lớp và thành tích](../classes-achievements.md). Các bảng Academy
 ở migration 0010 dưới đây được giữ nguyên dữ liệu.

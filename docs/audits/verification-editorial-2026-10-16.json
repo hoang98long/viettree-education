@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-16",
+  "reason": "Clarify that the learner is checking quotient 8, avoiding two mathematically useful options",
+  "archived_unused_lesson": "VT3-MATH-review-2026-02-check-my-math-lesson",
+  "active_replacement": "VT3-MATH-review-2026-02-check-my-math-r2-lesson",
+  "old_question_versions": "4 preserved without modification",
+  "old_attempts_or_progress": 0,
+  "backup": {
+    "path": ".tools\\backups\\before-review-editorial-1719618126d746058c6a4f49ffd5c512.dump",
+    "sha256": "d03d5860e8083474b60eae7cdc6eb1a422cf9a8468c0291c615f595d04034256",
+    "pg_restore_list": "passed"
+  },
+  "release": {
+    "release": "review-2026-02",
+    "grades": {
+      "3": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      }
+    }
+  }
+}

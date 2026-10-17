@@ -18,7 +18,7 @@ Set-Location 'D:\01_viettree_code\viettree-education\backend'
 
 Terminal frontend: `INTERNAL_API_URL=http://localhost:8000`, `PORT=3000`,
 `npm run dev`. URL http://localhost:3000/ai-academy, đăng nhập người dùng hiện có.
-DB local đã được nâng head 0011 và nạp học liệu. Migration mới thêm chính sách
+DB local đã được nâng head 0012 và nạp học liệu. Migration mới thêm chính sách
 Free/VIP, lớp/thành tích/giá; không cần seed lại tài khoản.
 
 ## VPS / Docker
@@ -38,7 +38,7 @@ docker compose --env-file .env.production -f docker-compose.production.yml exec 
 ```
 
 `run migrate` cần profile operations nếu bản Compose đang dùng yêu cầu profile:
-thêm `--profile operations` trước `run`. Kiểm `/health`, `/ready`, head 0011,
+thêm `--profile operations` trước `run`. Kiểm `/health`, `/ready`, head 0012,
 đăng nhập học sinh/teacher/guardian/admin và duyệt media. Không cần model server
 cho simulation. `check-system` kiểm LMS; dùng thêm `verify-ai-academy` cho module.
 

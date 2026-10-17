@@ -27,6 +27,7 @@ from app.core.security import _throttle, admin_user, current_user, now, student_
 from app.db import db
 from app.schemas.accounts import AdminAction
 from app.schemas.common import StrictModel
+from app.services.access import resolve_membership
 
 router = APIRouter(prefix="/api/v1/ai-academy", tags=["ai-academy"])
 
@@ -190,6 +191,9 @@ def start(identifier: UUID, user=Depends(student_user), conn=database):
         "progress": progress,
         "content": learning.public_content(payload),
         "passed_steps": passed,
+        "hint_limit": 3
+        if "learning.guided_hints" in resolve_membership(conn, user["id"])["features"]
+        else 1,
         "flags": tutor.flags(conn),
     }
 

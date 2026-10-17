@@ -1,13 +1,13 @@
-﻿L?p,M? b?i,Ch? ??,T?n b?i,G?i baseline,Ph?t g?i ?,Th? th?c h?nh
+﻿Lớp,Mã bài,Chủ đề,Tên bài,Gói baseline,Phút gợi ý,Thẻ thực hành
 1,AI1-01,AI quanh em,Bạn nhỏ và máy,Free,10,2
+1,AI1-02,Máy tính học từ dữ liệu,Xếp thẻ cùng nhóm,Free,10,2
+1,AI1-03,AI an toàn và thông minh,Giữ riêng mật khẩu,Free,10,2
 1,AI1-04,AI quanh em,"Mắt nhìn, tai nghe",VIP,10,2
 1,AI1-05,AI quanh em,Máy giúp một việc,VIP,10,2
 1,AI1-06,AI quanh em,Máy cũng có thể nhầm,VIP,10,2
-1,AI1-02,Máy tính học từ dữ liệu,Xếp thẻ cùng nhóm,Free,10,2
 1,AI1-07,Máy tính học từ dữ liệu,Tìm thẻ khác nhóm,VIP,10,2
 1,AI1-08,Máy tính học từ dữ liệu,"Cùng màu, khác nhóm",VIP,10,2
 1,AI1-09,Máy tính học từ dữ liệu,Thêm hình mẫu cho máy,VIP,10,2
-1,AI1-03,AI an toàn và thông minh,Giữ riêng mật khẩu,Free,10,2
 1,AI1-10,AI an toàn và thông minh,Hỏi người lớn đáng tin,VIP,10,2
 1,AI1-11,AI an toàn và thông minh,Tranh có thể không thật,VIP,10,2
 1,AI1-12,AI an toàn và thông minh,Cho đôi mắt nghỉ,VIP,10,2
@@ -35,11 +35,13 @@
 1,AI1-34,Dự án AI của em,Chọn thẻ hình mẫu,VIP,10,2
 1,AI1-35,Dự án AI của em,Thử một thẻ mới,VIP,10,2
 1,AI1-36,Dự án AI của em,Kể với cô điều đã học,VIP,10,2
+1,AI1-37,Thử nghiệm và kiểm chứng,Đếm lại cùng robot,Free,10,2
+1,AI1-38,Thử nghiệm và kiểm chứng,Hai màu của quả táo,VIP,10,2
 2,AI2-01,Máy tính học từ dữ liệu,Sắp xếp bộ sưu tập,Free,10,3
 2,AI2-02,Máy tính học từ dữ liệu,Tìm nhãn bị đặt nhầm,Free,10,3
+2,AI2-03,AI an toàn và thông minh,Thông tin nào giữ riêng?,Free,10,3
 2,AI2-04,Máy tính học từ dữ liệu,Cần có nhiều loại mẫu,VIP,10,3
 2,AI2-05,Máy tính học từ dữ liệu,Thử với tranh chưa xem,VIP,10,3
-2,AI2-03,AI an toàn và thông minh,Thông tin nào giữ riêng?,Free,10,3
 2,AI2-06,AI an toàn và thông minh,Dừng khi gặp yêu cầu lạ,VIP,10,2
 2,AI2-07,AI an toàn và thông minh,Kiểm tra hình kể chuyện,VIP,10,2
 2,AI2-08,AI an toàn và thông minh,Lịch học và nghỉ mắt,VIP,10,2
@@ -71,15 +73,17 @@
 2,AI2-34,Dự án AI của em,Chuẩn bị thẻ có nhãn,VIP,10,2
 2,AI2-35,Dự án AI của em,Thử với thẻ khác,VIP,10,2
 2,AI2-36,Dự án AI của em,Kể cách em kiểm tra,VIP,10,2
+2,AI2-37,Thử nghiệm và kiểm chứng,Đọc lại lời chỉ dẫn,Free,10,2
+2,AI2-38,Thử nghiệm và kiểm chứng,Nhãn nào cần sửa?,VIP,10,3
 3,AI3-01,Giao tiếp với AI,Nêu nhiệm vụ rõ ràng,Free,15,2
+3,AI3-02,Máy tính học từ dữ liệu,Nhãn của bộ dữ liệu,Free,15,3
+3,AI3-03,Dự án AI của em,Chọn nhiệm vụ có thể kiểm tra,Free,15,2
 3,AI3-04,Giao tiếp với AI,Chỉ đưa dữ liệu cần dùng,VIP,15,2
 3,AI3-05,Giao tiếp với AI,Nói dạng kết quả mong muốn,VIP,15,2
 3,AI3-06,Giao tiếp với AI,Cải thiện lời nhắc,VIP,15,2
-3,AI3-02,Máy tính học từ dữ liệu,Nhãn của bộ dữ liệu,Free,15,3
 3,AI3-07,Máy tính học từ dữ liệu,Sửa mẫu gắn nhãn sai,VIP,15,3
 3,AI3-08,Máy tính học từ dữ liệu,Nhìn đủ các nhóm,VIP,15,3
 3,AI3-09,Máy tính học từ dữ liệu,Tách mẫu học và mẫu thử,VIP,15,3
-3,AI3-03,Dự án AI của em,Chọn nhiệm vụ có thể kiểm tra,Free,15,2
 3,AI3-10,Dự án AI của em,Chọn bộ mẫu đủ nhóm,VIP,15,2
 3,AI3-11,Dự án AI của em,Ghi điều đúng và sai,VIP,15,2
 3,AI3-12,Dự án AI của em,Trình bày giới hạn sản phẩm,VIP,15,2
@@ -107,6 +111,8 @@
 3,AI3-34,AI an toàn và thông minh,Ảnh chưa đủ làm bằng chứng,VIP,15,2
 3,AI3-35,AI an toàn và thông minh,Xin phép và ghi nguồn,VIP,15,2
 3,AI3-36,AI an toàn và thông minh,Cân bằng học và nghỉ,VIP,15,2
+3,AI3-37,Thử nghiệm và kiểm chứng,Thử bằng thẻ chưa gặp,Free,15,4
+3,AI3-38,Thử nghiệm và kiểm chứng,Không đoán quả chỉ từ màu,VIP,15,4
 4,AI4-01,AI quanh em,AI là gì và AI không phải là gì?,Free,15,4
 4,AI4-02,AI quanh em,"AI ở nhà, ở trường và trong cuộc sống",VIP,15,4
 4,AI4-03,AI quanh em,"Con người giỏi gì, AI giỏi gì?",VIP,15,4
@@ -143,12 +149,14 @@
 4,AI4-34,Dự án AI của em,Tạo nguyên mẫu,VIP,15,4
 4,AI4-35,Dự án AI của em,"Kiểm thử, nhận góp ý, cải tiến",VIP,15,4
 4,AI4-36,Dự án AI của em,"Trình bày, đánh giá rubric và triển lãm sản phẩm",VIP,15,4
+4,AI4-37,Thử nghiệm và kiểm chứng,Hai cách kiểm tra phép tính,Free,15,4
+4,AI4-38,Thử nghiệm và kiểm chứng,Bộ mẫu đồ dùng công bằng hơn,VIP,15,4
 5,AI5-01,Máy tính học từ dữ liệu,Nhãn quyết định điều máy học,Free,15,3
+5,AI5-02,Dự án AI của em,Nêu vấn đề và tiêu chí,Free,15,2
+5,AI5-03,Dự án AI của em,Thiết kế bộ mẫu,Free,15,2
 5,AI5-04,Máy tính học từ dữ liệu,"Dữ liệu sai, dự đoán sai",VIP,15,3
 5,AI5-05,Máy tính học từ dữ liệu,Đủ nhóm để kiểm tra công bằng,VIP,15,3
 5,AI5-06,Máy tính học từ dữ liệu,Mẫu thử không trùng mẫu học,VIP,15,3
-5,AI5-02,Dự án AI của em,Nêu vấn đề và tiêu chí,Free,15,2
-5,AI5-03,Dự án AI của em,Thiết kế bộ mẫu,Free,15,2
 5,AI5-07,Dự án AI của em,"Thử, ghi lỗi, cải tiến",VIP,15,3
 5,AI5-08,Dự án AI của em,Báo cáo cách làm và giới hạn,VIP,15,2
 5,AI5-09,AI quanh em,Quy tắc và dự đoán từ mẫu,VIP,15,2
@@ -179,3 +187,5 @@
 5,AI5-34,AI an toàn và thông minh,Kiểm chứng hình ảnh và khẳng định,VIP,15,2
 5,AI5-35,AI an toàn và thông minh,Tôn trọng tác giả và nguồn,VIP,15,2
 5,AI5-36,AI an toàn và thông minh,Chọn lúc tự làm thay vì dùng AI,VIP,15,2
+5,AI5-37,Thử nghiệm và kiểm chứng,Bốn trên năm chưa phải tất cả,Free,15,4
+5,AI5-38,Thử nghiệm và kiểm chứng,Điểm tổng có che một nhóm lỗi?,VIP,15,4

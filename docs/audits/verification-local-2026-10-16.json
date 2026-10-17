@@ -1,0 +1,135 @@
+{
+  "date": "2026-10-16",
+  "database": "viettree-education",
+  "backup": {
+    "path": ".tools\\backups\\before-verification-2026-10-16-ffcfa27ae94f4bb792503acc09613695.dump",
+    "sha256": "edd258a416c85979cccf490b29bc88434a1ff302f8548d33c692ccfe8dd026e2",
+    "pg_restore_list": "passed"
+  },
+  "preserved_existing_tables": 82,
+  "preserved_unchanged_rows": 22369,
+  "updated_bundled_grade_metadata": [
+    {
+      "table": "ai_grades",
+      "grade": 1,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    },
+    {
+      "table": "ai_grades",
+      "grade": 2,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    },
+    {
+      "table": "ai_grades",
+      "grade": 3,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    },
+    {
+      "table": "ai_grades",
+      "grade": 4,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    },
+    {
+      "table": "ai_grades",
+      "grade": 5,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    }
+  ],
+  "added_rows": {
+    "lessons": 15,
+    "lesson_skills": 15,
+    "media_assets": 78,
+    "questions": 60,
+    "question_versions": 60,
+    "question_skills": 60,
+    "lesson_questions": 60,
+    "assessments": 15,
+    "assessment_items": 60,
+    "content_access_policies": 30,
+    "question_version_access_policies": 60,
+    "ai_units": 5,
+    "ai_lessons": 10,
+    "ai_lesson_versions": 10,
+    "ai_media_assets": 78,
+    "ai_media_variants": 78,
+    "ai_media_usages": 73
+  },
+  "accounts_passwords_sessions_memberships_attempts_versions_progress": "unchanged",
+  "ai": {
+    "lessons": {
+      "3": 38,
+      "5": 38,
+      "4": 38,
+      "2": 38,
+      "1": 38
+    },
+    "media": {
+      "assets": 1625,
+      "lessons": 190,
+      "categories": {
+        "badge": 12,
+        "cover": 50,
+        "card": 72,
+        "ui": 12,
+        "mascot": 8,
+        "illustration": 1230,
+        "hero": 241
+      }
+    },
+    "quality": {
+      "baseline_published": 190,
+      "baseline_required": 190,
+      "issues": []
+    }
+  },
+  "review": {
+    "release": "review-2026-02",
+    "grades": {
+      "1": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      },
+      "2": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      },
+      "3": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      },
+      "4": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      },
+      "5": {
+        "lessons": 3,
+        "assessments": 3,
+        "questions": 12
+      }
+    }
+  }
+}

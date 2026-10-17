@@ -437,7 +437,7 @@ def svg(content, width=600, height=360):
 
 
 def generate(records):
-    from app.academy.visual_art import labelled_picture, lesson_scene
+    from app.academy.visual_art import labelled_picture, lesson_scene, uses_counters
 
     ASSETS.mkdir(parents=True, exist_ok=True)
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
@@ -556,7 +556,11 @@ def generate(records):
             "hero",
             f"Tình huống: {record['title']}",
             lesson_scene(record, 0)
-            + circle(562, 325, 9 + record["grade"], COLORS[record["grade"] % 6]),
+            + (
+                ""
+                if any(uses_counters(i["text"]) for i in record["activity"]["items"])
+                else circle(562, 325, 9 + record["grade"], COLORS[record["grade"] % 6])
+            ),
         )
         for variant, purpose in enumerate(
             ["Quan sát và tìm đặc điểm", "Đối chiếu một trường hợp khác", "Kiểm tra và vận dụng"], 1

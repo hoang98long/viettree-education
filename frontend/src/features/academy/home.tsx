@@ -39,8 +39,8 @@ export function Journey({ grade }: { grade?: number }) {
           <h1>Khám phá AI, sáng tạo an toàn</h1>
           <p>Xem tranh. Chạm chọn. Thử lại cùng Mầm AI.</p>
           <p>
-            Mỗi lớp có 36 bài nhỏ. Bài nhập môn miễn phí; VIP mở thêm bài và dự
-            án.
+            Học từng bài nhỏ, thử bằng thẻ tranh. Bài nhập môn miễn phí; VIP mở
+            thêm bài và dự án.
           </p>
           <Link className="button secondary" href="/student/membership">
             Xem gói VIP cùng phụ huynh
@@ -103,7 +103,7 @@ export function Journey({ grade }: { grade?: number }) {
         </p>
       )}
       <PageTitle
-        title={`Lớp ${selected} · ${catalog.data?.length ?? 36} bài · ${units.length || 9} chủ đề`}
+        title={`Lớp ${selected}${catalog.data ? ` · ${catalog.data.length} bài · ${units.length} chủ đề` : ""}`}
         description="Chọn tranh để mở bài học."
       />
       {catalog.loading ? (

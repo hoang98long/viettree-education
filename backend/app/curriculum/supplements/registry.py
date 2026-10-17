@@ -7,8 +7,9 @@ from functools import lru_cache
 def releases():
     from app.curriculum.supplements.applied.pack import PACK as applied
     from app.curriculum.supplements.explorers.pack import PACK as explorers
+    from app.curriculum.supplements.review.pack import PACK as review
 
-    return {pack.code: pack for pack in (applied, explorers)}
+    return {pack.code: pack for pack in (applied, explorers, review)}
 
 
 def get_release(code):

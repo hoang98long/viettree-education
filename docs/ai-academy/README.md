@@ -7,16 +7,16 @@ quyền Free/VIP, hồ sơ, lớp học và phụ huynh đã xác minh. Không c
 
 | Nội dung                         |                            Số lượng seed |
 | -------------------------------- | ---------------------------------------: |
-| Lớp 1–5                          |                     9 chủ đề, 36 bài/khối |
-| Tổng bài / bước / câu checkpoint |                         180 / 1260 / 540 |
+| Lớp 1–5                          |                   10 chủ đề, 38 bài/khối |
+| Tổng bài / bước / câu checkpoint |                         190 / 1330 / 570 |
 | Kiểu hoạt động                   | 10; thêm lab phân loại và Prompt Builder |
 | Dự án theo khối                  |   5; mỗi học sinh lưu một sản phẩm/dự án |
 | Huy hiệu                         |        12, ghi nhận số bài đã hoàn thành |
-| File SVG nguyên bản              | 1547, gồm ảnh mới và ảnh phiên bản cũ |
+| File SVG nguyên bản              |    1625, gồm ảnh mới và ảnh phiên bản cũ |
 
 Từng bài có mục tiêu, tình huống, kiến thức, hoạt động, checkpoint, vận dụng,
 hướng dẫn giáo viên, hỗ trợ và thử thách. Đây là chương trình làm quen AI tích
-hợp Toán/Tiếng Việt/Tiếng Anh; không thay bộ học liệu ba môn lớp 3–4 hiện có.
+hợp Toán/Tiếng Việt/Tiếng Anh; không thay bộ học liệu ba môn lớp 1–5 hiện có.
 Học liệu cần giáo viên nhà trường rà soát trước khi đưa vào dạy chính thức.
 
 ## Màn hình dùng được
@@ -32,8 +32,8 @@ Học liệu cần giáo viên nhà trường rà soát trước khi đưa vào 
   chủ đề mới, lớp/ghi danh/quyền/phụ huynh, báo cáo, hàng đợi SVG,
   mẫu hướng dẫn có phiên bản, cảnh báo và yêu cầu riêng tư.
 
-Baseline cập nhật 13/10/2026: mỗi khối **3 bài Free / 33 bài VIP**,
-toàn module **15 Free / 165 VIP**. Giữ quyền admin đã chỉnh riêng.
+Baseline cập nhật 16/10/2026: mỗi khối **4 bài Free / 34 bài VIP**,
+toàn module **20 Free / 170 VIP**. Giữ quyền admin đã chỉnh riêng.
 Free có gợi ý mức 1 trong bài được mở;
 VIP có mức 2–3, lab/Prompt Builder và studio/dự án từ mẫu. Server kiểm tra quyền
 tại mỗi bước; không gửi nội dung bài VIP rồi chỉ che trong browser.
@@ -44,7 +44,7 @@ Học từng thẻ bằng nút chạm, checkpoint từng câu; **Em cần gợi 
 nhập chữ. Menu công cụ và giải thích dài thu gọn để trẻ tập trung. Lớp 1–2 có
 bài khoảng 10 phút và hai thẻ; lớp 3–5 khoảng 15 phút. Có thể chia thời gian theo trẻ.
 Xem [đối chiếu quốc tế và thiết kế](../visual-learning-and-ai.md),
-[danh sách 180 bài](lessons.csv).
+[danh sách 190 bài](lessons.csv).
 
 ## Chạy nhanh
 
@@ -56,7 +56,7 @@ Trong terminal backend, dùng môi trường và PostgreSQL đã cấu hình:
 ../.venv/Scripts/python.exe -m app.cli verify-ai-academy
 ```
 
-Head là `0011_classes_vip_training`. Khởi động backend/frontend theo
+Head là `0012_lesson_bookmarks`. Khởi động backend/frontend theo
 [run-local.md](../run-local.md), đăng nhập bằng tài khoản hiện có. Seed không đổi
 mật khẩu, VIP, lớp hoặc lịch sử. Không tạo bài làm/điểm demo giả.
 

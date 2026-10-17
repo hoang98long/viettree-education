@@ -54,6 +54,7 @@ export function LessonPlayer({ id }: { id: string }) {
     Math.min(data.progress.next_step, data.content.steps.length - 1);
   const step = data.content.steps[index];
   const finished = Boolean(data.progress.completed_at);
+  const hintLimit = data.hint_limit ?? 1;
   async function next() {
     setBusy(true);
     setError("");
@@ -226,15 +227,21 @@ export function LessonPlayer({ id }: { id: string }) {
           <div className="academy-help">
             <button
               className="button secondary"
-              disabled={busy || hintLevel >= 3}
+              disabled={busy || hintLevel >= hintLimit}
               onClick={() => void getHint()}
             >
               {hintLevel === 0
                 ? "Em cần gợi ý"
-                : hintLevel >= 3
+                : hintLevel >= hintLimit
                   ? "Đã mở hết gợi ý"
                   : "Gợi ý thêm · VIP"}
             </button>
+            <small>
+              Gợi ý {hintLevel}/{hintLimit}
+            </small>
+            {hintLimit === 1 && hintLevel === 1 && (
+              <Link href="/student/membership">VIP có thêm 2 mức gợi ý</Link>
+            )}
             {hint && <p role="status">{hint}</p>}
           </div>
           {error && (
