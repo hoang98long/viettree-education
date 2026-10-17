@@ -10,6 +10,8 @@ describe("Tranh từ vựng trong thẻ và đáp án", () => {
     expect(pictureForLabel("Hình tam giác")?.code).toBe("triangle");
     expect(pictureForLabel("Màu xanh dương")?.code).toBe("color-blue");
     expect(pictureForLabel("cục tẩy".normalize("NFD"))?.code).toBe("eraser");
+    expect(pictureForLabel("Rice")?.code).toBe("rice");
+    expect(pictureForLabel("Bát cơm")?.code).toBe("rice");
   });
   it("không suy đoán hình từ phủ định, câu dài, số lượng hoặc từ tương tự", () => {
     for (const text of [
@@ -42,6 +44,7 @@ describe("Tranh từ vựng trong thẻ và đáp án", () => {
       "flower",
       "milk",
       "water",
+      "rice",
       "bread",
       "egg",
       "circle",

@@ -5,6 +5,7 @@ import { dateLabel } from "@/lib/api";
 import type { Dashboard } from "@/lib/types";
 import { Empty, SubjectCards, TreeArt } from "@/components/ui";
 import { Resource } from "@/features/student/shared";
+import { ResumeLearning, resumePath } from "./resume-learning";
 
 export function Recommendations({
   items,
@@ -35,9 +36,7 @@ export function StudentDashboard() {
   return (
     <Resource<Dashboard> path="/students/me/dashboard">
       {(data) => {
-        const active = data.history.find(
-          (attempt) => attempt.status === "in_progress",
-        );
+        const recent = data.resume_items?.[0];
         return (
           <>
             <div className="welcome-card">
@@ -54,21 +53,22 @@ export function StudentDashboard() {
                 <Link
                   className="button"
                   href={
-                    active
-                      ? `/student/attempts/${active.id}`
+                    recent
+                      ? resumePath(recent)
                       : data.continue_lesson
                         ? `/student/lessons/${data.continue_lesson.id}`
                         : `/student/grades?grade=${data.grade}`
                   }
                 >
                   <BookOpen size={18} />
-                  {active || data.continue_lesson
+                  {recent || data.continue_lesson
                     ? "Học tiếp"
                     : "Khám phá bài học"}
                 </Link>
               </div>
               <TreeArt />
             </div>
+            <ResumeLearning items={data.resume_items ?? []} />
             <div className="stats-grid">
               <div className="stat">
                 <span className="stat-icon green">

@@ -19,6 +19,12 @@ Head mới `0012_lesson_bookmarks` thêm lưu bài theo tài khoản. Bộ Khám
 
 ## 1. Profile dành cho VPS này
 
+Đợt 17/10 thêm bộ `daily-2026-03`, học tiếp và phản hồi AI dễ sửa hơn;
+không có migration/dịch vụ mới. Sau backup/build, nạp theo
+[hướng dẫn cập nhật](daily-learning-and-resume.md).
+[Báo cáo kiểm thử](audits/daily-quality-2026-10-17.md) có tải 50 học sinh với
+750 request, gồm kiểm tra học tiếp khi đang làm bài; đây là phép đo local.
+
 Copy `.env.production.vps8gb.example` thành `.env.production`. Wrapper
 `deploy/compose.sh` đọc `VIETTREE_DEPLOY_PROFILE=vps8gb` và tự ghép
 `docker-compose.production.yml` với `docker-compose.vps8gb.yml`.

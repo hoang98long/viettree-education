@@ -115,3 +115,46 @@ it("gửi lại sau lỗi mạng dùng cùng mã; đổi đáp án tạo mã m�
     submitted()[1].idempotency_key,
   );
 });
+
+it("quay về thẻ chưa đúng, xem một giải thích và bỏ kết quả cũ khi đổi đáp án", async () => {
+  mockApi.mockResolvedValue({
+    score: 0.5,
+    feedback: {
+      passed: false,
+      message: "Thử lại",
+      items: [
+        { id: "a", correct: false, explanation: "Mèo là con vật." },
+        { id: "b", correct: true, explanation: "Cam là trái cây." },
+      ],
+    },
+  });
+  const onReset = vi.fn();
+  render(
+    <ActivityBoard
+      lessonId="lesson"
+      stepId="practice"
+      activity={activity}
+      questions={[]}
+      onPass={vi.fn()}
+      onReset={onReset}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Trái cây" }));
+  fireEvent.click(screen.getByText("Thẻ tiếp"));
+  fireEvent.click(screen.getByRole("button", { name: "Trái cây" }));
+  fireEvent.click(screen.getByText("Kiểm tra lựa chọn"));
+  await screen.findByRole("status");
+  expect(screen.getByRole("note")).toHaveTextContent("Cam là trái cây.");
+  expect(screen.queryByText("Mèo là con vật.")).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Thẻ 1 · Xem lại" }));
+  expect(screen.getByRole("note")).toHaveTextContent("Mèo là con vật.");
+  expect(screen.getByRole("button", { name: "Trái cây" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Con vật" }));
+  expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  expect(screen.queryByRole("note")).not.toBeInTheDocument();
+  expect(onReset).toHaveBeenCalled();
+  expect(screen.getByText("Kiểm tra lựa chọn")).toBeEnabled();
+});

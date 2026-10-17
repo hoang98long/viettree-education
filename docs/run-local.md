@@ -3,12 +3,12 @@
 Máy Windows hiện có `.env`, `.venv`, `frontend/node_modules` và PostgreSQL 18
 đang chạy. Dùng PowerShell; không cần Docker hoặc cài lại các thư viện.
 
-**Bản hiện tại:** local đã backup, migrate `0012_lesson_bookmarks`, nạp thêm
-15 bài/60 câu/15 đề và có **Bài học đã lưu** theo tài khoản. Khởi động lại hai
-server. Có đủ hai bộ bổ sung thì mỗi khối đạt 77 bài/426 câu/65 đề. Máy khác
-chạy `alembic upgrade head` và nạp `seed-supplement-content --release explorers-2026-01`.
-[Hướng dẫn bản mới](bookmarks-and-explorers.md). Các đoạn 68/384/56 và 74/414/62
-bên dưới là số liệu ở các mốc trước.
+**Bản hiện tại 17/10:** đã backup và nạp bộ `daily-2026-03`, thêm 15 bài/60 câu/
+15 đề. Có đủ bốn bộ bổ sung thì mỗi khối đạt **83 bài/450 câu/71 đề** ở ba môn.
+Trang chủ học tiếp đúng bài/lượt/bước AI, phản hồi bài AI dễ xem lại hơn.
+Head vẫn `0012_lesson_bookmarks`; khởi động lại hai server.
+[Nội dung và lệnh nạp trên máy khác](daily-learning-and-resume.md).
+Các số 68/384/56, 74/414/62 và 77/426/65 ở phần cũ ghi nhận các mốc trước.
 
 Bản nâng cấp 14/10 bổ sung tự lưu bài luyện, đồng hồ thời hạn và rà soát học liệu.
 Không cần migration hoặc seed lại; khởi động lại cả hai server theo hướng dẫn

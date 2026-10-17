@@ -3,8 +3,9 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: [nâng cấp học AI và tự kiểm tra 16/10](learning-upgrade-2026-10-16.md),
-[kiểm chứng](audits/verification-quality-2026-10-16.md). Đợt trước xem phần **Rà soát học liệu, tải 50 học sinh và VPS** cuối tài liệu;
+Trạng thái mới nhất: [học tiếp và học liệu hằng ngày 17/10](daily-learning-and-resume.md),
+[kiểm chứng](audits/daily-quality-2026-10-17.md). Đợt 16/10 xem [AI và tự kiểm tra](learning-upgrade-2026-10-16.md).
+Đợt trước xem phần **Rà soát học liệu, tải 50 học sinh và VPS** cuối tài liệu;
 phần VIP, phiên đăng nhập và ngân hàng câu hỏi ghi nhận các đợt trước.
 Các checkpoint và số lượng trong phần đầu ghi nhận mốc MVP trước khi mở rộng.
 

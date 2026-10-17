@@ -29,6 +29,7 @@ export function ActivityBoard({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const submission = useRef<{ signature: string; key: string } | null>(null);
+  const card = useRef<HTMLDivElement>(null);
   const items = activity
     ? level < 3
       ? activity.items.slice(0, level + 1)
@@ -39,6 +40,15 @@ export function ActivityBoard({
   const item = activity ? items[cursor] : null;
   const question = activity ? null : questions[cursor];
   const allAnswered = entries.every((entry) => answers[entry.id] !== undefined);
+  const currentFeedback = result?.feedback.items.find(
+    (entry) => entry.id === current?.id,
+  );
+  const needsReview = entries
+    .map((entry, index) => ({
+      index,
+      feedback: result?.feedback.items.find((item) => item.id === entry.id),
+    }))
+    .filter((entry) => entry.feedback && !entry.feedback.correct);
 
   function choose(id: string, value: string) {
     setAnswers((previous) => ({ ...previous, [id]: value }));
@@ -83,55 +93,65 @@ export function ActivityBoard({
         {activity ? "Thẻ" : "Câu"} {cursor + 1}/{entries.length} · Chọn một đáp
         án
       </p>
-      {item && (
-        <div className="academy-focus-card">
-          {item.asset && (
-            <AcademyImage code={item.asset} alt={item.text} small />
-          )}
-          <h3>{item.text}</h3>
-          <div
-            className="academy-tap-choices"
-            role="group"
-            aria-label={`Lựa chọn cho ${item.text}`}
-          >
-            {activity!.choices.map((choice) => (
-              <button
-                key={choice}
-                className={`button ${answers[item.id] === choice ? "" : "secondary"}`}
-                aria-pressed={answers[item.id] === choice}
-                disabled={busy}
-                onClick={() => choose(item.id, choice)}
-              >
-                <WordPicture text={choice} />
-                {choice}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-      {question && (
-        <fieldset className="academy-question">
-          <legend>{question.prompt}</legend>
-          {question.options.map((option, index) => (
-            <label
-              key={index}
-              className={
-                answers[question.id] === String(index) ? "selected" : ""
-              }
+      <div ref={card} tabIndex={-1}>
+        {item && (
+          <div className="academy-focus-card">
+            {item.asset && (
+              <AcademyImage code={item.asset} alt={item.text} small />
+            )}
+            <h3>{item.text}</h3>
+            <div
+              className="academy-tap-choices"
+              role="group"
+              aria-label={`Lựa chọn cho ${item.text}`}
             >
-              <input
-                type="radio"
-                name={`${lessonId}-${stepId}-${question.id}`}
-                checked={answers[question.id] === String(index)}
-                disabled={busy}
-                onChange={() => choose(question.id, String(index))}
-              />
-              <WordPicture text={option} />
-              <span>{option}</span>
-            </label>
-          ))}
-        </fieldset>
-      )}
+              {activity!.choices.map((choice) => (
+                <button
+                  key={choice}
+                  className={`button ${answers[item.id] === choice ? "" : "secondary"}`}
+                  aria-pressed={answers[item.id] === choice}
+                  disabled={busy}
+                  onClick={() => choose(item.id, choice)}
+                >
+                  <WordPicture text={choice} />
+                  {choice}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        {question && (
+          <fieldset className="academy-question">
+            <legend>{question.prompt}</legend>
+            {question.options.map((option, index) => (
+              <label
+                key={index}
+                className={
+                  answers[question.id] === String(index) ? "selected" : ""
+                }
+              >
+                <input
+                  type="radio"
+                  name={`${lessonId}-${stepId}-${question.id}`}
+                  checked={answers[question.id] === String(index)}
+                  disabled={busy}
+                  onChange={() => choose(question.id, String(index))}
+                />
+                <WordPicture text={option} />
+                <span>{option}</span>
+              </label>
+            ))}
+          </fieldset>
+        )}
+        {currentFeedback && (
+          <p className="notice academy-item-feedback" role="note">
+            <strong>
+              {currentFeedback.correct ? "Đã khớp. " : "Cùng kiểm tra lại. "}
+            </strong>
+            {currentFeedback.explanation}
+          </p>
+        )}
+      </div>
       <div className="academy-card-navigation">
         <button
           className="button secondary"
@@ -196,7 +216,7 @@ export function ActivityBoard({
         </p>
       )}
       {result && (
-        <div role="status" className="notice">
+        <div role="status" className="notice academy-result-feedback">
           <strong>
             {result.feedback.passed
               ? "✓ Em đã làm được!"
@@ -208,13 +228,30 @@ export function ActivityBoard({
               ? "Em có thể học tiếp."
               : "Xem lại thẻ và chọn lại."}
           </p>
+          {needsReview.length > 0 && (
+            <div
+              className="academy-card-navigation"
+              aria-label="Chọn phần cần xem lại"
+            >
+              {needsReview.map(({ index }) => (
+                <button
+                  className="button secondary"
+                  key={index}
+                  onClick={() => {
+                    setCursor(index);
+                    card.current?.focus();
+                  }}
+                >
+                  {activity ? "Thẻ" : "Câu"} {index + 1} · Xem lại
+                </button>
+              ))}
+            </div>
+          )}
           <details>
             <summary>Xem cách kiểm tra</summary>
-            {result.feedback.items.map((entry) => (
-              <p key={entry.id}>
-                {entry.correct ? "✓" : "↻"} {entry.explanation}
-              </p>
-            ))}
+            <p>
+              Dùng Thẻ trước hoặc Thẻ tiếp để xem giải thích cho từng lựa chọn.
+            </p>
           </details>
         </div>
       )}

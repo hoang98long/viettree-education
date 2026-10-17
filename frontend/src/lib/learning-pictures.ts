@@ -32,6 +32,7 @@ const vocabulary = [
   ["flower", ["flower", "bông hoa"]],
   ["milk", ["milk", "sữa"]],
   ["water", ["water", "nước uống"]],
+  ["rice", ["rice", "cơm", "bát cơm"]],
   ["bread", ["bread", "bánh mì"]],
   ["egg", ["egg", "trứng", "quả trứng"]],
   ["circle", ["circle", "hình tròn"]],

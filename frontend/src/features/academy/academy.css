@@ -300,6 +300,19 @@
   border-top: 1px solid #d4e5dc;
   padding-top: 1rem;
 }
+.academy-board .notice.academy-item-feedback,
+.academy-board .notice.academy-result-feedback {
+  display: block;
+  font-size: 0.95em;
+  line-height: 1.65;
+}
+.academy-result-feedback > p {
+  margin: 0.5rem 0;
+  font-size: inherit;
+}
+.academy-result-feedback .academy-card-navigation {
+  justify-content: flex-start;
+}
 .academy-page summary {
   cursor: pointer;
   font-weight: 700;

@@ -92,6 +92,16 @@ export type Assignment = {
   available_at: string;
   due_at: string | null;
 };
+export type ResumeItem = {
+  kind: "lesson" | "practice" | "ai";
+  id: string;
+  title: string;
+  subject_name: string;
+  grade: number;
+  last_activity_at: string;
+  next_step?: number | null;
+  step_count?: number | null;
+};
 export type Dashboard = {
   user: User;
   grade: number;
@@ -103,6 +113,7 @@ export type Dashboard = {
   completed_lessons: number;
   graded_attempt_count: number;
   continue_lesson: { id: string; title: string } | null;
+  resume_items?: ResumeItem[];
 };
 export type QuestionKind =
   "single_choice" | "multiple_choice" | "fill_blank" | "ordering";

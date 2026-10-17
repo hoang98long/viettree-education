@@ -16,9 +16,10 @@ from app.core.security import (
 from app.db import db
 from app.personalization.engine import recommendations
 from app.schemas.common import ReadingPreferences
-from app.services import access, learning
 from app.services import attempts as service
+from app.services import learning
 from app.services.accessibility import merge_text_size, reading_preferences
+from app.services.resume_learning import recent_work
 
 router = APIRouter(prefix="/api/v1")
 
@@ -225,26 +226,10 @@ def dashboard(user=Depends(student_user), conn=database):
     )
     if not profile:
         raise HTTPException(403, "Chưa có hồ sơ học sinh")
-    progress, lessons = db.table("student_lesson_progress"), db.table("lessons")
-    continue_lesson = (
-        conn.execute(
-            select(lessons.c.id, lessons.c.title)
-            .select_from(progress.join(lessons))
-            .where(
-                progress.c.student_id == user["id"],
-                progress.c.status == "in_progress",
-                lessons.c.status == "published",
-            )
-            .order_by(progress.c.last_accessed_at.desc())
-            .limit(1)
-        )
-        .mappings()
-        .first()
-    )
-    if continue_lesson and not access.eligible(
-        conn, user["id"], "lesson", continue_lesson["id"], profile["current_grade"]
-    ):
-        continue_lesson = None
+    progress = db.table("student_lesson_progress")
+    resume_items = recent_work(conn, user, profile["current_grade"])
+    reading = next((item for item in resume_items if item["kind"] == "lesson"), None)
+    continue_lesson = {"id": reading["id"], "title": reading["title"]} if reading else None
     return dict(
         user={**public_user(user), **reading_preferences(profile["accessibility_options"])},
         grade=profile["current_grade"],
@@ -254,6 +239,7 @@ def dashboard(user=Depends(student_user), conn=database):
         recommendations=recommendations(conn, user["id"], profile["current_grade"], persist=False),
         assignments=assignments(user, conn),
         continue_lesson=continue_lesson,
+        resume_items=resume_items,
         completed_lessons=conn.execute(
             select(func.count())
             .select_from(progress)

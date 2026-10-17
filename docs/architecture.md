@@ -125,3 +125,10 @@ UTF-8 BOM, escape dấu nháy/xuống dòng và chặn công thức từ nội d
 
 Xem [local](run-local.md), [VPS](deploy-vps.md), [demo theo khối](demo-accounts.md),
 [kiểm chứng](IMPLEMENTATION_STATUS.md).
+
+Học tiếp trên dashboard được chọn trong `services/resume_learning.py`: truy
+vấn có giới hạn theo từng loại, lọc tài khoản/khối/trạng thái, dùng lại
+authorization của lượt làm. Không cache entitlement hoặc tạo thêm bảng.
+UI tại `features/student/resume-learning` dùng CSS module, đường dẫn theo loại
+và metadata API; không tự suy quyền từ badge. Bộ `daily-2026-03` dùng builder
+và publisher chung, đăng ký trong `curriculum/supplements/registry.py`.

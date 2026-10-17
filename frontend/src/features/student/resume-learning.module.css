@@ -1,0 +1,48 @@
+.resume {
+  margin: 1.2rem 0;
+}
+.resume h2 {
+  margin-bottom: 1rem;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 0.75rem;
+}
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg-soft, #f1f8f4);
+  color: inherit;
+  text-decoration: none;
+  min-width: 0;
+}
+.card > svg {
+  flex-shrink: 0;
+  color: var(--primary, #217f5e);
+}
+.card > div {
+  min-width: 0;
+  flex: 1;
+}
+.card h3 {
+  font-size: 1.05em;
+  overflow-wrap: anywhere;
+  margin: 0.3rem 0;
+}
+.card p {
+  margin: 0;
+  font-size: 0.9em;
+}
+.card small {
+  font-size: 0.85em;
+}
+.card:hover,
+.card:focus-visible {
+  border-color: var(--primary, #217f5e);
+  outline-offset: 3px;
+}

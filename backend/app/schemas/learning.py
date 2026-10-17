@@ -80,6 +80,17 @@ class RecommendationResponse(BaseModel):
     reason_code: str
 
 
+class ResumeItem(BaseModel):
+    kind: Literal["lesson", "practice", "ai"]
+    id: UUID
+    title: str
+    subject_name: str
+    grade: Grade
+    last_activity_at: datetime
+    next_step: int | None = None
+    step_count: int | None = None
+
+
 class DashboardResponse(BaseModel):
     user: UserResponse
     grade: Grade
@@ -89,6 +100,7 @@ class DashboardResponse(BaseModel):
     recommendations: list[RecommendationResponse]
     assignments: list[AssignmentResponse]
     continue_lesson: dict | None
+    resume_items: list[ResumeItem] = Field(default_factory=list)
     completed_lessons: int
     graded_attempt_count: int
 

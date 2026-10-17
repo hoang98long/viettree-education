@@ -325,3 +325,18 @@ Prefix `/api/v1`; write cần CSRF. Danh sách có auth trừ giá tham khảo c
 422 cho người nhận sai khối/trường, hơn 50 người, hạn/ngày/giá không hợp lệ.
 Giao bài không cấp gói, bảng giá không tạo thanh toán. Xem
 [công thức thứ tự](classes-achievements.md), [giá](vip-pricing-research.md).
+
+## Dashboard học tiếp — 17/10
+
+`GET /api/v1/students/me/dashboard` bổ sung `resume_items`, giữ `continue_lesson`
+để tương thích. Tối đa một mục/loại `lesson`, `practice`, `ai`, sắp theo
+`last_activity_at` giảm dần. Mỗi mục có `id`, `title`, `subject_name`, `grade`,
+`last_activity_at`; AI thêm `next_step` (từ 0), `step_count` của phiên bản đã ghim.
+Không có content/đáp án/grading. `practice.id` là ID lượt đang làm, không phải
+ID đề. Client dựng URL theo loại; URL không cấp quyền.
+
+Chỉ tài khoản hiện tại, môn/chủ đề hoạt động và nội dung còn được mở. Bài đọc/
+luyện thuộc khối hiện tại; AI được ôn lớp dưới. Bỏ bài hoàn thành, lưu trữ,
+lượt hết giờ, giao bài đóng hoặc grant bị thu hồi. Grace VIP sau hết hạn được
+xác minh bởi service authorization hiện có. Endpoint chỉ đọc, không tạo lượt
+hoặc cập nhật timestamp; trạng thái được kiểm tra lại tại API mở bài.

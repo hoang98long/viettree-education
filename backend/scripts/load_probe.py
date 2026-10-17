@@ -232,6 +232,12 @@ def main():
                         }
                     )
                     call(client, "PUT", path + "/answers/" + item["id"], json={"answer": answer})
+                dashboard = call(client, "GET", "/students/me/dashboard")
+                if not any(
+                    item["kind"] == "practice" and item["id"] == start["id"]
+                    for item in dashboard.get("resume_items", [])
+                ):
+                    raise RuntimeError("Học tiếp không trả đúng lượt đang làm của học sinh test")
                 submitted = call(client, "POST", path + "/submit")
                 repeated = call(client, "POST", path + "/submit")
                 if submitted != repeated:
