@@ -22,6 +22,7 @@ COMPETENCIES = {
     "safety": "Bảo vệ thông tin và tôn trọng nguồn",
     "project": "Hợp tác, thử nghiệm và trình bày",
     "verify": "Thử bằng dữ liệu mới và nêu giới hạn kết luận",
+    "reason": "Giải thích lựa chọn bằng căn cứ và hỏi lại khi thiếu thông tin",
 }
 
 
@@ -461,6 +462,7 @@ def records():
 
     from app.academy.curriculum_primary import records_for_grade
     from app.academy.curriculum_projects import LESSONS as projects
+    from app.academy.curriculum_reasoning import records as reasoning
     from app.academy.curriculum_subjects import LESSONS as subjects
     from app.academy.curriculum_verification import records as investigations
 
@@ -488,6 +490,7 @@ def records():
     for grade in [1, 2, 3, 5]:
         output.extend(records_for_grade(grade, UNITS))
     output.extend(investigations())
+    output.extend(reasoning())
     for row in output:
         row["visual_prefix"] = row["code"] + "-v2"
         if (

@@ -1,5 +1,13 @@
 # API và các luồng thật
 
+AI Academy: `GET /api/v1/ai-academy/home` trả khối trong hồ sơ và danh mục cùng
+quyền/tiến độ; giao diện dùng trực tiếp cho hành trình/trò chơi. Chọn khối khác
+mới gọi `/catalog?grade=1..5`. Danh mục lấy hai trường bìa/thời lượng từ JSONB,
+không chuyển toàn bộ payload bài sang API. Tiến độ lọc theo chủ tài khoản và
+khối; `progress.updated_at` dùng để ưu tiên bài dở có hoạt động gần nhất.
+`/start`, `/steps`, `/attempts`, `/hints` và media vẫn kiểm quyền ở server.
+[Thay đổi 19/10](ai-academy-upgrade-2026-10-19.md).
+
 `PUT /api/v1/students/me/lessons/{lesson_id}/bookmark` nhận `{"saved": true|false}`,
 trả trạng thái đã lưu; chủ tài khoản lấy từ phiên, kiểm tra CSRF/Origin, không
 nhận `student_id`. Lưu mới yêu cầu đúng lớp, đã xuất bản và có quyền học;

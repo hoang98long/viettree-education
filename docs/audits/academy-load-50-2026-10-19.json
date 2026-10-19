@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-19",
+  "environment": "local Windows, direct HTTP, real test PostgreSQL; not VPS/TLS",
+  "users": 50,
+  "free": 25,
+  "vip": 25,
+  "grades": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "sequential_signins": 50,
+  "simultaneous_learning_users": 50,
+  "workload_requests": 800,
+  "statuses": {
+    "200": 800
+  },
+  "completed_users": 50,
+  "errors": [],
+  "database_checks": {
+    "completed_progress": 50,
+    "single_reward_10_points": 50,
+    "two_unique_attempts_despite_retry": 50
+  },
+  "seconds": 10.26,
+  "latency_ms": {
+    "mean": 619.24,
+    "p95": 791.11,
+    "p99": 1118.44
+  }
+}

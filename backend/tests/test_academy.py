@@ -46,7 +46,7 @@ def test_media_manifest_and_required_counts():
         "ui": 12,
     }.items():
         assert result["categories"][kind] >= minimum
-    assert result["lessons"] == 190
+    assert result["lessons"] == 200
 
 
 def test_nearest_neighbor_simulation_and_missing_examples():

@@ -67,7 +67,7 @@ for (const row of cases) {
     const catalog = await (
       await page.request.get(`/api/v1/ai-academy/catalog?grade=${row.grade}`)
     ).json();
-    expect(catalog).toHaveLength(38);
+    expect(catalog).toHaveLength(40);
     const lesson = catalog.find(
       (l: { code: string }) => l.code === `AI${row.grade}-${row.number}`,
     );

@@ -1,5 +1,10 @@
 # Chạy nhanh trên máy local hiện tại
 
+AI Academy cập nhật 19/10: 200 bài, 11 chủ đề/khối, trò chơi đúng lớp và tìm/học tiếp.
+Local hiện tại đã backup/nạp; khởi động lại hai server. Máy khác/VPS backup, build
+và chạy `seed-ai-academy` theo [hướng dẫn](ai-academy-upgrade-2026-10-19.md).
+Không có migration mới.
+
 Máy Windows hiện có `.env`, `.venv`, `frontend/node_modules` và PostgreSQL 18
 đang chạy. Dùng PowerShell; không cần Docker hoặc cài lại các thư viện.
 

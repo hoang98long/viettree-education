@@ -37,6 +37,8 @@
 1,AI1-36,Dự án AI của em,Kể với cô điều đã học,VIP,10,2
 1,AI1-37,Thử nghiệm và kiểm chứng,Đếm lại cùng robot,Free,10,2
 1,AI1-38,Thử nghiệm và kiểm chứng,Hai màu của quả táo,VIP,10,2
+1,AI1-39,Giải thích lựa chọn,Robot tìm sách,Free,10,2
+1,AI1-40,Giải thích lựa chọn,Thẻ bị che kín,VIP,10,2
 2,AI2-01,Máy tính học từ dữ liệu,Sắp xếp bộ sưu tập,Free,10,3
 2,AI2-02,Máy tính học từ dữ liệu,Tìm nhãn bị đặt nhầm,Free,10,3
 2,AI2-03,AI an toàn và thông minh,Thông tin nào giữ riêng?,Free,10,3
@@ -75,6 +77,8 @@
 2,AI2-36,Dự án AI của em,Kể cách em kiểm tra,VIP,10,2
 2,AI2-37,Thử nghiệm và kiểm chứng,Đọc lại lời chỉ dẫn,Free,10,2
 2,AI2-38,Thử nghiệm và kiểm chứng,Nhãn nào cần sửa?,VIP,10,3
+2,AI2-39,Giải thích lựa chọn,Không chỉ nhìn màu,Free,10,3
+2,AI2-40,Giải thích lựa chọn,Hỏi rõ trước khi làm,VIP,10,3
 3,AI3-01,Giao tiếp với AI,Nêu nhiệm vụ rõ ràng,Free,15,2
 3,AI3-02,Máy tính học từ dữ liệu,Nhãn của bộ dữ liệu,Free,15,3
 3,AI3-03,Dự án AI của em,Chọn nhiệm vụ có thể kiểm tra,Free,15,2
@@ -113,6 +117,8 @@
 3,AI3-36,AI an toàn và thông minh,Cân bằng học và nghỉ,VIP,15,2
 3,AI3-37,Thử nghiệm và kiểm chứng,Thử bằng thẻ chưa gặp,Free,15,4
 3,AI3-38,Thử nghiệm và kiểm chứng,Không đoán quả chỉ từ màu,VIP,15,4
+3,AI3-39,Giải thích lựa chọn,Hai câu hỏi tìm đồ vật,Free,15,3
+3,AI3-40,Giải thích lựa chọn,Dừng ở chỗ chưa biết,VIP,15,3
 4,AI4-01,AI quanh em,AI là gì và AI không phải là gì?,Free,15,4
 4,AI4-02,AI quanh em,"AI ở nhà, ở trường và trong cuộc sống",VIP,15,4
 4,AI4-03,AI quanh em,"Con người giỏi gì, AI giỏi gì?",VIP,15,4
@@ -151,6 +157,8 @@
 4,AI4-36,Dự án AI của em,"Trình bày, đánh giá rubric và triển lãm sản phẩm",VIP,15,4
 4,AI4-37,Thử nghiệm và kiểm chứng,Hai cách kiểm tra phép tính,Free,15,4
 4,AI4-38,Thử nghiệm và kiểm chứng,Bộ mẫu đồ dùng công bằng hơn,VIP,15,4
+4,AI4-39,Giải thích lựa chọn,Lời giải thích có đúng căn cứ?,Free,15,4
+4,AI4-40,Giải thích lựa chọn,Hai công cụ nói khác nhau,VIP,15,4
 5,AI5-01,Máy tính học từ dữ liệu,Nhãn quyết định điều máy học,Free,15,3
 5,AI5-02,Dự án AI của em,Nêu vấn đề và tiêu chí,Free,15,2
 5,AI5-03,Dự án AI của em,Thiết kế bộ mẫu,Free,15,2
@@ -189,3 +197,5 @@
 5,AI5-36,AI an toàn và thông minh,Chọn lúc tự làm thay vì dùng AI,VIP,15,2
 5,AI5-37,Thử nghiệm và kiểm chứng,Bốn trên năm chưa phải tất cả,Free,15,4
 5,AI5-38,Thử nghiệm và kiểm chứng,Điểm tổng có che một nhóm lỗi?,VIP,15,4
+5,AI5-39,Giải thích lựa chọn,Gợi ý nhiều chưa chắc phù hợp,Free,15,4
+5,AI5-40,Giải thích lựa chọn,Con người duyệt trước khi dùng,VIP,15,4

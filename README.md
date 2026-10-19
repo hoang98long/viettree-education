@@ -11,6 +11,10 @@ tài khoản lớp 4; thêm bốn tài khoản lớp 5: [danh sách và mật kh
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**Nâng cấp AI Academy 19/10:** thêm 10 bài/77 hình, tổng 200 bài cho lớp 1–5.
+Trò chơi chọn đúng khối; học tiếp ưu tiên bài dở; tìm không dấu và lọc bài dễ hơn.
+[Hướng dẫn và cập nhật](docs/ai-academy-upgrade-2026-10-19.md).
+
 **Nâng cấp 17/10: học tiếp và luyện theo tình huống hằng ngày:** thêm 15 bài,
 60 câu hỏi, 15 đề cho lớp 1–5. Trang chủ mở đúng bài/lượt/bước AI đang dở;
 bài AI có nút tìm thẻ chưa đúng và giải thích từng thẻ, dễ đọc trên điện thoại.
@@ -72,12 +76,12 @@ Học sinh có **Thư viện bài học** (`/student/lessons`), tìm không dấ
 tiến độ. Admin chọn khối ở đầu trang chương trình, xem tổng, thu gọn chủ đề và
 biên soạn năm kiểu minh họa mới. Khởi động lại server sau cập nhật.
 
-**AI Academy đã có đủ lớp 1–5:** mỗi khối **9 chủ đề / 36 bài**, tổng **180 bài**
-và **1547 SVG** (giữ cả ảnh cho các phiên bản cũ). Học bằng tranh, mỗi lần một thẻ,
+**AI Academy đã có đủ lớp 1–5:** mỗi khối **11 chủ đề / 40 bài**, tổng **200 bài**
+và **1702 SVG** (giữ cả ảnh cho các phiên bản cũ). Học bằng tranh, mỗi lần một thẻ,
 game/lab, Prompt Builder, trợ giảng an toàn, xưởng sáng tạo, sản phẩm riêng,
 giao bài/chấm rubric và CMS/media theo quyền. Dùng cùng tài khoản hiện có;
 mặc định học lý thuyết và bài tập nội bộ, `AI_TRAINING_ONLY=true` chặn gọi model.
-Baseline mỗi khối có **3 bài Free / 33 bài VIP**, tổng 15/165; giữ quyền đã được
+Baseline mỗi khối có **5 bài Free / 35 bài VIP**, tổng 25/175; giữ quyền đã được
 admin chỉnh riêng. Gợi ý mức 1 miễn phí, mức 2–3 dành cho VIP, không cần gõ mô tả.
 Xem [hướng dẫn đầy đủ AI Academy](docs/ai-academy/README.md).
 

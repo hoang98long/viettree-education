@@ -1,0 +1,95 @@
+{
+  "date": "2026-10-19",
+  "database": "viettree-education",
+  "backup": {
+    "path": ".tools\\backups\\before-academy-reasoning-2026-10-19-6583153d0cf441919e269cc105282561.dump",
+    "sha256": "94986976034f5d1da8f74ff3527d4b7ff1865b853d8582eab5da2eda8eab86e7",
+    "pg_restore_list": "passed"
+  },
+  "preserved_existing_tables": 82,
+  "preserved_unchanged_rows": 23600,
+  "updated_bundled_grade_metadata": [
+    {
+      "table": "ai_grades",
+      "grade": 1,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    },
+    {
+      "table": "ai_grades",
+      "grade": 2,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    },
+    {
+      "table": "ai_grades",
+      "grade": 3,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    },
+    {
+      "table": "ai_grades",
+      "grade": 4,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    },
+    {
+      "table": "ai_grades",
+      "grade": 5,
+      "fields": [
+        "curriculum.coverage",
+        "curriculum.competencies",
+        "curriculum.annual_outline"
+      ]
+    }
+  ],
+  "added_rows": {
+    "media_assets": 77,
+    "ai_units": 5,
+    "ai_lessons": 10,
+    "ai_lesson_versions": 10,
+    "ai_media_assets": 77,
+    "ai_media_variants": 77,
+    "ai_media_usages": 72
+  },
+  "accounts_passwords_sessions_memberships_attempts_versions_progress": "unchanged",
+  "ai": {
+    "lessons": {
+      "3": 40,
+      "5": 40,
+      "4": 40,
+      "2": 40,
+      "1": 40
+    },
+    "media": {
+      "assets": 1702,
+      "lessons": 200,
+      "categories": {
+        "badge": 12,
+        "card": 72,
+        "illustration": 1292,
+        "ui": 12,
+        "hero": 251,
+        "cover": 55,
+        "mascot": 8
+      }
+    },
+    "quality": {
+      "baseline_published": 200,
+      "baseline_required": 200,
+      "issues": []
+    }
+  }
+}

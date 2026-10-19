@@ -12,7 +12,7 @@ FREE_CODES = (
         "AI4-04",
         "AI4-27",
     }
-    | {f"AI{grade}-37" for grade in range(1, 6)}
+    | {f"AI{grade}-{number}" for grade in range(1, 6) for number in (37, 39)}
 )
 
 

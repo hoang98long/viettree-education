@@ -26,7 +26,7 @@ def test_counting_pictures_have_no_decorative_extra_dots_and_colors_match_labels
 
 @pytest.mark.parametrize("grade", range(1, 6))
 def test_investigations_have_age_appropriate_hints_and_consistent_grading(grade):
-    rows = [row for row in records() if row["grade"] == grade and row["number"] > 36]
+    rows = [row for row in records() if row["grade"] == grade and row["number"] in (37, 38)]
     assert len(rows) == 2
     for row in rows:
         payload = content(row)
@@ -62,8 +62,9 @@ def test_investigations_have_age_appropriate_hints_and_consistent_grading(grade)
 
 @pytest.mark.integration
 @pytest.mark.parametrize("grade", range(1, 6))
+@pytest.mark.parametrize("number", (37, 39))
 def test_investigation_completion_idempotency_and_live_vip(
-    logged_student, conn, grade, monkeypatch
+    logged_student, conn, grade, number, monkeypatch
 ):
     from tests.test_classrooms import grant
 
@@ -77,14 +78,20 @@ def test_investigation_completion_idempotency_and_live_vip(
         profiles.update().where(profiles.c.student_id == student).values(current_grade=grade)
     )
     base = "/api/v1/ai-academy/lessons/"
-    lesson = uid(f"AI{grade}-37")
+    lesson = uid(f"AI{grade}-{number}")
     path = base + str(lesson)
     result = logged_student.post(path + "/start")
     assert result.status_code == 200 and result.json()["hint_limit"] == 1
     assert "advanced" not in result.json()["content"]
     assert "standard" not in result.json()["content"]
-    assert logged_student.post(base + str(uid(f"AI{grade}-38")) + "/start").status_code == 403
-    assert logged_student.get(f"/api/v1/ai-academy/media/AI{grade}-38-v2-item-1").status_code == 403
+    assert (
+        logged_student.post(base + str(uid(f"AI{grade}-{number + 1}")) + "/start").status_code
+        == 403
+    )
+    assert (
+        logged_student.get(f"/api/v1/ai-academy/media/AI{grade}-{number + 1}-v2-item-1").status_code
+        == 403
+    )
     assert (
         logged_student.post(path + "/hints", json={"step_id": "story", "level": 2}).status_code
         == 403
@@ -118,9 +125,12 @@ def test_investigation_completion_idempotency_and_live_vip(
     assert complete.json()["completed_at"]
     grant(conn, student)
     assert logged_student.post(path + "/start").json()["hint_limit"] == 3
-    vip = base + str(uid(f"AI{grade}-38"))
+    vip = base + str(uid(f"AI{grade}-{number + 1}"))
     assert logged_student.post(vip + "/start").status_code == 200
-    assert logged_student.get(f"/api/v1/ai-academy/media/AI{grade}-38-v2-item-1").status_code == 200
+    assert (
+        logged_student.get(f"/api/v1/ai-academy/media/AI{grade}-{number + 1}-v2-item-1").status_code
+        == 200
+    )
     from app.schemas.memberships import MembershipRevokeInput
     from app.services.memberships import change_membership
 

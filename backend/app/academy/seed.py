@@ -55,7 +55,7 @@ def seed(conn):
                     "reading": "Tranh và câu ngắn, người lớn hỗ trợ đọc"
                     if grade < 3
                     else "Đọc tình huống, thực hành và giải thích căn cứ",
-                    "coverage": "38 bài · 10 chủ đề · học bằng tranh và thao tác chạm",
+                    "coverage": "40 bài · 11 chủ đề · học bằng tranh và thao tác chạm",
                     "annual_outline": [dict(code=k, title=v) for k, v in COMPETENCIES.items()],
                 },
             ),
@@ -68,6 +68,7 @@ def seed(conn):
             "36 tiết đầy đủ",
             "Khung năm học và 3 bài mẫu",
             "36 bài · 9 chủ đề · học bằng tranh và thao tác chạm",
+            "38 bài · 10 chủ đề · học bằng tranh và thao tác chạm",
         }:
             conn.execute(
                 grades.update()
@@ -75,7 +76,7 @@ def seed(conn):
                 .values(
                     curriculum={
                         **previous,
-                        "coverage": "38 bài · 10 chủ đề · học bằng tranh và thao tác chạm",
+                        "coverage": "40 bài · 11 chủ đề · học bằng tranh và thao tác chạm",
                         "competencies": COMPETENCIES,
                         "annual_outline": [dict(code=k, title=v) for k, v in COMPETENCIES.items()],
                     }

@@ -333,7 +333,8 @@ def catalog(conn, grade, student_id=None):
             units.c.title.label("unit_title"),
             units.c.code.label("unit_code"),
             units.c.position.label("unit_position"),
-            versions.c.payload,
+            versions.c.payload["hero"].as_string().label("hero"),
+            versions.c.payload["estimated_minutes"].as_integer().label("minutes"),
         )
         .select_from(lessons.join(units).join(versions))
         .where(units.c.grade == grade, versions.c.status == "published")
@@ -343,7 +344,12 @@ def catalog(conn, grade, student_id=None):
         {
             r["lesson_id"]: dict(r)
             for r in conn.execute(
-                select(progress).where(progress.c.student_id == student_id)
+                select(progress).where(
+                    progress.c.student_id == student_id,
+                    progress.c.lesson_id.in_(
+                        select(lessons.c.id).join(units).where(units.c.grade == grade)
+                    ),
+                )
             ).mappings()
         }
         if student_id
@@ -360,10 +366,10 @@ def catalog(conn, grade, student_id=None):
             unit_code=r["unit_code"],
             unit_cover=("cover-" + r["unit_code"])
             if ("cover-" + r["unit_code"]) in covers
-            else r["payload"]["hero"],
+            else r["hero"],
             unit_position=r["unit_position"],
-            hero=r["payload"]["hero"],
-            minutes=r["payload"]["estimated_minutes"],
+            hero=r["hero"],
+            minutes=r["minutes"],
             minimum_plan_code=r["minimum_plan_code"],
             locked=r["minimum_plan_code"] == "vip" and not vip,
             progress=states.get(r["id"]),

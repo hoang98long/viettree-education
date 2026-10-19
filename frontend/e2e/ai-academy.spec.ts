@@ -26,7 +26,7 @@ test("AI Academy: học/chấm/resume, lab, an toàn, sản phẩm và huy hiệ
   const catalog = await (
     await page.request.get("/api/v1/ai-academy/catalog?grade=4")
   ).json();
-  expect(catalog).toHaveLength(38);
+  expect(catalog).toHaveLength(40);
   const lesson = catalog.find((l: { code: string }) => l.code === "AI4-01");
   await page.goto("/ai-academy/lessons/" + lesson.id);
   await expect(

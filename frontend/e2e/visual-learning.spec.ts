@@ -70,7 +70,7 @@ const checkpoints: Record<number, string[]> = {
   5: ["Nhãn phù hợp", "Nhãn phù hợp", "Kiểm tra lại, nhờ cô giúp"],
 };
 
-test("năm khối: 36 bài, học bằng tranh/chạm, gợi ý không gõ, hoàn thành và ôn lại", async ({
+test("năm khối: 40 bài, học bằng tranh/chạm, gợi ý không gõ, hoàn thành và ôn lại", async ({
   page,
 }, info) => {
   test.setTimeout(240_000);
@@ -88,17 +88,17 @@ test("năm khối: 36 bài, học bằng tranh/chạm, gợi ý không gõ, hoà
     await page.goto("/ai-academy");
     await expect(
       page.getByRole("heading", {
-        name: `Lớp ${grade} · 36 bài · 9 chủ đề`,
+        name: `Lớp ${grade} · 40 bài · 11 chủ đề`,
         exact: true,
       }),
     ).toBeVisible();
     const catalog = await (
       await page.request.get(`/api/v1/ai-academy/catalog?grade=${grade}`)
     ).json();
-    expect(catalog).toHaveLength(36);
+    expect(catalog).toHaveLength(40);
     expect(
       catalog.filter((row: { locked: boolean }) => row.locked),
-    ).toHaveLength(33);
+    ).toHaveLength(35);
     const lesson = catalog.find(
       (row: { code: string }) => row.code === `AI${grade}-01`,
     );

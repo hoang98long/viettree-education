@@ -4,158 +4,171 @@ import { useState } from "react";
 import { useResource } from "@/hooks/use-resource";
 import { Loading, ErrorState, Empty, PageTitle } from "@/components/ui";
 import { AcademyImage } from "./shared";
+import {
+  filterLessons,
+  gameLessons,
+  nextLesson,
+  type LessonFilter,
+} from "./catalog";
 import type { CatalogLesson } from "./types";
 
-export function Journey({ grade }: { grade?: number }) {
-  const home = useResource<{
-    grade: number;
-    catalog: CatalogLesson[];
-    points: number;
-    completed: number;
-    assignments: {
-      id: string;
-      lesson_id: string;
-      title: string;
-      class_name: string;
-      completed_at: string | null;
-    }[];
-  }>("/ai-academy/home");
-  const [chosen, setChosen] = useState<number | null>(null);
-  const selected = chosen ?? grade ?? home.data?.grade ?? 4;
-  const catalog = useResource<CatalogLesson[]>(
-    `/ai-academy/catalog?grade=${selected}`,
+type AcademyHome = {
+  grade: number;
+  catalog: CatalogLesson[];
+  points: number;
+  completed: number;
+  assignments: {
+    id: string;
+    lesson_id: string;
+    title: string;
+    class_name: string;
+    completed_at: string | null;
+  }[];
+};
+
+function PlanBadge({ lesson }: { lesson: CatalogLesson }) {
+  return (
+    <span
+      className={`badge ${lesson.minimum_plan_code === "vip" ? "vip-badge" : "success"}`}
+    >
+      {lesson.locked
+        ? "🔒 VIP"
+        : lesson.minimum_plan_code === "vip"
+          ? "VIP"
+          : "Miễn phí"}
+    </span>
   );
-  if (home.loading) return <Loading />;
-  if (home.error) return <ErrorState message={home.error} retry={home.retry} />;
-  const next = catalog.data?.find(
-    (l) => !l.locked && !l.progress?.completed_at,
-  );
-  const units = [...new Set(catalog.data?.map((l) => l.unit_id) || [])];
+}
+
+function LessonLibrary({
+  rows,
+  canStudy,
+  grade,
+}: {
+  rows: CatalogLesson[];
+  canStudy: boolean;
+  grade: number;
+}) {
+  const [filter, setFilter] = useState<LessonFilter>("all");
+  const [query, setQuery] = useState("");
+  const next = canStudy ? nextLesson(rows) : undefined;
+  const filtered =
+    !canStudy && (filter === "available" || filter === "started")
+      ? []
+      : filterLessons(rows, filter, query);
+  const units = [...new Set(filtered.map((row) => row.unit_id))];
+  const totalUnits = new Set(rows.map((row) => row.unit_id)).size;
+  const narrowed = filter !== "all" || query.trim().length > 0;
   return (
     <>
-      <section className="academy-hero">
-        <div>
-          <span className="eyebrow">VIETTREE AI ACADEMY</span>
-          <h1>Khám phá AI, sáng tạo an toàn</h1>
-          <p>Xem tranh. Chạm chọn. Thử lại cùng Mầm AI.</p>
-          <p>
-            Học từng bài nhỏ, thử bằng thẻ tranh. Bài nhập môn miễn phí; VIP mở
-            thêm bài và dự án.
-          </p>
-          <Link className="button secondary" href="/student/membership">
-            Xem gói VIP cùng phụ huynh
-          </Link>
-          <p>
-            {home.data?.completed} bài đã khám phá · {home.data?.points} điểm
-            ghi nhận
-          </p>
-          {next && (
+      {next && (
+        <section className="panel academy-resume" aria-label="Bài AI tiếp theo">
+          <AcademyImage code={next.hero} alt={`Bài ${next.title}`} small />
+          <div>
+            <p className="eyebrow">
+              {next.progress ? "BÀI EM ĐANG HỌC" : "BẮT ĐẦU TỪ ĐÂY"}
+            </p>
+            <h2>{next.title}</h2>
             <Link className="button" href={`/ai-academy/lessons/${next.id}`}>
-              Tiếp tục khám phá
+              {next.progress ? "Học tiếp bài này" : "Tiếp tục khám phá"}
             </Link>
-          )}
-        </div>
-        <AcademyImage
-          code="mascot-0"
-          alt="Mầm AI chào em, robot minh họa thân thiện"
-          small
-        />
-      </section>
-      {!!home.data?.assignments.length && (
-        <section className="panel">
-          <h2>Bài được thầy cô giao</h2>
-          <div className="academy-cards">
-            {home.data.assignments.map((a) => (
-              <article className="academy-card" key={a.id}>
-                <h3>{a.title}</h3>
-                <p>
-                  {a.class_name} ·{" "}
-                  {a.completed_at ? "Đã hoàn thành" : "Đang chờ em khám phá"}
-                </p>
-                <Link
-                  className="button secondary"
-                  href={`/ai-academy/lessons/${a.lesson_id}`}
-                >
-                  {a.completed_at ? "Ôn lại bài" : "Học bài được giao"}
-                </Link>
-              </article>
-            ))}
           </div>
         </section>
       )}
-      <label className="academy-grade">
-        Chọn lớp để khám phá
-        <select
-          value={selected}
-          onChange={(e) => setChosen(Number(e.target.value))}
-        >
-          {[1, 2, 3, 4, 5].map((n) => (
-            <option key={n} value={n}>
-              Lớp {n}
-              {n === home.data?.grade ? " · Lớp của em" : ""}
-            </option>
-          ))}
-        </select>
-      </label>
-      {selected > (home.data?.grade ?? 4) && (
-        <p className="notice">
-          Em xem hành trình; bài học được mở ở lớp hiện tại và các lớp dưới.
-        </p>
-      )}
       <PageTitle
-        title={`Lớp ${selected}${catalog.data ? ` · ${catalog.data.length} bài · ${units.length} chủ đề` : ""}`}
+        title={`Lớp ${grade} · ${rows.length} bài · ${totalUnits} chủ đề`}
         description="Chọn tranh để mở bài học."
       />
-      {catalog.loading ? (
-        <Loading />
-      ) : catalog.error ? (
-        <ErrorState message={catalog.error} retry={catalog.retry} />
-      ) : units.length ? (
+      <section className="panel academy-catalog-tools" aria-label="Tìm bài AI">
+        <label>
+          Tìm tên bài hoặc chủ đề
+          <input
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Ví dụ: sách, robot…"
+          />
+        </label>
+        <div
+          className="academy-filter-buttons"
+          role="group"
+          aria-label="Lọc bài AI"
+        >
+          {(
+            [
+              ["all", "Tất cả"],
+              ["available", "Em có thể học"],
+              ["started", "Đang học"],
+              ["completed", "Đã xong"],
+            ] as const
+          ).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              className="button secondary"
+              aria-pressed={filter === value}
+              onClick={() => setFilter(value)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <p role="status">
+          {filtered.length} bài{narrowed ? " phù hợp" : " trong hành trình"}
+        </p>
+        {narrowed && (
+          <button
+            className="button secondary"
+            onClick={() => {
+              setFilter("all");
+              setQuery("");
+            }}
+          >
+            Xem tất cả bài
+          </button>
+        )}
+      </section>
+      {units.length ? (
         units.map((id, index) => {
-          const rows = catalog.data!.filter((l) => l.unit_id === id);
+          const lessons = filtered.filter((row) => row.unit_id === id);
           return (
             <details
-              key={id}
+              key={`${id}-${filter}-${query}`}
               className="panel academy-unit"
-              open={id === next?.unit_id || (!next && index === 0)}
+              open={narrowed || id === next?.unit_id || (!next && index === 0)}
             >
               <summary>
                 <h2>
-                  {rows[0].unit_position}. {rows[0].unit_title}
+                  {lessons[0].unit_position}. {lessons[0].unit_title}
                 </h2>
-                <span>{rows.length} bài · Mở chủ đề</span>
+                <span>{lessons.length} bài · Mở chủ đề</span>
               </summary>
-              {rows[0].unit_cover && (
+              {lessons[0].unit_cover && (
                 <div className="academy-unit-cover">
                   <AcademyImage
-                    code={rows[0].unit_cover}
-                    alt={`Bìa chủ đề ${rows[0].unit_title}`}
+                    code={lessons[0].unit_cover}
+                    alt={`Bìa chủ đề ${lessons[0].unit_title}`}
                   />
                 </div>
               )}
               <div className="academy-cards">
-                {rows.map((l) => (
+                {lessons.map((lesson) => (
                   <Link
                     className="academy-card"
-                    key={l.id}
-                    href={`/ai-academy/lessons/${l.id}`}
+                    key={lesson.id}
+                    href={`/ai-academy/lessons/${lesson.id}`}
                   >
-                    <AcademyImage code={l.hero} alt={`Tình huống ${l.title}`} />
-                    <strong>{l.title}</strong>
-                    <span
-                      className={`badge ${l.minimum_plan_code === "vip" ? "vip-badge" : "success"}`}
-                    >
-                      {l.locked
-                        ? "🔒 VIP"
-                        : l.minimum_plan_code === "vip"
-                          ? "VIP"
-                          : "Miễn phí"}
-                    </span>
+                    <AcademyImage
+                      code={lesson.hero}
+                      alt={`Tình huống ${lesson.title}`}
+                    />
+                    <strong>{lesson.title}</strong>
+                    <PlanBadge lesson={lesson} />
                     <span>
-                      {l.minutes} phút ·{" "}
-                      {l.progress?.completed_at
+                      {lesson.minutes} phút ·{" "}
+                      {lesson.progress?.completed_at
                         ? "Đã hoàn thành"
-                        : l.progress
+                        : lesson.progress
                           ? "Đang khám phá"
                           : "Bắt đầu"}
                     </span>
@@ -166,63 +179,199 @@ export function Journey({ grade }: { grade?: number }) {
           );
         })
       ) : (
-        <Empty>Chủ đề đang được biên soạn.</Empty>
+        <Empty>
+          {rows.length
+            ? "Chưa có bài phù hợp. Em thử từ khác hoặc xem tất cả bài nhé."
+            : "Chủ đề đang được biên soạn."}
+        </Empty>
+      )}
+    </>
+  );
+}
+
+function OtherGradeLibrary({
+  grade,
+  canStudy,
+}: {
+  grade: number;
+  canStudy: boolean;
+}) {
+  const catalog = useResource<CatalogLesson[]>(
+    `/ai-academy/catalog?grade=${grade}`,
+  );
+  if (catalog.loading) return <Loading />;
+  if (catalog.error)
+    return <ErrorState message={catalog.error} retry={catalog.retry} />;
+  return (
+    <LessonLibrary
+      key={grade}
+      rows={catalog.data ?? []}
+      canStudy={canStudy}
+      grade={grade}
+    />
+  );
+}
+
+export function Journey({ grade }: { grade?: number }) {
+  const home = useResource<AcademyHome>("/ai-academy/home");
+  const [chosen, setChosen] = useState<number | null>(null);
+  if (home.loading) return <Loading />;
+  if (home.error || !home.data)
+    return (
+      <ErrorState
+        message={home.error || "Chưa tải được hành trình."}
+        retry={home.retry}
+      />
+    );
+  const selected = chosen ?? grade ?? home.data.grade;
+  return (
+    <>
+      <section className="academy-hero">
+        <div>
+          <span className="eyebrow">VIETTREE AI ACADEMY</span>
+          <h1>Khám phá AI, sáng tạo an toàn</h1>
+          <p>Xem tranh. Chạm chọn. Thử lại cùng Mầm AI.</p>
+          <Link className="button secondary" href="/student/membership">
+            Xem gói VIP cùng phụ huynh
+          </Link>
+          <p>
+            {home.data.completed} bài đã khám phá · {home.data.points} điểm ghi
+            nhận
+          </p>
+        </div>
+        <AcademyImage
+          code="mascot-0"
+          alt="Mầm AI chào em, robot minh họa thân thiện"
+          small
+        />
+      </section>
+      {!!home.data.assignments.length && (
+        <section className="panel">
+          <h2>Bài được thầy cô giao</h2>
+          <div className="academy-cards">
+            {home.data.assignments.map((assignment) => (
+              <article className="academy-card" key={assignment.id}>
+                <h3>{assignment.title}</h3>
+                <p>
+                  {assignment.class_name} ·{" "}
+                  {assignment.completed_at
+                    ? "Đã hoàn thành"
+                    : "Đang chờ em khám phá"}
+                </p>
+                <Link
+                  className="button secondary"
+                  href={`/ai-academy/lessons/${assignment.lesson_id}`}
+                >
+                  {assignment.completed_at ? "Ôn lại bài" : "Học bài được giao"}
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+      <label className="academy-grade">
+        Chọn lớp để khám phá
+        <select
+          value={selected}
+          onChange={(event) => setChosen(Number(event.target.value))}
+        >
+          {[1, 2, 3, 4, 5].map((number) => (
+            <option key={number} value={number}>
+              Lớp {number}
+              {number === home.data!.grade ? " · Lớp của em" : ""}
+            </option>
+          ))}
+        </select>
+      </label>
+      {selected > home.data.grade && (
+        <p className="notice">
+          Em xem hành trình; bài học được mở ở lớp hiện tại và các lớp dưới.
+        </p>
+      )}
+      {selected === home.data.grade ? (
+        <LessonLibrary
+          key={selected}
+          rows={home.data.catalog}
+          grade={selected}
+          canStudy
+        />
+      ) : (
+        <OtherGradeLibrary
+          key={selected}
+          grade={selected}
+          canStudy={selected <= home.data.grade}
+        />
       )}
     </>
   );
 }
 
 export function GameCenter() {
-  const { data, loading, error, retry } = useResource<CatalogLesson[]>(
-    "/ai-academy/catalog?grade=4",
-  );
-  const entries = [
-    ["Phân loại hình ảnh", 4],
-    ["Ghép nhãn và thẻ", 19],
-    ["Xếp bước thuật toán", 13],
-    ["Học từ ví dụ", 5],
-    ["Thử dữ liệu thiếu", 6],
-    ["Prompt Builder", 8],
-    ["Kiểm tra bằng chứng", 10],
-    ["Bậc thang gợi ý Toán", 11],
-    ["Truyện bốn khung", 24],
-    ["Hội thoại tiếng Anh", 20],
-  ] as const;
+  const home = useResource<AcademyHome>("/ai-academy/home");
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
+  if (home.loading) return <Loading />;
+  if (home.error || !home.data)
+    return (
+      <ErrorState
+        message={home.error || "Chưa tải được trò chơi."}
+        retry={home.retry}
+      />
+    );
+  const rows = gameLessons(home.data.catalog);
+  const entries = onlyAvailable ? rows.filter((row) => !row.locked) : rows;
   return (
     <>
       <PageTitle
-        title="Trò chơi học tập"
-        description="Chọn/chạm hoặc dùng bàn phím. Có ba mức hỗ trợ; thử lại không bị phạt."
+        title={`Trò chơi học tập · Lớp ${home.data.grade}`}
+        description="Mỗi tranh mở một bài có hoạt động chạm chọn. Thử lại không bị phạt."
       />
-      {loading ? (
-        <Loading />
-      ) : error ? (
-        <ErrorState message={error} retry={retry} />
-      ) : (
-        <div className="academy-cards">
-          {entries.map(([title, number]) => {
-            const l = data?.find(
-              (row) => row.code === `AI4-${String(number).padStart(2, "0")}`,
-            );
-            return l ? (
-              <Link
-                className="academy-card"
-                href={`/ai-academy/lessons/${l.id}`}
-                key={title}
-              >
-                <AcademyImage code={l.hero} alt={title} />
-                <strong>{title}</strong>
-                <span className="badge">
-                  {l.locked ? "🔒 VIP" : "Có thể học"}
-                </span>
-                <span>Mở tình huống và hoạt động trong bài</span>
-              </Link>
-            ) : null;
-          })}
-        </div>
-      )}
+      <div
+        className="academy-filter-buttons"
+        role="group"
+        aria-label="Lọc trò chơi"
+      >
+        <button
+          className="button secondary"
+          aria-pressed={!onlyAvailable}
+          onClick={() => setOnlyAvailable(false)}
+        >
+          Tất cả chủ đề
+        </button>
+        <button
+          className="button secondary"
+          aria-pressed={onlyAvailable}
+          onClick={() => setOnlyAvailable(true)}
+        >
+          Em có thể học
+        </button>
+      </div>
+      <div className="academy-cards">
+        {entries.map((lesson) => (
+          <Link
+            className="academy-card"
+            href={`/ai-academy/lessons/${lesson.id}`}
+            key={lesson.id}
+          >
+            <AcademyImage code={lesson.hero} alt={lesson.title} />
+            <span className="eyebrow">{lesson.unit_title}</span>
+            <strong>{lesson.title}</strong>
+            <PlanBadge lesson={lesson} />
+            <span>
+              {lesson.progress?.completed_at
+                ? "Chơi và ôn lại"
+                : lesson.progress
+                  ? "Tiếp tục hoạt động"
+                  : "Mở hoạt động trong bài"}
+            </span>
+          </Link>
+        ))}
+      </div>
+      {!entries.length && <Empty>Chưa có hoạt động phù hợp.</Empty>}
+      <Link className="button secondary" href="/ai-academy">
+        Xem toàn bộ bài AI
+      </Link>
       <Link className="button secondary" href="/ai-academy/lab">
-        Thử bộ phân loại và thiên lệch dữ liệu
+        Thử bộ phân loại và thiên lệch dữ liệu · VIP
       </Link>
     </>
   );

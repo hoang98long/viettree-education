@@ -31,9 +31,9 @@ khẩu của DB test, không tài khoản production.
 
 ## Phạm vi kiểm chứng
 
-- 48 bài: content schema, 7 steps, ≥3 mục tiêu, hoạt động, 3 câu checkpoint,
+- 200 bài: content schema, 7 steps, ≥3 mục tiêu, hoạt động, 3 câu checkpoint,
   teacher/support/advanced và refs media.
-- 315 file: hash/XML/size/alt/không trùng/mapping, chỉ tiêu từng nhóm.
+- 1702 file: hash/XML/size/alt/không trùng/mapping, chỉ tiêu từng nhóm.
 - Auth/IDOR/grade/staff/class/guardian; seed giữ edits; attempts/idempotence,
   no answer leak, điểm/huy hiệu một lần, resume hoạt động đã đạt.
 - CMS CAS/workflow/publish/ẩn khi có draft mới, media đang dùng, SVG jobs,
@@ -79,3 +79,5 @@ validation không thay build/run container; HTTPS/thông lượng thực phải 
 VPS đích. Chưa có kiểm thử tải diện rộng, chứng nhận accessibility hoặc audit
 bảo mật độc lập. Kiểm thử browser dùng Chrome installed và responsive mobile,
 không thay kiểm tra thiết bị iOS thật.
+
+Đợt 19/10: [biên bản kiểm thử AI và tải 50 học sinh](../audits/academy-quality-2026-10-19.md).

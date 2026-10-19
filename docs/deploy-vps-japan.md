@@ -1,5 +1,10 @@
 # Deploy VPS tại Nhật — 4 vCPU, RAM 8 GB, SSD 100 GB
 
+AI Academy cập nhật 19/10: 200 bài, 11 chủ đề/khối, trò chơi đúng lớp và tìm/học tiếp.
+Local hiện tại đã backup/nạp; khởi động lại hai server. Máy khác/VPS backup, build
+và chạy `seed-ai-academy` theo [hướng dẫn](ai-academy-upgrade-2026-10-19.md).
+Không có migration mới.
+
 Ngày rà soát: **15/10/2026**. Dành cho gói VPS bạn đã chọn và khoảng 50 học
 sinh đồng thời ban đầu. Cấu hình này có thêm dư địa so với profile RAM 2 GB;
 số học sinh thực tế vẫn cần đo trên VPS và mạng Việt Nam sau khi có IP/domain.

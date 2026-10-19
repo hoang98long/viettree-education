@@ -12,7 +12,11 @@ export type CatalogLesson = {
   position: number;
   hero: string;
   minutes: number;
-  progress: { next_step: number; completed_at: string | null } | null;
+  progress: {
+    next_step: number;
+    completed_at: string | null;
+    updated_at?: string;
+  } | null;
 };
 export type Activity = {
   kind: string;

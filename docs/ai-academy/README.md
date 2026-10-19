@@ -7,12 +7,12 @@ quyền Free/VIP, hồ sơ, lớp học và phụ huynh đã xác minh. Không c
 
 | Nội dung                         |                            Số lượng seed |
 | -------------------------------- | ---------------------------------------: |
-| Lớp 1–5                          |                   10 chủ đề, 38 bài/khối |
-| Tổng bài / bước / câu checkpoint |                         190 / 1330 / 570 |
+| Lớp 1–5                          |                   11 chủ đề, 40 bài/khối |
+| Tổng bài / bước / câu checkpoint |                         200 / 1400 / 600 |
 | Kiểu hoạt động                   | 10; thêm lab phân loại và Prompt Builder |
 | Dự án theo khối                  |   5; mỗi học sinh lưu một sản phẩm/dự án |
 | Huy hiệu                         |        12, ghi nhận số bài đã hoàn thành |
-| File SVG nguyên bản              |    1625, gồm ảnh mới và ảnh phiên bản cũ |
+| File SVG nguyên bản              |    1702, gồm ảnh mới và ảnh phiên bản cũ |
 
 Từng bài có mục tiêu, tình huống, kiến thức, hoạt động, checkpoint, vận dụng,
 hướng dẫn giáo viên, hỗ trợ và thử thách. Đây là chương trình làm quen AI tích
@@ -32,8 +32,8 @@ Học liệu cần giáo viên nhà trường rà soát trước khi đưa vào 
   chủ đề mới, lớp/ghi danh/quyền/phụ huynh, báo cáo, hàng đợi SVG,
   mẫu hướng dẫn có phiên bản, cảnh báo và yêu cầu riêng tư.
 
-Baseline cập nhật 16/10/2026: mỗi khối **4 bài Free / 34 bài VIP**,
-toàn module **20 Free / 170 VIP**. Giữ quyền admin đã chỉnh riêng.
+Baseline cập nhật 19/10/2026: mỗi khối **5 bài Free / 35 bài VIP**,
+toàn module **25 Free / 175 VIP**. Giữ quyền admin đã chỉnh riêng.
 Free có gợi ý mức 1 trong bài được mở;
 VIP có mức 2–3, lab/Prompt Builder và studio/dự án từ mẫu. Server kiểm tra quyền
 tại mỗi bước; không gửi nội dung bài VIP rồi chỉ che trong browser.
@@ -42,9 +42,9 @@ Xem [chính sách đào tạo AI](../ai-training-vip.md) và
 
 Học từng thẻ bằng nút chạm, checkpoint từng câu; **Em cần gợi ý** không yêu cầu
 nhập chữ. Menu công cụ và giải thích dài thu gọn để trẻ tập trung. Lớp 1–2 có
-bài khoảng 10 phút và hai thẻ; lớp 3–5 khoảng 15 phút. Có thể chia thời gian theo trẻ.
+bài khoảng 10 phút; lớp 1 hai thẻ, lớp 2 có hai hoặc ba thẻ; lớp 3–5 khoảng 15 phút. Có thể chia thời gian theo trẻ.
 Xem [đối chiếu quốc tế và thiết kế](../visual-learning-and-ai.md),
-[danh sách 190 bài](lessons.csv).
+[danh sách 200 bài](lessons.csv).
 
 ## Chạy nhanh
 
@@ -84,3 +84,6 @@ Không có IDE Scratch, gallery công khai, tenant SaaS độc lập hoặc rubr
 theo từng lớp. Rubric sản phẩm hiện cố định 20/30/30/20. Mỗi kiểu game dùng board
 chọn/ghép/xếp thẻ chung; lab là thuật toán so đặc điểm, không nhận dạng pixel.
 Docker/HTTPS thật phải được kiểm tra trên server đích; xem báo cáo kiểm thử.
+
+**19/10:** tìm bài không dấu, lọc bài, học tiếp đúng bài dở và trò chơi đúng khối.
+Thêm 10 bài/77 SVG; [chi tiết nâng cấp](../ai-academy-upgrade-2026-10-19.md).

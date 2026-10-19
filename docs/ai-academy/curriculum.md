@@ -1,6 +1,6 @@
 # Chương trình AI Academy
 
-190 bài cho lớp 1–5, mỗi khối 38 bài thuộc 10 chủ đề. Nội dung
+200 bài cho lớp 1–5, mỗi khối 40 bài thuộc 11 chủ đề. Nội dung
 nguyên bản, không sao chép sách giáo khoa. Đây là chương trình AI tích hợp,
 không tự nhận là môn AI bắt buộc theo chương trình quốc gia hoặc sách cụ thể.
 
@@ -46,12 +46,14 @@ không tự nhận là môn AI bắt buộc theo chương trình quốc gia ho�
 | 36   | Dự án AI của em          | Trình bày, đánh giá rubric và triển lãm sản phẩm            | match       |
 | 37   | Thử nghiệm và kiểm chứng | Hai cách kiểm tra phép tính                                 | fact_check  |
 | 38   | Thử nghiệm và kiểm chứng | Bộ mẫu đồ dùng công bằng hơn                                | train       |
+| 39   | Giải thích lựa chọn      | Lời giải thích có đúng căn cứ?                              | fact_check  |
+| 40   | Giải thích lựa chọn      | Hai công cụ nói khác nhau                                   | fact_check  |
 
 ## Khối 1, 2, 3 và 5
 
-Các khối 1/2/3/5 có 36 bài nền/9 chủ đề và 2 bài kiểm chứng mới. Nội dung,
+Các khối 1/2/3/5 có 36 bài nền/9 chủ đề, 2 bài kiểm chứng và 2 bài giải thích lựa chọn. Nội dung,
 độ đọc và thao tác được phân hóa theo tuổi; giữ ID ba bài mẫu cũ.
-Xem [danh sách 190 bài](lessons.csv) và [đối chiếu quốc tế](../visual-learning-and-ai.md).
+Xem [danh sách 200 bài](lessons.csv) và [đối chiếu quốc tế](../visual-learning-and-ai.md).
 
 - Lớp 1: Máy và người; Xếp thẻ hình của em; Điều em giữ riêng.
 - Lớp 2: Quan sát màu và hình; Khi robot nhận nhầm; Dùng dữ liệu mẫu an toàn.
@@ -63,7 +65,7 @@ Xem [danh sách 190 bài](lessons.csv) và [đối chiếu quốc tế](../visua
 Mỗi bài seed có 7 bước: story → discover → observe → practice → checkpoint
 → apply → finish; 3 mục tiêu, 3 câu checkpoint có đáp án/giải thích server,
 10 phút dự kiến cho lớp 1–2, 15 phút cho lớp 3–5, age_range, competencies, teacher guide, materials,
-misconceptions, safety/support/standard/advanced. Tổng 1330 bước/570 câu checkpoint.
+misconceptions, safety/support/standard/advanced. Tổng 1400 bước/600 câu checkpoint.
 
 10 loại activity: classify, match, sequence, train, bias, prompt, fact_check,
 hint_ladder, comic, roleplay. Board dùng chung thao tác kéo/tap/chọn và bàn phím
@@ -88,3 +90,17 @@ và hoạt động nhóm trước dạy. Seed là baseline published để trả
 không giả lập phê duyệt bởi giáo viên thật. Sửa qua phiên bản CMS, seed không
 ghi đè. Prerequisites hiện rỗng, bài không bị khóa theo thứ tự toàn khóa; chỉ
 các bước trong từng bài tuần tự. Có thể ôn bài lớp dưới theo hồ sơ hiện tại.
+
+## Chủ đề mới: Giải thích lựa chọn — 19/10/2026
+
+Mỗi khối thêm bài 39 Free và 40 VIP. [Danh sách đủ 200 bài](lessons.csv).
+
+| Lớp | Free                           | VIP                            |
+| --- | ------------------------------ | ------------------------------ |
+| 1   | Robot tìm sách                 | Thẻ bị che kín                 |
+| 2   | Không chỉ nhìn màu             | Hỏi rõ trước khi làm           |
+| 3   | Hai câu hỏi tìm đồ vật         | Dừng ở chỗ chưa biết           |
+| 4   | Lời giải thích có đúng căn cứ? | Hai công cụ nói khác nhau      |
+| 5   | Gợi ý nhiều chưa chắc phù hợp  | Con người duyệt trước khi dùng |
+
+[Thiết kế, nguồn tham khảo và cập nhật](../ai-academy-upgrade-2026-10-19.md).

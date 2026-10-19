@@ -1,17 +1,17 @@
 # AI Academy ưu tiên đào tạo, Free và VIP
 
 Chính sách mới 12/10/2026 thay mô tả “toàn bộ nền tảng Academy miễn phí” trước
-đây. Cập nhật 16/10/2026: 190 bài/1625 SVG; tập trung lý thuyết, quan sát, câu hỏi lựa chọn/ghép/
+đây. Cập nhật 19/10/2026: 200 bài/1702 SVG; tập trung lý thuyết, quan sát, câu hỏi lựa chọn/ghép/
 xếp bước và bài thực hành dữ liệu mô phỏng. Không cần tài khoản model hay
 API trả phí để học.
 
 ## Phân bổ quyền mặc định
 
-| Khối        | Miễn phí                                                                           | VIP                     |
-| ----------- | ---------------------------------------------------------------------------------- | ----------------------- |
-| Lớp 4       | AI4-01 nhận biết AI, AI4-04 dữ liệu, AI4-27 giữ thông tin riêng, AI4-37 kiểm chứng | 34 bài còn lại          |
-| Lớp 1/2/3/5 | Ba bài đầu và bài số 37 mỗi khối                                                   | 34 bài còn lại mỗi khối |
-| Tổng        | 20 bài                                                                             | 170 bài                 |
+| Khối        | Miễn phí                                                                                          | VIP                     |
+| ----------- | ------------------------------------------------------------------------------------------------- | ----------------------- |
+| Lớp 4       | AI4-01 nhận biết AI, AI4-04 dữ liệu, AI4-27 giữ thông tin riêng, AI4-37 kiểm chứng, AI4-39 căn cứ | 35 bài còn lại          |
+| Lớp 1/2/3/5 | Ba bài đầu và bài số 37, 39 mỗi khối                                                              | 35 bài còn lại mỗi khối |
+| Tổng        | 25 bài                                                                                            | 175 bài                 |
 
 VIP còn có lab phân loại/bias bằng thuật toán đơn giản, Prompt Builder,
 xưởng comic/poster/quiz/báo cáo từ mẫu, dự án nộp giáo viên. Free xem bìa/tên/

@@ -496,3 +496,48 @@
   width: 56px;
   height: 56px;
 }
+
+.academy-resume {
+  display: grid;
+  grid-template-columns: minmax(90px, 180px) 1fr;
+  gap: 1.25rem;
+  align-items: center;
+}
+.academy-resume > *,
+.academy-catalog-tools > * {
+  min-width: 0;
+}
+.academy-resume h2 {
+  margin-top: 0;
+}
+.academy-catalog-tools label {
+  display: grid;
+  gap: 0.5rem;
+}
+.academy-catalog-tools input {
+  width: 100%;
+  font: inherit;
+}
+.academy-filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.9rem 0;
+}
+.academy-filter-buttons [aria-pressed="true"] {
+  background: #205c4b;
+  color: #fff;
+  border-color: #205c4b;
+}
+@media (max-width: 480px) {
+  .academy-resume {
+    grid-template-columns: 1fr;
+  }
+  .academy-resume > :first-child {
+    max-width: 140px;
+  }
+  .academy-filter-buttons .button {
+    flex: 1 1 40%;
+    padding: 0.6rem;
+  }
+}

@@ -127,7 +127,15 @@ def labelled_picture(text, variant=0, code=""):
 
 
 def example_art(text, variant=0):
-    from app.academy.media import OBJECTS, circle
+    from app.academy.media import OBJECTS, circle, path, rect
+
+    if text == "Thẻ bị che kín":
+        return (
+            rect(55, 35, 190, 230, "#6879cf", 22)
+            + path("M63 61L230 228M63 111L197 245M104 47L230 173", stroke="#aeb9ef", width=12)
+            + '<text x="150" y="183" text-anchor="middle" font-family="sans-serif" '
+            'font-size="100" fill="#ffffff">?</text>'
+        )
 
     kind = icon_for(text)
     count = re.match(r"(?i)(one|two|three)\b", text)
