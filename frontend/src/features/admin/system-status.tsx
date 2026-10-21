@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ErrorState, Loading, PageTitle } from "@/components/ui";
 import { useResource } from "@/hooks/use-resource";
 import { dateTimeLabel } from "@/lib/api";
+import { ReleaseReadinessSection } from "./release-readiness";
+import { ReadinessChecks } from "./readiness-checks";
 
 type SystemStatus = {
   status: "ok" | "attention";
@@ -54,27 +56,10 @@ export function SystemStatusPage() {
               Phiên đăng nhập {data.session.hours} giờ; ghi nhớ học sinh{" "}
               {data.session.remember_days} ngày.
             </p>
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Hạng mục</th>
-                    <th>Kết quả</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.checks.map((check) => (
-                    <tr key={check.code}>
-                      <td>{check.label}</td>
-                      <td>
-                        {check.ok ? "Đạt" : "Cần xử lý"}
-                        {check.count !== null ? ` · ${check.count}` : ""}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <ReadinessChecks
+              checks={data.checks}
+              label="Các kiểm tra dữ liệu"
+            />
             <p>
               Migration hiện tại:{" "}
               {data.migrations.current.join(", ") || "Chưa có"}.
@@ -84,6 +69,7 @@ export function SystemStatusPage() {
               Kiểm tra quyền nội dung
             </Link>
           </section>
+          <ReleaseReadinessSection />
           <section className="panel section-title">
             <h2>Bảo trì phiên đăng nhập</h2>
             <p>

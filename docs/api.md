@@ -1,5 +1,11 @@
 # API và các luồng thật
 
+`GET /api/v1/admin/release-status` dành cho admin, chẩn đoán chỉ đọc theo yêu cầu.
+Trả các điều kiện trước mở web, ma trận số lượng 15 cặp khối/môn, chất lượng AI,
+kiểm tra file SVG và các bước cần xử lý; không có đáp án hoặc dữ liệu cá nhân.
+Response `no-store`. Cùng nghiệp vụ với CLI `check-release`; không đặt vào `/ready`.
+[Chi tiết 20/10](pre-deployment-review-2026-10-20.md).
+
 AI Academy: `GET /api/v1/ai-academy/home` trả khối trong hồ sơ và danh mục cùng
 quyền/tiến độ; giao diện dùng trực tiếp cho hành trình/trò chơi. Chọn khối khác
 mới gọi `/catalog?grade=1..5`. Danh mục lấy hai trường bìa/thời lượng từ JSONB,

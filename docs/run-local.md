@@ -1,5 +1,9 @@
 # Chạy nhanh trên máy local hiện tại
 
+Cập nhật 20/10: **Quản trị → Kiểm tra hệ thống → Trước khi mở web**, có tải biên
+bản CSV; CLI `check-release` kiểm tài khoản, học liệu và ảnh trước mở công khai.
+[Biên bản và hướng dẫn cập nhật](pre-deployment-review-2026-10-20.md).
+
 AI Academy cập nhật 19/10: 200 bài, 11 chủ đề/khối, trò chơi đúng lớp và tìm/học tiếp.
 Local hiện tại đã backup/nạp; khởi động lại hai server. Máy khác/VPS backup, build
 và chạy `seed-ai-academy` theo [hướng dẫn](ai-academy-upgrade-2026-10-19.md).

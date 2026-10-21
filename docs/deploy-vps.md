@@ -1,5 +1,9 @@
 # Hướng dẫn deploy VietTree Education lên VPS
 
+Cập nhật 20/10: **Quản trị → Kiểm tra hệ thống → Trước khi mở web**, có tải biên
+bản CSV; CLI `check-release` kiểm tài khoản, học liệu và ảnh trước mở công khai.
+[Biên bản và hướng dẫn cập nhật](pre-deployment-review-2026-10-20.md).
+
 Mới ngày 17/10: [học tiếp, bộ daily và lệnh seed khi nâng cấp](daily-learning-and-resume.md).
 Ngày 16/10: [10 bài AI và bộ review](learning-upgrade-2026-10-16.md).
 

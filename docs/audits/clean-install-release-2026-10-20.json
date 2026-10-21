@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-20",
+  "scope": "fresh empty local test DB, same initialization steps as CI",
+  "steps": [
+    {
+      "command": "python -m app.cli import-schema",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m alembic upgrade head",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m app.cli seed",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m app.cli seed-ai-academy",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m app.cli seed-supplement-content --release applied-2026-01",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m app.cli seed-supplement-content --release explorers-2026-01",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m app.cli seed-supplement-content --release review-2026-02",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m app.cli seed-supplement-content --release daily-2026-03",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m app.cli check-system",
+      "exit_code": 0
+    }
+  ],
+  "published_core_lessons": 415,
+  "published_assessments": 355,
+  "published_ai_lessons": 200,
+  "status": "ok",
+  "seconds": 72.85,
+  "temporary_database_removed": true
+}

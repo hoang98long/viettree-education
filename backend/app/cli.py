@@ -24,6 +24,7 @@ def main():
             "check-schema",
             "check-system",
             "check-launch",
+            "check-release",
             "cleanup-auth",
             "bootstrap-admin",
             "import-schema",
@@ -162,12 +163,15 @@ def main():
                 except ValueError as error:
                     raise SystemExit(str(error)) from None
                 print("Đã tạo quản trị đầu tiên. Mật khẩu không được in hoặc lưu vào nhật ký")
-            elif args.command in {"check-system", "check-launch"}:
+            elif args.command in {"check-system", "check-launch", "check-release"}:
                 from app.operations import launch_report, system_report
+                from app.services.release_readiness import release_report
 
-                report = (
-                    launch_report(conn) if args.command == "check-launch" else system_report(conn)
-                )
+                report = {
+                    "check-system": system_report,
+                    "check-launch": launch_report,
+                    "check-release": release_report,
+                }[args.command](conn)
                 print(json.dumps(report, ensure_ascii=False, default=str))
                 if report["status"] != "ok":
                     raise SystemExit(1)

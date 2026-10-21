@@ -21,7 +21,7 @@ for service in db backend frontend caddy; do
   esac
   printf 'Container %s: %s\n' "$service" "$state"
 done
-dc exec -T backend python -m app.cli check-launch
+dc exec -T backend python -m app.cli check-release
 origin=$(dc exec -T backend python -c 'from app.core.config import settings; print(settings().origins[0])' | tr -d '\r')
 [[ "$origin" == https://* && "$origin" != *example.com* ]] || { printf 'Configure the real HTTPS domain.\n' >&2; exit 1; }
 headers=$(mktemp)

@@ -3,9 +3,13 @@
 import json
 from uuid import uuid4
 
+from sqlalchemy import select
+
 from app.core.config import settings
 from app.core.security import hasher, now
 from app.db import db, engine
+from app.schemas.memberships import MembershipGrantInput
+from app.services.memberships import change_membership
 
 
 def main():
@@ -15,6 +19,7 @@ def main():
     output = {}
     with engine().begin() as conn:
         db.load(conn)
+        student_password_hash = hasher.hash(settings().seed_student_password)
 
         def user(key, role="student", grade=4):
             identifier = uuid4()
@@ -26,7 +31,7 @@ def main():
                     id=identifier,
                     username=username,
                     display_name="Kiểm thử " + role,
-                    password_hash=hasher.hash(settings().seed_student_password),
+                    password_hash=student_password_hash,
                 )
             )
             conn.execute(db.table("user_roles").insert().values(user_id=identifier, role=role))
@@ -63,6 +68,40 @@ def main():
         for grade in (1, 2, 5):
             for suffix in ("DESKTOP", "MOBILE"):
                 user(f"E2E_GRADE{grade}_{suffix}_USERNAME", grade=grade)
+        # Each suite owns its progress: a review activity must not resume a
+        # different suite's unfinished lesson when the full browser set runs.
+        admin_id = conn.execute(
+            select(db.table("users").c.id).where(db.table("users").c.username == "admin")
+        ).scalar_one()
+
+        def learner(key, grade, vip):
+            identifier = user(key, grade=grade)
+            if vip:
+                change_membership(
+                    conn,
+                    admin_id,
+                    identifier,
+                    "grant",
+                    MembershipGrantInput(duration_days=30, reason="Isolated browser fixture"),
+                    uuid4(),
+                )
+
+        for namespace in ("VERIFICATION", "DAILY", "REASONING"):
+            for grade in range(1, 6):
+                for suffix in ("DESKTOP", "MOBILE"):
+                    learner(f"E2E_{namespace}_GRADE{grade}_{suffix}_USERNAME", grade, grade >= 3)
+        for suffix in ("DESKTOP", "MOBILE"):
+            for grade in (1, 5):
+                for plan in ("FREE", "VIP"):
+                    learner(
+                        f"E2E_REVIEW_GRADE{grade}_{plan}_{suffix}_USERNAME", grade, plan == "VIP"
+                    )
+            learner(f"E2E_APPLIED_GRADE1_FREE_{suffix}_USERNAME", 1, False)
+            learner(f"E2E_APPLIED_GRADE5_VIP_{suffix}_USERNAME", 5, True)
+            for grade in (1, 2):
+                learner(f"E2E_REASONING_VIP_GRADE{grade}_{suffix}_USERNAME", grade, True)
+            for grade in (1, 3, 5):
+                learner(f"E2E_EXPLORER_GRADE{grade}_{suffix}_USERNAME", grade, grade >= 3)
         teacher = user("E2E_ACADEMY_TEACHER_USERNAME", "teacher")
         guardian = user("E2E_ACADEMY_GUARDIAN_USERNAME", "guardian")
         for project in ["DESKTOP", "MOBILE"]:
@@ -71,8 +110,6 @@ def main():
             student = user("E2E_ACADEMY_" + project + "_USERNAME")
             # VIP fixtures cover the paid lab/studio; Free behavior has separate browser cases.
             from datetime import timedelta
-
-            from sqlalchemy import select
 
             admin_id = conn.execute(
                 select(db.table("users").c.id).where(db.table("users").c.username == "admin")

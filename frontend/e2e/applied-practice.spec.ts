@@ -5,7 +5,7 @@ test("Lớp 1 Free: bài mới, gợi ý, làm bài và lọc phần cần ôn",
   page,
 }, info) => {
   const suffix = info.project.name === "mobile" ? "MOBILE" : "DESKTOP";
-  const username = process.env[`E2E_REVIEW_GRADE1_FREE_${suffix}_USERNAME`];
+  const username = process.env[`E2E_APPLIED_GRADE1_FREE_${suffix}_USERNAME`];
   const password = process.env.E2E_STUDENT_PASSWORD;
   test.skip(
     !username || !password,
@@ -67,7 +67,7 @@ test("Lớp 5 VIP: đọc biểu đồ, mở đủ gợi ý và lọc thử thá
   page,
 }, info) => {
   const suffix = info.project.name === "mobile" ? "MOBILE" : "DESKTOP";
-  const username = process.env[`E2E_REVIEW_GRADE5_VIP_${suffix}_USERNAME`];
+  const username = process.env[`E2E_APPLIED_GRADE5_VIP_${suffix}_USERNAME`];
   const password = process.env.E2E_STUDENT_PASSWORD;
   test.skip(!username || !password, "Cần học sinh VIP test riêng");
   await login(page, username!, password!);

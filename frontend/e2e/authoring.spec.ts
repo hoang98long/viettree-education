@@ -92,10 +92,15 @@ test("admin tạo câu, ghép đề và giao bài; học sinh tìm, làm và xem
     .click();
   await login(page, student!, studentPassword!);
   await page.goto("/student/practice");
+  await page.getByText("Chọn thêm bộ lọc", { exact: true }).click();
   await page.getByLabel("Gói bài luyện").selectOption("free");
-  await page.getByLabel("Tìm bài luyện tập").fill(code);
+  await page.getByLabel("Tên bài hoặc chủ đề").fill(title);
+  await page.getByRole("button", { name: "Tìm bài", exact: true }).click();
   await expect(
-    page.getByRole("link", { name: new RegExp(title) }),
+    page
+      .getByRole("article")
+      .filter({ has: page.getByRole("heading", { name: title, exact: true }) })
+      .getByRole("link", { name: "Mở bài luyện tập", exact: true }),
   ).toBeVisible();
   await page.goto("/student/dashboard");
   const assignedLink = page

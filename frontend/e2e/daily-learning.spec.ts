@@ -33,7 +33,7 @@ const suffixFor = (info: TestInfo) =>
 
 async function student(page: Page, info: TestInfo, grade: number) {
   const username =
-    process.env[`E2E_VERIFICATION_GRADE${grade}_${suffixFor(info)}_USERNAME`];
+    process.env[`E2E_DAILY_GRADE${grade}_${suffixFor(info)}_USERNAME`];
   const password = process.env.E2E_STUDENT_PASSWORD;
   test.skip(!username || !password, "Cần fixture riêng trên database test");
   await login(page, username!, password!);

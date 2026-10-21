@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers";
+import { localTLS } from "./environment";
 
 test("lớp 4: bài mới, biểu đồ/góc, Góc tư duy Free/VIP và bảng học liệu admin", async ({
   page,
@@ -90,6 +91,7 @@ test("lớp 4: bài mới, biểu đồ/góc, Góc tư duy Free/VIP và bảng h
     }
   }
   const adminContext = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     baseURL: info.project.use.baseURL,
   });
   const admin = await adminContext.newPage();

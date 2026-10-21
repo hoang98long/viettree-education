@@ -1,5 +1,6 @@
 import { test, expect, type Page, type BrowserContext } from "@playwright/test";
 import { login } from "./helpers";
+import { localTLS } from "./environment";
 
 async function csrf(context: BrowserContext) {
   return (
@@ -29,7 +30,12 @@ test("AI Free/VIP và bảng giá: cấp rồi thu hồi chặn bài đã mở",
   const catalog = await (
     await page.request.get("/api/v1/ai-academy/catalog?grade=4")
   ).json();
-  expect(catalog.filter((r: { locked: boolean }) => !r.locked)).toHaveLength(3);
+  expect(
+    catalog
+      .filter((r: { locked: boolean }) => !r.locked)
+      .map((r: { code: string }) => r.code)
+      .sort(),
+  ).toEqual(["AI4-01", "AI4-04", "AI4-27", "AI4-37", "AI4-39"]);
   const lesson = catalog.find((r: { code: string }) => r.code === "AI4-02");
   await page.goto(`/ai-academy/lessons/${lesson.id}`);
   await expect(
@@ -58,6 +64,7 @@ test("AI Free/VIP và bảng giá: cấp rồi thu hồi chặn bài đã mở",
     }),
   ).toBeVisible();
   const admin = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     baseURL: process.env.E2E_BASE_URL,
     viewport: page.viewportSize()!,
   });
@@ -74,17 +81,13 @@ test("AI Free/VIP và bảng giá: cấp rồi thu hồi chặn bài đã mở",
   await expect(
     page.getByRole("heading", { name: lesson.title, exact: true }),
   ).toBeVisible();
-  await page
-    .getByRole("button", { name: "Lưu và tiếp tục", exact: true })
-    .click();
+  await page.getByRole("button", { name: "Tiếp theo", exact: true }).click();
   const revoked = await admin.request.post(path + "/revoke", {
     data: { reason: "E2E thu hồi khi học sinh đang trong bài" },
     headers: { "X-CSRF-Token": token, "Idempotency-Key": crypto.randomUUID() },
   });
   expect(revoked.status()).toBe(200);
-  await page
-    .getByRole("button", { name: "Lưu và tiếp tục", exact: true })
-    .click();
+  await page.getByRole("button", { name: "Tiếp theo", exact: true }).click();
   await expect(
     page.getByRole("heading", {
       name: "Cùng khám phá thêm với VIP",
@@ -239,6 +242,7 @@ test("Lớp học: tạo, ghi danh, giao cả lớp/cá nhân và tuyên dương
   ).toBeVisible();
   for (let i = 0; i < usernames.length; i++) {
     const context = await browser.newContext({
+      ignoreHTTPSErrors: localTLS,
       baseURL: process.env.E2E_BASE_URL,
     });
     expect(

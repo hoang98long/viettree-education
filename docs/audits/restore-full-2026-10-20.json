@@ -1,0 +1,17 @@
+{
+  "scope": "local PostgreSQL 18 / read-only source backup restored into a unique test database",
+  "consistent_snapshot": true,
+  "tables_compared": 83,
+  "count_mismatches": 0,
+  "row_fingerprint_mismatches": 0,
+  "source_read_only": true,
+  "schema_valid": true,
+  "migration_heads": [
+    "0012_lesson_bookmarks"
+  ],
+  "archive_bytes": 1553314,
+  "source_database": "viettree-education",
+  "restored_test_database": "viettree-restore-test-20261020-8f40115457",
+  "real_vps_tested": false,
+  "temporary_restore_database_removed": true
+}

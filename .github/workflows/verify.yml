@@ -40,7 +40,16 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -r requirements-lock.txt && python -m pip install --no-deps -e .
       - run: ruff check . && ruff format --check .
-      - run: python -m app.cli import-schema && python -m alembic upgrade head && python -m app.cli seed
+      - name: Prepare complete test curriculum
+        run: |
+          python -m app.cli import-schema
+          python -m alembic upgrade head
+          python -m app.cli seed
+          python -m app.cli seed-ai-academy
+          python -m app.cli seed-supplement-content --release applied-2026-01
+          python -m app.cli seed-supplement-content --release explorers-2026-01
+          python -m app.cli seed-supplement-content --release review-2026-02
+          python -m app.cli seed-supplement-content --release daily-2026-03
       - run: pytest -q
   frontend:
     runs-on: ubuntu-24.04

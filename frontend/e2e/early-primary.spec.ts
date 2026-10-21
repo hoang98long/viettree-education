@@ -1,3 +1,4 @@
+import { localTLS } from "./environment";
 import { test, expect } from "@playwright/test";
 import { expectedSeedQuestions, login } from "./helpers";
 
@@ -98,6 +99,7 @@ for (const grade of [1, 2]) {
       .click();
     await expect(page).toHaveURL(/\/student\/results\//);
     const adminContext = await browser.newContext({
+      ignoreHTTPSErrors: localTLS,
       baseURL: process.env.E2E_BASE_URL,
     });
     const admin = await adminContext.newPage();

@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-20",
+  "wheel_bytes": 1855391,
+  "wheel_sha256": "7bf86eeb44acbf1933af7780e5a8b300a7455432ce94e9c8458e72bf0aa19ed4",
+  "bundled_svg": 1702,
+  "release_diagnostics_included": true,
+  "schema_files_included": true,
+  "docker_images_built_locally": false
+}

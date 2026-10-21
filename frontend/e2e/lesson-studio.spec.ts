@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers";
+import { localTLS } from "./environment";
 
 test("admin tạo/duyệt bài minh họa; học sinh đọc, mở gợi ý; nháp giữ bài cũ", async ({
   page,
@@ -68,6 +69,7 @@ test("admin tạo/duyệt bài minh họa; học sinh đọc, mở gợi ý; nh�
   await expect(page).toHaveURL(/\/admin\/lessons\/[^/]+\/edit$/);
   const id = page.url().split("/").at(-2)!;
   const studentContext = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     baseURL: info.project.use.baseURL,
     viewport: info.project.use.viewport,
     isMobile: info.project.use.isMobile,

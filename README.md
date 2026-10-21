@@ -11,6 +11,11 @@ tài khoản lớp 4; thêm bốn tài khoản lớp 5: [danh sách và mật kh
 PostgreSQL thật. Đăng nhập, đọc bài, lưu/resume bài làm, chấm điểm phía server,
 lịch sử, năng lực và gợi ý ôn tập hoạt động end-to-end.
 
+**Rà soát trước triển khai 20/10:** quản trị có báo cáo trước mở web và tải biên
+bản CSV; lệnh `check-release` đối chiếu tài khoản, role DB, đủ học liệu và file
+minh họa. Đã thử phục hồi DB sang bản sao riêng và kiểm thử bằng HTTPS local.
+[Xem kết quả, giới hạn và các bước mở web](docs/pre-deployment-review-2026-10-20.md).
+
 **Nâng cấp AI Academy 19/10:** thêm 10 bài/77 hình, tổng 200 bài cho lớp 1–5.
 Trò chơi chọn đúng khối; học tiếp ưu tiên bài dở; tìm không dấu và lọc bài dễ hơn.
 [Hướng dẫn và cập nhật](docs/ai-academy-upgrade-2026-10-19.md).

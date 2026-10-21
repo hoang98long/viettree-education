@@ -1,5 +1,6 @@
 import { devices, expect, test, type Page } from "@playwright/test";
 import { login } from "./helpers";
+import { localTLS } from "./environment";
 
 async function choose(page: Page, label: string) {
   const [response] = await Promise.all([
@@ -184,10 +185,12 @@ test("cùng tài khoản lưu ba cỡ riêng và đồng bộ tab", async ({
   await page.goto("/student/profile");
   await choose(page, "Chữ lớn hơn");
   const phoneContext = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     ...devices["iPhone 13"],
     baseURL: process.env.E2E_BASE_URL,
   });
   const tabletContext = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     ...devices["iPad (gen 7)"],
     baseURL: process.env.E2E_BASE_URL,
   });

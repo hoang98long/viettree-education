@@ -1,0 +1,40 @@
+.checks {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+}
+.checks li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #dce9e3;
+}
+.checks li > span {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.checks strong {
+  font-size: 0.85em;
+  line-height: 1.5;
+  white-space: nowrap;
+  border-radius: 0.6rem;
+  padding: 0.25rem 0.5rem;
+}
+.passed {
+  color: #17533d;
+  background: #e7f5ed;
+}
+.attention {
+  color: #713b0c;
+  background: #fff0d7;
+}
+@media (max-width: 360px) {
+  .checks li {
+    gap: 0.45rem;
+  }
+  .checks strong {
+    padding-inline: 0.35rem;
+  }
+}

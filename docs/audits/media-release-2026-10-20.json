@@ -1,0 +1,7 @@
+{
+  "date": "2026-10-20",
+  "source_uploaded_academy_assets": 0,
+  "private_media_directory_exists": false,
+  "bundled_media_verified_elsewhere": 1702,
+  "note": "No uploaded Academy assets in source DB; archive/CRC/error paths covered with synthetic files by test_media_archive.py and test_deploy_operations.py."
+}

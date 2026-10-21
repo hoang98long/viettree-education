@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers";
+import { localTLS } from "./environment";
 
 test("Free → admin cấp/gia hạn VIP → học nâng cao → thu hồi, giữ kết quả", async ({
   page,
@@ -42,6 +43,7 @@ test("Free → admin cấp/gia hạn VIP → học nâng cao → thu hồi, gi�
     page.getByRole("heading", { name: "Em sẽ khám phá" }),
   ).toBeVisible();
   const adminContext = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     baseURL: testInfo.project.use.baseURL,
   });
   const admin = await adminContext.newPage();

@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { login } from "./helpers";
+import { localTLS } from "./environment";
 
 test("VIP: thư viện mới → ôn lỗi không đổi điểm → báo cáo/in → thu hồi giữ kết quả", async ({
   page,
@@ -25,6 +26,7 @@ test("VIP: thư viện mới → ôn lỗi không đổi điểm → báo cáo/i
     (await page.request.get("/api/v1/students/me/vip/library")).status(),
   ).toBe(403);
   const adminContext = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     baseURL: info.project.use.baseURL,
   });
   const admin = await adminContext.newPage();

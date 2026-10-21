@@ -112,7 +112,10 @@ docker() {{
 
 @pytest.mark.parametrize(
     "failure,backup_case",
-    [(failure, None) for failure in ("none", "unhealthy", "private_cache", "docs_public")]
+    [
+        (failure, None)
+        for failure in ("none", "unhealthy", "private_cache", "docs_public", "release_not_ready")
+    ]
     + [("none", case) for case in ("valid", "missing", "stale", "corrupt", "invalid_marker")],
 )
 def test_smoke_checks_health_api_privacy_and_hidden_routes(tmp_path, failure, backup_case):
@@ -124,7 +127,7 @@ def test_smoke_checks_health_api_privacy_and_hidden_routes(tmp_path, failure, ba
   *'config --quiet'*) return 0;;
   *'ps -q '*) printf 'container-id';;
   inspect*) if [[ "$FAILURE" == unhealthy ]]; then printf 'running|unhealthy|false|0'; else printf 'running|healthy|false|0'; fi;;
-  *'app.cli check-launch'*) printf '{"status":"ok"}\n';;
+  *'app.cli check-release'*) [[ "$FAILURE" != release_not_ready ]] || return 1; printf '{"status":"ok"}\n';;
   *'settings().origins'*) printf 'https://learn.invalid\n';;
   *) return 2;;
  esac

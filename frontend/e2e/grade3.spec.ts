@@ -1,3 +1,4 @@
+import { localTLS } from "./environment";
 import { test, expect } from "@playwright/test";
 import { expectedSeedQuestions, login } from "./helpers";
 
@@ -60,6 +61,7 @@ test("lớp 3: ba môn, quản trị học liệu và gợi ý Free/VIP cấp r�
     page.getByText(freePayload.content.hints[0], { exact: true }),
   ).toBeVisible();
   const adminContext = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     baseURL: info.project.use.baseURL,
   });
   const admin = await adminContext.newPage();

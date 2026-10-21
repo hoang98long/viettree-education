@@ -1,0 +1,867 @@
+{
+  "date": "2026-10-20",
+  "scope": "Caddy local HTTPS, production API two workers, Next standalone, browser timezone Asia/Tokyo",
+  "initial_full_run": {
+    "total": 134,
+    "passed": 115,
+    "failed": 6,
+    "skipped": 13
+  },
+  "subsequent_reports": [
+    {
+      "report": "browser-recheck",
+      "stats": {
+        "startTime": "2026-10-20T03:52:18.974Z",
+        "duration": 407458.606,
+        "expected": 25,
+        "skipped": 0,
+        "unexpected": 3,
+        "flaky": 0
+      }
+    },
+    {
+      "report": "browser-last-desktop",
+      "stats": {
+        "startTime": "2026-10-20T03:59:40.778Z",
+        "duration": 12760.163999999999,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "report": "browser-last-mobile",
+      "stats": {
+        "startTime": "2026-10-20T04:00:41.704Z",
+        "duration": 4260.22,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "consolidated_unique_cases": {
+    "passed": 133,
+    "intentional_skips": 1,
+    "unresolved_failures": 0
+  },
+  "intentional_skip": {
+    "file": "reading-preferences.spec.ts",
+    "project": "mobile",
+    "title": "cùng tài khoản lưu ba cỡ riêng và đồng bộ tab",
+    "status": "skipped"
+  },
+  "responsive_admin_recheck": {
+    "desktop": "passed",
+    "mobile": "passed"
+  },
+  "case_results": [
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "VIP: lớp 1 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "VIP: lớp 2 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "VIP: lớp 3 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "VIP: lớp 4 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "VIP: lớp 5 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "AI lớp 1: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "AI lớp 2: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "AI lớp 3: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "AI lớp 4: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "desktop",
+      "title": "AI lớp 5: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "accounts.spec.ts",
+      "project": "desktop",
+      "title": "quản trị tài khoản: tạo, sửa, khóa/mở, đặt lại; người dùng đổi mật khẩu và phiên",
+      "status": "passed"
+    },
+    {
+      "file": "ai-academy.spec.ts",
+      "project": "desktop",
+      "title": "AI Academy: học/chấm/resume, lab, an toàn, sản phẩm và huy hiệu",
+      "status": "passed"
+    },
+    {
+      "file": "ai-academy.spec.ts",
+      "project": "desktop",
+      "title": "AI Academy: admin biên soạn bản sao, xem trước, thư viện và an toàn",
+      "status": "passed"
+    },
+    {
+      "file": "ai-academy.spec.ts",
+      "project": "desktop",
+      "title": "AI Academy: giáo viên đúng lớp, chấm rubric và phụ huynh đúng trẻ",
+      "status": "passed"
+    },
+    {
+      "file": "applied-practice.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 1 Free: bài mới, gợi ý, làm bài và lọc phần cần ôn",
+      "status": "passed"
+    },
+    {
+      "file": "applied-practice.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 5 VIP: đọc biểu đồ, mở đủ gợi ý và lọc thử thách ngắn",
+      "status": "passed"
+    },
+    {
+      "file": "applied-practice.spec.ts",
+      "project": "desktop",
+      "title": "Admin: kiểm kê học liệu tình huống đủ cả năm khối",
+      "status": "passed"
+    },
+    {
+      "file": "attempt-autosave.spec.ts",
+      "project": "desktop",
+      "title": "tự lưu: reload, lỗi mạng, phản hồi chậm và chuyển trang vẫn giữ đáp án mới",
+      "status": "passed"
+    },
+    {
+      "file": "authoring.spec.ts",
+      "project": "desktop",
+      "title": "admin tạo câu, ghép đề và giao bài; học sinh tìm, làm và xem kết quả",
+      "status": "passed"
+    },
+    {
+      "file": "classrooms-vip.spec.ts",
+      "project": "desktop",
+      "title": "AI Free/VIP và bảng giá: cấp rồi thu hồi chặn bài đã mở",
+      "status": "passed"
+    },
+    {
+      "file": "classrooms-vip.spec.ts",
+      "project": "desktop",
+      "title": "Lớp học: tạo, ghi danh, giao cả lớp/cá nhân và tuyên dương top 3",
+      "status": "passed"
+    },
+    {
+      "file": "curriculum-extension.spec.ts",
+      "project": "desktop",
+      "title": "lớp 4: bài mới, biểu đồ/góc, Góc tư duy Free/VIP và bảng học liệu admin",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 1: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 2: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 3: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 4: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 5: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "AI lớp 1: tìm thẻ chưa đúng, sửa rồi kiểm tra lại",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "Học tiếp gộp bài đọc, lượt luyện và bước AI gần nhất",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "VIP lớp 5: hội thoại có tranh đúng đồ ăn và nước uống",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "desktop",
+      "title": "Admin kiểm kê bộ Mỗi ngày một khám phá của cả năm khối",
+      "status": "passed"
+    },
+    {
+      "file": "early-primary.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 1: ba môn, bài ngắn/minh họa, lưu bài và quyền gợi ý",
+      "status": "passed"
+    },
+    {
+      "file": "early-primary.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 2: ba môn, bài ngắn/minh họa, lưu bài và quyền gợi ý",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "desktop",
+      "title": "Bài đã lưu: bỏ thẻ cuối trang tự quay về trang còn dữ liệu",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "desktop",
+      "title": "Free lớp 1: lỗi mạng, lưu bài và đồng bộ giữa hai phiên đăng nhập",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "desktop",
+      "title": "VIP lớp 3: khung giấy, gợi ý và bốn đáp án được chấm đúng",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "desktop",
+      "title": "VIP lớp 5: hộp chữ nhật minh họa đúng số đo và gợi ý",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "desktop",
+      "title": "Admin: theo dõi hai bộ học liệu riêng cho năm khối",
+      "status": "passed"
+    },
+    {
+      "file": "grade3.spec.ts",
+      "project": "desktop",
+      "title": "lớp 3: ba môn, quản trị học liệu và gợi ý Free/VIP cấp rồi thu hồi",
+      "status": "passed"
+    },
+    {
+      "file": "grade5-library.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 5: thư viện, hình học, tiến độ, bài thập phân và cấp/thu hồi VIP",
+      "status": "passed"
+    },
+    {
+      "file": "journeys.spec.ts",
+      "project": "desktop",
+      "title": "học sinh: bài học → làm bài → lưu/reload → nộp → kết quả → lịch sử",
+      "status": "passed"
+    },
+    {
+      "file": "journeys.spec.ts",
+      "project": "desktop",
+      "title": "admin: thống kê, danh sách, đáp án chỉ quản trị và trình soạn câu hỏi",
+      "status": "passed"
+    },
+    {
+      "file": "learning.spec.ts",
+      "project": "desktop",
+      "title": "cỡ chữ lưu theo tài khoản; kế hoạch và tiến độ đọc tồn tại sau reload",
+      "status": "passed"
+    },
+    {
+      "file": "lesson-studio.spec.ts",
+      "project": "desktop",
+      "title": "admin tạo/duyệt bài minh họa; học sinh đọc, mở gợi ý; nháp giữ bài cũ",
+      "status": "passed"
+    },
+    {
+      "file": "membership.spec.ts",
+      "project": "desktop",
+      "title": "Free → admin cấp/gia hạn VIP → học nâng cao → thu hồi, giữ kết quả",
+      "status": "passed"
+    },
+    {
+      "file": "operations.spec.ts",
+      "project": "desktop",
+      "title": "Admin kiểm tra hệ thống và làm mới kết quả trên desktop/mobile",
+      "status": "passed"
+    },
+    {
+      "file": "picture-choices.spec.ts",
+      "project": "desktop",
+      "title": "lớp 1: tranh trong thẻ từ và đáp án vẫn chọn và lưu được",
+      "status": "passed"
+    },
+    {
+      "file": "production-network.spec.ts",
+      "project": "desktop",
+      "title": "HTTPS: cookie bảo mật, API riêng tư và chống yêu cầu khác nguồn",
+      "status": "passed"
+    },
+    {
+      "file": "production-network.spec.ts",
+      "project": "desktop",
+      "title": "mạng có thêm độ trễ: chuyển câu, tải lại và nộp vẫn giữ đáp án",
+      "status": "passed"
+    },
+    {
+      "file": "question-reading.spec.ts",
+      "project": "desktop",
+      "title": "lớp 1 FREE: đọc đủ ngữ liệu, câu hỏi ngắn và lưu trên điện thoại",
+      "status": "passed"
+    },
+    {
+      "file": "question-reading.spec.ts",
+      "project": "desktop",
+      "title": "lớp 1 VIP: đọc đủ ngữ liệu, câu hỏi ngắn và lưu trên điện thoại",
+      "status": "passed"
+    },
+    {
+      "file": "question-reading.spec.ts",
+      "project": "desktop",
+      "title": "lớp 5 FREE: đọc đủ ngữ liệu, câu hỏi ngắn và lưu trên điện thoại",
+      "status": "passed"
+    },
+    {
+      "file": "question-reading.spec.ts",
+      "project": "desktop",
+      "title": "lớp 5 VIP: đọc đủ ngữ liệu, câu hỏi ngắn và lưu trên điện thoại",
+      "status": "passed"
+    },
+    {
+      "file": "reading-preferences.spec.ts",
+      "project": "desktop",
+      "title": "cỡ chữ gọn: lưu, lỗi mạng, bài học, AI, màn hình nhỏ và đổi tài khoản",
+      "status": "passed"
+    },
+    {
+      "file": "reading-preferences.spec.ts",
+      "project": "desktop",
+      "title": "cùng tài khoản lưu ba cỡ riêng và đồng bộ tab",
+      "status": "passed"
+    },
+    {
+      "file": "sessions.spec.ts",
+      "project": "desktop",
+      "title": "học sinh: ghi nhớ, logo trang chủ, reload, mở tab mới và đăng xuất đồng bộ",
+      "status": "passed"
+    },
+    {
+      "file": "sessions.spec.ts",
+      "project": "desktop",
+      "title": "admin: logo và trang đăng nhập giữ phiên, cookie bị xóa thì yêu cầu đăng nhập",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 1: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 2: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 3: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 4: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "desktop",
+      "title": "Lớp 5: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "desktop",
+      "title": "Admin thấy đủ học liệu ôn tập cho năm khối",
+      "status": "passed"
+    },
+    {
+      "file": "vip-tools.spec.ts",
+      "project": "desktop",
+      "title": "VIP: thư viện mới → ôn lỗi không đổi điểm → báo cáo/in → thu hồi giữ kết quả",
+      "status": "passed"
+    },
+    {
+      "file": "visual-learning.spec.ts",
+      "project": "desktop",
+      "title": "minh họa VIP: màu đỏ đúng với nhãn ở lớp 1–3",
+      "status": "passed"
+    },
+    {
+      "file": "visual-learning.spec.ts",
+      "project": "desktop",
+      "title": "năm khối: 40 bài, học bằng tranh/chạm, gợi ý không gõ, hoàn thành và ôn lại",
+      "status": "passed"
+    },
+    {
+      "file": "visual-learning.spec.ts",
+      "project": "desktop",
+      "title": "bài học Toán: mở từng phần và minh họa các hàng của số",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "VIP: lớp 1 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "VIP: lớp 2 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "VIP: lớp 3 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "VIP: lớp 4 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "VIP: lớp 5 hoàn thành bài giải thích nâng cao",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "AI lớp 1: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "AI lớp 2: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "AI lớp 3: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "AI lớp 4: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "academy-reasoning.spec.ts",
+      "project": "mobile",
+      "title": "AI lớp 5: đúng lớp, tìm không dấu, học tiếp và chấm bài mới",
+      "status": "passed"
+    },
+    {
+      "file": "accounts.spec.ts",
+      "project": "mobile",
+      "title": "quản trị tài khoản: tạo, sửa, khóa/mở, đặt lại; người dùng đổi mật khẩu và phiên",
+      "status": "passed"
+    },
+    {
+      "file": "ai-academy.spec.ts",
+      "project": "mobile",
+      "title": "AI Academy: học/chấm/resume, lab, an toàn, sản phẩm và huy hiệu",
+      "status": "passed"
+    },
+    {
+      "file": "ai-academy.spec.ts",
+      "project": "mobile",
+      "title": "AI Academy: admin biên soạn bản sao, xem trước, thư viện và an toàn",
+      "status": "passed"
+    },
+    {
+      "file": "ai-academy.spec.ts",
+      "project": "mobile",
+      "title": "AI Academy: giáo viên đúng lớp, chấm rubric và phụ huynh đúng trẻ",
+      "status": "passed"
+    },
+    {
+      "file": "applied-practice.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 1 Free: bài mới, gợi ý, làm bài và lọc phần cần ôn",
+      "status": "passed"
+    },
+    {
+      "file": "applied-practice.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 5 VIP: đọc biểu đồ, mở đủ gợi ý và lọc thử thách ngắn",
+      "status": "passed"
+    },
+    {
+      "file": "applied-practice.spec.ts",
+      "project": "mobile",
+      "title": "Admin: kiểm kê học liệu tình huống đủ cả năm khối",
+      "status": "passed"
+    },
+    {
+      "file": "attempt-autosave.spec.ts",
+      "project": "mobile",
+      "title": "tự lưu: reload, lỗi mạng, phản hồi chậm và chuyển trang vẫn giữ đáp án mới",
+      "status": "passed"
+    },
+    {
+      "file": "authoring.spec.ts",
+      "project": "mobile",
+      "title": "admin tạo câu, ghép đề và giao bài; học sinh tìm, làm và xem kết quả",
+      "status": "passed"
+    },
+    {
+      "file": "classrooms-vip.spec.ts",
+      "project": "mobile",
+      "title": "AI Free/VIP và bảng giá: cấp rồi thu hồi chặn bài đã mở",
+      "status": "passed"
+    },
+    {
+      "file": "classrooms-vip.spec.ts",
+      "project": "mobile",
+      "title": "Lớp học: tạo, ghi danh, giao cả lớp/cá nhân và tuyên dương top 3",
+      "status": "passed"
+    },
+    {
+      "file": "curriculum-extension.spec.ts",
+      "project": "mobile",
+      "title": "lớp 4: bài mới, biểu đồ/góc, Góc tư duy Free/VIP và bảng học liệu admin",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 1: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 2: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 3: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 4: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 5: bài mới, học tiếp đúng lượt và chấm đủ bốn câu",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "AI lớp 1: tìm thẻ chưa đúng, sửa rồi kiểm tra lại",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "Học tiếp gộp bài đọc, lượt luyện và bước AI gần nhất",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "VIP lớp 5: hội thoại có tranh đúng đồ ăn và nước uống",
+      "status": "passed"
+    },
+    {
+      "file": "daily-learning.spec.ts",
+      "project": "mobile",
+      "title": "Admin kiểm kê bộ Mỗi ngày một khám phá của cả năm khối",
+      "status": "passed"
+    },
+    {
+      "file": "early-primary.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 1: ba môn, bài ngắn/minh họa, lưu bài và quyền gợi ý",
+      "status": "passed"
+    },
+    {
+      "file": "early-primary.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 2: ba môn, bài ngắn/minh họa, lưu bài và quyền gợi ý",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "mobile",
+      "title": "Bài đã lưu: bỏ thẻ cuối trang tự quay về trang còn dữ liệu",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "mobile",
+      "title": "Free lớp 1: lỗi mạng, lưu bài và đồng bộ giữa hai phiên đăng nhập",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "mobile",
+      "title": "VIP lớp 3: khung giấy, gợi ý và bốn đáp án được chấm đúng",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "mobile",
+      "title": "VIP lớp 5: hộp chữ nhật minh họa đúng số đo và gợi ý",
+      "status": "passed"
+    },
+    {
+      "file": "explorers-bookmarks.spec.ts",
+      "project": "mobile",
+      "title": "Admin: theo dõi hai bộ học liệu riêng cho năm khối",
+      "status": "passed"
+    },
+    {
+      "file": "grade3.spec.ts",
+      "project": "mobile",
+      "title": "lớp 3: ba môn, quản trị học liệu và gợi ý Free/VIP cấp rồi thu hồi",
+      "status": "passed"
+    },
+    {
+      "file": "grade5-library.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 5: thư viện, hình học, tiến độ, bài thập phân và cấp/thu hồi VIP",
+      "status": "passed"
+    },
+    {
+      "file": "journeys.spec.ts",
+      "project": "mobile",
+      "title": "học sinh: bài học → làm bài → lưu/reload → nộp → kết quả → lịch sử",
+      "status": "passed"
+    },
+    {
+      "file": "journeys.spec.ts",
+      "project": "mobile",
+      "title": "admin: thống kê, danh sách, đáp án chỉ quản trị và trình soạn câu hỏi",
+      "status": "passed"
+    },
+    {
+      "file": "learning.spec.ts",
+      "project": "mobile",
+      "title": "cỡ chữ lưu theo tài khoản; kế hoạch và tiến độ đọc tồn tại sau reload",
+      "status": "passed"
+    },
+    {
+      "file": "lesson-studio.spec.ts",
+      "project": "mobile",
+      "title": "admin tạo/duyệt bài minh họa; học sinh đọc, mở gợi ý; nháp giữ bài cũ",
+      "status": "passed"
+    },
+    {
+      "file": "membership.spec.ts",
+      "project": "mobile",
+      "title": "Free → admin cấp/gia hạn VIP → học nâng cao → thu hồi, giữ kết quả",
+      "status": "passed"
+    },
+    {
+      "file": "operations.spec.ts",
+      "project": "mobile",
+      "title": "Admin kiểm tra hệ thống và làm mới kết quả trên desktop/mobile",
+      "status": "passed"
+    },
+    {
+      "file": "picture-choices.spec.ts",
+      "project": "mobile",
+      "title": "lớp 1: tranh trong thẻ từ và đáp án vẫn chọn và lưu được",
+      "status": "passed"
+    },
+    {
+      "file": "production-network.spec.ts",
+      "project": "mobile",
+      "title": "HTTPS: cookie bảo mật, API riêng tư và chống yêu cầu khác nguồn",
+      "status": "passed"
+    },
+    {
+      "file": "production-network.spec.ts",
+      "project": "mobile",
+      "title": "mạng có thêm độ trễ: chuyển câu, tải lại và nộp vẫn giữ đáp án",
+      "status": "passed"
+    },
+    {
+      "file": "question-reading.spec.ts",
+      "project": "mobile",
+      "title": "lớp 1 FREE: đọc đủ ngữ liệu, câu hỏi ngắn và lưu trên điện thoại",
+      "status": "passed"
+    },
+    {
+      "file": "question-reading.spec.ts",
+      "project": "mobile",
+      "title": "lớp 1 VIP: đọc đủ ngữ liệu, câu hỏi ngắn và lưu trên điện thoại",
+      "status": "passed"
+    },
+    {
+      "file": "question-reading.spec.ts",
+      "project": "mobile",
+      "title": "lớp 5 FREE: đọc đủ ngữ liệu, câu hỏi ngắn và lưu trên điện thoại",
+      "status": "passed"
+    },
+    {
+      "file": "question-reading.spec.ts",
+      "project": "mobile",
+      "title": "lớp 5 VIP: đọc đủ ngữ liệu, câu hỏi ngắn và lưu trên điện thoại",
+      "status": "passed"
+    },
+    {
+      "file": "reading-preferences.spec.ts",
+      "project": "mobile",
+      "title": "cỡ chữ gọn: lưu, lỗi mạng, bài học, AI, màn hình nhỏ và đổi tài khoản",
+      "status": "passed"
+    },
+    {
+      "file": "reading-preferences.spec.ts",
+      "project": "mobile",
+      "title": "cùng tài khoản lưu ba cỡ riêng và đồng bộ tab",
+      "status": "skipped"
+    },
+    {
+      "file": "sessions.spec.ts",
+      "project": "mobile",
+      "title": "học sinh: ghi nhớ, logo trang chủ, reload, mở tab mới và đăng xuất đồng bộ",
+      "status": "passed"
+    },
+    {
+      "file": "sessions.spec.ts",
+      "project": "mobile",
+      "title": "admin: logo và trang đăng nhập giữ phiên, cookie bị xóa thì yêu cầu đăng nhập",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 1: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 2: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 3: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 4: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "mobile",
+      "title": "Lớp 5: học AI mới, gợi ý, tiếp tục phiên và bài đọc mới",
+      "status": "passed"
+    },
+    {
+      "file": "verification-content.spec.ts",
+      "project": "mobile",
+      "title": "Admin thấy đủ học liệu ôn tập cho năm khối",
+      "status": "passed"
+    },
+    {
+      "file": "vip-tools.spec.ts",
+      "project": "mobile",
+      "title": "VIP: thư viện mới → ôn lỗi không đổi điểm → báo cáo/in → thu hồi giữ kết quả",
+      "status": "passed"
+    },
+    {
+      "file": "visual-learning.spec.ts",
+      "project": "mobile",
+      "title": "minh họa VIP: màu đỏ đúng với nhãn ở lớp 1–3",
+      "status": "passed"
+    },
+    {
+      "file": "visual-learning.spec.ts",
+      "project": "mobile",
+      "title": "năm khối: 40 bài, học bằng tranh/chạm, gợi ý không gõ, hoàn thành và ôn lại",
+      "status": "passed"
+    },
+    {
+      "file": "visual-learning.spec.ts",
+      "project": "mobile",
+      "title": "bài học Toán: mở từng phần và minh họa các hàng của số",
+      "status": "passed"
+    }
+  ],
+  "notes": "Results merged by file/project/title, not summed across reruns; initial stale assertions, missing fixtures, shared progress and loading waits corrected."
+}

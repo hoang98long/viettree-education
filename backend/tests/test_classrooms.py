@@ -316,7 +316,13 @@ def test_ai_free_vip_gate_revocation_media_and_training_never_calls_provider(
     client = logged_student
     student = UUID(client.get("/api/v1/auth/me").json()["id"])
     catalog = client.get("/api/v1/ai-academy/catalog?grade=4").json()
-    assert len([r for r in catalog if not r["locked"]]) == 3
+    assert {r["code"] for r in catalog if not r["locked"]} == {
+        "AI4-01",
+        "AI4-04",
+        "AI4-27",
+        "AI4-37",
+        "AI4-39",
+    }
     lesson = str(uid("AI4-02"))
     start = f"/api/v1/ai-academy/lessons/{lesson}/start"
     assert client.post(start).status_code == 403

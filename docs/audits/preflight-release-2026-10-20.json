@@ -1,0 +1,285 @@
+{
+  "date": "2026-10-20",
+  "source_database_read_only": true,
+  "local_source_status": "attention",
+  "local_pending": [
+    {
+      "code": "production_mode",
+      "label": "Chế độ production",
+      "ok": false,
+      "count": null
+    },
+    {
+      "code": "review_demo_accounts",
+      "label": "Tài khoản demo chưa khóa hoặc đổi mật khẩu qua quản trị",
+      "ok": false,
+      "count": 21
+    },
+    {
+      "code": "ready_admin",
+      "label": "Có quản trị đã đặt mật khẩu riêng",
+      "ok": false,
+      "count": 0
+    },
+    {
+      "code": "runtime_db_role",
+      "label": "DB runtime không là superuser/owner và không có quyền tạo cấu trúc",
+      "ok": false,
+      "count": null
+    }
+  ],
+  "curriculum": [
+    {
+      "grade": 1,
+      "subject_code": "MATH",
+      "actual": {
+        "lessons": 30,
+        "questions": 164,
+        "assessments": 26
+      },
+      "minimum": {
+        "lessons": 25,
+        "questions": 142,
+        "assessments": 21
+      },
+      "ok": true
+    },
+    {
+      "grade": 1,
+      "subject_code": "VIETNAMESE",
+      "actual": {
+        "lessons": 28,
+        "questions": 152,
+        "assessments": 24
+      },
+      "minimum": {
+        "lessons": 23,
+        "questions": 130,
+        "assessments": 19
+      },
+      "ok": true
+    },
+    {
+      "grade": 1,
+      "subject_code": "ENGLISH",
+      "actual": {
+        "lessons": 25,
+        "questions": 134,
+        "assessments": 21
+      },
+      "minimum": {
+        "lessons": 20,
+        "questions": 112,
+        "assessments": 16
+      },
+      "ok": true
+    },
+    {
+      "grade": 2,
+      "subject_code": "MATH",
+      "actual": {
+        "lessons": 30,
+        "questions": 164,
+        "assessments": 26
+      },
+      "minimum": {
+        "lessons": 25,
+        "questions": 142,
+        "assessments": 21
+      },
+      "ok": true
+    },
+    {
+      "grade": 2,
+      "subject_code": "VIETNAMESE",
+      "actual": {
+        "lessons": 28,
+        "questions": 152,
+        "assessments": 24
+      },
+      "minimum": {
+        "lessons": 23,
+        "questions": 130,
+        "assessments": 19
+      },
+      "ok": true
+    },
+    {
+      "grade": 2,
+      "subject_code": "ENGLISH",
+      "actual": {
+        "lessons": 25,
+        "questions": 134,
+        "assessments": 21
+      },
+      "minimum": {
+        "lessons": 20,
+        "questions": 112,
+        "assessments": 16
+      },
+      "ok": true
+    },
+    {
+      "grade": 3,
+      "subject_code": "MATH",
+      "actual": {
+        "lessons": 30,
+        "questions": 164,
+        "assessments": 26
+      },
+      "minimum": {
+        "lessons": 25,
+        "questions": 142,
+        "assessments": 21
+      },
+      "ok": true
+    },
+    {
+      "grade": 3,
+      "subject_code": "VIETNAMESE",
+      "actual": {
+        "lessons": 28,
+        "questions": 152,
+        "assessments": 24
+      },
+      "minimum": {
+        "lessons": 23,
+        "questions": 130,
+        "assessments": 19
+      },
+      "ok": true
+    },
+    {
+      "grade": 3,
+      "subject_code": "ENGLISH",
+      "actual": {
+        "lessons": 25,
+        "questions": 134,
+        "assessments": 21
+      },
+      "minimum": {
+        "lessons": 20,
+        "questions": 112,
+        "assessments": 16
+      },
+      "ok": true
+    },
+    {
+      "grade": 4,
+      "subject_code": "MATH",
+      "actual": {
+        "lessons": 30,
+        "questions": 164,
+        "assessments": 26
+      },
+      "minimum": {
+        "lessons": 25,
+        "questions": 142,
+        "assessments": 21
+      },
+      "ok": true
+    },
+    {
+      "grade": 4,
+      "subject_code": "VIETNAMESE",
+      "actual": {
+        "lessons": 28,
+        "questions": 152,
+        "assessments": 24
+      },
+      "minimum": {
+        "lessons": 23,
+        "questions": 130,
+        "assessments": 19
+      },
+      "ok": true
+    },
+    {
+      "grade": 4,
+      "subject_code": "ENGLISH",
+      "actual": {
+        "lessons": 25,
+        "questions": 134,
+        "assessments": 21
+      },
+      "minimum": {
+        "lessons": 20,
+        "questions": 112,
+        "assessments": 16
+      },
+      "ok": true
+    },
+    {
+      "grade": 5,
+      "subject_code": "MATH",
+      "actual": {
+        "lessons": 30,
+        "questions": 164,
+        "assessments": 26
+      },
+      "minimum": {
+        "lessons": 25,
+        "questions": 142,
+        "assessments": 21
+      },
+      "ok": true
+    },
+    {
+      "grade": 5,
+      "subject_code": "VIETNAMESE",
+      "actual": {
+        "lessons": 28,
+        "questions": 152,
+        "assessments": 24
+      },
+      "minimum": {
+        "lessons": 23,
+        "questions": 130,
+        "assessments": 19
+      },
+      "ok": true
+    },
+    {
+      "grade": 5,
+      "subject_code": "ENGLISH",
+      "actual": {
+        "lessons": 25,
+        "questions": 134,
+        "assessments": 21
+      },
+      "minimum": {
+        "lessons": 20,
+        "questions": 112,
+        "assessments": 16
+      },
+      "ok": true
+    }
+  ],
+  "academy": {
+    "baseline_published": 200,
+    "baseline_required": 200,
+    "issues": []
+  },
+  "media": {
+    "assets": 1702,
+    "lessons": 200,
+    "categories": {
+      "hero": 251,
+      "card": 72,
+      "illustration": 1292,
+      "cover": 55,
+      "badge": 12,
+      "mascot": 8,
+      "ui": 12
+    },
+    "valid": true
+  },
+  "isolated_production_test": {
+    "status": "ok",
+    "failed_checks": [],
+    "runtime_role_least_privilege": true,
+    "demo_accounts_disabled_only_in_test_clone": true,
+    "admin_password_rotated_only_in_test_clone": true
+  },
+  "real_vps_tested": false
+}

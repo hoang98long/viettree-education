@@ -53,7 +53,7 @@ for (const row of vipCases) {
     const suffix = info.project.name === "mobile" ? "MOBILE" : "DESKTOP";
     const username =
       process.env[
-        `E2E_${row.grade < 3 ? "REASONING_VIP" : "VERIFICATION"}_GRADE${row.grade}_${suffix}_USERNAME`
+        `E2E_${row.grade < 3 ? "REASONING_VIP" : "REASONING"}_GRADE${row.grade}_${suffix}_USERNAME`
       ];
     test.skip(
       !username || !process.env.E2E_STUDENT_PASSWORD,
@@ -180,7 +180,7 @@ for (const row of cases) {
   }, info) => {
     const suffix = info.project.name === "mobile" ? "MOBILE" : "DESKTOP";
     const username =
-      process.env[`E2E_VERIFICATION_GRADE${row.grade}_${suffix}_USERNAME`];
+      process.env[`E2E_REASONING_GRADE${row.grade}_${suffix}_USERNAME`];
     test.skip(
       !username || !process.env.E2E_STUDENT_PASSWORD,
       "Cần fixture database test riêng",

@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { login } from "./helpers";
+import { localTLS } from "./environment";
 
 const temporary = "Mat khau tam ban dau 2026";
 const chosen = "Cum tu rieng cua hoc sinh 2026";
@@ -39,6 +40,7 @@ test("quản trị tài khoản: tạo, sửa, khóa/mở, đặt lại; ngườ
     page.getByRole("heading", { name: "Nhật ký tài khoản" }),
   ).toBeVisible();
   const studentContext = await browser.newContext({
+    ignoreHTTPSErrors: localTLS,
     ...info.project.use,
     baseURL: info.project.use.baseURL,
   });

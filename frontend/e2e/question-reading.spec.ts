@@ -90,6 +90,10 @@ for (const grade of [1, 5]) {
         ).toBeGreaterThanOrEqual(48);
       }
       await page.reload();
+      await expect(page.locator(".question-prompt")).toHaveText(
+        authored.slice(boundary + 2),
+        { timeout: 15000 },
+      );
       await expect(selected).toBeChecked();
       await expect(reading).toBeVisible();
       if (info.project.use.viewport)
