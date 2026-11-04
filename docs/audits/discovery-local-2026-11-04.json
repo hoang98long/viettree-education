@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-04",
+  "database": "viettree-education",
+  "release": {
+    "release": "discovery-2026-04",
+    "grades": {
+      "1": {
+        "lessons": 6,
+        "assessments": 6,
+        "questions": 24
+      },
+      "2": {
+        "lessons": 6,
+        "assessments": 6,
+        "questions": 24
+      },
+      "3": {
+        "lessons": 6,
+        "assessments": 6,
+        "questions": 24
+      },
+      "4": {
+        "lessons": 6,
+        "assessments": 6,
+        "questions": 24
+      },
+      "5": {
+        "lessons": 6,
+        "assessments": 6,
+        "questions": 24
+      }
+    }
+  },
+  "backup": {
+    "path": ".tools\\backups\\before-discovery-2026-11-04-cfb97371ec964b08972bc8d63334941a.dump",
+    "sha256": "ea6d0702b5992ab8c009c3c8a446eda31abada6ea46310ffdd132ac4426ef3f0",
+    "pg_restore_list": "passed"
+  },
+  "preserved_existing_tables": 82,
+  "preserved_existing_rows": 23933,
+  "added_rows": {
+    "lessons": 30,
+    "lesson_skills": 30,
+    "questions": 120,
+    "question_versions": 120,
+    "question_skills": 120,
+    "lesson_questions": 120,
+    "assessments": 30,
+    "assessment_items": 120,
+    "content_access_policies": 60,
+    "question_version_access_policies": 120
+  },
+  "accounts_sessions_memberships_attempts": "unchanged"
+}

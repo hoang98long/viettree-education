@@ -1,5 +1,8 @@
 # Deploy VPS tại Nhật — 4 vCPU, RAM 8 GB, SSD 100 GB
 
+Cập nhật 04/11: [30 bài mới, bộ lọc và lệnh nạp `discovery-2026-04`](discovery-and-library-2026-11-04.md).
+Không có migration mới. Cài mới xem [bước nạp đủ năm bộ](deploy-vps.md) trong hướng dẫn chung.
+
 Cập nhật 20/10: **Quản trị → Kiểm tra hệ thống → Trước khi mở web**, có tải biên
 bản CSV; CLI `check-release` kiểm tài khoản, học liệu và ảnh trước mở công khai.
 [Biên bản và hướng dẫn cập nhật](pre-deployment-review-2026-10-20.md).

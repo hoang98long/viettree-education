@@ -19,6 +19,8 @@ backend/app/
 │   ├── lesson_content.py       # chuẩn hóa nội dung và phân bổ gợi ý khi đọc
 │   ├── supplements/applied/    # pack tình huống riêng: builders, 3 môn, seed/inventory
 │   ├── supplements/explorers/  # bài khám phá ngắn theo môn/khối
+│   ├── supplements/discovery/  # pack mới: hai bài Free/VIP mỗi môn/khối
+│   ├── supplements/builders.py # hàm tạo bài dùng chung; mặc định ở từng package
 │   ├── supplements/release.py # cơ chế inventory/seed/verify dùng chung
 │   ├── supplements/registry.py # đăng ký release cho CLI và quản trị
 │   └── grades/

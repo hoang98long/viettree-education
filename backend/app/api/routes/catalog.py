@@ -154,8 +154,12 @@ def lesson(lesson_id: UUID, user=Depends(current_user), conn=database):
     gate = access.authorize_content(conn, user, "lesson", lesson_id, row["grade"])
     practice = (
         conn.execute(
-            select(assessments.c.id, assessments.c.title).where(
-                assessments.c.topic_id == row["topic_id"], assessments.c.status == "published"
+            select(assessments.c.id, assessments.c.title)
+            .where(assessments.c.topic_id == row["topic_id"], assessments.c.status == "published")
+            .order_by(
+                (assessments.c.lesson_id == lesson_id).desc().nullslast(),
+                assessments.c.title,
+                assessments.c.id,
             )
         )
         .mappings()

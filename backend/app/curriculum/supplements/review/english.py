@@ -1,6 +1,6 @@
 """Optional short conversations, with Vietnamese scaffolding."""
 
-from app.curriculum.supplements.review.builders import cards, pick, unit
+from app.curriculum.supplements.review import cards, pick, unit
 
 DATA = {
     1: (

@@ -14,9 +14,14 @@ import { useUser } from "@/components/shell";
 import { Empty, ErrorState, Loading, PageTitle } from "@/components/ui";
 import { AccessBadge } from "@/features/membership/pages";
 import type { ContentAccess } from "@/lib/types";
+import {
+  ReleaseFilter,
+  type LearningRelease,
+} from "@/features/lessons/release-filter";
 
 type PracticeLibraryData = {
   grade: number;
+  releases?: LearningRelease[];
   page: number;
   page_size: number;
   summary: {
@@ -48,6 +53,7 @@ const initialFilters = {
   progress: "all",
   max_questions: "",
   search: "",
+  release_code: "",
   kind: "all",
 };
 const kindNames: Record<string, string> = {
@@ -72,6 +78,7 @@ function PracticeLibraryContent() {
   const [page, setPage] = useState(1);
   const query = new URLSearchParams({
     plan: filters.plan,
+    release_code: filters.release_code,
     progress: filters.progress,
     search: filters.search,
     page: String(page),
@@ -161,6 +168,11 @@ function PracticeLibraryContent() {
         <details className="practice-filter-details">
           <summary>Chọn thêm bộ lọc</summary>
           <div className="library-filters practice-filters">
+            <ReleaseFilter
+              releases={data?.releases ?? []}
+              value={filters.release_code}
+              onChange={(value) => update("release_code", value)}
+            />
             <label>
               Môn luyện tập
               <select

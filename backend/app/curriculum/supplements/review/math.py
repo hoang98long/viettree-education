@@ -1,6 +1,6 @@
 """Check operations already introduced in each grade."""
 
-from app.curriculum.supplements.review.builders import cards, pick, unit
+from app.curriculum.supplements.review import cards, pick, unit
 
 
 def content(grade):

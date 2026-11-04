@@ -1,6 +1,6 @@
 """Original mini texts with explicit evidence for each answer."""
 
-from app.curriculum.supplements.review.builders import cards, pick, unit
+from app.curriculum.supplements.review import cards, pick, unit
 
 TEXTS = {
     1: (

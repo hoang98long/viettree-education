@@ -1,7 +1,7 @@
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.schemas.common import CatalogAccess, Grade
 
@@ -34,4 +34,5 @@ class PracticeLibraryResponse(BaseModel):
     page: int
     page_size: int
     summary: PracticeLibrarySummary
+    releases: list[dict[str, str]] = Field(default_factory=list)
     items: list[PracticeLibraryItem]

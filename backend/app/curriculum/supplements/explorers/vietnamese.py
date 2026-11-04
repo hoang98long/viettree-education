@@ -1,6 +1,6 @@
 """Original short poems, messages and model paragraphs with explicit evidence."""
 
-from app.curriculum.supplements.explorers.builders import cards, pick, unit
+from app.curriculum.supplements.explorers import cards, pick, unit
 
 
 def content(grade):

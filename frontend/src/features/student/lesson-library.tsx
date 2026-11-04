@@ -16,10 +16,15 @@ import { useUser } from "@/components/shell";
 import { useResource } from "@/hooks/use-resource";
 import { AccessBadge } from "@/features/membership/pages";
 import type { ContentAccess } from "@/lib/types";
+import {
+  ReleaseFilter,
+  type LearningRelease,
+} from "@/features/lessons/release-filter";
 import { BookmarkButton } from "@/features/lessons/bookmark-button";
 
 type Library = {
   grade: number;
+  releases?: LearningRelease[];
   page: number;
   page_size: number;
   summary: {
@@ -51,11 +56,13 @@ function LibraryContent({ savedOnly }: { savedOnly: boolean }) {
     progress: "all",
     category: "all",
     search: "",
+    release_code: "",
   });
   const [draft, setDraft] = useState("");
   const [page, setPage] = useState(1);
   const query = new URLSearchParams({
     plan: filters.plan,
+    release_code: filters.release_code,
     progress: filters.progress,
     category: filters.category,
     search: filters.search,
@@ -134,6 +141,11 @@ function LibraryContent({ savedOnly }: { savedOnly: boolean }) {
         <details className="library-filter-details">
           <summary>Chọn thêm bộ lọc</summary>
           <div className="library-filters">
+            <ReleaseFilter
+              releases={data?.releases ?? []}
+              value={filters.release_code}
+              onChange={(value) => update("release_code", value)}
+            />
             <label>
               Môn học
               <select
@@ -193,6 +205,7 @@ function LibraryContent({ savedOnly }: { savedOnly: boolean }) {
                 progress: "all",
                 category: "all",
                 search: "",
+                release_code: "",
               });
               setDraft("");
               setBookmarkedOnly(savedOnly);

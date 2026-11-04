@@ -1,37 +1,18 @@
 # Chạy nhanh trên máy local hiện tại
 
-Cập nhật 20/10: **Quản trị → Kiểm tra hệ thống → Trước khi mở web**, có tải biên
-bản CSV; CLI `check-release` kiểm tài khoản, học liệu và ảnh trước mở công khai.
-[Biên bản và hướng dẫn cập nhật](pre-deployment-review-2026-10-20.md).
-
-AI Academy cập nhật 19/10: 200 bài, 11 chủ đề/khối, trò chơi đúng lớp và tìm/học tiếp.
-Local hiện tại đã backup/nạp; khởi động lại hai server. Máy khác/VPS backup, build
-và chạy `seed-ai-academy` theo [hướng dẫn](ai-academy-upgrade-2026-10-19.md).
-Không có migration mới.
+**Cập nhật 04/11/2026:** đã sao lưu và nạp `discovery-2026-04`, thêm 30 bài,
+120 câu hỏi, 30 đề. Có đủ năm bộ bổ sung thì mỗi khối có **89 bài / 474 câu /
+77 đề** ở ba môn; AI Academy vẫn 40 bài/khối. Khởi động lại hai server để
+hiện bộ lọc **Bộ bài học** tại thư viện bài học và luyện tập.
+[Nội dung và lệnh nạp trên máy khác/VPS](discovery-and-library-2026-11-04.md).
 
 Máy Windows hiện có `.env`, `.venv`, `frontend/node_modules` và PostgreSQL 18
-đang chạy. Dùng PowerShell; không cần Docker hoặc cài lại các thư viện.
+đang chạy. Dùng PowerShell; không cần Docker hoặc cài lại các thư viện. Head
+vẫn `0012_lesson_bookmarks`; bản mới không yêu cầu seed lại tài khoản.
 
-**Bản hiện tại 17/10:** đã backup và nạp bộ `daily-2026-03`, thêm 15 bài/60 câu/
-15 đề. Có đủ bốn bộ bổ sung thì mỗi khối đạt **83 bài/450 câu/71 đề** ở ba môn.
-Trang chủ học tiếp đúng bài/lượt/bước AI, phản hồi bài AI dễ xem lại hơn.
-Head vẫn `0012_lesson_bookmarks`; khởi động lại hai server.
-[Nội dung và lệnh nạp trên máy khác](daily-learning-and-resume.md).
-Các số 68/384/56, 74/414/62 và 77/426/65 ở phần cũ ghi nhận các mốc trước.
-
-Bản nâng cấp 14/10 bổ sung tự lưu bài luyện, đồng hồ thời hạn và rà soát học liệu.
-Không cần migration hoặc seed lại; khởi động lại cả hai server theo hướng dẫn
-dưới đây. [Cách dùng tự lưu](learning-reliability.md).
-
-Bản 15/10 cải thiện xem lại đáp án/lời giải, hình minh họa, bộ đếm câu đã làm
-và xử lý lỗi mạng/database; cũng chỉ cần khởi động lại server, không seed lại.
-[Báo cáo kiểm thử](review-2026-10-15.md).
-
-Bộ tình huống mới đã nạp trên máy này: thêm 30 bài/150 câu/30 đề cho lớp 1–5.
-Khởi động lại hai server để dùng thư viện luyện tập mới (tìm không dấu, chọn bài
-ngắn và ôn thêm). Các số 68/384/56 bên dưới là bộ nền tảng; có bộ bổ sung thì
-mỗi khối thành 74/414/62. Máy khác nạp bằng `app.cli seed-applied-content` sau
-khi có bộ nền tảng. [Hướng dẫn và quyền Free/VIP](applied-learning.md).
+Admin có **Kiểm tra hệ thống → Trước khi mở web**, kèm biên bản CSV; CLI
+`check-release` đối chiếu tài khoản, học liệu và ảnh trước mở công khai.
+[Các bước và giới hạn kiểm chứng triển khai](pre-deployment-review-2026-10-20.md).
 
 ## 1. Mở backend — terminal thứ nhất
 

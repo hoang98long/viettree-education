@@ -1,25 +1,17 @@
 """Published lesson metadata for a student's own grade, with accent-aware search."""
 
-import unicodedata
-
 from sqlalchemy import func, or_, select, true
 
 from app.db import db
 from app.services import access
+from app.services.library_filters import (
+    ACCENTS,
+    BASE_LETTERS,
+    fold,
+    release_options,
+    release_predicate,
+)
 from app.services.vip import profile
-
-ACCENTS = "àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ"
-
-
-def fold(value):
-    return "".join(
-        char
-        for char in unicodedata.normalize("NFKD", value.lower().replace("đ", "d"))
-        if not unicodedata.combining(char)
-    )
-
-
-BASE_LETTERS = "".join(fold(char) for char in ACCENTS)
 
 
 def lesson_library(
@@ -32,6 +24,7 @@ def lesson_library(
     search="",
     page=1,
     bookmarked_only=False,
+    release_code=None,
 ):
     grade = profile(conn, user["id"])
     lessons, topics, subjects, policies, progress_rows, bookmarks = (
@@ -68,6 +61,8 @@ def lesson_library(
         subjects.c.is_active.is_(True),
         lessons.c.status == "published",
     ]
+    if release_code:
+        predicates.append(release_predicate(lessons.c.code, release_code))
     if subject_code:
         predicates.append(subjects.c.code == subject_code)
     if plan != "all":
@@ -177,4 +172,11 @@ def lesson_library(
         {**dict(row), **access.content_access(conn, user, "lesson", row["id"], grade, membership)}
         for row in rows
     ]
-    return {"grade": grade, "page": page, "page_size": 12, "summary": dict(totals), "items": items}
+    return {
+        "grade": grade,
+        "page": page,
+        "page_size": 12,
+        "summary": dict(totals),
+        "items": items,
+        "releases": release_options(),
+    }

@@ -3,7 +3,8 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: [rà soát trước triển khai 20/10](pre-deployment-review-2026-10-20.md).
+Trạng thái mới nhất: [học liệu, thư viện và cấu trúc 04/11](discovery-and-library-2026-11-04.md).
+Rà soát triển khai trước đó: [20/10](pre-deployment-review-2026-10-20.md).
 Đợt trước: [AI Academy 19/10](ai-academy-upgrade-2026-10-19.md),
 [kiểm chứng AI](audits/academy-quality-2026-10-19.md). Đợt trước: [học tiếp và học liệu hằng ngày 17/10](daily-learning-and-resume.md),
 [kiểm chứng](audits/daily-quality-2026-10-17.md). Đợt 16/10 xem [AI và tự kiểm tra](learning-upgrade-2026-10-16.md).

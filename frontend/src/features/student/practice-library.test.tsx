@@ -16,6 +16,7 @@ vi.mock("@/hooks/use-resource", () => ({
       retry: resource.retry,
       data: {
         grade: 2,
+        releases: [{ code: "discovery-2026-04", title: "Khám phá cùng bạn" }],
         page: 1,
         page_size: 12,
         summary: { total: 30, not_started: 28, review: 1, mastered: 1 },
@@ -97,5 +98,21 @@ describe("Thư viện luyện tập", () => {
     expect(resource.query).toContain("progress=review");
     fireEvent.click(screen.getByRole("button", { name: "Chưa nộp" }));
     expect(resource.query).toContain("progress=not_started");
+  });
+  it("lọc bộ bài với kết quả hiện tại, về trang đầu và xóa được lựa chọn", () => {
+    render(<PracticeLibrary />);
+    fireEvent.click(screen.getByRole("button", { name: "Trang sau" }));
+    expect(resource.query).toContain("page=2");
+    fireEvent.change(screen.getByLabelText("Bộ bài học"), {
+      target: { value: "discovery-2026-04" },
+    });
+    expect(resource.query).toContain("release_code=discovery-2026-04");
+    expect(resource.query).toContain("page=1");
+    fireEvent.click(screen.getByRole("button", { name: "Ôn thêm" }));
+    expect(resource.query).toContain("release_code=discovery-2026-04");
+    expect(resource.query).toContain("progress=review");
+    fireEvent.click(screen.getByRole("button", { name: "Xóa bộ lọc" }));
+    expect(screen.getByLabelText("Bộ bài học")).toHaveValue("");
+    expect(resource.query).toContain("release_code=&");
   });
 });

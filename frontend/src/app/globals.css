@@ -1200,6 +1200,18 @@ dd {
   font-size: 13px;
   margin-top: 5px;
 }
+.lesson-hints .notice {
+  flex-wrap: wrap;
+  align-items: center;
+}
+.lesson-hints .notice p {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+.lesson-hints .notice .button {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
 .notice.error {
   background: #fff1ed;
   border-color: #efd0c4;

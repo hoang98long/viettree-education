@@ -340,6 +340,18 @@ Prefix `/api/v1`; write cần CSRF. Danh sách có auth trừ giá tham khảo c
 Giao bài không cấp gói, bảng giá không tạo thanh toán. Xem
 [công thức thứ tự](classes-achievements.md), [giá](vip-pricing-research.md).
 
+## Lọc bộ học liệu — 04/11
+
+`GET /api/v1/students/me/lesson-library` và
+`GET /api/v1/students/me/practice-library` thêm query tùy chọn `release_code`
+(tối đa 60 ký tự). Bỏ qua hoặc chuỗi rỗng để xem mọi bộ; mã khác rỗng phải có
+trong registry, mã lạ trả 422. Không dùng wildcard do client truyền vào.
+
+Response bổ sung `releases: [{code, title}]` là danh sách bộ đã đăng ký; không
+có nội dung hoặc đáp án. Filter áp dụng trước cả thống kê và phân trang, kết
+hợp được với các query hiện có. Khối vẫn lấy từ hồ sơ hiện tại, quyền nội dung
+kiểm tra riêng. Các bộ chưa nạp có thể không có kết quả. Hợp đồng cũ vẫn giữ.
+
 ## Dashboard học tiếp — 17/10
 
 `GET /api/v1/students/me/dashboard` bổ sung `resume_items`, giữ `continue_lesson`

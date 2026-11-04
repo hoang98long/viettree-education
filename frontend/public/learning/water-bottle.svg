@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180">
+  <title>Bình nước</title>
+  <rect width="240" height="180" rx="24" fill="#eaf7fa" />
+  <rect
+    x="103"
+    y="22"
+    width="35"
+    height="25"
+    rx="6"
+    fill="#eeb94d"
+    stroke="#28536b"
+    stroke-width="4"
+  />
+  <path
+    d="M103 47Q89 61 89 76V141Q89 153 102 153H139Q152 153 152 140V76Q152 60 138 47Z"
+    fill="#8ccedb"
+    stroke="#28536b"
+    stroke-width="5"
+  />
+  <path
+    d="M96 101Q109 93 122 101Q135 109 145 101V139Q145 146 137 146H105Q96 146 96 138Z"
+    fill="#39a7c5"
+  />
+  <path d="M103 66V87" stroke="#fff" stroke-width="6" stroke-linecap="round" />
+</svg>

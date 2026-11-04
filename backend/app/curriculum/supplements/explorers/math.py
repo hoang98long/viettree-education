@@ -1,7 +1,7 @@
 """Measure, reason and check; early-primary questions require no typing."""
 
 from app.curriculum.builders import blank
-from app.curriculum.supplements.explorers.builders import cards, pick, unit
+from app.curriculum.supplements.explorers import cards, pick, unit
 
 
 def content(grade):

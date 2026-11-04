@@ -1,6 +1,6 @@
 """Clocks and duration; numerical assumptions are included in each problem."""
 
-from app.curriculum.supplements.daily.builders import pick, unit
+from app.curriculum.supplements.daily import pick, unit
 
 
 def content(grade):

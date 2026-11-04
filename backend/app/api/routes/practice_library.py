@@ -19,9 +19,10 @@ def library(
     search: str = Query("", max_length=80),
     page: int = Query(1, ge=1, le=10000),
     kind: Literal["all", "practice", "homework", "quiz", "test", "placement", "adaptive"] = "all",
+    release_code: str | None = Query(None, max_length=60),
     user=Depends(student_user),
     conn=database,
 ):
     return practice_library(
-        conn, user, subject_code, plan, progress, max_questions, search, page, kind
+        conn, user, subject_code, plan, progress, max_questions, search, page, kind, release_code
     )

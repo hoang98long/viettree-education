@@ -5,7 +5,13 @@ from sqlalchemy.dialects.postgresql import distinct_on
 
 from app.db import db
 from app.services import access
-from app.services.lesson_library import ACCENTS, BASE_LETTERS, fold
+from app.services.library_filters import (
+    ACCENTS,
+    BASE_LETTERS,
+    fold,
+    release_options,
+    release_predicate,
+)
 from app.services.vip import profile
 
 
@@ -19,6 +25,7 @@ def practice_library(
     search="",
     page=1,
     kind="all",
+    release_code=None,
 ):
     grade = profile(conn, user["id"])
     assessments, subjects, topics, items, attempts, policies = (
@@ -95,6 +102,8 @@ def practice_library(
         subjects.c.is_active.is_(True),
         or_(assessments.c.topic_id.is_(None), topics.c.is_active.is_(True)),
     ]
+    if release_code:
+        predicates.append(release_predicate(assessments.c.code, release_code))
     if subject_code:
         predicates.append(subjects.c.code == subject_code)
     if plan != "all":
@@ -186,4 +195,5 @@ def practice_library(
         "page_size": 12,
         "summary": {name: rows[0][name] for name in ("total", "review", "mastered", "not_started")},
         "items": result,
+        "releases": release_options(),
     }

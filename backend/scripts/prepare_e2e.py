@@ -90,6 +90,12 @@ def main():
             for grade in range(1, 6):
                 for suffix in ("DESKTOP", "MOBILE"):
                     learner(f"E2E_{namespace}_GRADE{grade}_{suffix}_USERNAME", grade, grade >= 3)
+        for grade in range(1, 6):
+            for suffix in ("DESKTOP", "MOBILE"):
+                for plan in ("FREE", "VIP"):
+                    learner(
+                        f"E2E_DISCOVERY_GRADE{grade}_{plan}_{suffix}_USERNAME", grade, plan == "VIP"
+                    )
         for suffix in ("DESKTOP", "MOBILE"):
             for grade in (1, 5):
                 for plan in ("FREE", "VIP"):

@@ -1,4 +1,4 @@
-from app.curriculum.supplements.daily.builders import cards, pick, unit
+from app.curriculum.supplements.daily import cards, pick, unit
 
 DATA = {
     1: (

@@ -19,9 +19,19 @@ def library(
     search: str = Query("", max_length=80),
     page: int = Query(1, ge=1, le=10000),
     bookmarked_only: bool = False,
+    release_code: str | None = Query(None, max_length=60),
     user=Depends(student_user),
     conn=database,
 ):
     return lesson_library(
-        conn, user, subject_code, plan, progress, category, search, page, bookmarked_only
+        conn,
+        user,
+        subject_code,
+        plan,
+        progress,
+        category,
+        search,
+        page,
+        bookmarked_only,
+        release_code,
     )

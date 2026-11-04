@@ -1,5 +1,7 @@
 # Hướng dẫn deploy VietTree Education lên VPS
 
+Mới ngày 04/11: [30 bài mới, bộ lọc và lệnh nạp `discovery-2026-04`](discovery-and-library-2026-11-04.md). Không có migration mới.
+
 Cập nhật 20/10: **Quản trị → Kiểm tra hệ thống → Trước khi mở web**, có tải biên
 bản CSV; CLI `check-release` kiểm tài khoản, học liệu và ảnh trước mở công khai.
 [Biên bản và hướng dẫn cập nhật](pre-deployment-review-2026-10-20.md).
@@ -395,22 +397,20 @@ VPS đã có bộ nền tảng: sau khi backup và rà soát bộ bổ sung, n�
 Để thêm lớp 5: `dc run --rm -T --no-deps backend python -m app.cli seed-grade-content --grade 5`.
 Lệnh này không cấp gói hay tạo tài khoản. Không cần migration mới ngoài head hiện tại.
 
-Bộ tình huống bổ sung lớp 1–5 được nạp riêng sau bộ nền tảng, khi đang bảo trì
-và đã backup:
+Bộ bổ sung lớp 1–5 được nạp riêng sau nền tảng, khi đang bảo trì và đã backup.
+Để có đủ năm bộ của bản 04/11:
 
 ```bash
-dc run --rm -T --no-deps backend python -m app.cli seed-applied-content
-dc run --rm -T --no-deps backend python -m app.cli verify-applied-content
+for content_release in applied-2026-01 explorers-2026-01 review-2026-02 daily-2026-03 discovery-2026-04; do
+  dc run --rm -T --no-deps backend python -m app.cli seed-supplement-content --release "$content_release" || exit 1
+  dc run --rm -T --no-deps backend python -m app.cli verify-supplement-content --release "$content_release" || exit 1
+done
 ```
 
-Thêm 30 bài/150 câu/30 đề; tổng bộ ba môn khi nạp đủ là 370 bài/2070 câu/310
-đề. Không tạo tài khoản hoặc đổi gói. [Danh mục, gợi ý và kiểm chứng](applied-learning.md).
-
-Bản mới thêm bảng lưu bài ở head `0012_lesson_bookmarks` và bộ Khám phá.
-Sau migration/grant, nạp bằng `dc run --rm -T --no-deps backend python -m app.cli seed-supplement-content --release explorers-2026-01`,
-rồi chạy `verify-supplement-content --release explorers-2026-01` theo cùng cách.
-Thêm 15 bài/60 câu/15 đề; tổng ba môn khi có cả hai bộ bổ sung là 385 bài/2130
-câu/325 đề đang hoạt động. [Chi tiết cập nhật](bookmarks-and-explorers.md).
+Đủ nền tảng và năm bộ: **445 bài / 2.370 câu / 385 đề** ba môn, mỗi khối
+89/474/77. Các lệnh không tạo tài khoản, đổi gói hoặc sửa bài đã xuất bản.
+Head vẫn `0012_lesson_bookmarks`. Khi nâng cấp từ bản đủ bốn bộ trước, chỉ cần
+nạp/verify `discovery-2026-04`. [Danh mục và kiểm chứng bản mới](discovery-and-library-2026-11-04.md).
 
 ## 8. Quản trị đầu tiên và tài khoản thật
 

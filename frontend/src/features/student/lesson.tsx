@@ -94,7 +94,7 @@ export function LessonContent({ data }: { data: Lesson }) {
             và trao đổi với người thân.
           </p>
         )}
-        {data.practice.map((item) => (
+        {data.practice.slice(0, 3).map((item) => (
           <Link
             className="list-row"
             key={item.id}
@@ -104,6 +104,11 @@ export function LessonContent({ data }: { data: Lesson }) {
             <ArrowRight size={18} />
           </Link>
         ))}
+        {data.practice.length > 3 && (
+          <Link className="card-link" href="/student/practice">
+            Xem thêm bài luyện tập <ArrowRight size={18} />
+          </Link>
+        )}
       </section>
       {!!data.next_lessons?.length && (
         <section className="panel lesson-next">
