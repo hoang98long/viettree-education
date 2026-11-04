@@ -134,3 +134,10 @@ authorization của lượt làm. Không cache entitlement hoặc tạo thêm b�
 UI tại `features/student/resume-learning` dùng CSS module, đường dẫn theo loại
 và metadata API; không tự suy quyền từ badge. Bộ `daily-2026-03` dùng builder
 và publisher chung, đăng ký trong `curriculum/supplements/registry.py`.
+
+Biên tập bài cũ nằm trong `services/content_review.py`, dùng catalog kiểm
+chứng trước/sau tại `curriculum/data/lesson-review-2026-11.json`; CLI mặc định
+chỉ xem trước. AI dùng `academy/curriculum_review.py` cho ngữ liệu,
+`visual_art.py` cho hình SVG và `baseline_upgrade.py` để xuất bản phiên bản
+mới trên bản nguồn khớp hash. Không ghi đè payload lịch sử hoặc bản giáo viên
+đang biên soạn. Xem [cách cập nhật học liệu](content-editorial-review-2026-11-04.md).

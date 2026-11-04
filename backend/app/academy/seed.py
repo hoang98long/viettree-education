@@ -4,7 +4,7 @@ from sqlalchemy import func, select, text
 from sqlalchemy.dialects.postgresql import insert
 
 from app.academy.access import FREE_CODES
-from app.academy.baseline_upgrade import publish_visual_revision
+from app.academy.baseline_upgrade import publish_editorial_revision, publish_visual_revision
 from app.academy.curriculum import COMPETENCIES, content, records
 from app.academy.media import MANIFEST, uid, validate_manifest
 from app.db import db
@@ -182,7 +182,9 @@ def seed(conn):
             ),
         )
         payload = content(row)
-        version_id = publish_visual_revision(conn, row, payload)
+        version_id = publish_editorial_revision(conn, row, payload)
+        if version_id is None:
+            version_id = publish_visual_revision(conn, row, payload)
         if version_id is not None:
             for code in {
                 payload["hero"],

@@ -524,7 +524,9 @@ def tasks(grade, unit, variant):
                 ("Một lần đúng nên luôn đúng", "Cần sửa"),
             ],
         )
-    concept, pairs = cases[variant]
+    from app.academy.curriculum_review import task
+
+    concept, pairs = task(grade, unit, variant, cases[variant])
     if grade == 1 and len(pairs) > 2:
         pairs = [pairs[0], next(pair for pair in pairs if pair[1] != pairs[0][1])]
     return concept, pairs
@@ -532,6 +534,7 @@ def tasks(grade, unit, variant):
 
 def records_for_grade(grade, units):
     from app.academy.curriculum import activity, lesson, quiz
+    from app.academy.curriculum_review import SCENES
 
     unit_titles = {code: title for code, title, _ in units}
     ordered_units = list(dict.fromkeys(LEGACY_UNITS[grade] + list(unit_titles)))
@@ -569,7 +572,7 @@ def records_for_grade(grade, units):
         row = lesson(
             number,
             title,
-            "Cùng xem tranh. Em chỉ một điều mình nhận ra.",
+            SCENES[unit],
             concept,
             activity(
                 "classify",

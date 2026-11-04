@@ -5,6 +5,14 @@ PostgreSQL. Học sinh đọc bài có minh họa, nhận gợi ý, luyện tậ
 kết quả và học tiếp phần đang dở. Có Free/VIP, lớp học, giao bài, tuyên dương,
 quản trị tài khoản và ngân hàng câu hỏi.
 
+**Next.js đã nâng lên 16.4.5:** package và lockfile được ghim cùng phiên bản;
+khi cập nhật máy khác, chạy `npm ci` và build lại frontend.
+[Chi tiết nâng cấp và kiểm thử](docs/audits/nextjs-16.4.5-upgrade-2026-11-04.md).
+
+**Rà soát học liệu 04/11:** đã chỉnh 232 bài cũ, cập nhật 200 phiên bản AI
+Academy, bổ sung 915 hình khớp nội dung; giữ tài khoản, VIP và kết quả học.
+[Các thay đổi và cách cập nhật](docs/content-editorial-review-2026-11-04.md).
+
 **Cập nhật 04/11/2026:** thêm **30 bài / 120 câu hỏi / 30 đề luyện**, chia đều
 cho lớp 1–5 và ba môn Toán, Tiếng Việt, Tiếng Anh; mỗi môn có bài Free và VIP.
 Hai thư viện có bộ lọc theo bộ học liệu. Thêm ba tranh SVG; gom hàm tạo bài
@@ -13,7 +21,7 @@ trùng, tách bộ lọc dùng chung. [Nội dung, kiểm thử và cách cập 
 | Học liệu đang xuất bản               | Mỗi khối lớp      | Tổng lớp 1–5       |
 | ------------------------------------ | ----------------- | ------------------ |
 | Ba môn: bài học / câu hỏi / đề luyện | 89 / 474 / 77     | 445 / 2.370 / 385  |
-| AI Academy                           | 40 bài, 11 chủ đề | 200 bài, 1.702 SVG |
+| AI Academy                           | 40 bài, 11 chủ đề | 200 bài, 2.617 SVG |
 
 Số ba môn gồm bộ nền tảng và đủ năm bộ bổ sung; chưa gồm học liệu do admin
 biên soạn riêng. AI Academy ưu tiên lý thuyết, tranh và hoạt động nội bộ;

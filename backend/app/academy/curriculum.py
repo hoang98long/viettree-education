@@ -492,6 +492,8 @@ def records():
     output.extend(investigations())
     output.extend(reasoning())
     for row in output:
+        from app.academy.curriculum_review import reviewed_art
+
         row["visual_prefix"] = row["code"] + "-v2"
         if (
             row["grade"] in [1, 2, 3]
@@ -499,6 +501,8 @@ def records():
             and row["position"] == 3
         ):
             row["visual_prefix"] = row["code"] + "-color-v3"
+        if reviewed_art(row):
+            row["visual_prefix"] = row["code"] + "-review-v3"
         row["cards"] = [
             row["visual_prefix"] + f"-item-{i}" for i in range(1, len(row["activity"]["items"]) + 1)
         ]
@@ -508,6 +512,7 @@ def records():
 def content(row):
     from copy import deepcopy
 
+    from app.academy.curriculum_review import YOUNG_GOALS
     from app.academy.schemas import LessonContent
 
     prefix = row["visual_prefix"]
@@ -523,6 +528,11 @@ def content(row):
             q["answer"] = 1
     data = dict(
         objectives=row.get("objectives")
+        or (
+            [YOUNG_GOALS[unit], "Chạm thẻ để thử lựa chọn.", "Thử lại hoặc nhờ người lớn đọc cùng."]
+            if row["grade"] <= 2
+            else None
+        )
         or [
             f"Giải thích ý chính: {row['title']}.",
             "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
@@ -591,7 +601,7 @@ def content(row):
                 id="finish",
                 kind="project_task",
                 title="Điều em mang theo",
-                text="Chỉ một tranh và nói điều em đã hiểu.",
+                text="Chỉ vào một bức tranh và nói điều em vừa hiểu.",
                 media=[prefix + "-hero"],
             ),
         ],

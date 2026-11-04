@@ -1,0 +1,4929 @@
+{
+  "release": "editorial-2026-11",
+  "lessons": [
+    {
+      "code": "VT1-MATH-geometry-lesson-2",
+      "title": "Nhìn khối hộp và khối lập phương",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "ab7bb32ee4b6c0468d803a35e9185f12d174fd109393d4ccd35d1c3a9eb761d5",
+      "after_sha256": "2b95809c97a4f37ff0ff287fa144ae0b4ad2eec4d8f77d8e04aa505d9b8eaebc",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Quan sát",
+            "Làm thử",
+            "Kiểm tra"
+          ],
+          "caption": "Nhìn ví dụ, nói điều em thấy rồi tự kiểm tra."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-measurement-lesson-1",
+      "title": "Dài hơn, ngắn hơn",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "058072d4c0aaf1e884b3733b81dd77465003c25caf438c4e61c42af77bee9195",
+      "after_sha256": "79965f4a909f56300d649037532920b0c7779754b4732660f220d4b4fcd6126f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "5",
+            "3"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-measurement-lesson-2",
+      "title": "Đo bằng xăng-ti-mét",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "884e58c7e574cf381599dfe7cc8b90644e7af3b174edf30bedd079c0f209b27e",
+      "after_sha256": "5818d0a893423c86b8f82a20aba40279a6cf66c8545881ed3df47687909f1717",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "0",
+            "7"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-tens-units-lesson",
+      "title": "Chục và đơn vị của số có hai chữ số",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "990b5cc2b9d87c9d30db280ef35fd93e3fd6b9d4021fd477648f76ddadd40d50",
+      "after_sha256": "79dbe135ae44a9842018951654e66e81fdd7c13dcd766b6c55175816719ded7a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "23",
+            "2",
+            "3"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-compare-lesson",
+      "title": "Chọn số lớn hơn, bé hơn",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "d1907f89bc9cbc60461c50960e3fdf71a986195094dbf7758506f07051b18c25",
+      "after_sha256": "d8f28192bd73653084f462995ffecccea6647aea3ccfaec436aa55978b54c088",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "42",
+            "24",
+            "4",
+            "2"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-round-tens-lesson",
+      "title": "Đếm các số tròn chục",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "f19192927d4d222ba9aa51ad296e4d86f2ed4bf70be2d6b522937366cbefa712",
+      "after_sha256": "a71abc61df0757f5489dd80ca311a522d61dd4854042fc495c42d61dfd938ac5",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "20",
+            "10",
+            "30"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-add-hundred-lesson",
+      "title": "Cộng không nhớ trong phạm vi 100",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "c2406487f83775bf55436c7537ec24e9530feb25a868f08c8db2ab889867ad3f",
+      "after_sha256": "862019baf3e7f675f3878f18086f488f5723823b60322c7fdb1aec3fbf6b0584",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "23",
+            "14",
+            "37",
+            "3"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-subtract-hundred-lesson",
+      "title": "Trừ không nhớ trong phạm vi 100",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "52a555fa8e78fcd71e40da8307cb0c209bca6d54f88cd5a10e4818437dc8553c",
+      "after_sha256": "d12d21fb23428e6c95abd77ed64ef80a7ef86fed6f392b318cab2ceff9b3a4ac",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "47",
+            "23",
+            "24",
+            "7"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-week-lesson",
+      "title": "Các ngày trong tuần",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "17253b1f2e057788e8a3546bc1cc45619e59ff035c9dd1be32203c45833207e1",
+      "after_sha256": "0a3541ccfe3c83429f971c63c28938d15f7ee1d6f64c08e1b93099463f801a6e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Quan sát",
+            "Làm thử",
+            "Kiểm tra"
+          ],
+          "caption": "Nhìn ví dụ, nói điều em thấy rồi tự kiểm tra."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-left-lesson",
+      "title": "Còn lại bao nhiêu vật?",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "eb9cee276ce1a96e60063aa3d37372bba2235f8ebf5e85ead77c644e80956002",
+      "after_sha256": "06fc7bffb88fb3874b20f305765d5b2dd197a9ffda4f22b41a04fceb0122882b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "7",
+            "3",
+            "4"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-number-gaps-lesson",
+      "title": "Tư duy: tìm số còn thiếu",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "ae54bd3a66221708979611663d2a790f0006c93b3a751a68b20e732206593ba5",
+      "after_sha256": "d2a0fad2bc7bef02a5dcd5319b8678720cc97ba7b9f5bd965e11cc63f8dc090a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "4",
+            "6",
+            "5"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-hidden-add-lesson",
+      "title": "Tư duy: thêm mấy để đủ?",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "727f54a9b61e367f1b1b68c210a56ffaf77f8ccdcbdba4404e6155b6ea54abf3",
+      "after_sha256": "3f3f94f6fb52d839106339bb95d3c73f012f50929141c7052190702ec51f24e7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "5",
+            "2"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-relevant-lesson",
+      "title": "Tư duy: chỉ dùng số cần hỏi",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "5cd51a866bcf8cf88a24abaf3430fd1ceaf3de8eed106cd59b4591e61a1041a8",
+      "after_sha256": "d72e146bd5014c27ef4bd4d9cf6232aefdfa9fba4a6071856748baab6d93b556",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "2",
+            "1",
+            "5"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-different-lesson",
+      "title": "Tư duy: tìm hình khác nhóm",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "dca04380827b27dafbb53f1a7d00e5eef8ca5ac25e14012855eb4988b9cb3259",
+      "after_sha256": "2a39c3248f7ba7646875471f8aa216494cdb922945f877a95882e9e080a44225",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Quan sát",
+            "Làm thử",
+            "Kiểm tra"
+          ],
+          "caption": "Nhìn ví dụ, nói điều em thấy rồi tự kiểm tra."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-shape-objects-lesson",
+      "title": "Tư duy: đồ vật giống hình nào?",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "f3e16974ecf6f85fce22117d22a2c2eb5bd760c5c1761066cf84a85350166b9f",
+      "after_sha256": "33548e09a4455a0fd1d50dc101841532a544bf8d6f3b10980aa0fe42f62aee45",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Quan sát",
+            "Làm thử",
+            "Kiểm tra"
+          ],
+          "caption": "Nhìn ví dụ, nói điều em thấy rồi tự kiểm tra."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-g1-before-after-lesson",
+      "title": "Tư duy: trước và sau một giờ đúng",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "b26b0c30eb134e24d9caa09be851ad308e257b518503be5fa350228c4dcf2695",
+      "after_sha256": "b373608002d81b1186dc1fa4d2d49b87ff5e3ba6489f18c504ac4d094c137b49",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "7",
+            "8"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-reading-lesson-1",
+      "title": "Đọc: bé giúp bà",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "5e79c526c573257615048d4a0f5007575832e86ad7efa98f24e838e59d9d49f0",
+      "after_sha256": "e6d8c579a742c62f07a2eebac679013b6e61be3d2d23f7b7fb8aa99ea5bbff47",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Nhà"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-reading-lesson-2",
+      "title": "Đọc: chiếc bút của bạn",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "61b658b0d91ae8f518931ff2db974aea22aac13e086a8678d0def49aa2fe2775",
+      "after_sha256": "0344e878892e2379c04ae10e5ec9486fe64aab2e8090af1ee7cb8e6dc2d532bf",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-stops-lesson",
+      "title": "Dấu chấm và dấu hỏi",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "3fc0e4620cfe214793288b4d212eb2781799e782fecc477213dc1726758a9c02",
+      "after_sha256": "645c4b14b6799a9d986e1c930deff78022a0b8497640463c6a44d54353cb081f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-capitals-lesson",
+      "title": "Viết hoa đầu câu và tên",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "2ef8a86136e04e3ab942ab8e5899ab27a4ca0cbfb4b6c4b15a4c9ff02a3ab174",
+      "after_sha256": "2e48ebe42803c26b40802b5a76a410b8eff24e8ddce78f8986b83b7500cf642d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "blocks": [
+          {
+            "type": "text",
+            "title": "Cùng khám phá",
+            "text": "Chữ đầu câu và chữ đầu tên người viết hoa. Đọc lại câu để kiểm tra. Khi chọn cách viết đúng, em kiểm tra chữ hoa ở đầu câu, tên riêng và dấu câu theo điều bài hỏi."
+          },
+          {
+            "type": "example",
+            "title": "Thử với ví dụ",
+            "text": "Na đọc sách. Em chào bà."
+          },
+          {
+            "type": "remember",
+            "title": "Em ghi nhớ",
+            "text": "Đọc chậm từng tiếng. Có thể nhờ người lớn đọc mẫu; em chỉ hoặc chọn đáp án."
+          },
+          {
+            "type": "practice",
+            "title": "Tự luyện tập",
+            "text": "Mỗi lần em làm 2–3 câu, rồi nghỉ nếu mỏi. Người lớn có thể đọc câu lệnh và giúp thao tác. Em được lưu bài để làm tiếp; không cần làm nhanh."
+          }
+        ]
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-poem-lesson",
+      "title": "Đọc thơ: nắng trong sân",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "12ff3cec8f3014466ddabe7fd3c8909bbab85d7da75689262c9ba563aa9bbc84",
+      "after_sha256": "dc35221b4f1f3d56b5030198ed3a6fa4070d633e3535d171fc63eb1410da3f2c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây",
+            "Bình nước"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-greetings-lesson",
+      "title": "Chào hỏi, cảm ơn và xin lỗi",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "e9c413948f02d645b9cb9cb28fb97f11175dc3e6640518037505164df6a1c048",
+      "after_sha256": "162f9d7fdc6d20cba8039eb5b67c736a1c564f16fc85e16febc2882f106cd197",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-rain-lesson",
+      "title": "Tư duy: tìm chi tiết trong chuyện mưa",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "b95c7e1f8ea9c75ce6f320da61716382a8134bdf709cdf08b941438404f107a9",
+      "after_sha256": "313ef863e987dfa93337f96c2710bd2f51ab3f0ea3acae7c83d2044c11676b64",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-before-after-lesson",
+      "title": "Tư duy: việc nào trước, việc nào sau?",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "2fe028c2cfe9dafb7d251905ebd497bdb49db482c0d9e0534633ba87dee0f9b3",
+      "after_sha256": "a88cbbbfae130e7b28d76035d6e8a7158732252430eb79071637c3c0b80a41fd",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-match-lesson",
+      "title": "Tư duy: ghép vật với việc dùng",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "1c6d6ab544b7f7f122a2e66077954649b5857e52216ebb5336e0d6ad1b0e2fb2",
+      "after_sha256": "af1981fc12b975ea981fefbdac35aefeed360a817e0db0c5ec3458faaa50e8ec",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-same-rime-lesson",
+      "title": "Tư duy: hai tiếng có cùng vần",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "558300f6c4aec0bf35119b7efcea929037b1baa7dafef594f31ee85560a2f5c1",
+      "after_sha256": "bf6115f3cca660c36afc11da8fe2484f4969424a3f22273172f1592c64e10044",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-sentence-lesson",
+      "title": "Tư duy: chọn câu đúng với việc",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "4edde852f41f7af89014fc1c80477b248da60cc881893137fa804258a2f59338",
+      "after_sha256": "497ef7298caabfef3e14cda47ce064b9d1cfa6416c0966b91ec9327dbeb382de",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-directions-lesson",
+      "title": "Tư duy: đọc một chỉ dẫn ngắn",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "9bb9284bfba17b8b9cce6545672a2d2e3c2ae20c49ec8c8b8bfbe2c4ae9254d9",
+      "after_sha256": "1284929e10f38e4a8912581f59ee15da6c0fb2707af6d4bb8f7af1cdc2e54f32",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-g1-turns-lesson",
+      "title": "Tư duy: nghe và chờ đến lượt",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "a860189606657252ac9e9c7c60f13f8bd867d54e92bd1a89d0df73532d1a15f0",
+      "after_sha256": "d364c280e7e7068dcada5cd8afd0d23a642a33b977c63cce3281aa9a9f2543e9",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT1-ENGLISH-g1-polite-lesson",
+      "title": "Tư duy: chọn lời nói đúng lúc",
+      "grade": 1,
+      "subject": "ENGLISH",
+      "before_sha256": "2dce0fc95d544da5c13509c0eb1197bc4f3fc87f95e5e879eba006fbacbc36e9",
+      "after_sha256": "39530780d2911bd888ace9147bdaece4293148fce626b5e17de7ffb095cd0ff2",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-numbers-lesson-1",
+      "title": "Ôn đọc số và chục, đơn vị",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "0a7f17570d2760db05ae015e1a233ba0d8eb1700321d0ee26b533a8360cf78f6",
+      "after_sha256": "6402d9dfb705dc8a0ffdf097c804890ad0f3c6e0e0de92899299834e44f18ba0",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "46",
+            "4",
+            "6"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-numbers-lesson-2",
+      "title": "Ôn so sánh số đến 100",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "7a89a0ac20bd873004e381445035db11b678aed1ffb89fd5192fd9f7a6e3d55f",
+      "after_sha256": "1e0d9c2bd4a12542b5488c45ad849bdd67afb0ea24e5ac6b1cde892e16489dae",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "68",
+            "65",
+            "6",
+            "8"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-operations-lesson-1",
+      "title": "Cộng có nhớ trong phạm vi 100",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "ba2b162726b84b68c37abfd035663fa35552abb66b99b2563bc5a79e8c2272f4",
+      "after_sha256": "440e83a30e93c3d7c37e0841bd6ff22a824067ee14016f370661625f83e7a5d6",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "27",
+            "15",
+            "42",
+            "7"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-operations-lesson-2",
+      "title": "Trừ có nhớ trong phạm vi 100",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "1da8c66745cb4e236ef9ac53c42c9aa9b6f200fecb49bfa9e43d53956f8ac9eb",
+      "after_sha256": "50ef97451c9c7abfdf0aa812ae290aee127171842a517ebddeb9ec50a2a18f87",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "42",
+            "15",
+            "27",
+            "1"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-measurement-lesson-1",
+      "title": "Xăng-ti-mét, đề-xi-mét và mét",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "7cff7b39f2a7f0f3bac89193b5fbfd3ebf995ead53c6eb566d4cfef67855672e",
+      "after_sha256": "9a2cbc5af94b44fd95d59d838592750e81c27e72999b71f26e0ff780bd5b9237",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "2",
+            "20",
+            "3",
+            "300"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-measurement-lesson-2",
+      "title": "Ki-lô-gam và lít",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "af5579ed18b6454f4f3148bbc7db13649923f5511244288183d4417ab9da70d3",
+      "after_sha256": "de2b3f2d18aea511a5690e7eedbe8e18acc3cb7b1172b5025314b9fbbd9b542a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "2",
+            "3",
+            "5",
+            "1"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-read-thousand-lesson",
+      "title": "Số trong phạm vi 1000",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "b5ca82f8dbd601e11e57de56d58471db6bd901dac035f6575ef8845cb2c601d2",
+      "after_sha256": "ff0ebe60843ec265d7aba351c20cb9a732070634068e61ed4732656ffe4e6398",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "305",
+            "3",
+            "0",
+            "5"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-hundreds-lesson",
+      "title": "Giá trị hàng trăm, chục, đơn vị",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "9c73346a946e090d7632bb91417d3dc4f52d50e715ecc78b231863c8751b7c1f",
+      "after_sha256": "172188916ebb71c0dee71a5d585c11df2dcdaba2a4a012bc83da9910553e6014",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "427",
+            "4",
+            "400"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-number-line-lesson",
+      "title": "Số liền trước, liền sau",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "003b0581bad1545f6cfcb6402e93c813c784fc174df34b0ff34fee83afbfa9be",
+      "after_sha256": "927db2c6a8adbc6ddcf0febae7926ddddbb3fd635863d6768edf46c54f0a6684",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "300",
+            "299",
+            "301"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-add-thousand-lesson",
+      "title": "Cộng không nhớ đến 1000",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "2617e352a8f1e27711c2a0780b5d63b7c61354e0b7d858a7557a86efb9c38372",
+      "after_sha256": "e3e6088d7303abd81aa866b344882435c11d91ffa31c257ca854995c2172b94b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "234",
+            "125",
+            "359"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-subtract-thousand-lesson",
+      "title": "Trừ không nhớ đến 1000",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "5dcca3f23014b0fa9b3eac4de4f552f89f79ad94f1086b67bbfe255ffa06c4f5",
+      "after_sha256": "5acb2f48794c53368dbdaae0999dbc5d2010a3fccce66ccd9ae09f26672ec6a8",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "578",
+            "234",
+            "344"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-single-carry-lesson",
+      "title": "Cộng đến 1000 có nhớ một lần",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "f799e515f084ec5ecfa7a536583ee5755082e41a61acc9cb77200957e2b73ad0",
+      "after_sha256": "7583ede4960c03210026173050d615e3425993a9e6111cb7dfd8a15c57bb6c49",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "236",
+            "128",
+            "364",
+            "6"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-lines-lesson",
+      "title": "Độ dài đường gấp khúc",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "f2cf93abf1524924b93087c93c6dba2b57fa8fc94b60b75c0c3b60b61b4a75f4",
+      "after_sha256": "8be6cc67c8f1e7281a9a4b631b97e0d8849c4a762399de2f68494af9765bacaf",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "4",
+            "7"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-more-than-lesson",
+      "title": "Tư duy: nhiều hơn một số vật",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "d0ee56bfc0776fb0c40762330b2a6c75de3b9506a3f8c04ff2accd0ad61ed34c",
+      "after_sha256": "e7a32f88d0af275ab4c10e9915e108a8b680ed416b1ec0783c227a6eeb50bd20",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "12",
+            "3",
+            "15"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-less-than-lesson",
+      "title": "Tư duy: ít hơn một số vật",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "a76486d491f38f1fdd12d81c66f8203ebeb7803b6832d0be85b1283ea28f4e57",
+      "after_sha256": "db1904fcafe57e8ad835534ba429f5f4aac645f76164ebdfae0b10c6c6eda73e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "18",
+            "4",
+            "14"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-share-lesson",
+      "title": "Tư duy: chia đều theo bảng 2 và 5",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "6ba801c7350b8680a7d5a8e6b7ce53e7bb8db3dbdce8f488b16a12821ea51e45",
+      "after_sha256": "4fec109fc3f72c14fe102ad933bfccf85114a1a145f44ea62a00ca217cd19b61",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "10",
+            "2",
+            "5"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-missing-lesson",
+      "title": "Tư duy: tìm số trong ô trống",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "fe361060accd7d45561b04543aa2fb9fcfbfd5f98f8d377d0a16383b765f748b",
+      "after_sha256": "5357ce7598cb49dec3d684dacdaf8b547ab9063b799f574dd011cc4fb53e2eff",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "6",
+            "15",
+            "9"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-chance-lesson",
+      "title": "Tư duy: có thể, chắc chắn, không thể",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "310485079b1e88f3f923b6f49915c67e5009a77f8b55a27766d833f91af32906",
+      "after_sha256": "4d0c30694b4e5250e7af7914188fa9f190f95348c46476f36d54c5dd3ba2e9e7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Quan sát",
+            "Làm thử",
+            "Kiểm tra"
+          ],
+          "caption": "Nhìn ví dụ, nói điều em thấy rồi tự kiểm tra."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-schedule-lesson",
+      "title": "Tư duy: đọc lịch và thứ tự giờ",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "aa86ea1768dff1bb4cf11579a7dee6d34aaa645a3d49f129a34b60b04263240b",
+      "after_sha256": "340d1d6cf6867608600b92ae30634b799086d0ac42f6a4c48aeec412e1b38824",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "7",
+            "8"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-MATH-g2-line-check-lesson",
+      "title": "Tư duy: kiểm tra độ dài đường đi",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "1b4faea527a49e449bae7c333fcb5e0c6aaaf2b3e53b2704eecfb24a4e166f37",
+      "after_sha256": "a3470107ba0486713f5b737f4ac8dec6b782f7ff6101cc1cb79ea378c4bd91c7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "4",
+            "5",
+            "9"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-reading-lesson-1",
+      "title": "Đọc: hạt đậu của Mai",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "b8b2efe0f50b9fb3577c3c6343e11cb4c31ddcd715b80e90375118105cf4ce3f",
+      "after_sha256": "5c14cbdb45dc2565ab0c82c9e218ef466c26f0fe74a99ac939417141ced4555c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-reading-lesson-2",
+      "title": "Đọc: quyển sách chung",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "3ef1e1b7575834fd83d98fda672eb5aaa1d9f7a210b97d4451b1c6514c24ff57",
+      "after_sha256": "12c0da5f367acb924c40523d622bbdbc660f136ef03898265863e3bb18ba8c7f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-vocabulary-lesson-2",
+      "title": "Từ chỉ đặc điểm gần gũi",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "1457e37e392ec731b14d11f221de2fc20edc69acffd5c2c31ae9795af90bb028",
+      "after_sha256": "edba3fe8493c7a2c1a1728e041230a8688f8def5638742c358c9a4ff8cb0df32",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-sentences-lesson-1",
+      "title": "Câu kể và câu hỏi",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "8347f5bf5c1836a974528065e3d8e18fbae35b7369ead127bd3e7434027115c9",
+      "after_sha256": "b89818bd6174241dfc40496c3fee77180203bd81818922bf035442a8bc8d2f28",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-sentences-lesson-2",
+      "title": "Dấu phẩy và dấu chấm than",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "692cbb21d60a02c1343aac1488acc26fad486ad9a9a47b66581e97a83673931e",
+      "after_sha256": "426c220cdd64b7652b7fbc701917ce96035b338cd452cc119f9ab1dbac56fde7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-writing-lesson-1",
+      "title": "Viết đúng từ và tên riêng",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "18a10d93598c89363f6bfb2c3241910a5974444d53a471aea673346572efa703",
+      "after_sha256": "13b0df2acca82127578f34b6b82630ccb9371b96b7ddc37d6a7687a63f56450b",
+      "patch": {
+        "blocks": [
+          {
+            "type": "text",
+            "title": "Cùng khám phá",
+            "text": "So với từ mẫu, viết hoa đầu câu và tên người. Khi chọn cách viết đúng, em kiểm tra chữ hoa ở đầu câu, tên riêng và dấu câu theo điều bài hỏi."
+          },
+          {
+            "type": "example",
+            "title": "Thử với ví dụ",
+            "text": "Ngọc có chiếc ghế nhỏ. Lan nghe bà kể chuyện."
+          },
+          {
+            "type": "remember",
+            "title": "Em ghi nhớ",
+            "text": "Đọc chậm từng tiếng. Có thể nhờ người lớn đọc mẫu; em chỉ hoặc chọn đáp án."
+          },
+          {
+            "type": "practice",
+            "title": "Tự luyện tập",
+            "text": "Mỗi lần em làm 2–3 câu, rồi nghỉ nếu mỏi. Người lớn có thể đọc câu lệnh và giúp thao tác. Em được lưu bài để làm tiếp; không cần làm nhanh."
+          }
+        ]
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-writing-lesson-2",
+      "title": "Viết vài câu giới thiệu đồ vật",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "7f9b27132b2fd259976af8c2d27b41eb4c06b4425ab2b6d7db7ee3f4bcd57f63",
+      "after_sha256": "0c55dea5b24c1c3cd3975c3815505211a611013a9987aacebdb8532e01240006",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-poem-lesson",
+      "title": "Đọc thơ: góc sân xanh",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "ed5232082f9c5b53d4ba89f126d8f8ec1bfb58b8a8cbca9d17b39ff5dcc109ea",
+      "after_sha256": "91bc9b89935e8e290b3f91316f74e9fe4ea16a3972d8b450143ebdb5e05e763b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-notice-lesson",
+      "title": "Đọc thông báo ngắn",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "7f8c188ed93a43958a90a92c2996431e813f08d33f863f24cf390b23e8540412",
+      "after_sha256": "e1eb4f37237535c40cb155b1453d1e1882ec02741adb366961cf3bf520c15c95",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-opposites-lesson",
+      "title": "Từ có đặc điểm trái nhau",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "7278102b01940e6d90c54e7e7214eac954dfb0b06696d54c66908a246731c6aa",
+      "after_sha256": "3c535a7da06f8a88881f9e4a42695fab9f392ab0141d12f3333f031caa209593",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-message-lesson",
+      "title": "Đọc và viết lời nhắn",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "35fe050640e1fc2ecc51e14efd2641172a8933dabe47f233039589014be6a342",
+      "after_sha256": "6c994407c137d187bcad4827ca3a8afb5573521df1639c3ec73a76f5c553577a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Nhà"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-ask-help-lesson",
+      "title": "Xin phép và nhờ giúp",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "136792cdf4b4d6c14be7868a29a4c348f4981b17b1b7f518008cc19fe1b5d4ee",
+      "after_sha256": "e96cf65350218a3313e1415b9522d892381979c49a6104ef56b1847b79533594",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-retell-lesson",
+      "title": "Kể lại một việc theo thứ tự",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "221967a5d7528c61e0299888f7faf7ede382f02093233f84fe08da5cb925e428",
+      "after_sha256": "4611a7680fe2072d0bd26e89e8597ccc14956491478f97c29de5ef67ef9fb684",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-instructions-lesson",
+      "title": "Đọc chỉ dẫn giữ góc học tập",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "25094248ec658472d02b7fba316b28816c7c33689b29bc5bc49961eeac7e2bb6",
+      "after_sha256": "8c62739917961a7c27122252d2e3adfcf17de922f51b0f1323ee2d5177464282",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-evidence-lesson",
+      "title": "Tư duy: chọn chi tiết làm bằng chứng",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "d730453cbe5fd0c4a8abe95dfffe887d9ddc22e74dd93c981083724a25df147c",
+      "after_sha256": "6f22e7743340fb9ce48adccccdf4cda7717fa96eb44c0bb0a031a79e505b6f6c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-context-lesson",
+      "title": "Tư duy: hiểu từ ngay trong câu",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "a7ef7989aafebf6f9fecb7620ee51069f734224fafd0006afa7430d1c60aa9d5",
+      "after_sha256": "d9dcfcfe4829bc9e23dcc01b285d2f2f374bd42f0e744dfad960ea998080fefe",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-fix-stop-lesson",
+      "title": "Tư duy: sửa dấu cuối câu",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "c35a1e8232387717da43f0b2887c4a78949aa144f3446400b2432943426550af",
+      "after_sha256": "9860df82ae09f7d13fa7b247ea16bbfa878db79a42af49ae5525239e94ad188f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-paragraph-check-lesson",
+      "title": "Tư duy: giữ câu cùng một chủ đề",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "0eed3a4398556297d8ec3f75d99ce9d92765f0f4206422d8069e66781643ae68",
+      "after_sha256": "e831bcdfbcd180aae842f83b65dceeec77cab50be8a0742696972eb9fd7f1173",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-book-cover-lesson",
+      "title": "Tư duy: đọc thông tin bìa sách",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "a2f38cdcdd421823d99005943ca4992b596d307558b88b491dfc01c1655a62cf",
+      "after_sha256": "f507efb009a1acb595f9b24ae4904a744a72ee69c95be9408665d16e7027426d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách",
+            "Cây",
+            "Nhà"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-listen-turn-lesson",
+      "title": "Tư duy: trao đổi theo lượt",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "16abf78f10fde67bc8993f1c2da1f55e9d64a499aeff777fd494443e595e3394",
+      "after_sha256": "b1b74e26c518b1080b14f9eda30654a601b72628ad1fbef505436c26067e3932",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách",
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-note-check-lesson",
+      "title": "Tư duy: sửa lời nhắn cho rõ",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "fcd0bf12779427c3ee43dfe3bed8f06b8f5b5838052de36491d75b0382edc4ce",
+      "after_sha256": "aa875cdda8265e2a667ded376cdaac13c20645e7efb83a7edab1e6625c317587",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-g2-help-friend-lesson",
+      "title": "Tư duy: hiểu việc giúp bạn",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "9f27d3db68ca75660336b42d4341aa699f4300be98d73f67e29124f196c5185c",
+      "after_sha256": "ece45f217dd05071c99c9a9d898cb2d4fcb471d8ed06baf774d8721de8228355",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-numbers-lesson-1",
+      "title": "Đọc và viết số có bốn chữ số",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "ef7de12981d29bed6299d7e9b23d4cf00dd3f7fd0fa12091d26e7b253edd640e",
+      "after_sha256": "43855010a39577402f52589c467a52da537030982aa3c507b1299509bcdc621f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3 405",
+            "3",
+            "4",
+            "0"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-numbers-lesson-2",
+      "title": "So sánh và sắp xếp số trong phạm vi 10 000",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "96ef2b476520f27d77a290114e7aa4643891cee35d29374db7b2d8906aecead5",
+      "after_sha256": "95f2ac3ca835af980dc106a170c537f58c1d3eb84c8e5fe1c1df9f027dabe359",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "4 208",
+            "4 280",
+            "0",
+            "8"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-operations-lesson-2",
+      "title": "Chia đều và tìm số nhóm",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "de9e82b2577ddef863c593e1af8c26a53431012eb42d33b3d3f2950d04a849bc",
+      "after_sha256": "7314fea4dfd21680ffeede442e54f2dd6d95c71de0b952195711cdc4b425f62a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "48",
+            "6",
+            "8"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-parts-lesson-2",
+      "title": "Tìm một phần của một nhóm đồ vật",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "de32602cf9a2bb0e5aa41f99064dfd8d5b0f886f4e13a7c7137cbfb20bba8653",
+      "after_sha256": "f659c248c12c4eb3e8c396d6f8176a27a7c27072b598e5bb58ea4580fa6b9446",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "20",
+            "4",
+            "5"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-measurement-lesson-1",
+      "title": "Mi-li-mét và đo độ dài",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "045170e33770b256742022eb9283d7f46f86e75160378d5186167d734579afef",
+      "after_sha256": "6724b96bac2b07a30daaa4e91a16a1f36a66e080855983fc75cf4dbaad41ff8c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "5",
+            "30",
+            "35"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-measurement-lesson-2",
+      "title": "Gam và mi-li-lít trong đời sống",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "204f4ec59eb25e19e574f7493b4644b90232162323fdc94b76bc1c9dae2b9e8d",
+      "after_sha256": "694c3a959dbf48d860402c9d5d23ba9215414c520d052ad1f3872447a4b3d00e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "250",
+            "500"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-five-digits-lesson",
+      "title": "Số đến 100 000 và cấu tạo số",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "5ffb6255464ac382f76741475756d9469356a1d8523a7eea24431e87b0a9e970",
+      "after_sha256": "9cf8e313ed50edf89029ef2e91e645b06e853c8c37a900de056eef05ed4be9ba",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "42 306",
+            "40 000",
+            "2 000",
+            "300"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-rounding-lesson",
+      "title": "Làm tròn số và ước lượng",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "1239c919aa238c27565cd8af8b0014807436f77bf2c15a3cd6fea577fb875564",
+      "after_sha256": "d167beae49dff36289f340c3ac63283f0703116a4537a4173b17fa1da694fd6d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "2 346",
+            "2 300",
+            "4"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-roman-lesson",
+      "title": "Đọc chữ số La Mã đến XX",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "7cb898a2804331bd50e116463fe0467d15150295a99e0d3cc632cb63639261eb",
+      "after_sha256": "1021f3269d31f3cd68e166f4ea1ffee478e090e59ab00328a839af872112aab9",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "10",
+            "4",
+            "14",
+            "9"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-add-subtract-lesson",
+      "title": "Cộng trừ số có nhiều chữ số",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "98aba3cced8a4c102acaf274e13efbdd3f3512bbd700333d1bb73bb05de3796b",
+      "after_sha256": "ec3bd9fccc4160d71ca19fb573dd9aa0278f9e5db3b41baa8e4779c6a22daf3c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "23 456",
+            "12 307",
+            "35 763"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-one-digit-lesson",
+      "title": "Nhân chia với số có một chữ số",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "d56ac1e25fd8102e084db5ef2f5bcdd0017a1c5c4980b113cd5be7fb99fb88fd",
+      "after_sha256": "7b4f91ab29749160b3cf24a0a10e628a867f2d10f2770950f991dd6f337a2662",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "234",
+            "3",
+            "702"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-expressions-lesson",
+      "title": "Thứ tự tính và dấu ngoặc",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "5c5ed3dc341c23c25b052c2ed0b930d144291d02e699162d8ad541f9c41f77b9",
+      "after_sha256": "049a1db0d08dc9cd8bfc51fc9e7b35dce69717c1826b5c46cbb44e13f3917cd2",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "18",
+            "6",
+            "3",
+            "36"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-perimeter-lesson",
+      "title": "Chu vi hình chữ nhật và hình vuông",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "1264747b318917eff5a02061743706a50d0d4cf389df7c321d16bbda9ea8d127",
+      "after_sha256": "4cf297f5f10e08699601c99d548f282c73962e320533ebb28f16197643c3e5f1",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "8",
+            "3",
+            "2",
+            "22"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-area-lesson",
+      "title": "Diện tích và ô vuông đơn vị",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "337e9dad9d0de6695fb78ac5d4822867f865817e816f9cf2501cc0f887b0def2",
+      "after_sha256": "5e85813d19eb2dde6f9c4c86fb4c8bc684567ad99eb34eed8b89aac994edee79",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "5",
+            "3",
+            "15"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-tables-lesson",
+      "title": "Đọc bảng số liệu và kiểm đếm",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "0471a24751fa4b136ad0e6cbbe7318e581da97f7d9028e94503380b156381ead",
+      "after_sha256": "4304e43edae172bb74e55a832e3407efff69874bbc80efa1cf2343ed0a9e0e5f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "1",
+            "8",
+            "2",
+            "12"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-two-steps-lesson",
+      "title": "Bài toán hai bước và dữ kiện thừa",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "fb2ca1b0e9c5318807808eadd1437ad05121e9529b92781862aa250bd87b43f8",
+      "after_sha256": "c1090f663444a7790d90440d0a0670e169d45842b2d3a3641b840b4d39e760b6",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "8",
+            "5",
+            "19"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-remainders-lesson",
+      "title": "Chia có dư và kiểm tra sai lầm",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "bc5f94a235c780cf1cb2428193722d0820b3c5a95cba53a6d40baf0d13c1c18c",
+      "after_sha256": "23191e27ec21d57cda0b3a9f28ca3d0f23fa9e80fdd205ec3e6aaf554561d601",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "29",
+            "4",
+            "7",
+            "1"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-enough-boxes-lesson",
+      "title": "Đủ hộp cho tất cả đồ vật",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "3bbbf74358563253621e4c3b6ab7588723cef8cbe8c96207be772c2932faa0fd",
+      "after_sha256": "c198a13872ab46667f39619976af632159f1d3240c125d504b61c40832b65a10",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "17",
+            "5",
+            "3",
+            "2"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-shopping-lesson",
+      "title": "Đi chợ nhỏ và tính tiền thừa",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "d400e7abab631431beae1a1d17587ed289198b943267d4850805940150a8d42e",
+      "after_sha256": "d9f35dfd1884a40da1f4d911a271f03bf3e650d1b5d5240f6d57c0569ab0aed6",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "4 000",
+            "12 000",
+            "20 000",
+            "8 000"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-same-perimeter-lesson",
+      "title": "Cùng chu vi, khác diện tích",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "356b67706242e9af906c79671f53f510abbabd6802830827c2b4ddd08101b4f6",
+      "after_sha256": "48ad3880f6159101c364d512511f6bd2d8ceb755771e868b3bd02ece60b71b05",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "5",
+            "1",
+            "4",
+            "2"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-intervals-lesson",
+      "title": "Khoảng cách giữa các cột mốc",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "b45c90ae34cd532fdc49b2ad4e0100d5fd3c16d353911070ff16e85723d4bf0e",
+      "after_sha256": "e14cb71605bc7a85b20cb60180d14ba640d354b98a188e51c70746644b0f68a7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "2",
+            "6"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT3-MATH-g3-possible-lesson",
+      "title": "Có thể, chắc chắn, không thể",
+      "grade": 3,
+      "subject": "MATH",
+      "before_sha256": "de2c5d4f3586e66d81341af2d67ab498dfc21b4ce8625eca0c0ce1cbbca65343",
+      "after_sha256": "2da9ba58dc1d4c31b1c56a46664d77378d9a578b735b53757caa0a0f82bbd4ad",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Quan sát",
+            "Làm thử",
+            "Kiểm tra"
+          ],
+          "caption": "Nhìn ví dụ, nói điều em thấy rồi tự kiểm tra."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-reading-lesson-2",
+      "title": "Đọc truyện: Cuốn sách được sửa",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "0e9f70ef4002b6dfdb15a921e36704fa7c10386dccb74410942252f44f5a9a96",
+      "after_sha256": "445f531b52853708ad26b90cc3d18a7ac15cf18a80fbb879a2cf7b8f832d6112",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-vocabulary-lesson-1",
+      "title": "Từ ngữ về trường học và hoạt động",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "37871c00a19751d664f15cc13fe68d1aee263596fe10e91de8820d72264e1819",
+      "after_sha256": "50c42f233efbfb1600bb6e1d1632dc7e135cfa1b57ef77555837d74183009bb2",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-vocabulary-lesson-2",
+      "title": "Chọn từ ngữ về gia đình và cộng đồng",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "c0682e1eea28de72ecddbaf4ba7eccec7bd33f20e95ac6784c6e0abf7dd1328f",
+      "after_sha256": "91b53e04b1a446d95eb2827158794aa86bac10047793ec0a1e764f6e128484b0",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-sentences-lesson-1",
+      "title": "Câu giới thiệu, hoạt động và đặc điểm",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "2f0da2db9fcb7bf70312b305706c9abb8e5d7418fe818eca6b1bc5af711327e0",
+      "after_sha256": "79f59959dcb7786ff3f1787f21ee26942a027b0de75d63433f136a9de731ab5f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-sentences-lesson-2",
+      "title": "Dấu chấm, hỏi và cảm thán",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "fe3b743a6bdffc9855f0c7186585936a3268a1d849438a9eae164eebaf204eac",
+      "after_sha256": "b0c322839e87ddcbcc8fa10ab938c95dd0e2b43ccb5207d853d76b3d179ad7f0",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-spelling-lesson-1",
+      "title": "Viết hoa tên riêng và đầu câu",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "60718daa38adce0112ebf1e21b2182bb54547d9034be7dd6e387ca83447fbf0b",
+      "after_sha256": "fd868e7042c3bade4b67be93a34c5a3e5ecf66ed40835476111266148ec5dd72",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "blocks": [
+          {
+            "type": "text",
+            "title": "Cùng khám phá",
+            "text": "Viết hoa chữ cái đầu mỗi tiếng trong tên người Việt Nam, tên địa lí quen thuộc. Chữ đầu câu cũng viết hoa. Khi chọn cách viết đúng, em kiểm tra chữ hoa ở đầu câu, tên riêng và dấu câu theo điều bài hỏi."
+          },
+          {
+            "type": "example",
+            "title": "Thử với ví dụ",
+            "text": "Bạn Trần Ngọc Mai sống ở Hà Nội. Trần, Ngọc, Mai và Hà, Nội đều có chữ cái đầu viết hoa."
+          },
+          {
+            "type": "remember",
+            "title": "Em ghi nhớ",
+            "text": "Phân biệt tên riêng với từ gọi tên chung."
+          },
+          {
+            "type": "practice",
+            "title": "Tự luyện tập",
+            "text": "Hãy giải thích lại ví dụ bằng lời của em, rồi chọn bài luyện tập bên dưới. Đọc kỹ yêu cầu trước khi trả lời; em có thể lưu bài và quay lại."
+          }
+        ]
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-spelling-lesson-2",
+      "title": "Chọn chính tả theo nghĩa của câu",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "29dd2107bbf3af46149afc3a432109f1c73b07bfae3d355aa3c94b7032372b35",
+      "after_sha256": "474940e86e8604bf92db0c36416fecb835ed4ebb00f0e616e1ba54f21fd9e010",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "blocks": [
+          {
+            "type": "text",
+            "title": "Cùng khám phá",
+            "text": "Khi phân vân giữa các tiếng gần âm, xem nghĩa và từ đi kèm. Có thể tra từ hoặc hỏi người hướng dẫn; không đoán chỉ dựa vào âm đọc địa phương. Khi chọn cách viết đúng, em kiểm tra chữ hoa ở đầu câu, tên riêng và dấu câu theo điều bài hỏi."
+          },
+          {
+            "type": "example",
+            "title": "Thử với ví dụ",
+            "text": "Chân trời là nơi ta nhìn thấy trời và mặt đất như gặp nhau; không viết thành trân trời."
+          },
+          {
+            "type": "remember",
+            "title": "Em ghi nhớ",
+            "text": "Đọc lại cả cụm từ sau khi chọn tiếng."
+          },
+          {
+            "type": "practice",
+            "title": "Tự luyện tập",
+            "text": "Hãy giải thích lại ví dụ bằng lời của em, rồi chọn bài luyện tập bên dưới. Đọc kỹ yêu cầu trước khi trả lời; em có thể lưu bài và quay lại."
+          }
+        ]
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-poem-lesson",
+      "title": "Đọc thơ: Buổi sáng sân trường",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "c512ec18bc292d8351122439cf40d9cff98aa4c930f1a987e5e62018bca05b36",
+      "after_sha256": "8faab2a9fe05979f1b775a112fbf763b8857849b38b51a16367a487b8d05bbe0",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-instructions-lesson",
+      "title": "Đọc văn bản hướng dẫn làm hộp bút",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "9fc55c2da20d67d317e5a410645f73ed0085411c96b98fead8cd48567a725dbc",
+      "after_sha256": "a0c6b9389ac0188571acaa956196d1528707574662e80633a7cd2b7b9c117598",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-comparison-lesson",
+      "title": "Hình ảnh so sánh trong câu",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "efbee62e386b13185ccdfa53da3edef1ffff6064b583221a734faa146a7a7d97",
+      "after_sha256": "985de7b14a6b50598cf77f32dd1974886d546f72734f9621cbb2529b33ead040",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-dialogue-lesson",
+      "title": "Dấu hai chấm và gạch ngang trong lời nói",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "75886d4db8cc76d0c2439dbe9ccae4f7a01ac14c49f811e2dc4fea127e8f7213",
+      "after_sha256": "fa85f234eff043aa6a87fcc45f50867989702a40c59078876290ea9e08c160a6",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-short-paragraph-lesson",
+      "title": "Viết đoạn ngắn về một đồ vật",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "fc697fd91caa9875da69ff1c20a5586908b24c5569a5e5461ac598ef88f41735",
+      "after_sha256": "a89e60380cb0e9531b30fdec9a9b4acf53dc6733a2a5bac68eb3b1e06368757d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-message-lesson",
+      "title": "Viết lời nhắn rõ việc và lịch sự",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "90a488efd3579867c7f9e324dec62247bfb81fbe64f1456193c62e6bda203c51",
+      "after_sha256": "bbbc1c6ba0598eaad33631930094352db3d03bb18bf0e5f817a226e110a7ef1e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Nhà"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-listen-retell-lesson",
+      "title": "Nghe và kể lại việc theo trình tự",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "862e0052f693b3a9dc6fe25c74a701432dae4821ceb2d0bd1adbd87279634509",
+      "after_sha256": "f977dd35778f534acc42902de2e85eb3bc896e7b72ef97a1a275e6e12101779d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-evidence-lesson",
+      "title": "Suy luận từ chi tiết: Áo mưa của Hòa",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "f604a9b5334a308f387dd0118503bf24d56745b374e746f79c1ece33f09844e9",
+      "after_sha256": "e1a971638dd9ed67dc8acb767a95248e5144cc4bc3fedb80cc39e7380539365a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Nhà"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-logic-books-lesson",
+      "title": "Đố mẹo đọc hiểu: Ai chọn cuốn nào?",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "852a7a2a99e1752b90b0506c29ef9aa88ad81b3b59b1a5a15e0a43988fa218e7",
+      "after_sha256": "bf159e80fe339d72f0e2d07bb8a6cd287505d2535a998c094c4ecbfb779392e7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách",
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-meaning-context-lesson",
+      "title": "Hiểu từ trong ngữ cảnh và so sánh hợp lí",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "87b48889f9ec2b33b85903b0ec76e4da9d1f86f18295286027f6b5f4d7c83e39",
+      "after_sha256": "0e73242c299c2d560bc198d99045c3e9276c55569ec7db549ad208c24f05f9e4",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-repair-sentences-lesson",
+      "title": "Sửa câu thiếu ý và chọn dấu câu",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "ed87e33343ec4d98b5fa2b9e9000dc22186b8c2ffedcca50dc824fbb210cfffa",
+      "after_sha256": "968355f80a96b5c929c827b4cf61b083fc44ee6058dd698b868aed967c839e7b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-edit-notice-lesson",
+      "title": "Rà soát thông báo ngắn",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "d49551e8727ace6d29daf5069bf22e0ef7916ad903cc9cabf7f97d2f51e2c52f",
+      "after_sha256": "61548f4fe69dd7ff8d69f37b374eb77657f207ed0f4452b5b6b11000a4710a33",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "blocks": [
+          {
+            "type": "text",
+            "title": "Cùng khám phá",
+            "text": "Thông báo cần người hoặc nhóm được mời, việc, nơi và thời gian rõ. Rà soát chính tả và chữ hoa trước khi gửi. Khi chọn cách viết đúng, em kiểm tra chữ hoa ở đầu câu, tên riêng và dấu câu theo điều bài hỏi."
+          },
+          {
+            "type": "example",
+            "title": "Thử với ví dụ",
+            "text": "Thông báo: Lớp 3B đổi sách tại thư viện lúc 15 giờ thứ sáu. Mỗi bạn mang một cuốn truyện sạch, đủ trang. Liên hệ cô Hoa nếu cần hỗ trợ."
+          },
+          {
+            "type": "remember",
+            "title": "Em ghi nhớ",
+            "text": "Thời gian và địa điểm không được đoán nếu thông báo chưa ghi."
+          },
+          {
+            "type": "practice",
+            "title": "Tự luyện tập",
+            "text": "Hãy giải thích lại ví dụ bằng lời của em, rồi chọn bài luyện tập bên dưới. Đọc kỹ yêu cầu trước khi trả lời; em có thể lưu bài và quay lại."
+          }
+        ]
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-recount-lesson",
+      "title": "Viết đoạn kể việc tốt và sửa trình tự",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "5894d09bca54dd6f0d02914895d5b1345d9fb2edd8c01eff07eb246d29f5a399",
+      "after_sha256": "a923788ea1635c31cc4356b6cbce7001835305edd0b0d2d2d919e181d24eb0e7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-letter-lesson",
+      "title": "Viết thư ngắn cho người thân",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "5d79746dd8398a7781819f12d2a3e0833e755a1467c52b1ef1c1bd8772a15281",
+      "after_sha256": "b766cb88ffbf9fc29848fb380134d4d981137d25457ebad677c0c2875a621e86",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-VIETNAMESE-g3-discussion-lesson",
+      "title": "Thảo luận và giải thích bằng chứng",
+      "grade": 3,
+      "subject": "VIETNAMESE",
+      "before_sha256": "95613e4fe149dea68116a9979b89ab18834619fdff037632ed638b3fa2a2ee20",
+      "after_sha256": "5e31f455551656c075b9e9e5d38d43a7bced8c20b409a6d165fe8708207e2bad",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-self-lesson-1",
+      "title": "Hello! Chào hỏi và giới thiệu tên",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "202c7909d6f46878a7f520c6faed040fee91a8ab6d3034086a71e561c812b86e",
+      "after_sha256": "ef83c4df3d1d53e0173ea888817d409ccf19918c63dfd04129558c95075a7325",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-self-lesson-2",
+      "title": "How old are you? Hỏi và nói tuổi",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "ab1d9a0accbd11103250601c900bf4a34bb3e178948b0f2537bb6d77ed3f6337",
+      "after_sha256": "03feae922f68790e781101f29d18a9972b774bbc79e7c856fc9f368ef910ed0a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "school"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-school-lesson-1",
+      "title": "Đồ dùng học tập: a pen, a book",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "ad1dcd4f7abd80dda856727ee616b0c028881143aab38e417d55f39985fda5c2",
+      "after_sha256": "f05ed6768e673bf60696372fe4ae5b973730a4029703f8091834e9b604bc2272",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book",
+            "ruler",
+            "bag",
+            "blue"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-school-lesson-2",
+      "title": "Chỉ dẫn đơn giản trong lớp học",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "f5443bc29fbe1857318cd95c7928a6ee429d82fd03f5f292cd736ff4514e1e53",
+      "after_sha256": "06b13761e4db1ec6ffddd169a51ab1742ddb8b32f875bd9e225c793719aad69f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-family-lesson-1",
+      "title": "Gia đình: mother, father, sister",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "522acf0857f9756da65c47c84f89d8b879bdb61601c5030b07edd16a2238bc16",
+      "after_sha256": "bee77dec8f89b2d5e72a000c0df6d0871a439b33776b5f2f3a372e1eca35c7da",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-family-lesson-2",
+      "title": "He, she và tên người thân",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "bb5c204ef9bca38da31252f07e0b0b15eb3917dac3307c7eda90359d91cc24eb",
+      "after_sha256": "c0e16eeb5b7507a16493835783596df805f155452d2c3917e7697c4badb6c7bc",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book",
+            "bag",
+            "red",
+            "blue"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-home-lesson-1",
+      "title": "Các phòng trong nhà",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "0833eabf9fd6f0732b4f814657aa216bbc57e4f9f860e4a6ef650a06142fb656",
+      "after_sha256": "d62da1705a64b2e811d244ce6c5e847d0d31b13b0b4bdeba5607445857bea88e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-home-lesson-2",
+      "title": "In, on, under: vị trí đồ vật",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "4a6559998100ed4a69842da4a904549d7cc281d1adcdb83e15cb3744f6c61c95",
+      "after_sha256": "8187d34cef20b237862e6362d906b884140600bc0e546913e20cd12c413a6b16",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book",
+            "bag",
+            "desk",
+            "ball"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-toys-lesson",
+      "title": "Đồ chơi và số lượng đơn giản",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "303572eb27f33fa756ec7a878585803caf0cf3073a8c481019c3b51fa51d84dc",
+      "after_sha256": "551a7a89fdd521111634df04bc9516fe0cec4ffbbb28b2287da62ba45b94c171",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "chair"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-colours-lesson",
+      "title": "Màu sắc và hỏi What colour...?",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "be270b8ced0c7ce4aa709c271c6552d54ff09a4ed8e429bab09889ac2ae1eae0",
+      "after_sha256": "9668be27901f2f6ce754d8c58c7fcc084c3d69c7368ffed1df5e88516e20f37c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "red",
+            "blue",
+            "yellow",
+            "ball"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-pet-words-lesson",
+      "title": "Các con vật nuôi quanh em",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "98b89688a8a7581233d0cdef7b2b135ed5c5deea0fb13e90e50ab285532f01e5",
+      "after_sha256": "7a12c53e7fbffff561af697bcd209e72214c0db58a571830e8f65f5788a84637",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "cat",
+            "dog",
+            "water"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-likes-lesson",
+      "title": "I like... Nói sở thích đơn giản",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "c0a06ae43f7b9e95cb37391357dd35109ff674dd763f713260451237b37d3973",
+      "after_sha256": "9bf2f4fdee12a177525cd79180c772284579b8b2c4169050fa0cc9141027271d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "cat",
+            "book",
+            "school"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-can-lesson",
+      "title": "Can: những việc em có thể làm",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "dbe577e34d5e9cb3f82285197dd46871d17c766dd5b8bd788cdd2f1fe6d6fc0c",
+      "after_sha256": "bd3bc3dda396d9d24be02e61e0c5e8701705a40d7d33199fa7b79b6a160f95b6",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-friend-cards-lesson",
+      "title": "Đọc thẻ bạn nhỏ và nối thông tin",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "e0b62ba31328507df4d08cb7196c0bb0b20c66223ee79453729b9a983fa6a52a",
+      "after_sha256": "b170eab5c9aeaa7ac94bd8cf3aa6e2a948ed697fab7a40e3d338ad614d82a41b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-polite-help-lesson",
+      "title": "May I...? Xin phép và nhờ giúp",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "b6482e1e3b7ce42fa2db5b6bbd6219d7d6bbacf46beb5c7542662c001f1e800b",
+      "after_sha256": "a77de5bd3def56ec953bfbd3022cf27c310f47ca9ec42a47efc010133deefa11",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "ruler"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-room-reading-lesson",
+      "title": "Đọc căn phòng: tìm đúng đồ vật",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "08d06b590dea0e6916c8613c263f4a0a7c56db265dc746d316d691d82c50c6be",
+      "after_sha256": "5f714ee01110fcf666b1f30ff7084cb5aefa3a98c07be7137f058ce2c31e899f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "cat",
+            "ruler",
+            "bag",
+            "chair"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-lost-toy-lesson",
+      "title": "Đố mẹo: tìm đồ chơi thất lạc",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "1e8fb531c4ac69ec1b3c419c33598a68b4e1e31a6dadeee5da3df516c6f56a74",
+      "after_sha256": "a388c84b34048584a1ba2577edd2ae1a54a1bc0156b4dc4a532b383bc4e627e9",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "red",
+            "blue",
+            "yellow",
+            "ball"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-pet-cards-lesson",
+      "title": "Đọc thẻ con vật và chọn bằng chứng",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "d1e0676e0bd513694fbdbc6ed57cb7cdd1594a71305c157bb13c168193806e01",
+      "after_sha256": "d775d0b75089a47bc8c0c62cdb58f13b29a40d4941c75d2df51dca72fc23e8b7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "cat",
+            "dog",
+            "bird",
+            "chair"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-actions-now-lesson",
+      "title": "What are you doing? Hoạt động đang diễn ra",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "7b120cd75931bed4cffdcd8cb418adef598f0c7beaa5f6c9f9973522f395d57a",
+      "after_sha256": "91b317d4f3dff499bdd164b0d2e26de5cd3bfb3d773fed7273d921569afa4615",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "ball"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT3-ENGLISH-g3-mixed-review-lesson",
+      "title": "Kết hợp thông tin về gia đình và sở thích",
+      "grade": 3,
+      "subject": "ENGLISH",
+      "before_sha256": "6d0568d8b0ecc34a46bda7f388995fee6e45208c7f305a9646890d156d0886c4",
+      "after_sha256": "4aeba41ae894b881d8861866bb88047ef851dd7b960694fb40f36552e129b88f",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT4-MATH-numbers-lesson-1",
+      "title": "Hàng, lớp và cách đọc số",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "ac1504291ebc5a32e0477fc52258199bc817da97f714c2ea41e19b66acc8e9d1",
+      "after_sha256": "59940dc75b6cab6b02fb205c8dc40b62e5a27805fda2aa19e18eb2824338daf4",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "325 418",
+            "2",
+            "20 000"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Đọc số theo từng lớp và nêu giá trị một chữ số."
+        ],
+        "hints": [
+          "Tách số thành nhóm ba chữ số từ phải sang trái.",
+          "Đọc tên hàng trước khi tính giá trị chữ số.",
+          "Viết số thành tổng các hàng rồi kiểm tra lại."
+        ],
+        "reflection": [
+          "Em giải thích được vì sao cùng chữ số nhưng giá trị khác nhau không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-numbers-lesson-2",
+      "title": "So sánh và làm tròn số",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "2cb3ce6bddbcbcdba2e1c74f27dde275d453adf550c8075f2577f916198dd620",
+      "after_sha256": "da9bd64d61c8dc7936c78cc59aeb6ec56bb68248a1f786f55dc8b2c4d5dd3fea",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "47 628",
+            "48 000",
+            "6",
+            "47 328"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Đọc số theo từng lớp và nêu giá trị một chữ số."
+        ],
+        "hints": [
+          "Tách số thành nhóm ba chữ số từ phải sang trái.",
+          "Đọc tên hàng trước khi tính giá trị chữ số.",
+          "Viết số thành tổng các hàng rồi kiểm tra lại."
+        ],
+        "reflection": [
+          "Em giải thích được vì sao cùng chữ số nhưng giá trị khác nhau không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-operations-lesson-1",
+      "title": "Cộng, trừ, nhân, chia",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "e1e7ab2b2bea631577d545b82ae05e21a691add8dad8b1ba39bd45b3e4e4faf9",
+      "after_sha256": "7db072be598a8988745179e7e29d2fb8269d71aeb94431b208e2a5b189b271dc",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "125",
+            "4",
+            "500",
+            "4 508"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Lập thứ tự giải và kiểm tra kết quả phép tính."
+        ],
+        "hints": [
+          "Gạch chân dữ kiện và điều đề hỏi.",
+          "Viết mỗi bước tính kèm đơn vị; thực hiện ngoặc trước.",
+          "Ước lượng hoặc dùng phép tính ngược để kiểm tra."
+        ],
+        "reflection": [
+          "Nếu bỏ một dữ kiện, em còn giải được không? Vì sao?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-operations-lesson-2",
+      "title": "Giải toán qua từng bước",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "52d92449cadf69340fede6f79cf59f1535db25d2f57cccfb58071161bb5e3e5b",
+      "after_sha256": "f5e83371bb7d48ded3fe00eeabbf9cc0cd64875959a43192ad9137cf0564eff3",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "6",
+            "8",
+            "15",
+            "48"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Lập thứ tự giải và kiểm tra kết quả phép tính."
+        ],
+        "hints": [
+          "Gạch chân dữ kiện và điều đề hỏi.",
+          "Viết mỗi bước tính kèm đơn vị; thực hiện ngoặc trước.",
+          "Ước lượng hoặc dùng phép tính ngược để kiểm tra."
+        ],
+        "reflection": [
+          "Nếu bỏ một dữ kiện, em còn giải được không? Vì sao?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-fractions-lesson-1",
+      "title": "Tử số và mẫu số",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "93f12bad5689e100de3fa68826baa7885898ab7eec111d392554c51a499bffe9",
+      "after_sha256": "37a89fa14d8bcfb3983f0e76c1e43f0669aa2c7d70842b8cb081fabdfe6fdff2",
+      "patch": {
+        "illustration": {
+          "kind": "fraction",
+          "numerator": 3,
+          "denominator": 8,
+          "caption": "Chiếc bánh chia 8 phần bằng nhau, tô 3 phần: 3/8."
+        },
+        "goals": [
+          "Giải thích phân số bằng các phần bằng nhau."
+        ],
+        "hints": [
+          "Chọn cùng một đơn vị, chẳng hạn một chiếc bánh.",
+          "Đếm tổng số phần bằng nhau trước, phần được chọn sau.",
+          "Với phép cộng hoặc trừ, đưa các phân số về cùng mẫu số."
+        ],
+        "reflection": [
+          "Phần tô màu và phần chưa tô ghép lại có bằng một đơn vị không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-fractions-lesson-2",
+      "title": "So sánh và cộng phân số cùng mẫu",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "d110e11fc00c9dc804fc487a94e2fbdc22c1ce3e57e594a87724debd046b6d22",
+      "after_sha256": "7663eef1b5a2fe816f96810c38eca38698b605b780eedc26e5d52ad0c4c8b199",
+      "patch": {
+        "illustration": {
+          "kind": "fraction",
+          "numerator": 5,
+          "denominator": 7,
+          "caption": "Cộng 2/7 với 3/7: phần tô biểu diễn 5/7."
+        },
+        "goals": [
+          "Giải thích phân số bằng các phần bằng nhau."
+        ],
+        "hints": [
+          "Chọn cùng một đơn vị, chẳng hạn một chiếc bánh.",
+          "Đếm tổng số phần bằng nhau trước, phần được chọn sau.",
+          "Với phép cộng hoặc trừ, đưa các phân số về cùng mẫu số."
+        ],
+        "reflection": [
+          "Phần tô màu và phần chưa tô ghép lại có bằng một đơn vị không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-measurement-lesson-1",
+      "title": "Đổi đơn vị trong đời sống",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "e4dcc6b5faaef2b24206a758a9dc7ab417bfc3ab5b03cfac6a11718611738c26",
+      "after_sha256": "804977ef4c7088879c5478331df5b8fb8c9cb519eb7ef95f2ceff25764527e19",
+      "patch": {
+        "illustration": {
+          "kind": "clock",
+          "hour": 9,
+          "minute": 30,
+          "caption": "Đồng hồ chỉ 9 giờ 30 phút, thời điểm kết thúc trong ví dụ."
+        },
+        "goals": [
+          "Đổi đơn vị khối lượng và tính khoảng thời gian trong ví dụ."
+        ],
+        "hints": [
+          "Xác định đang hỏi khối lượng hay thời gian.",
+          "Dùng 1 kg = 1000 g; 1 giờ = 60 phút để đổi.",
+          "Viết đơn vị cùng kết quả rồi kiểm tra lại."
+        ],
+        "reflection": [
+          "Hai hình có cùng diện tích thì có luôn cùng chu vi không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-measurement-lesson-2",
+      "title": "Chu vi, diện tích và các đường thẳng",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "865f59b697e4440ab981f4b0f9dff05e43eb851a15d252f4985c8520a659d585",
+      "after_sha256": "52788bcccfd3dea364982ac05a357d6cc6556693a4fa38d5fd8893c4b21ab674",
+      "patch": {
+        "illustration": {
+          "kind": "garden",
+          "rows": 5,
+          "columns": 8,
+          "caption": "Hình chữ nhật 8 m × 5 m gồm 40 ô; mỗi ô là 1 m²."
+        },
+        "goals": [
+          "Phân biệt đo quanh hình và đo phần nằm trong hình."
+        ],
+        "hints": [
+          "Xác định đề hỏi độ dài quanh hình hay diện tích.",
+          "Đổi về cùng đơn vị rồi vẽ hình, ghi các cạnh.",
+          "Chu vi dùng đơn vị độ dài; diện tích dùng đơn vị vuông."
+        ],
+        "reflection": [
+          "Hai hình có cùng diện tích thì có luôn cùng chu vi không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-vip-multi-step-lesson",
+      "title": "Giải nhiều bước và kiểm tra kết quả",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "9dc979c7fe026e4b66b869091c9cc2d2530f44b8a666911de82ab598e41537b7",
+      "after_sha256": "5a73979ac3dc5002c28625e9710dc85fd542429b7b7b194a9e3ed1089f62e62c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "4",
+            "24",
+            "18",
+            "27"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Lập thứ tự giải và kiểm tra kết quả phép tính."
+        ],
+        "hints": [
+          "Gạch chân dữ kiện và điều đề hỏi.",
+          "Viết mỗi bước tính kèm đơn vị; thực hiện ngoặc trước.",
+          "Ước lượng hoặc dùng phép tính ngược để kiểm tra."
+        ],
+        "reflection": [
+          "Nếu bỏ một dữ kiện, em còn giải được không? Vì sao?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-vip-fraction-reasoning-lesson",
+      "title": "Phân số trong tình huống thực tế",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "e0c6645bbcd057f03b34ee739c7b33c98b7c244d45ab52e65b8ec9987381b1c9",
+      "after_sha256": "91476595e6dce973305de61606932d4947d3b7207c23171966d9611149756438",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "24",
+            "3/8",
+            "8",
+            "3"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Giải thích phân số bằng các phần bằng nhau."
+        ],
+        "hints": [
+          "Chọn cùng một đơn vị, chẳng hạn một chiếc bánh.",
+          "Đếm tổng số phần bằng nhau trước, phần được chọn sau.",
+          "Với phép cộng hoặc trừ, đưa các phân số về cùng mẫu số."
+        ],
+        "reflection": [
+          "Phần tô màu và phần chưa tô ghép lại có bằng một đơn vị không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-extend-rounding-lesson",
+      "title": "Làm tròn số trong đời sống",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "a0b7654337d5934cdd9195acb12768192653e39be860b89f4734831c127115b7",
+      "after_sha256": "916a05de5ae8d45dfba0d851060137d958a718fb96423ba685c910e033e8b254",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "12 650",
+            "13 000",
+            "6",
+            "12 340"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Đọc số theo từng lớp và nêu giá trị một chữ số."
+        ],
+        "hints": [
+          "Tách số thành nhóm ba chữ số từ phải sang trái.",
+          "Đọc tên hàng trước khi tính giá trị chữ số.",
+          "Viết số thành tổng các hàng rồi kiểm tra lại."
+        ],
+        "reflection": [
+          "Em giải thích được vì sao cùng chữ số nhưng giá trị khác nhau không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-extend-area-lesson",
+      "title": "Chu vi và diện tích hình chữ nhật",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "c7933c489cc85ad6274bc6d91c82c6bc04f37b14c897557c257dff4a83ad4271",
+      "after_sha256": "d974a08770361c2ddee66ee9e481695971695aff744619d75e9e25251c856134",
+      "patch": {
+        "illustration": {
+          "kind": "garden",
+          "rows": 5,
+          "columns": 8,
+          "caption": "Hình chữ nhật 8 m × 5 m gồm 40 ô; mỗi ô là 1 m²."
+        },
+        "goals": [
+          "Phân biệt đo quanh hình và đo phần nằm trong hình."
+        ],
+        "hints": [
+          "Xác định đề hỏi độ dài quanh hình hay diện tích.",
+          "Đổi về cùng đơn vị rồi vẽ hình, ghi các cạnh.",
+          "Chu vi dùng đơn vị độ dài; diện tích dùng đơn vị vuông."
+        ],
+        "reflection": [
+          "Hai hình có cùng diện tích thì có luôn cùng chu vi không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-extend-reasoning-lesson",
+      "title": "Tìm dữ kiện cần thiết và giải bằng sơ đồ",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "b2dc63b5ad3f15525600ea70841d435f37962001fe757824c92e8d7ab039c4cb",
+      "after_sha256": "427c7af3cef0daf7a7a78ad0cff0dd6eabb73af7e38c3db4dd9fa94c8d021ea3",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "5",
+            "18",
+            "24",
+            "37"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Lập thứ tự giải và kiểm tra kết quả phép tính."
+        ],
+        "hints": [
+          "Gạch chân dữ kiện và điều đề hỏi.",
+          "Viết mỗi bước tính kèm đơn vị; thực hiện ngoặc trước.",
+          "Ước lượng hoặc dùng phép tính ngược để kiểm tra."
+        ],
+        "reflection": [
+          "Nếu bỏ một dữ kiện, em còn giải được không? Vì sao?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-extend-fraction-total-lesson",
+      "title": "Phân số và phần còn lại của một tổng",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "8aa2a69b2464e1019c5f46ae3b59d5b7b9e29406dbfe78135e8817c2ceca13c4",
+      "after_sha256": "203a47446c3c4f53eb8bf6ca588fd90a16a58506885debb44214c85d289cde5c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "36",
+            "2/3",
+            "3",
+            "12"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Giải thích phân số bằng các phần bằng nhau."
+        ],
+        "hints": [
+          "Chọn cùng một đơn vị, chẳng hạn một chiếc bánh.",
+          "Đếm tổng số phần bằng nhau trước, phần được chọn sau.",
+          "Với phép cộng hoặc trừ, đưa các phân số về cùng mẫu số."
+        ],
+        "reflection": [
+          "Phần tô màu và phần chưa tô ghép lại có bằng một đơn vị không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-vip-fraction-project-lesson",
+      "title": "Phân số trong một buổi làm bánh",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "7dc563a9ce5d02d23663089401fcef0056139b2ef0772ddf2a1f3b196c7df674",
+      "after_sha256": "7cc384f3d3a3cab8172430f5fe8462b915f3bcf9a39562540e5781f9b22ae94e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "8",
+            "3/8",
+            "2/8",
+            "3"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        },
+        "goals": [
+          "Giải thích phân số bằng các phần bằng nhau."
+        ],
+        "hints": [
+          "Chọn cùng một đơn vị, chẳng hạn một chiếc bánh.",
+          "Đếm tổng số phần bằng nhau trước, phần được chọn sau.",
+          "Với phép cộng hoặc trừ, đưa các phân số về cùng mẫu số."
+        ],
+        "reflection": [
+          "Phần tô màu và phần chưa tô ghép lại có bằng một đơn vị không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-vip-garden-design-lesson",
+      "title": "Thiết kế luống rau: chu vi và diện tích",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "7aa9951fd1d3913929aa9e6ca87bcd8a21364b583f4d2d2ea0ca534f7e5519ac",
+      "after_sha256": "ae217b0ba358bb5179d9e07b3803f966472f7e57c5cc4b41ff5b8af35921105c",
+      "patch": {
+        "illustration": {
+          "kind": "garden",
+          "rows": 5,
+          "columns": 8,
+          "caption": "Hình chữ nhật 8 m × 5 m gồm 40 ô; mỗi ô là 1 m²."
+        },
+        "goals": [
+          "Phân biệt đo quanh hình và đo phần nằm trong hình."
+        ],
+        "hints": [
+          "Xác định đề hỏi độ dài quanh hình hay diện tích.",
+          "Đổi về cùng đơn vị rồi vẽ hình, ghi các cạnh.",
+          "Chu vi dùng đơn vị độ dài; diện tích dùng đơn vị vuông."
+        ],
+        "reflection": [
+          "Hai hình có cùng diện tích thì có luôn cùng chu vi không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-MATH-g4-millions-lesson",
+      "title": "Đọc số đến lớp triệu; số chẵn và số lẻ",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "57c09616ff292cb60ef7a182a9a7097233db71ccff57d86fe5f99ad400aeb129",
+      "after_sha256": "824e54d62deb5f4b7b32949cb0a99ab1e86119a4d41b2320a7341c7cc4fa0406",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "12 305 418",
+            "12",
+            "305",
+            "418"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT4-MATH-g4-experiment-lesson",
+      "title": "Thực nghiệm: có thể, không thể và chắc chắn",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "be37edd0460ba75d8ddf582a629ee3a19eb3029af0b2469221bb402cae951f9c",
+      "after_sha256": "b8180d4fd413c722af593b2fffd2f0e3a5118403ff643c3a1ab0fca2974f389d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "2",
+            "10",
+            "6"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT4-MATH-g4-sum-difference-lesson",
+      "title": "Tìm hai số khi biết tổng và hiệu",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "943b63a0ceb3796d6c68ee55eeec747354dfaa906f4e60c09772196e8e05b64e",
+      "after_sha256": "cb1dd14851fc955c61dd8c6dafebbbdf1b65caa50c1f0dbef41bb5d6927c9478",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "48",
+            "8",
+            "2",
+            "20"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT4-MATH-g4-area-mass-time-lesson",
+      "title": "Đổi đơn vị diện tích, khối lượng và thời gian",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "e219afbf3e99816826fba70d0b900bef6ef9f067cac9c70ed561c8c49f0d882c",
+      "after_sha256": "ab3ebc7c2bdaa6166e2e83d53f162daf0114bc502ff286aa8b5ef0c1a7fdb590",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "2",
+            "35",
+            "235",
+            "3"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT4-MATH-g4-fraction-products-lesson",
+      "title": "Nhân, chia phân số và tìm phân số của một số",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "1f0e5eb4991e7b5cb22a4201574be7361cb1bb26e8f24a894ec702765442ddcd",
+      "after_sha256": "7be4c4e6c9408be8e1bf9a5f48edf6b5b81c48fdcde6845dc616fc3ab77ce787",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "2/3",
+            "3/4",
+            "6/12",
+            "1/2"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT4-MATH-g4-interval-riddles-lesson",
+      "title": "Đố mẹo: đếm khoảng, không chỉ đếm điểm",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "4e3143c15b086b33b261b3cf9bca13d15687d4484ea07b9897a8923ad5d29a40",
+      "after_sha256": "d765a6dfc1101ec110641cb27059bc0275c3135447e147c3f1d8ed5e4b50cf8d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "6",
+            "4",
+            "5",
+            "20"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT4-MATH-g4-logic-table-lesson",
+      "title": "Nâng cao: loại trừ và kiểm tra đủ điều kiện",
+      "grade": 4,
+      "subject": "MATH",
+      "before_sha256": "bb1a6ec668cd1e37ad32c6daf404d31679b8ad6e3129e50c5ea2de66721a2adb",
+      "after_sha256": "5d4bec43aaa075a1e6e7339b327ed847bba5a06287cabac1a259c930604ee7be",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Quan sát",
+            "Làm thử",
+            "Kiểm tra"
+          ],
+          "caption": "Nhìn ví dụ, nói điều em thấy rồi tự kiểm tra."
+        }
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-reading-lesson-1",
+      "title": "Đọc để tìm chi tiết",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "3a666e95f4734ed300a9f5e1ef0e0133368039b9bd817465e425e2cc15738200",
+      "after_sha256": "38fd49ab4fd8b839b7c3a954627b52b3cf956e52a9bce0d806d2cf50347c6b96",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây",
+            "Nhà"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Câu nào trong đoạn giúp em kiểm tra ý kiến của mình?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-reading-lesson-2",
+      "title": "Hiểu ý chính và trình tự",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "c70b005d350dbc4c335ca9955690f6c8a5edda58c855aad3e6ca43d7332b138d",
+      "after_sha256": "41b05aa8b4c41da98463b79c1cfd72551eae8c3520f99810ed324bff6b7fd272",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Câu nào trong đoạn giúp em kiểm tra ý kiến của mình?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-wordtypes-lesson-1",
+      "title": "Nhận biết danh từ và động từ",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "5dff79429ab125ef179c97b563c3a0f4ac16564e7aa123193c9bd91dfb6c7f3e",
+      "after_sha256": "7e5ec20d8c7342bfac34bf23e87a48df9cad24c1b94fe8c612c77728587160cb",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Em tìm được ba từ chỉ hoạt động trong ngày của mình không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-wordtypes-lesson-2",
+      "title": "Tính từ làm câu văn rõ hơn",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "a05c9f1cb2beb7917e3a1d70d7d976ce3b7806b515735f65dcf514e9d700cbbb",
+      "after_sha256": "4aa3bd223e59e90823decda1ef0bf4ab11e25be686eb1d6fffa0d32321ed01e5",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Em tìm được ba từ chỉ hoạt động trong ngày của mình không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-sentences-lesson-1",
+      "title": "Câu kể, câu hỏi và lời đề nghị",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "3520566da62e20020bbd9296882b11adeed2e591e026e877403b69e6781e10e1",
+      "after_sha256": "1ba9c564cc06ae48286db8bf63eec60754f591226be9ae8c295bdc7106af0ee9",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Em có thể sửa câu dài thành hai câu rõ hơn không?"
+        ],
+        "blocks": [
+          {
+            "type": "text",
+            "title": "Cùng khám phá",
+            "text": "Câu kể dùng để kể hoặc giới thiệu; thường kết thúc bằng dấu chấm. Câu hỏi để hỏi điều chưa biết, kết thúc bằng dấu hỏi. Lời đề nghị nên lịch sự, rõ ràng. Khi chọn cách viết đúng, em kiểm tra chữ hoa ở đầu câu, tên riêng và dấu câu theo điều bài hỏi."
+          },
+          {
+            "type": "example",
+            "title": "Thử với ví dụ",
+            "text": "Câu kể: 'Em học lớp bốn.' Câu hỏi: 'Bạn học lớp mấy?' Đề nghị: 'Bạn giúp mình nhặt bút nhé.'"
+          },
+          {
+            "type": "remember",
+            "title": "Em ghi nhớ",
+            "text": "Đọc cả câu để hiểu mục đích nói, rồi chọn dấu câu phù hợp."
+          },
+          {
+            "type": "practice",
+            "title": "Tự luyện tập",
+            "text": "Hãy giải thích lại ví dụ bằng lời của em, rồi chọn bài luyện tập bên dưới. Đọc kỹ yêu cầu trước khi trả lời; em có thể lưu bài và quay lại."
+          }
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-sentences-lesson-2",
+      "title": "Dùng dấu câu khi viết",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "5f6fea38363eed4651d26b897813522530f08ee72a5b8dee7f1c9376e1b3833d",
+      "after_sha256": "04863d6c3804eb35eb1727bb6ccc043e206a61eeff02b5db163d9245c11eeead",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách",
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Viết câu rõ ý, đúng chủ đề và nối các ý theo thứ tự."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Em có thể sửa câu dài thành hai câu rõ hơn không?"
+        ],
+        "blocks": [
+          {
+            "type": "text",
+            "title": "Cùng khám phá",
+            "text": "Dấu phẩy ngăn cách các thành phần trong chuỗi liệt kê. Dấu hai chấm có thể báo hiệu lời nói trực tiếp. Đầu câu viết hoa; cuối câu cần dấu phù hợp. Khi chọn cách viết đúng, em kiểm tra chữ hoa ở đầu câu, tên riêng và dấu câu theo điều bài hỏi."
+          },
+          {
+            "type": "example",
+            "title": "Thử với ví dụ",
+            "text": "Em mang bút, thước và vở. Mẹ nói: 'Con hãy tưới cây nhé.' Dấu phẩy làm danh sách dễ đọc; dấu hai chấm giới thiệu lời mẹ."
+          },
+          {
+            "type": "remember",
+            "title": "Em ghi nhớ",
+            "text": "Sau khi viết, đọc lại để kiểm tra chữ đầu câu và dấu kết thúc."
+          },
+          {
+            "type": "practice",
+            "title": "Tự luyện tập",
+            "text": "Hãy giải thích lại ví dụ bằng lời của em, rồi chọn bài luyện tập bên dưới. Đọc kỹ yêu cầu trước khi trả lời; em có thể lưu bài và quay lại."
+          }
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-vocabulary-lesson-1",
+      "title": "Chọn từ phù hợp với ngữ cảnh",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "08b08ee6a659f11b8557c130b3cd3d72577e237c76001debad86cac7665dc209",
+      "after_sha256": "8e77e66284cb27e542a74c43cb18ddbe3146c94419aef1a8a451f290b7f8aa81",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Từ em chọn có thay đổi nghĩa khi đặt trong câu khác không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-vocabulary-lesson-2",
+      "title": "Viết câu và đoạn ngắn",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "625f17821ed6d4d92ab664b34909c594741b0e56b23771d61835c50e77ef8958",
+      "after_sha256": "51ec687a81eab43b554ad445af8de1024d482979d3e48203aa644de79913f128",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Viết câu rõ ý, đúng chủ đề và nối các ý theo thứ tự."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Từ em chọn có thay đổi nghĩa khi đặt trong câu khác không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-vip-reading-inference-lesson",
+      "title": "Tìm bằng chứng cho điều em hiểu",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "412f1e6c65a64e0fdfdf4eb1ea668319d1224cfbd18c05ef3fd94f24f1e0f363",
+      "after_sha256": "3c2e53e7c4acbd41b23d7348ae6a2a9af6c35c2a9086a9d737a353241f3d310b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Câu nào trong đoạn giúp em kiểm tra ý kiến của mình?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-vip-writing-details-lesson",
+      "title": "Làm đoạn văn rõ ý và liền mạch",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "1e5cc0518c193091b054e66cd6f1d8dcd280cfabc175c50e95d4d322b1642cc4",
+      "after_sha256": "dede2f0db7bf41949ec7430f15e89f862e21776dacbaef081b28c3a91c3c06e3",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Viết câu rõ ý, đúng chủ đề và nối các ý theo thứ tự."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Em có thể sửa câu dài thành hai câu rõ hơn không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-extend-word-role-lesson",
+      "title": "Nhận biết từ qua vai trò trong câu",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "378398d88228794a1a59c7198fcb039bb39e2bf45d3488198be1966d2100dad7",
+      "after_sha256": "2811edca64d780becd9a8dbac5f736111d45049d2264a45719c5b9db1835112a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Em tìm được ba từ chỉ hoạt động trong ngày của mình không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-extend-precise-word-lesson",
+      "title": "Chọn từ chính xác khi miêu tả",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "e263e0bcf54c0e3802aba1282dfed462663c3f71ab244d79a23010e78fcda199",
+      "after_sha256": "0aea9597d6984a236da2d21dd62ea5294fd99605b6c7a7a321e30cd04c449356",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây",
+            "Chiếc lá"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Từ em chọn có thay đổi nghĩa khi đặt trong câu khác không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-extend-evidence-lesson",
+      "title": "Suy luận có bằng chứng trong đoạn văn",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "33af8cd3c0720a37560676c7582e18bd1818204a56772b4f14cc327b0c6b770c",
+      "after_sha256": "77c40e16d861735983d7c5484fe1e20a713efd1f670bf3b515c93725092e574e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Viết câu rõ ý, đúng chủ đề và nối các ý theo thứ tự."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Câu nào trong đoạn giúp em kiểm tra ý kiến của mình?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-extend-connect-sentences-lesson",
+      "title": "Liên kết câu và sửa cách diễn đạt",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "c2874bad99db84d4cb0e699bda7fcbf900221df83265775a40d5ce3ce7d9a9e4",
+      "after_sha256": "55c1895f95a10e3d886dad55efd809eedf93c7b4ca95b86ea7bdb57d3df35512",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Viết câu rõ ý, đúng chủ đề và nối các ý theo thứ tự."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Em có thể sửa câu dài thành hai câu rõ hơn không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-vip-evidence-detective-lesson",
+      "title": "Thám tử đọc hiểu: tìm bằng chứng",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "3b256aa644df5b110c9e6dd613a6f395ed2f63f96852bae746232e40e7418a09",
+      "after_sha256": "38240c6cb36f750cadb1b8320f3f2367f7994faf44d6d4454dac7967c48dfc52",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc câu",
+            "Tìm chi tiết",
+            "Kiểm tra"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Tìm chi tiết và giải thích lựa chọn bằng câu trong bài."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Câu nào trong đoạn giúp em kiểm tra ý kiến của mình?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-vip-editing-workshop-lesson",
+      "title": "Xưởng viết: nối ý và sửa câu",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "73f0801c51699576292502fbe79df439f41a38d61b475ae3fce0b7b720222283",
+      "after_sha256": "a3ff4deca90c2b404207f08059597a7c4f8ae24edacb842aa430467542f51c27",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        },
+        "goals": [
+          "Viết câu rõ ý, đúng chủ đề và nối các ý theo thứ tự."
+        ],
+        "hints": [
+          "Đọc cả câu hoặc đoạn, không chỉ nhìn một từ.",
+          "Tìm chi tiết giúp trả lời đúng điều được hỏi.",
+          "Đọc lại để kiểm tra nghĩa và dấu câu."
+        ],
+        "reflection": [
+          "Em có thể sửa câu dài thành hai câu rõ hơn không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-g4-description-lesson",
+      "title": "Quan sát và lập dàn ý tả cây cối, con vật",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "9a56a721d9adc5a3811bece1bfe39d298649ea1abb1360d1adbee90133bd03da",
+      "after_sha256": "52e4582c7ae0d18841c3f93e93afc2d2f927f4dabfd45f1489e5b46fee587bb7",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây",
+            "Chiếc lá"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-g4-recount-lesson",
+      "title": "Thuật lại một sự việc và chia sẻ cảm xúc",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "037292a724cbdd0d2e9811af757f5116d1daedc90919ef37adeb12a1b6834029",
+      "after_sha256": "73284e0b91bddd31719e58582483acdd34b838b21cdeac3c91439a300f850b34",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách",
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-g4-discussion-lesson",
+      "title": "Thảo luận: lắng nghe, ghi ý và nêu lí lẽ",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "e981a0e2f1c9df9ddc6d88e94ad2d84ab4430bbbc5b1cd069d906e5c2b895228",
+      "after_sha256": "d518450ebd736db3b19c0600f8f6bc5f6a2f1779c20c431807135fcbe375c134",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-g4-adverbial-punctuation-lesson",
+      "title": "Trạng ngữ và dấu câu trong lời kể",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "1106d78f075b3a48c193515f01e1de26aa1a09006103034fb21efddd5c6c3214",
+      "after_sha256": "cfea7b17438f15897888c4bac450b23c36b0d32228e087277545281a2103d112",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-g4-information-lesson",
+      "title": "Đọc văn bản thông tin và hướng dẫn theo bước",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "2b7fee0b63ebdf0da465f3113fbd20388a4f3d2616624161e90cb4843da2ec61",
+      "after_sha256": "b2b3bb9896887cb078ce957174f741531e27d425a7793366b93519ab2ed6b9fc",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-g4-evidence-riddle-lesson",
+      "title": "Đố tư duy: ai đọc cuốn nào?",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "24d93b697d3d618d81ddfbb1d211ada4cd80cd2d3ad2f92a82a460252c6d6040",
+      "after_sha256": "493ab9c94b09a4be52f6408a18b549aa045bec8ecce4cb705173a2427ea36d7b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Sách",
+            "Chiếc lá"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT4-VIETNAMESE-g4-editing-lesson",
+      "title": "Nâng cao: sửa đoạn văn để ý rõ và có bằng chứng",
+      "grade": 4,
+      "subject": "VIETNAMESE",
+      "before_sha256": "850b49014ed1be6fd2581ffd5600301e1e2a18172b420c485b4bc549125fc598",
+      "after_sha256": "da1dd2d170b0799e6606c3ea2129dcb51974797d61c08598233dd7163096a483",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Cây"
+          ],
+          "caption": "Đọc các thẻ nhắc và tìm lại chi tiết trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-family-lesson-1",
+      "title": "Chào hỏi và giới thiệu",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "882a6c5536abfa91fb5f370684ec0c065282e80f5af99a8784a5d72bed21834d",
+      "after_sha256": "02b140b3f6660104caa36b63b6b884c84b85389216d588e6d907e32a42712876",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu về một người thân mà không nêu thông tin riêng tư không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-family-lesson-2",
+      "title": "Nói về gia đình",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "bf01cd5e7582dfdd2ef39f9272488a13336d9279dab4836898232d55f555bb0d",
+      "after_sha256": "16ec1d8d362300350d797b4bdab4a1d0d21600a6bdc541099eb2ce66687c8db0",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu về một người thân mà không nêu thông tin riêng tư không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-school-lesson-1",
+      "title": "Đồ vật trong lớp",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "514d8b8c48b92c0d4595e41cdad4d9800c4b2b9107351a4e959da4c0325a9f79",
+      "after_sha256": "bd4bfa797e03a307cc21f08f4ebdc6ba7aa285f87a3528beb36a6a5ee42a4f22",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book",
+            "ruler"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu tiếng Anh về đồ dùng học tập của mình không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-school-lesson-2",
+      "title": "Môn học em yêu thích",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "5d659bb59f5c04876905fb7f3f262364cd735641980bb7462ae57b2445c83195",
+      "after_sha256": "b0ef456de2159370e6a6dba3a9e5f2c3155b580b7c0e2a5027dd621868301d0c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu tiếng Anh về đồ dùng học tập của mình không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-routines-lesson-1",
+      "title": "Nói về một ngày của em",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "ed368e26b2c355f7c5ace094d532dad813d004fb358d92b42e6f3514fdcc18c6",
+      "after_sha256": "75a5494afcc5831962bba7396bfd353f8ba8ea5b46bc755f4b6b647cdee583fb",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "school"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Nếu đổi thứ tự hai hoạt động, câu chuyện có còn hợp lý không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-routines-lesson-2",
+      "title": "Các ngày trong tuần và giờ",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "814ad8b61bf32953503b8511624fb9fb8a91d5a0fcc46d009d6503b9d12fbfae",
+      "after_sha256": "ad1a487c83f1befd48bd554e498e191c662563a279c7c44ae59555023c773ba8",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "clock"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Nếu đổi thứ tự hai hoạt động, câu chuyện có còn hợp lý không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-weather-lesson-1",
+      "title": "Miêu tả thời tiết",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "96c383cf733b6c41e6e3db74ee4860ca653c12157a4fc1a9ad3c39f1a0cb2a1b",
+      "after_sha256": "a046d9df847849925d092f43b640d693b2304a62b2875977e7124140d1197b44",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "sunny",
+            "rainy"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu tiếng Anh về thời tiết hôm nay không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-weather-lesson-2",
+      "title": "Nói về sở thích",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "441a0235eac928fd86f118b3f67351d6733133f8ba7f821dcb23cae66e02527e",
+      "after_sha256": "64851ef7b69c480bbfe9b0d75f4927fa1e3b16ebff48c6816b4ab490359abf3b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        },
+        "goals": [
+          "Dùng I like để nói điều em thích làm."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu tiếng Anh về thời tiết hôm nay không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-vip-family-reading-lesson",
+      "title": "Read and find the evidence",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "2a2eddfbd91214ae5df173fbea000235bf41cefbad847d0dbeeb638469da8174",
+      "after_sha256": "cfc333ff95a01195af0ea7c80d5dccbfbffe2e372fa8049d35caa038041ca30e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu về một người thân mà không nêu thông tin riêng tư không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-vip-school-context-lesson",
+      "title": "Our reading corner",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "8e9fde27b446ac79872adb6d81361b6e24e7e972e142bbe7db67b3cbc41c7160",
+      "after_sha256": "bde52aad21b8a6a6fcc6b55a35e948c28489b7432a76afc18979a85100e820b2",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu tiếng Anh về đồ dùng học tập của mình không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-extend-daily-time-lesson",
+      "title": "Nói về giờ và hoạt động hằng ngày",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "d7473057c183cf79dc278fe7b88f30fed1848e551a24b2aa07099ce27bc8dcac",
+      "after_sha256": "ab9392bc1c0df0f58c567b4fd618ff2bf9c2cf6f1e2b10a799b4eef4a05d21c6",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "clock",
+            "school"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Nếu đổi thứ tự hai hoạt động, câu chuyện có còn hợp lý không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-extend-weather-choice-lesson",
+      "title": "Thời tiết và hoạt động phù hợp",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "9bb0d50769012b25ad3915efa70fc6fc5457d13c4df924958ac7a2c56e2d7cd6",
+      "after_sha256": "c52a11c58f15bd2db4cf53876335570deee4e182712ac0bf6e4a3387b4a9556b",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book",
+            "sunny",
+            "rainy"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu tiếng Anh về thời tiết hôm nay không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-extend-family-weekend-lesson",
+      "title": "Đọc kế hoạch cuối tuần của gia đình",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "72cf312bfc8b7c48a597e7312ce354cc04f870b6526d920deae25c2572a2ac82",
+      "after_sha256": "5f00f934d81d6782bbc4ad91cf49c4208720af6a861b7b6472db1f087d9bf817",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "water"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu về một người thân mà không nêu thông tin riêng tư không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-extend-class-project-lesson",
+      "title": "Đọc hướng dẫn cho dự án nhỏ ở lớp",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "df32235e937825488fc912fa70c9cec68140b4ce8d1e1453a81b2c10fe5f124a",
+      "after_sha256": "1e7021889fd3baa59e788ef7ef77d88000b177f6085e2db4ac7938a998ae46ba",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "book"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu tiếng Anh về đồ dùng học tập của mình không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-vip-market-story-lesson",
+      "title": "A trip to the market: đọc theo trình tự",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "cdb8f07bd6b5fd61dfebda09fe8587c0b84f37bb839c7196d2bed9e2bccf02ca",
+      "after_sha256": "6c394f1295ce4fc61422a4545e956df9b7762317783479720c90eb925bc1397d",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "bag",
+            "bread"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Nếu đổi thứ tự hai hoạt động, câu chuyện có còn hợp lý không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-vip-picnic-planner-lesson",
+      "title": "Our class picnic: đọc kế hoạch và giờ",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "e5d80e5e5f82e01d9c0c4961d17da95a196686e38b3f40d4afb0d038a48f011f",
+      "after_sha256": "39c6ae7068c7385097ab2762d0046347b2cd19ff35ceda348111b870e66542f1",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "water",
+            "clock",
+            "school"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        },
+        "goals": [
+          "Đọc câu mẫu và chọn đúng người, đồ vật hoặc hoạt động được hỏi."
+        ],
+        "hints": [
+          "Đọc câu hỏi để biết cần tìm người, vật hay việc.",
+          "Tìm từ hoặc câu tương ứng trong ví dụ.",
+          "Đọc lại cả câu để kiểm tra lựa chọn."
+        ],
+        "reflection": [
+          "Em có thể nói một câu tiếng Anh về đồ dùng học tập của mình không?"
+        ]
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-g4-can-cannot-lesson",
+      "title": "Can / can't: nói về việc em có thể làm",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "c275d1566c08053d564ef77f396acf7978b104691e28acb242dcfb1db134a8aa",
+      "after_sha256": "3c7a7fad7bee15876d8653826e1d451d100a8c8298381fc70bebeb7858de4db2",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-g4-directions-lesson",
+      "title": "Go straight, turn left: đọc chỉ dẫn và biển báo",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "7803fba9d1128af0e7b5b679f37b719d9faac063f4e5c1e5771ed30820f1680d",
+      "after_sha256": "d2bdc4d934a8461bfaa4412d7335a4e3bb7588de64437c5abb88539ff626b33c",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "school"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-g4-preferences-lesson",
+      "title": "Sở thích và lời mời lịch sự trong bữa ăn",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "a3838a64482016977b6fa52caf63428b0490c03ed1f50451f39e3b84c3d6e16c",
+      "after_sha256": "ee07ebd1c8766fffdd8111c9c11b4de51cea017ba059c6f876b8cdd1779674ef",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "water"
+          ],
+          "caption": "Đọc thẻ từ, rồi tìm câu có từ đó trong ví dụ."
+        }
+      }
+    },
+    {
+      "code": "VT4-ENGLISH-g4-schedule-riddle-lesson",
+      "title": "Đố tư duy tiếng Anh: chọn hoạt động phù hợp",
+      "grade": 4,
+      "subject": "ENGLISH",
+      "before_sha256": "ebac7d3ebbe0a57ed7c3425b7dc69cbef66fe0c778f8c188913a54f2e18a88b0",
+      "after_sha256": "298a0c393c5319f8761191e38f6fd80e1eb14d4e339a4b3b9f220733ff31ca55",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "Đọc mẫu",
+            "Tìm từ",
+            "Đối chiếu"
+          ],
+          "caption": "Ba bước giúp em đọc câu tiếng Anh trong bài."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-fractions-lesson-1",
+      "title": "Ôn số tự nhiên và tính hợp lí",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "7e822928dd6fc00de7212088650fb36704296cbc5fd3ce3408dc6b785704b9c9",
+      "after_sha256": "ad39f8a0ba50862458e7c9e16f09b819bc5f5da0aa758687d01b4b5f2554e3db",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "121",
+            "31",
+            "152"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-fractions-lesson-2",
+      "title": "Phân số, rút gọn và hỗn số",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "7c605a17baee8e990113b3cbaf628cefdded289f3e2fb1b48c02e883c3b37764",
+      "after_sha256": "570c381024e69eae00989961c54e828df1f1e6412ace67416b6406cbd27ebb79",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "2/5",
+            "4/5"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-decimals-lesson-1",
+      "title": "Đọc số thập phân và các hàng",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "fbe0584ddd9b2159d6bf19dd2bd49a6b2d4f04fe42b0dccb64fc90404270d768",
+      "after_sha256": "4b844fd52073450ccffbe8594574ec94cf9ad62bb56e64972130b72a83c7352a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "12,16",
+            "1",
+            "0,1",
+            "10"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-decimals-lesson-2",
+      "title": "So sánh và làm tròn số thập phân",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "d4d0020a2b64c0ff8a5ef7602bad3b3b70ddd801567eaab465369d77c2de2be6",
+      "after_sha256": "b12b6957e995b9d134bab91631f0009912f9418706e9cdc6a316a1dd4f2af666",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "1,46",
+            "1",
+            "4"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-operations-lesson-1",
+      "title": "Cộng và trừ số thập phân",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "d19392da7ab8e7db755efe65b8e47863edee524fd946058d97e1601b96aa0339",
+      "after_sha256": "31024123e58b7f678798ebcefa28a5a8e68bc6aa3d30f2f47a06780f38a39f83",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3,35",
+            "1,4",
+            "4,75",
+            "1,40"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-operations-lesson-2",
+      "title": "Nhân, chia số thập phân đơn giản",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "1294436b13ebc3c23ff5488d9eaf11920cb30ae332b8d61d131942d2341b462b",
+      "after_sha256": "f5bfe4fc790a4be03aa2a26cae37acf0bd648b911689eccf0d270f2270a4349a",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "2,5",
+            "2",
+            "5"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-ratio-lesson-1",
+      "title": "Tỉ số và tỉ số phần trăm",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "880dcf2d4d6b2cdedb6907ac04801e43ce40a6207ddf66ed343e8301cc280d4b",
+      "after_sha256": "51895f87ffd730c68797fee8066643a15a885fe65c8c402754b2e67617326f14",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "1",
+            "20",
+            "5",
+            "100"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-ratio-lesson-2",
+      "title": "Tìm hai số từ tổng hoặc hiệu và tỉ số",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "cac895dd31f46b78934928a6d0855ed153252711c800718282dd32da29500660",
+      "after_sha256": "fd92576c490541ebc3f989f2f494006f8e28996000b835b1eff4373113725cd3",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "4",
+            "1",
+            "3"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-area-units-lesson",
+      "title": "Héc-ta, ki-lô-mét vuông và mét vuông",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "fb6988624bf270377dbc4ee02825ea0d858c33e8207e7fb9b4cb2063e4ef350e",
+      "after_sha256": "59841179d79387adb2769218024fdd3679a2d10cf061720e0600918dd6a183a8",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "1,5",
+            "15000,0",
+            "1",
+            "10 000"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-volume-units-lesson",
+      "title": "Đơn vị thể tích và thời gian",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "a8bce91af9d1fd86720ef99d266baf7a5d6a8a17f7019dc28feb73ff363e4819",
+      "after_sha256": "017c4c90ce4e323ecc946974170eee458f60e37c2b77c26d7a2cc12550ad96ad",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "1",
+            "1000",
+            "10"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-solid-nets-lesson",
+      "title": "Hình khai triển và các mặt của khối",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "f3fcaef47d29303ef1043f2a5d2d8d6bc1bc0540dbdf207624758ab6a6622681",
+      "after_sha256": "9128f282f1174c1b11c26c1fb05da741f4f8b10299b206e239307dfb94c78c05",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "6"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-steady-motion-lesson",
+      "title": "Vận tốc, quãng đường và thời gian",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "f94df3cc86117a8244e9c6d331673878e34e86ec3cca2040713fa56897e8c873",
+      "after_sha256": "36dc96b93a8e49027a91088f03f1d32dc348f798653dee5b0571edc7feb841b8",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "40",
+            "2",
+            "20"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-map-scale-lesson",
+      "title": "Tư duy: tỉ lệ bản đồ và đổi đơn vị",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "4885a2d38511cc52a03a138fb918900bea5bc078ee42365bb26e2c896db287cf",
+      "after_sha256": "fbe0728e2063f915b04137e1698fa09206f6fe258cc35446048ffb3275ac91bc",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "1",
+            "1000",
+            "1,5",
+            "15"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-discount-budget-lesson",
+      "title": "Tư duy: giá giảm và tiền phải trả",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "16a6d1fa04c0f0e191f43dc491a0cf50f2b53cc88180865f225c52ed5fa5f904",
+      "after_sha256": "4ed3860a0f7ee4bca1f7f290203c5f8a46731acc67dbfd9a2f24de9912403288",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "40000",
+            "15",
+            "34000"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-observed-ratios-lesson",
+      "title": "Tư duy: thí nghiệm nói được điều gì?",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "88d1795e6bb3de5e2d87b3c17146964ac9fc16170dba0ce7e0b8254bb02ae92e",
+      "after_sha256": "6fd7f37b43d44b1306a76279d022c092ccb8a4c3c46ef5819f07b2e7d311b3e6",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "10",
+            "3/10"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-composite-area-lesson",
+      "title": "Tư duy: diện tích phần còn lại",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "768dba63fc7d5ce50c5f9466efae0826597306bcd053f21fb801e7c5418728c4",
+      "after_sha256": "d5e4a49a7dfbc776eb834419d1391e87667966fe38004f2adb884555f77f96a0",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "6",
+            "2",
+            "15"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-motion-with-rest-lesson",
+      "title": "Tư duy: thời gian chạy và nghỉ",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "bbbd2bf759a4f4bdb7eddf66bd72d9094ac5fb5d79df419c98bc0c2bcd744597",
+      "after_sha256": "923503a78d4b21509412de8bda4dfda2a307a67b453f0f9b0f68ea8f51605a1e",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "24",
+            "12",
+            "30",
+            "2,5"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT5-MATH-g5-four-step-budget-lesson",
+      "title": "Tư duy: lập kế hoạch mua trong ngân sách",
+      "grade": 5,
+      "subject": "MATH",
+      "before_sha256": "178e98e76e4eb58676e3f3feef19c6e941aec066fa37bb885d350fe88ffab914",
+      "after_sha256": "5bd5a390916c95c2df2ab7a3c1b83b59c85b768e9d93c2775b0bb9a6017d0d99",
+      "patch": {
+        "illustration": {
+          "kind": "cards",
+          "labels": [
+            "3",
+            "12 000",
+            "2",
+            "5000"
+          ],
+          "caption": "Tìm từng thẻ số trong ví dụ. Đọc cả đơn vị đi kèm trong câu."
+        }
+      }
+    },
+    {
+      "code": "VT1-MATH-discovery-2026-04-seeds-lesson",
+      "title": "Đếm hạt để gieo",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "29f4d56c1557ffabd022bb64920c44b84bac7eeb283848795a85ab727ba0238e",
+      "after_sha256": "323352d0028a27d228a84fb384803c5922cc16c96f7e16d264aa6cd9008b3e24",
+      "patch": {
+        "goals": [
+          "Đếm hoặc tính rồi kiểm tra điều bài hỏi."
+        ]
+      }
+    },
+    {
+      "code": "VT1-MATH-discovery-2026-04-missing-seeds-lesson",
+      "title": "Ô trống của bạn Ong",
+      "grade": 1,
+      "subject": "MATH",
+      "before_sha256": "2f40bd032540cfe0b52f89a1ee5ecfba6c6c7ce7e46bb0710e0656c6d9353f78",
+      "after_sha256": "94a3bbfbfb0b31d1e82dca81dcbe74781983030cc0cdfd64e487d54632146f3d",
+      "patch": {
+        "goals": [
+          "Đếm hoặc tính rồi kiểm tra điều bài hỏi."
+        ]
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-discovery-2026-04-read-1-lesson",
+      "title": "Chiếc lá bên cửa",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "f2ef70ca8fd012e8e06456c1fcc30c267d4a60665aedef668d6b2e7b9ee5ad37",
+      "after_sha256": "597589a13d9cc363575fd133bbca5bb922801d127c9fb03951015367caba72e5",
+      "patch": {
+        "goals": [
+          "Đọc câu ngắn và tìm người, việc trong bài."
+        ]
+      }
+    },
+    {
+      "code": "VT1-VIETNAMESE-discovery-2026-04-read-2-lesson",
+      "title": "Chờ bạn cùng đi",
+      "grade": 1,
+      "subject": "VIETNAMESE",
+      "before_sha256": "b5468bd184285cb8d87824dc736cb49953aca071c4e8599011dcf313cae1e44a",
+      "after_sha256": "4e6af8a7b515e289e1fbbbf91fc8b0821323cac752aa535a62507fa50cce3b06",
+      "patch": {
+        "goals": [
+          "Đọc câu ngắn và tìm người, việc trong bài."
+        ]
+      }
+    },
+    {
+      "code": "VT1-ENGLISH-discovery-2026-04-english-1-lesson",
+      "title": "Mèo và chó: cat, dog",
+      "grade": 1,
+      "subject": "ENGLISH",
+      "before_sha256": "d1c1a3936bb8a01a0479bd2f637a7f09c140e1c852c12c926db8cd6e23e8c615",
+      "after_sha256": "b6d24d901ed0e2911e1691ae50bf0b7e11743b3a9af8c4d2afa8ceda3936f85e",
+      "patch": {
+        "goals": [
+          "Nhìn tranh và hiểu từ trong câu mẫu."
+        ]
+      }
+    },
+    {
+      "code": "VT1-ENGLISH-discovery-2026-04-english-2-lesson",
+      "title": "Hỏi lại: có phải mèo không?",
+      "grade": 1,
+      "subject": "ENGLISH",
+      "before_sha256": "a47f6623fafd048d03cf31c2aaa630e3e01d09f4d7d3a2b551f9bbd6faa79eb1",
+      "after_sha256": "91bbf03f455802e03cb77df4eb0aa9c5ed7be89a9564e782a8dd76bc2bb774ce",
+      "patch": {
+        "goals": [
+          "Nhìn tranh và hiểu từ trong câu mẫu."
+        ]
+      }
+    },
+    {
+      "code": "VT2-MATH-discovery-2026-04-paper-strips-lesson",
+      "title": "Đo hai dải giấy",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "6912f72cc6278c108c414bec88afaeadc0000124295f8f66470204f9f63543be",
+      "after_sha256": "da6162e423a1e7767a4de74e88021f532bb82e191891d7dc280aec007f3aa164",
+      "patch": {
+        "goals": [
+          "Đếm hoặc tính rồi kiểm tra điều bài hỏi."
+        ]
+      }
+    },
+    {
+      "code": "VT2-MATH-discovery-2026-04-door-number-lesson",
+      "title": "Tìm số trên cánh cửa",
+      "grade": 2,
+      "subject": "MATH",
+      "before_sha256": "c51340fde5d9fd587c545ca7848ce08e374f4106af7f077b89bc96e8549d0b2d",
+      "after_sha256": "ea11efd7e3b5494b0181e615a03a23a027348898d16961b2a80e32b0b4d8f14b",
+      "patch": {
+        "goals": [
+          "Đếm hoặc tính rồi kiểm tra điều bài hỏi."
+        ]
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-discovery-2026-04-read-1-lesson",
+      "title": "Bình nước của Mai",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "5945ac002ea461f92724c8c338f8b4fc9c343cc7d895cebc8d9d21ee35ff2310",
+      "after_sha256": "28b284b10ccf3876e4549ed40b52e085542542145207b1690d7a05a2528ddf4a",
+      "patch": {
+        "goals": [
+          "Đọc câu ngắn và tìm người, việc trong bài."
+        ]
+      }
+    },
+    {
+      "code": "VT2-VIETNAMESE-discovery-2026-04-read-2-lesson",
+      "title": "Góc đọc có chỗ trống",
+      "grade": 2,
+      "subject": "VIETNAMESE",
+      "before_sha256": "b88b48852d01de98542b9bda04f773b1fcf6136e62d4e7f06ccfca5d0cea4562",
+      "after_sha256": "f78252ef600a5601fa4ce24e90934decced1aca869bc388aeaeff5305601269c",
+      "patch": {
+        "goals": [
+          "Đọc câu ngắn và tìm người, việc trong bài."
+        ]
+      }
+    },
+    {
+      "code": "VT2-ENGLISH-discovery-2026-04-english-1-lesson",
+      "title": "Thước và tẩy của em",
+      "grade": 2,
+      "subject": "ENGLISH",
+      "before_sha256": "984e2dafc488ae52b027772165a6f20d533c2693ffce7231e5f2448c39f61e58",
+      "after_sha256": "3e7dc761bc1061187412ec5549d1f1e534fb1ba67f27aa1b2e2b3f3570fe7999",
+      "patch": {
+        "goals": [
+          "Nhìn tranh và hiểu từ trong câu mẫu."
+        ]
+      }
+    },
+    {
+      "code": "VT2-ENGLISH-discovery-2026-04-english-2-lesson",
+      "title": "Hai chiếc bút xanh",
+      "grade": 2,
+      "subject": "ENGLISH",
+      "before_sha256": "f025d58ccf5a7eec8a5a572052dd9ab363680ad0c49fdb31fe34105394d067b1",
+      "after_sha256": "3efe37de6f037d7360a0c05efa85509eec3a6f555c57d116fa0f2310d0d45648",
+      "patch": {
+        "goals": [
+          "Nhìn tranh và hiểu từ trong câu mẫu."
+        ]
+      }
+    }
+  ]
+}

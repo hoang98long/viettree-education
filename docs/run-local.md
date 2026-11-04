@@ -1,5 +1,9 @@
 # Chạy nhanh trên máy local hiện tại
 
+**Đã rà soát và cập nhật local:** 232 bài cũ và 200 phiên bản AI, thêm hình
+đúng nội dung; không đổi tài khoản hoặc tiến độ. Chỉ cần khởi động lại hai
+server bên dưới. [Chi tiết và lệnh cập nhật máy khác](content-editorial-review-2026-11-04.md).
+
 **Cập nhật 04/11/2026:** đã sao lưu và nạp `discovery-2026-04`, thêm 30 bài,
 120 câu hỏi, 30 đề. Có đủ năm bộ bổ sung thì mỗi khối có **89 bài / 474 câu /
 77 đề** ở ba môn; AI Academy vẫn 40 bài/khối. Khởi động lại hai server để
@@ -49,7 +53,7 @@ xem [học liệu lớp 3](grade3-curriculum.md). Không đổi tài khoản l�
 10 bài AI và sửa quyền gợi ý/gửi lại sau lỗi mạng.
 [Nội dung và lệnh cập nhật](learning-upgrade-2026-10-16.md).
 
-AI Academy có 190 bài cho lớp 1–5 và 1625 hình trong thư viện. Với máy
+AI Academy có 200 bài cho lớp 1–5 và 2617 hình trong thư viện. Với máy
 khác hoặc lần nâng cấp đầu, cài thêm dependencies và nạp module trước khi chạy:
 
 ```powershell
@@ -60,7 +64,7 @@ khác hoặc lần nâng cấp đầu, cài thêm dependencies và nạp module 
 
 Đăng nhập → **AI Academy** (`/ai-academy`); admin `/admin/ai-academy`.
 Mặc định `AI_TRAINING_ONLY=true`: học lý thuyết và bài tập, không gọi model.
-Lớp 4 có 3 bài Free / 33 bài VIP; lab và xưởng sáng tạo thuộc VIP.
+Mỗi khối có 5 bài Free / 35 bài VIP theo cấu hình mặc định; lab và xưởng sáng tạo thuộc VIP.
 Chi tiết [AI Academy](ai-academy/README.md).
 Giữ `.env` hiện có; file `.env.example` dùng placeholder, không chép đè mật khẩu.
 

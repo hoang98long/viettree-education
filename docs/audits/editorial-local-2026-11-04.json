@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-04",
+  "database": "viettree-education",
+  "release": "editorial-2026-11",
+  "ordinary": {
+    "updated": 232,
+    "eligible": 0,
+    "current": 0,
+    "customized": 0,
+    "missing": 0
+  },
+  "new_ai_versions": 200,
+  "ai_media_only_versions": 1,
+  "changed_existing_rows": {
+    "lessons": 232,
+    "ai_lessons": 200,
+    "ai_lesson_versions": 200
+  },
+  "unchanged_existing_rows": 24173,
+  "checked_tables": 82,
+  "added_rows": {
+    "media_assets": 915,
+    "audit_logs": 232,
+    "ai_lesson_versions": 200,
+    "ai_media_assets": 915,
+    "ai_media_variants": 915,
+    "ai_media_usages": 1328
+  },
+  "backup": {
+    "path": ".tools/backups/before-editorial-publish-2026-11-04-58b73398be7c47cea572549d2b96e308.dump",
+    "sha256": "c62651986cc9febe00ecc7e1e612f7d9e9c4d151bf9225d5e2c363029f9c139b",
+    "pg_restore_list": "passed",
+    "prior_backup_restore_into_isolated_database": "passed"
+  },
+  "accounts_passwords_memberships_sessions_answers_history_progress": "unchanged",
+  "old_ai_payloads_and_media_bytes": "unchanged",
+  "repeat_publication": "no changes"
+}

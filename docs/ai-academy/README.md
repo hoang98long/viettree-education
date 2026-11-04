@@ -12,7 +12,11 @@ quyền Free/VIP, hồ sơ, lớp học và phụ huynh đã xác minh. Không c
 | Kiểu hoạt động                   | 10; thêm lab phân loại và Prompt Builder |
 | Dự án theo khối                  |   5; mỗi học sinh lưu một sản phẩm/dự án |
 | Huy hiệu                         |        12, ghi nhận số bài đã hoàn thành |
-| File SVG nguyên bản              |    1702, gồm ảnh mới và ảnh phiên bản cũ |
+| File SVG nguyên bản              |    2617, gồm ảnh mới và ảnh phiên bản cũ |
+
+Đợt [biên tập 04/11](../content-editorial-review-2026-11-04.md) sửa lời dẫn,
+hoạt động và hình; giữ phiên bản đã ghim với tiến độ cũ. Database local đã
+cập nhật, máy khác chạy `seed-ai-academy` rồi `verify-ai-academy`.
 
 Từng bài có mục tiêu, tình huống, kiến thức, hoạt động, checkpoint, vận dụng,
 hướng dẫn giáo viên, hỗ trợ và thử thách. Đây là chương trình làm quen AI tích

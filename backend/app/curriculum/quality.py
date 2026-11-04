@@ -9,7 +9,7 @@ from app.schemas.authoring import QuestionInput
 from app.schemas.lessons import LessonContent
 
 
-def sources():
+def sources(include_supplements=False):
     for grade in SUPPORTED_GRADES:
         pack = get_pack(grade)
         for subject in SUBJECT_CODES:
@@ -27,13 +27,28 @@ def sources():
                         [unit["lesson"]],
                         unit["questions"],
                     )
+    if include_supplements:
+        from app.curriculum.supplements.registry import releases
+
+        for pack in releases().values():
+            for grade in SUPPORTED_GRADES:
+                for subject, units in pack.content(grade).items():
+                    for unit in units:
+                        yield (
+                            grade,
+                            subject,
+                            unit["minimum_plan_code"],
+                            f"VT{grade}-{subject}-{unit['code']}",
+                            [unit["lesson"]],
+                            unit["questions"],
+                        )
 
 
-def audit_sources():
+def audit_sources(include_supplements=True):
     counts = Counter()
     issues = []
     dummy = UUID(int=1)
-    for grade, subject, plan, code, lessons, questions in sources():
+    for grade, subject, plan, code, lessons, questions in sources(include_supplements):
         key = (grade, subject, plan)
         counts[key, "lessons"] += len(lessons)
         counts[key, "questions"] += len(questions)

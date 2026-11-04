@@ -6,31 +6,63 @@ from html import escape
 
 def icon_for(text):
     words = [
-        ("mật khẩu|địa chỉ|riêng|nguồn", "lock"),
+        ("âm thanh|tiếng nói|tiếng chim|giọng nói", "sound"),
+        ("mật khẩu|địa chỉ|riêng", "lock"),
+        ("ghi nguồn|người vẽ|tác giả|giấy phép", "book"),
         ("công tắc|quạt|theo lệnh", "fan"),
         ("người|bạn|cô|thầy|chào|hello|goodbye", "person"),
         ("mèo|cats?", "cat"),
         ("chó|dogs?", "dog"),
-        ("cam|orange", "orange"),
-        ("táo|apple", "apple"),
-        ("sách|book", "book"),
-        ("bút|pencil", "pencil"),
-        ("cặp|bag", "bag"),
-        ("cây|hạt|rau", "plant"),
+        ("chim|birds?", "bird"),
+        ("thỏ|rabbits?", "rabbit"),
+        ("cá|fish", "fish"),
+        ("rùa|turtles?", "turtle"),
+        ("bướm|butterfl(?:y|ies)", "butterfly"),
+        ("bò|cows?", "cow"),
+        ("cam|oranges?", "orange"),
+        ("táo|apples?", "apple"),
+        ("chuối|bananas?", "banana"),
+        ("lê|pears?", "pear"),
+        ("dưa hấu|watermelons?", "watermelon"),
+        ("dâu tây|strawberr(?:y|ies)", "strawberry"),
+        ("nho|grapes?", "grape"),
+        ("dứa|pineapples?", "pineapple"),
+        ("sách|books?", "book"),
+        ("bút|pencils?", "pencil"),
+        ("cặp|bags?", "bag"),
+        ("thước|rulers?", "ruler"),
+        ("quả bóng|balls?", "ball"),
+        ("cốc|cups?", "cup"),
+        ("đồng hồ|clocks?", "clock"),
+        ("ghế|chairs?", "chair"),
+        ("cây|hạt|rau|lá|vườn|tưới", "plant"),
         (r"\d+|đếm|tính|nhóm|mẫu|data", "numbers"),
         ("nhìn|tranh|hình|kiểm tra|đối chiếu|thử", "eye"),
-        ("máy|robot|ai", "robot"),
+        ("máy|robot", "robot"),
     ]
-    ground_truth = re.search(r"(?:tranh|ảnh) (?:là )?(mèo|chó|cam)\b", text.casefold())
+    ground_truth = re.search(
+        r"(?:tranh|ảnh)(?::| là)?\s+(mèo|chó|cam|chim|thỏ|cá)\b", text.casefold()
+    )
     if ground_truth:
-        return {"mèo": "cat", "chó": "dog", "cam": "orange"}[ground_truth[1]]
+        return {
+            "mèo": "cat",
+            "chó": "dog",
+            "cam": "orange",
+            "chim": "bird",
+            "thỏ": "rabbit",
+            "cá": "fish",
+        }[ground_truth[1]]
     matches = [
         (match.start(), index, icon)
         for index, (pattern, icon) in enumerate(words)
         if (match := re.search(r"(?<!\w)(?:" + pattern + r")(?!\w)", text.casefold()))
     ]
     concrete = [match for match in matches if match[2] not in {"eye", "numbers", "robot"}]
-    return min(concrete or matches)[2] if matches else "idea"
+    if matches:
+        return min(concrete or matches)[2]
+    if re.search(r"(?<!\w)AI(?!\w)", text):
+        return "robot"
+    return "question" if text.strip().startswith("Ai ") else "idea"
 
 
 def icon_art(kind, variant=0):
@@ -45,6 +77,21 @@ def icon_art(kind, variant=0):
             circle(150, 90, 42, "#f2c898")
             + path("M75 244V190Q150 120 225 190V244Z", "#6879cf")
             + path("M125 104Q150 123 175 104", width=3)
+        )
+    if kind == "sound":
+        return path("M45 120H86L133 77V223L86 180H45Z", "#6879cf") + path(
+            "M165 111Q199 150 165 189M193 82Q252 150 193 218", stroke="#38a99a", width=10
+        )
+    if kind == "chair":
+        return (
+            rect(80, 38, 140, 126, "#d5e3ef", 20)
+            + rect(63, 162, 174, 38, "#c68132", 8)
+            + path("M83 200V266M217 200V266", stroke="#856b4e", width=13)
+        )
+    if kind == "question":
+        return (
+            circle(150, 150, 105, "#d5e3ef")
+            + '<text x="150" y="205" text-anchor="middle" font-size="170" fill="#6879cf">?</text>'
         )
     if kind == "fan":
         return (
@@ -111,8 +158,12 @@ def icon_art(kind, variant=0):
 
 
 def uses_counters(text):
-    match = re.search(r"(?<![\d.,−-])(\d{1,2})\s*(?:quả và|\+)\s*(\d{1,2})(?![\d.,])", text)
-    return bool(match and int(match[1]) + int(match[2]) <= 20)
+    match = re.search(r"(?<![\d.,/−-])(\d{1,2})\s*(?:quả và|\+)\s*(\d{1,2})(?![\d.,/])", text)
+    return bool(match and int(match[1]) + int(match[2]) <= 20) or bool(
+        re.match(r"(?i)(one|two|three)\b", text)
+        or re.search(r"(?i)(hai nhóm|ba nhóm|đếm ba quả|đếm mỗi quả|đếm một quả|số lượng 5)", text)
+        or re.match(r"\d+(?:,\s*\d+){3};", text)
+    )
 
 
 def labelled_picture(text, variant=0, code=""):
@@ -128,6 +179,177 @@ def labelled_picture(text, variant=0, code=""):
 
 def example_art(text, variant=0):
     from app.academy.media import OBJECTS, circle, path, rect
+
+    if text == "Nhặt hạt":
+        return (
+            path("M45 205Q150 274 255 205Z", "#d5e3ef")
+            + "".join(
+                f'<ellipse cx="{x}" cy="195" rx="13" ry="8" fill="#856b4e"/>'
+                for x in (95, 148, 202)
+            )
+            + path("M65 63L120 108L154 87Q173 81 176 96L140 135Q123 148 109 137L55 99", "#f2c898")
+            + '<ellipse cx="156" cy="142" rx="13" ry="8" fill="#856b4e"/>'
+        )
+    if text == "Gieo hạt":
+        return (
+            rect(25, 170, 250, 90, "#c9a77d", 8)
+            + "".join(
+                f'<ellipse cx="{x}" cy="200" rx="13" ry="8" fill="#856b4e"/>'
+                for x in (70, 150, 230)
+            )
+            + path("M150 75V145M138 131L150 145L162 131", stroke="#6879cf", width=8)
+        )
+    if text in {"Đếm mỗi quả một lần", "Đếm một quả hai lần"}:
+        dots = "".join(circle(x, 155, 23, "#38a99a") for x in (60, 150, 240))
+        if "hai lần" in text:
+            return dots + path(
+                "M42 112C-5 35 136 34 84 115M75 97L84 115L102 108", stroke="#c68132", width=7
+            )
+        return dots + "".join(
+            path(f"M{x} 65V111M{x - 9} 99L{x} 111L{x + 9} 99", stroke="#6879cf", width=5)
+            for x in (60, 150, 240)
+        )
+    sequence = re.match(r"(\d+), (\d+), (\d+), (\d+);", text)
+    if sequence:
+        return "".join(
+            circle(48 + i * 67, 150, 26, "#d5e3ef")
+            + f'<text x="{48 + i * 67}" y="160" text-anchor="middle" font-size="30" fill="#26475c">{n}</text>'
+            for i, n in enumerate(sequence.groups())
+        )
+    table = re.match(r"Bảng: (\d+), (\d+), (\d+) cây\.", text)
+    if table:
+        values = [int(n) for n in table.groups()]
+        scale = 150 / max(*values, 1)
+        return path("M30 235H280M30 235V55", width=3) + "".join(
+            rect(48 + i * 77, 230 - n * scale, 45, n * scale, "#38a99a", 0)
+            + f'<text x="{70 + i * 77}" y="{220 - n * scale}" text-anchor="middle" font-size="24" fill="#26475c">{n}</text>'
+            + f'<text x="{70 + i * 77}" y="266" text-anchor="middle" font-size="20" fill="#26475c">Tổ {i + 1}</text>'
+            for i, n in enumerate(values)
+        )
+    fraction_sum = re.match(r"(\d+)/(\d+)\s*\+\s*(\d+)/(\d+)", text)
+    if fraction_sum:
+        from fractions import Fraction
+        from math import lcm
+
+        a, b, c, d = map(int, fraction_sum.groups())
+        if b and d:
+            denominator = lcm(b, d)
+            if denominator <= 12 and Fraction(a, b) + Fraction(c, d) <= 1:
+                first, second = a * denominator // b, c * denominator // d
+                return "".join(
+                    f'<text x="5" y="{66 + row * 86}" font-size="22" fill="#26475c">{label}</text>'
+                    + "".join(
+                        rect(
+                            65 + i * 210 / denominator,
+                            30 + row * 86,
+                            210 / denominator - 2,
+                            50,
+                            "#38a99a" if i < count else "#d5e3ef",
+                            0,
+                        )
+                        for i in range(denominator)
+                    )
+                    for row, (count, label) in enumerate(
+                        (
+                            (first, f"{a}/{b}"),
+                            (second, f"{c}/{d}"),
+                            (first + second, str(Fraction(a, b) + Fraction(c, d))),
+                        )
+                    )
+                )
+    percentage = re.match(r"(\d+) trong 100 là", text)
+    if percentage and 0 <= int(percentage[1]) <= 100:
+        return "".join(
+            rect(
+                30 + i % 10 * 24,
+                25 + i // 10 * 22,
+                20,
+                18,
+                "#38a99a" if i < int(percentage[1]) else "#d5e3ef",
+                1,
+            )
+            for i in range(100)
+        )
+
+    # A stated sample is the visual evidence; a later, deliberately wrong claim
+    # must not determine the object, quantity or position shown in the picture.
+    if text.startswith("Mẫu:"):
+        sample = text.split(".", 1)[0].removeprefix("Mẫu:").strip()
+        if "two books on desk" in sample:
+            return (
+                rect(30, 190, 240, 22, "#c68132", 5)
+                + path("M55 212V275M245 212V275", stroke="#856b4e", width=9)
+                + '<g transform="translate(40 70) scale(.36)">'
+                + icon_art("book", variant)
+                + "</g>"
+                + '<g transform="translate(150 70) scale(.36)">'
+                + icon_art("book", variant)
+                + "</g>"
+            )
+        if "cat on chair" in sample:
+            return (
+                icon_art("chair")
+                + '<g transform="translate(65 28) scale(.56)">'
+                + icon_art("cat", variant)
+                + "</g>"
+            )
+        return example_art(sample, variant)
+
+    if text.casefold().startswith("tranh: mèo ngồi"):
+        return (
+            icon_art("chair")
+            + '<g transform="translate(65 28) scale(.56)">'
+            + icon_art("cat", variant)
+            + "</g>"
+        )
+
+    fractions = re.search(r"(?:Bánh|Hình) (\d+) (?:phần bằng nhau|ô bằng nhau), chọn (\d+)", text)
+    if fractions:
+        total, selected = map(int, fractions.groups())
+        if 0 <= selected <= total <= 12:
+            return "".join(
+                rect(
+                    25 + i * 250 / total,
+                    85,
+                    250 / total,
+                    120,
+                    "#38a99a" if i < selected else "#ffffff",
+                    0,
+                )
+                + path(f"M{25 + i * 250 / total} 85V205", width=2)
+                for i in range(total)
+            ) + path("M25 85H275V205H25Z", width=3)
+
+    groups = re.search(r"(?i)(hai|ba) nhóm(?:, mỗi nhóm)? (hai|bốn|hai chấm)", text)
+    if groups:
+        rows = {"hai": 2, "ba": 3}[groups[1].casefold()]
+        columns = 4 if groups[2].casefold() == "bốn" else 2
+        return "".join(
+            rect(30, 25 + row * 85, 240, 70, "#ffffff", 12)
+            + "".join(circle(65 + col * 55, 60 + row * 85, 16, "#38a99a") for col in range(columns))
+            for row in range(rows)
+        )
+
+    if "mèo và chó" in text.casefold() or "mèo hay chó" in text.casefold():
+        return (
+            '<g transform="translate(0 60) scale(.5)">'
+            + icon_art("cat", variant)
+            + "</g>"
+            + '<g transform="translate(150 60) scale(.5)">'
+            + icon_art("dog", variant)
+            + "</g>"
+        )
+
+    amount = re.match(r"(?i)(?:đếm\s+|số lượng\s+)?(ba|5)\s+(?:quả )?(táo|chiếc bút)", text)
+    if amount:
+        count = 3 if amount[1].casefold() == "ba" else 5
+        icon = "apple" if amount[2].casefold() == "táo" else "pencil"
+        return "".join(
+            f'<g transform="translate({i % 3 * 95} {i // 3 * 140}) scale(.3)">'
+            + icon_art(icon, variant)
+            + "</g>"
+            for i in range(count)
+        )
 
     if text == "Thẻ bị che kín":
         return (
@@ -151,7 +373,7 @@ def example_art(text, variant=0):
         return "".join(
             circle(150 + (i - (number - 1) / 2) * 65, 150, 24, "#38a99a") for i in range(number)
         )
-    match = re.search(r"(?<![\d.,−-])(\d{1,2})\s*(?:quả và|\+)\s*(\d{1,2})(?![\d.,])", text)
+    match = re.search(r"(?<![\d.,/−-])(\d{1,2})\s*(?:quả và|\+)\s*(\d{1,2})(?![\d.,/])", text)
     if match and int(match[1]) + int(match[2]) <= 20:
         a, b = int(match[1]), int(match[2])
         return "".join(
@@ -172,7 +394,14 @@ def example_art(text, variant=0):
             "#e87969"
             if color_match[1] in {"đỏ", "red"}
             else "#83af56"
-            if color_match[1] == "green" or (color_match[1] == "xanh" and kind == "apple")
+            if color_match[1] == "green"
+            or (
+                color_match[1] == "xanh"
+                and (
+                    "xanh lá" in text.casefold()
+                    or (kind == "apple" and "xanh dương" not in text.casefold())
+                )
+            )
             else "#45a7cb"
         )
         for color in colors:
@@ -186,13 +415,15 @@ def lesson_scene(row, variant=0):
     from app.academy.media import circle, path, rect, scene
 
     if row["grade"] == 4 and row["number"] == 12:
-        return "<desc>" + escape(row["code"] + f"-v2-{variant}") + "</desc>" + scene(12, variant)
+        return (
+            "<desc>" + escape(row["visual_prefix"] + f"-{variant}") + "</desc>" + scene(12, variant)
+        )
     items = row["activity"]["items"][:3]
     body = (
         "<title>"
         + escape(row["title"])
         + "</title><desc>"
-        + escape(row["code"] + f"-v2-{variant}")
+        + escape(row["visual_prefix"] + f"-{variant}")
         + "</desc>"
     )
     body += rect(10, 10, 580, 340, "#edf7f2", 28)

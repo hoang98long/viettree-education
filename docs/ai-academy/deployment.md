@@ -1,5 +1,9 @@
 # Triển khai và vận hành AI Academy
 
+Release 04/11 có 915 SVG mới và bản biên tập cho 200 bài. Backup rồi triển
+khai đồng thời code/manifest/assets, chạy `seed-ai-academy` để xuất bản an toàn.
+[Bảo toàn tiến độ và lệnh cập nhật](../content-editorial-review-2026-11-04.md).
+
 ## Local Windows
 
 Dùng [run-local.md](../run-local.md). Nếu môi trường đã có sẵn, chỉ cập nhật

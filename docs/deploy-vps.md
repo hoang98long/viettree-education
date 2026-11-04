@@ -1,5 +1,10 @@
 # Hướng dẫn deploy VietTree Education lên VPS
 
+Rà soát 04/11: [232 bài cũ, phiên bản AI và hình minh họa](content-editorial-review-2026-11-04.md).
+Sau backup và triển khai release mới, chạy `review-learning-content` để xem
+trước, `review-learning-content --apply` để cập nhật bài nguồn chưa tùy chỉnh,
+rồi `seed-ai-academy` và `verify-ai-academy`. Không có migration mới.
+
 Mới ngày 04/11: [30 bài mới, bộ lọc và lệnh nạp `discovery-2026-04`](discovery-and-library-2026-11-04.md). Không có migration mới.
 
 Cập nhật 20/10: **Quản trị → Kiểm tra hệ thống → Trước khi mở web**, có tải biên

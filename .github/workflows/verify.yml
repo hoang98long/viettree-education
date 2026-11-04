@@ -51,6 +51,7 @@ jobs:
           python -m app.cli seed-supplement-content --release review-2026-02
           python -m app.cli seed-supplement-content --release daily-2026-03
           python -m app.cli seed-supplement-content --release discovery-2026-04
+          python -m app.cli review-learning-content
       - run: pytest -q
   frontend:
     runs-on: ubuntu-24.04

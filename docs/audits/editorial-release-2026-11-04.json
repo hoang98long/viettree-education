@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-04",
+  "ordinary_current": 232,
+  "ai_current": 200,
+  "ai_media_only": 1,
+  "assets": 2617,
+  "preserved_historical_assets": 1702,
+  "added_assets": 915,
+  "source_audit": "passed",
+  "manifest_hashes": "passed",
+  "wheel_content": "matches source",
+  "wheel_sha256": "788c623c508670253d80075f37129e9910c41c76ed6ab6b3e1e98ebc85789c44",
+  "source_database": "viettree-education",
+  "migration_head": "0012_lesson_bookmarks",
+  "owned_test_databases_removed": true,
+  "final_frontend_api_port": 8000
+}

@@ -46,6 +46,7 @@ def main():
             "verify-supplement-content",
             "seed-ai-academy",
             "verify-ai-academy",
+            "review-learning-content",
             "verify-seed",
             "rebuild",
         ],
@@ -57,10 +58,10 @@ def main():
         type=int,
         nargs="+",
         choices=range(1, 6),
-        help="Khối cho tài khoản demo hoặc học liệu bổ sung; mặc định 1 2 3 4 5",
+        help="Khối cho tài khoản demo, học liệu bổ sung hoặc rà soát bài cũ; mặc định 1 2 3 4 5",
     )
     parser.add_argument(
-        "--apply", action="store_true", help="Thực hiện cleanup-auth; mặc định chỉ thống kê"
+        "--apply", action="store_true", help="Áp dụng thay đổi; mặc định chỉ thống kê"
     )
     parser.add_argument("--username")
     parser.add_argument("--display-name")
@@ -71,8 +72,8 @@ def main():
         "--release", choices=tuple(releases()), help="Mã bộ học liệu cho các lệnh supplement"
     )
     args = parser.parse_args()
-    if args.apply and args.command != "cleanup-auth":
-        parser.error("--apply chỉ dùng với cleanup-auth")
+    if args.apply and args.command not in {"cleanup-auth", "review-learning-content"}:
+        parser.error("--apply chỉ dùng với cleanup-auth hoặc review-learning-content")
     if args.grades is not None and args.command not in {
         "seed-demo-learners",
         "seed-applied-content",
@@ -81,8 +82,11 @@ def main():
         "supplement-inventory",
         "seed-supplement-content",
         "verify-supplement-content",
+        "review-learning-content",
     }:
-        parser.error("--grades chỉ dùng với seed-demo-learners hoặc các lệnh học liệu bổ sung")
+        parser.error(
+            "--grades chỉ dùng với seed-demo-learners, học liệu bổ sung hoặc review-learning-content"
+        )
     supplement_commands = {
         "supplement-inventory",
         "seed-supplement-content",
@@ -151,7 +155,16 @@ def main():
             )
         else:
             db.load(conn)
-            if args.command == "bootstrap-admin":
+            if args.command == "review-learning-content":
+                from app.services.content_review import review_learning_content
+
+                print(
+                    json.dumps(
+                        review_learning_content(conn, apply=args.apply, grades=args.grades),
+                        ensure_ascii=False,
+                    )
+                )
+            elif args.command == "bootstrap-admin":
                 from app.bootstrap import bootstrap_admin
 
                 try:
