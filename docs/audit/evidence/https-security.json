@@ -1,0 +1,26 @@
+{
+  "scope": "local Caddy HTTPS + production-mode Linux application with synthetic credentials only",
+  "certificate_verification": "CERT_REQUIRED, hostname check on, dedicated internal CA; no host trust-store change",
+  "checks": {
+    "anonymous_401": true,
+    "private_docs": true,
+    "private_openapi.json": true,
+    "private_ready": true,
+    "public_asset_cache": true,
+    "hsts": true,
+    "frame_deny": true,
+    "login": true,
+    "cookie_secure": true,
+    "cookie_http_only": true,
+    "cookie_same_site": true,
+    "cross_origin_denied": true,
+    "missing_csrf_denied": true,
+    "legacy_vip_media_denied": true,
+    "denied_media_no_store": true,
+    "student_cannot_admin": true,
+    "logout": true,
+    "revoked_session_401": true,
+    "private_no_store": true
+  },
+  "passed": true
+}

@@ -5,7 +5,7 @@ import { ArrowRight, BookOpen } from "lucide-react";
 import { api, dateLabel } from "@/lib/api";
 import type { Assessment, Assignment } from "@/lib/types";
 import { useResource } from "@/hooks/use-resource";
-import { PageTitle } from "@/components/ui";
+import { ErrorState, PageTitle } from "@/components/ui";
 import { AccessBadge, LockedContent } from "@/features/membership/pages";
 import { Resource } from "@/features/student/shared";
 
@@ -52,7 +52,10 @@ export function AssessmentIntro({ data }: { data: Assessment }) {
           Em có thể lưu câu trả lời và quay lại. Sau khi nộp, mình cùng xem lời
           giải để hiểu bài hơn nhé.
         </p>
-        {assignmentId && (
+        {assignmentId && assignments.error && (
+          <ErrorState message={assignments.error} retry={assignments.retry} />
+        )}
+        {assignmentId && !assignments.error && (
           <p>
             {assignments.loading
               ? "Đang kiểm tra bài được giao…"

@@ -7,6 +7,7 @@ import { api } from "@/lib/api";
 import type { Answer, Attempt } from "@/lib/types";
 import { useResource } from "@/hooks/use-resource";
 import { Empty, ErrorState, Loading, PageTitle } from "@/components/ui";
+import { Modal } from "@/components/modal";
 import { QuestionInput } from "@/components/question-input";
 import { LockedContent } from "@/features/membership/pages";
 import { useAnswerAutosave } from "@/hooks/use-answer-autosave";
@@ -238,51 +239,47 @@ export function Quiz({ data }: { data: Attempt }) {
         </section>
       )}
       {confirm && (
-        <div className="modal-backdrop">
-          <section
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="submit-title"
-            className="modal"
-          >
-            <h2 id="submit-title">Em muốn nộp bài chứ?</h2>
-            <p>
-              Có {data.items.length - answeredCount} câu chưa trả lời. Sau khi
-              nộp, em sẽ xem được kết quả và lời giải.
-            </p>
-            {error && <p role="alert">{error}</p>}
-            <div className="quiz-actions">
-              <button
-                autoFocus
-                className="button secondary"
-                disabled={busy}
-                onClick={() => setConfirm(false)}
-              >
-                Quay lại kiểm tra
-              </button>
-              <button
-                className="button"
-                disabled={busy}
-                onClick={async () => {
-                  setBusy(true);
-                  setError("");
-                  try {
-                    await save();
-                    await api(`/attempts/${data.id}/submit`, {
-                      method: "POST",
-                    });
-                    router.replace(`/student/results/${data.id}`);
-                  } catch (e) {
-                    setError((e as Error).message);
-                    setBusy(false);
-                  }
-                }}
-              >
-                {busy ? "Đang nộp…" : "Xác nhận nộp"}
-              </button>
-            </div>
-          </section>
-        </div>
+        <Modal
+          labelledBy="submit-title"
+          onClose={() => setConfirm(false)}
+          closeDisabled={busy}
+        >
+          <h2 id="submit-title">Em muốn nộp bài chứ?</h2>
+          <p>
+            Có {data.items.length - answeredCount} câu chưa trả lời. Sau khi
+            nộp, em sẽ xem được kết quả và lời giải.
+          </p>
+          {error && <p role="alert">{error}</p>}
+          <div className="quiz-actions">
+            <button
+              className="button secondary"
+              disabled={busy}
+              onClick={() => setConfirm(false)}
+            >
+              Quay lại kiểm tra
+            </button>
+            <button
+              className="button"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                setError("");
+                try {
+                  await save();
+                  await api(`/attempts/${data.id}/submit`, {
+                    method: "POST",
+                  });
+                  router.replace(`/student/results/${data.id}`);
+                } catch (e) {
+                  setError((e as Error).message);
+                  setBusy(false);
+                }
+              }}
+            >
+              {busy ? "Đang nộp…" : "Xác nhận nộp"}
+            </button>
+          </div>
+        </Modal>
       )}
     </>
   );

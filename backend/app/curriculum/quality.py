@@ -1,12 +1,51 @@
 """Read-only inventory and structural checks; semantic review stays explicit."""
 
+import re
 from collections import Counter
+from fractions import Fraction
+from unicodedata import normalize
 from uuid import UUID
 
 from app.curriculum.lesson_content import enrich
 from app.curriculum.registry import SUBJECT_CODES, SUPPORTED_GRADES, get_pack
 from app.schemas.authoring import QuestionInput
 from app.schemas.lessons import LessonContent
+
+NUMERIC_OPTION = re.compile(
+    r"(?P<number>[+−-]?(?:\d{1,3}(?:[ \u00a0\u202f]\d{3})+|\d+)"
+    r"(?:[.,]\d+)?(?:\s*/\s*\d+)?)\s*(?P<unit>[^\d+−*/=<>?-]*)\Z"
+)
+
+
+def numeric_option(text):
+    """Recognize only a number/fraction and literal unit, never evaluate prose.
+
+    Unit conversion and the teaching intent (for example, simplest form) still
+    require review. A dot or comma here is a decimal separator, not a guessed
+    thousands separator; only explicit groups of three separated by spaces count.
+    """
+    match = NUMERIC_OPTION.fullmatch(normalize("NFC", text).strip())
+    if match is None:
+        return None
+    number = "".join(match["number"].split()).replace("−", "-").replace(",", ".")
+    try:
+        value = Fraction(number)
+    except (ValueError, ZeroDivisionError):
+        return None
+    return value, " ".join(match["unit"].casefold().split())
+
+
+def equivalent_numeric_choices(question):
+    if question["question_type"] != "single_choice":
+        return []
+    options = question["content"].get("options", [])
+    correct = question["grading"].get("correct_option_id")
+    grouped = {}
+    for option in options:
+        value = numeric_option(option["text"])
+        if value is not None:
+            grouped.setdefault(value, []).append(option["id"])
+    return [ids for ids in grouped.values() if len(ids) > 1 and correct in ids]
 
 
 def sources(include_supplements=False):
@@ -47,6 +86,8 @@ def sources(include_supplements=False):
 def audit_sources(include_supplements=True):
     counts = Counter()
     issues = []
+    warnings = []
+    numeric_questions = 0
     dummy = UUID(int=1)
     for grade, subject, plan, code, lessons, questions in sources(include_supplements):
         key = (grade, subject, plan)
@@ -61,6 +102,21 @@ def audit_sources(include_supplements=True):
                     {"code": code, "kind": "lesson_schema", "message": str(error).split("\n")[0]}
                 )
         for number, question in enumerate(questions, 1):
+            if subject == "MATH" and question["question_type"] == "single_choice":
+                correct = question["grading"].get("correct_option_id")
+                if any(
+                    option["id"] == correct and numeric_option(option["text"]) is not None
+                    for option in question["content"].get("options", [])
+                ):
+                    numeric_questions += 1
+                for ids in equivalent_numeric_choices(question):
+                    warnings.append(
+                        {
+                            "code": f"{code}-q-{number:02}",
+                            "kind": "equivalent_numeric_choices_need_review",
+                            "choice_ids": ids,
+                        }
+                    )
             try:
                 QuestionInput.model_validate(
                     {
@@ -99,4 +155,9 @@ def audit_sources(include_supplements=True):
             for p in ("free", "vip")
         ],
         "issues": issues,
+        "warnings": warnings,
+        "semantic_checks": {
+            "numeric_literal_questions": numeric_questions,
+            "equivalent_correct_choice_groups": len(warnings),
+        },
     }

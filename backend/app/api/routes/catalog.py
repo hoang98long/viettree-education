@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy import func, select
 
 import app.schemas.catalog as schemas_catalog
@@ -13,6 +13,7 @@ from app.db import db
 from app.schemas.common import Grade
 from app.services import access
 from app.services.bookmarks import is_bookmarked
+from app.services.catalog import published_lesson
 
 router = APIRouter(prefix="/api/v1")
 
@@ -129,28 +130,8 @@ def lessons(topic_id: UUID, user=Depends(current_user), conn=database):
     "/lessons/{lesson_id}", response_model=schemas_catalog.LessonResponse, tags=["curriculum"]
 )
 def lesson(lesson_id: UUID, user=Depends(current_user), conn=database):
-    table, topics, subjects, assessments = (
-        db.table(name) for name in ("lessons", "topics", "subjects", "assessments")
-    )
-    row = (
-        conn.execute(
-            select(
-                table,
-                topics.c.grade,
-                topics.c.title.label("topic_title"),
-                subjects.c.code.label("subject_code"),
-                subjects.c.name_vi.label("subject_name"),
-            )
-            .select_from(table.join(topics).join(subjects))
-            .where(
-                table.c.id == lesson_id, table.c.status == "published", topics.c.is_active.is_(True)
-            )
-        )
-        .mappings()
-        .first()
-    )
-    if not row:
-        raise HTTPException(404, "Không tìm thấy bài học")
+    table, topics, assessments = (db.table(name) for name in ("lessons", "topics", "assessments"))
+    row = published_lesson(conn, lesson_id, user["id"], detail=True)
     gate = access.authorize_content(conn, user, "lesson", lesson_id, row["grade"])
     practice = (
         conn.execute(
@@ -166,14 +147,7 @@ def lesson(lesson_id: UUID, user=Depends(current_user), conn=database):
         .all()
     )
     progress = db.table("student_lesson_progress")
-    progress_status = (
-        conn.execute(
-            select(progress.c.status).where(
-                progress.c.student_id == user["id"], progress.c.lesson_id == lesson_id
-            )
-        ).scalar()
-        or "not_started"
-    )
+    progress_status = row["progress_status"]
     practice = [
         dict(item)
         for item in practice

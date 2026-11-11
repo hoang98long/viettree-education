@@ -5,9 +5,7 @@ test("lớp 1: tranh trong thẻ từ và đáp án vẫn chọn và lưu đư�
   page,
 }, info) => {
   const username =
-    process.env[
-      `E2E_VISUAL_GRADE1_${info.project.name.toUpperCase()}_USERNAME`
-    ];
+    process.env[`E2E_PICTURE_${info.project.name.toUpperCase()}_USERNAME`];
   const password = process.env.E2E_STUDENT_PASSWORD;
   test.skip(!username || !password, "Cần học sinh test riêng");
   const errors: string[] = [];
@@ -35,9 +33,17 @@ test("lớp 1: tranh trong thẻ từ và đáp án vẫn chọn và lưu đư�
     await page.request.get(`/api/v1/lessons/${lesson.id}`)
   ).json();
   await page.goto(`/student/assessments/${details.practice[0].id}`);
-  await page
-    .getByRole("button", { name: "Bắt đầu / Tiếp tục", exact: true })
-    .click();
+  const [started] = await Promise.all([
+    page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname === "/api/v1/attempts" &&
+        response.request().method() === "POST",
+    ),
+    page
+      .getByRole("button", { name: "Bắt đầu / Tiếp tục", exact: true })
+      .click(),
+  ]);
+  expect(started.status()).toBe(200);
   await expect(page).toHaveURL(/\/student\/attempts\//);
   const options = page.locator(".options");
   await expect(options.locator(".word-picture").first()).toBeVisible();

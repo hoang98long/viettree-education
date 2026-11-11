@@ -1,0 +1,3202 @@
+[
+  {
+    "code": "AI4-01",
+    "title": "AI là gì và AI không phải là gì?",
+    "grade": 4,
+    "unit": "AI4-around",
+    "objectives": [
+      "Giải thích ý chính: AI là gì và AI không phải là gì?.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-02",
+    "title": "AI ở nhà, ở trường và trong cuộc sống",
+    "grade": 4,
+    "unit": "AI4-around",
+    "objectives": [
+      "Giải thích ý chính: AI ở nhà, ở trường và trong cuộc sống.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-03",
+    "title": "Con người giỏi gì, AI giỏi gì?",
+    "grade": 4,
+    "unit": "AI4-around",
+    "objectives": [
+      "Giải thích ý chính: Con người giỏi gì, AI giỏi gì?.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-04",
+    "title": "Dữ liệu là gì?",
+    "grade": 4,
+    "unit": "AI4-data",
+    "objectives": [
+      "Giải thích ý chính: Dữ liệu là gì?.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-05",
+    "title": "Dạy máy phân loại động vật",
+    "grade": 4,
+    "unit": "AI4-data",
+    "objectives": [
+      "Giải thích ý chính: Dạy máy phân loại động vật.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-06",
+    "title": "Khi dữ liệu thiếu hoặc sai",
+    "grade": 4,
+    "unit": "AI4-data",
+    "objectives": [
+      "Giải thích ý chính: Khi dữ liệu thiếu hoặc sai.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-07",
+    "title": "Câu hỏi rõ ràng và câu hỏi mơ hồ",
+    "grade": 4,
+    "unit": "AI4-prompt",
+    "objectives": [
+      "Giải thích ý chính: Câu hỏi rõ ràng và câu hỏi mơ hồ.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-08",
+    "title": "Công thức hỏi AI: mục tiêu + ngữ cảnh + yêu cầu + định dạng",
+    "grade": 4,
+    "unit": "AI4-prompt",
+    "objectives": [
+      "Giải thích ý chính: Công thức hỏi AI: mục tiêu + ngữ cảnh + yêu cầu + định dạng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-09",
+    "title": "Hỏi tiếp và cải thiện câu trả lời",
+    "grade": 4,
+    "unit": "AI4-prompt",
+    "objectives": [
+      "Giải thích ý chính: Hỏi tiếp và cải thiện câu trả lời.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-10",
+    "title": "Kiểm chứng: AI có thể trả lời sai",
+    "grade": 4,
+    "unit": "AI4-prompt",
+    "objectives": [
+      "Giải thích ý chính: Kiểm chứng: AI có thể trả lời sai.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-11",
+    "title": "Hỏi gợi ý thay vì xin đáp án",
+    "grade": 4,
+    "unit": "AI4-math",
+    "objectives": [
+      "Giải thích ý chính: Hỏi gợi ý thay vì xin đáp án.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-12",
+    "title": "Phân số trực quan với bánh và hình khối",
+    "grade": 4,
+    "unit": "AI4-math",
+    "objectives": [
+      "Giải thích ý chính: Phân số trực quan với bánh và hình khối.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-13",
+    "title": "Giải bài toán có lời văn từng bước",
+    "grade": 4,
+    "unit": "AI4-math",
+    "objectives": [
+      "Giải thích ý chính: Giải bài toán có lời văn từng bước.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-14",
+    "title": "Kiểm tra kết quả Toán bằng hai cách",
+    "grade": 4,
+    "unit": "AI4-math",
+    "objectives": [
+      "Giải thích ý chính: Kiểm tra kết quả Toán bằng hai cách.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-15",
+    "title": "Tìm ý cho đoạn văn theo chủ đề",
+    "grade": 4,
+    "unit": "AI4-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Tìm ý cho đoạn văn theo chủ đề.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-16",
+    "title": "Nhân vật, bối cảnh và cốt truyện",
+    "grade": 4,
+    "unit": "AI4-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Nhân vật, bối cảnh và cốt truyện.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-17",
+    "title": "Sửa câu, chính tả và giữ giọng văn của em",
+    "grade": 4,
+    "unit": "AI4-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Sửa câu, chính tả và giữ giọng văn của em.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-18",
+    "title": "Đọc hiểu và đặt câu hỏi về văn bản",
+    "grade": 4,
+    "unit": "AI4-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Đọc hiểu và đặt câu hỏi về văn bản.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-19",
+    "title": "Từ vựng đồ vật, con vật và trường học qua hình",
+    "grade": 4,
+    "unit": "AI4-english",
+    "objectives": [
+      "Giải thích ý chính: Từ vựng đồ vật, con vật và trường học qua hình.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-20",
+    "title": "Hội thoại chào hỏi và giới thiệu bản thân",
+    "grade": 4,
+    "unit": "AI4-english",
+    "objectives": [
+      "Giải thích ý chính: Hội thoại chào hỏi và giới thiệu bản thân.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-21",
+    "title": "Luyện nghe/nói với phản hồi tích cực",
+    "grade": 4,
+    "unit": "AI4-english",
+    "objectives": [
+      "Giải thích ý chính: Luyện nghe/nói với phản hồi tích cực.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-22",
+    "title": "Viết câu đơn giản và tự sửa lỗi",
+    "grade": 4,
+    "unit": "AI4-english",
+    "objectives": [
+      "Giải thích ý chính: Viết câu đơn giản và tự sửa lỗi.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-23",
+    "title": "Thiết kế nhân vật robot của em",
+    "grade": 4,
+    "unit": "AI4-creative",
+    "objectives": [
+      "Giải thích ý chính: Thiết kế nhân vật robot của em.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-24",
+    "title": "Viết truyện tranh 4 khung với AI",
+    "grade": 4,
+    "unit": "AI4-creative",
+    "objectives": [
+      "Giải thích ý chính: Viết truyện tranh 4 khung với AI.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-25",
+    "title": "Tạo poster bảo vệ môi trường",
+    "grade": 4,
+    "unit": "AI4-creative",
+    "objectives": [
+      "Giải thích ý chính: Tạo poster bảo vệ môi trường.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-26",
+    "title": "Sáng tạo câu đố và trò chơi học tập",
+    "grade": 4,
+    "unit": "AI4-creative",
+    "objectives": [
+      "Giải thích ý chính: Sáng tạo câu đố và trò chơi học tập.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-27",
+    "title": "Thông tin cá nhân nào không được chia sẻ?",
+    "grade": 4,
+    "unit": "AI4-safety",
+    "objectives": [
+      "Giải thích ý chính: Thông tin cá nhân nào không được chia sẻ?.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-28",
+    "title": "Tin giả, hình ảnh do AI tạo và kiểm chứng",
+    "grade": 4,
+    "unit": "AI4-safety",
+    "objectives": [
+      "Giải thích ý chính: Tin giả, hình ảnh do AI tạo và kiểm chứng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-29",
+    "title": "Bản quyền, ghi nguồn, trung thực khi dùng AI",
+    "grade": 4,
+    "unit": "AI4-safety",
+    "objectives": [
+      "Giải thích ý chính: Bản quyền, ghi nguồn, trung thực khi dùng AI.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-30",
+    "title": "Công bằng, tôn trọng và biết nói không",
+    "grade": 4,
+    "unit": "AI4-safety",
+    "objectives": [
+      "Giải thích ý chính: Công bằng, tôn trọng và biết nói không.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-31",
+    "title": "Chọn vấn đề thực tế và lập nhóm",
+    "grade": 4,
+    "unit": "AI4-project",
+    "objectives": [
+      "Giải thích ý chính: Chọn vấn đề thực tế và lập nhóm.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-32",
+    "title": "Thiết kế ý tưởng sản phẩm",
+    "grade": 4,
+    "unit": "AI4-project",
+    "objectives": [
+      "Giải thích ý chính: Thiết kế ý tưởng sản phẩm.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-33",
+    "title": "Thu thập dữ liệu mẫu an toàn",
+    "grade": 4,
+    "unit": "AI4-project",
+    "objectives": [
+      "Giải thích ý chính: Thu thập dữ liệu mẫu an toàn.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-34",
+    "title": "Tạo nguyên mẫu",
+    "grade": 4,
+    "unit": "AI4-project",
+    "objectives": [
+      "Giải thích ý chính: Tạo nguyên mẫu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-35",
+    "title": "Kiểm thử, nhận góp ý, cải tiến",
+    "grade": 4,
+    "unit": "AI4-project",
+    "objectives": [
+      "Giải thích ý chính: Kiểm thử, nhận góp ý, cải tiến.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-36",
+    "title": "Trình bày, đánh giá rubric và triển lãm sản phẩm",
+    "grade": 4,
+    "unit": "AI4-project",
+    "objectives": [
+      "Giải thích ý chính: Trình bày, đánh giá rubric và triển lãm sản phẩm.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-01",
+    "title": "Bạn nhỏ và máy",
+    "grade": 1,
+    "unit": "AI1-around",
+    "objectives": [
+      "Nói máy giúp mình việc gì.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-02",
+    "title": "Xếp thẻ cùng nhóm",
+    "grade": 1,
+    "unit": "AI1-data",
+    "objectives": [
+      "Xếp thẻ vào nhóm phù hợp.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-03",
+    "title": "Giữ riêng mật khẩu",
+    "grade": 1,
+    "unit": "AI1-safety",
+    "objectives": [
+      "Chọn cách giữ thông tin riêng.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-04",
+    "title": "Mắt nhìn, tai nghe",
+    "grade": 1,
+    "unit": "AI1-around",
+    "objectives": [
+      "Nói máy giúp mình việc gì.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-05",
+    "title": "Máy giúp một việc",
+    "grade": 1,
+    "unit": "AI1-around",
+    "objectives": [
+      "Nói máy giúp mình việc gì.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-06",
+    "title": "Máy cũng có thể nhầm",
+    "grade": 1,
+    "unit": "AI1-around",
+    "objectives": [
+      "Nói máy giúp mình việc gì.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-07",
+    "title": "Tìm thẻ khác nhóm",
+    "grade": 1,
+    "unit": "AI1-data",
+    "objectives": [
+      "Xếp thẻ vào nhóm phù hợp.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-08",
+    "title": "Cùng màu, khác nhóm",
+    "grade": 1,
+    "unit": "AI1-data",
+    "objectives": [
+      "Xếp thẻ vào nhóm phù hợp.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-09",
+    "title": "Thêm hình mẫu cho máy",
+    "grade": 1,
+    "unit": "AI1-data",
+    "objectives": [
+      "Xếp thẻ vào nhóm phù hợp.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-10",
+    "title": "Hỏi người lớn đáng tin",
+    "grade": 1,
+    "unit": "AI1-safety",
+    "objectives": [
+      "Chọn cách giữ thông tin riêng.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-11",
+    "title": "Tranh có thể không thật",
+    "grade": 1,
+    "unit": "AI1-safety",
+    "objectives": [
+      "Chọn cách giữ thông tin riêng.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-12",
+    "title": "Cho đôi mắt nghỉ",
+    "grade": 1,
+    "unit": "AI1-safety",
+    "objectives": [
+      "Chọn cách giữ thông tin riêng.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-13",
+    "title": "Nói một việc rõ ràng",
+    "grade": 1,
+    "unit": "AI1-prompt",
+    "objectives": [
+      "Chọn lời nhắc nói rõ một việc.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-14",
+    "title": "Nói rõ đồ vật",
+    "grade": 1,
+    "unit": "AI1-prompt",
+    "objectives": [
+      "Chọn lời nhắc nói rõ một việc.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-15",
+    "title": "Chọn lời nhắc dễ hiểu",
+    "grade": 1,
+    "unit": "AI1-prompt",
+    "objectives": [
+      "Chọn lời nhắc nói rõ một việc.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-16",
+    "title": "Hỏi lại khi chưa rõ",
+    "grade": 1,
+    "unit": "AI1-prompt",
+    "objectives": [
+      "Chọn lời nhắc nói rõ một việc.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-17",
+    "title": "Đếm táo cùng robot",
+    "grade": 1,
+    "unit": "AI1-math",
+    "objectives": [
+      "Tự đếm hoặc tính để kiểm tra.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-18",
+    "title": "Ghép hai nhóm bằng nhau",
+    "grade": 1,
+    "unit": "AI1-math",
+    "objectives": [
+      "Tự đếm hoặc tính để kiểm tra.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-19",
+    "title": "Chọn phép cộng đúng",
+    "grade": 1,
+    "unit": "AI1-math",
+    "objectives": [
+      "Tự đếm hoặc tính để kiểm tra.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-20",
+    "title": "Tìm chỗ đếm nhầm",
+    "grade": 1,
+    "unit": "AI1-math",
+    "objectives": [
+      "Tự đếm hoặc tính để kiểm tra.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-21",
+    "title": "Ghép từ với tranh",
+    "grade": 1,
+    "unit": "AI1-vietnamese",
+    "objectives": [
+      "Tìm chi tiết trong tranh và lời kể.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-22",
+    "title": "Kể chuyện hai tranh",
+    "grade": 1,
+    "unit": "AI1-vietnamese",
+    "objectives": [
+      "Tìm chi tiết trong tranh và lời kể.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-23",
+    "title": "Tìm nhân vật trong tranh",
+    "grade": 1,
+    "unit": "AI1-vietnamese",
+    "objectives": [
+      "Tìm chi tiết trong tranh và lời kể.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-24",
+    "title": "Nói lại bằng lời của em",
+    "grade": 1,
+    "unit": "AI1-vietnamese",
+    "objectives": [
+      "Tìm chi tiết trong tranh và lời kể.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-25",
+    "title": "Hello, robot!",
+    "grade": 1,
+    "unit": "AI1-english",
+    "objectives": [
+      "Ghép từ tiếng Anh với tranh.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-26",
+    "title": "Cat or dog?",
+    "grade": 1,
+    "unit": "AI1-english",
+    "objectives": [
+      "Ghép từ tiếng Anh với tranh.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-27",
+    "title": "Red and blue",
+    "grade": 1,
+    "unit": "AI1-english",
+    "objectives": [
+      "Ghép từ tiếng Anh với tranh.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-28",
+    "title": "One, two, three",
+    "grade": 1,
+    "unit": "AI1-english",
+    "objectives": [
+      "Ghép từ tiếng Anh với tranh.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-29",
+    "title": "Vẽ robot trên giấy",
+    "grade": 1,
+    "unit": "AI1-creative",
+    "objectives": [
+      "Chọn một cách làm sản phẩm dễ hiểu.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-30",
+    "title": "Chọn màu cho tấm thiệp",
+    "grade": 1,
+    "unit": "AI1-creative",
+    "objectives": [
+      "Chọn một cách làm sản phẩm dễ hiểu.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-31",
+    "title": "Kể chuyện hai khung",
+    "grade": 1,
+    "unit": "AI1-creative",
+    "objectives": [
+      "Chọn một cách làm sản phẩm dễ hiểu.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-32",
+    "title": "Đổi một chi tiết",
+    "grade": 1,
+    "unit": "AI1-creative",
+    "objectives": [
+      "Chọn một cách làm sản phẩm dễ hiểu.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-33",
+    "title": "Chọn việc cho robot giấy",
+    "grade": 1,
+    "unit": "AI1-project",
+    "objectives": [
+      "Làm thử và nói điều cần sửa.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-34",
+    "title": "Chọn thẻ hình mẫu",
+    "grade": 1,
+    "unit": "AI1-project",
+    "objectives": [
+      "Làm thử và nói điều cần sửa.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-35",
+    "title": "Thử một thẻ mới",
+    "grade": 1,
+    "unit": "AI1-project",
+    "objectives": [
+      "Làm thử và nói điều cần sửa.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-36",
+    "title": "Kể với cô điều đã học",
+    "grade": 1,
+    "unit": "AI1-project",
+    "objectives": [
+      "Làm thử và nói điều cần sửa.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-01",
+    "title": "Sắp xếp bộ sưu tập",
+    "grade": 2,
+    "unit": "AI2-data",
+    "objectives": [
+      "Xếp thẻ vào nhóm phù hợp.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-02",
+    "title": "Tìm nhãn bị đặt nhầm",
+    "grade": 2,
+    "unit": "AI2-data",
+    "objectives": [
+      "Xếp thẻ vào nhóm phù hợp.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-03",
+    "title": "Thông tin nào giữ riêng?",
+    "grade": 2,
+    "unit": "AI2-safety",
+    "objectives": [
+      "Chọn cách giữ thông tin riêng.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-04",
+    "title": "Cần có nhiều loại mẫu",
+    "grade": 2,
+    "unit": "AI2-data",
+    "objectives": [
+      "Xếp thẻ vào nhóm phù hợp.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-05",
+    "title": "Thử với tranh chưa xem",
+    "grade": 2,
+    "unit": "AI2-data",
+    "objectives": [
+      "Xếp thẻ vào nhóm phù hợp.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-06",
+    "title": "Dừng khi gặp yêu cầu lạ",
+    "grade": 2,
+    "unit": "AI2-safety",
+    "objectives": [
+      "Chọn cách giữ thông tin riêng.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-07",
+    "title": "Kiểm tra hình kể chuyện",
+    "grade": 2,
+    "unit": "AI2-safety",
+    "objectives": [
+      "Chọn cách giữ thông tin riêng.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-08",
+    "title": "Lịch học và nghỉ mắt",
+    "grade": 2,
+    "unit": "AI2-safety",
+    "objectives": [
+      "Chọn cách giữ thông tin riêng.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-09",
+    "title": "Máy làm theo lệnh",
+    "grade": 2,
+    "unit": "AI2-around",
+    "objectives": [
+      "Nói máy giúp mình việc gì.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-10",
+    "title": "Máy nhận biết hình",
+    "grade": 2,
+    "unit": "AI2-around",
+    "objectives": [
+      "Nói máy giúp mình việc gì.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-11",
+    "title": "Dự đoán chưa phải chắc chắn",
+    "grade": 2,
+    "unit": "AI2-around",
+    "objectives": [
+      "Nói máy giúp mình việc gì.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-12",
+    "title": "Người chọn, máy hỗ trợ",
+    "grade": 2,
+    "unit": "AI2-around",
+    "objectives": [
+      "Nói máy giúp mình việc gì.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-13",
+    "title": "Một yêu cầu, một việc",
+    "grade": 2,
+    "unit": "AI2-prompt",
+    "objectives": [
+      "Chọn lời nhắc nói rõ một việc.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-14",
+    "title": "Thêm chi tiết cần thiết",
+    "grade": 2,
+    "unit": "AI2-prompt",
+    "objectives": [
+      "Chọn lời nhắc nói rõ một việc.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-15",
+    "title": "Chọn cách trình bày",
+    "grade": 2,
+    "unit": "AI2-prompt",
+    "objectives": [
+      "Chọn lời nhắc nói rõ một việc.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-16",
+    "title": "Sửa lời nhắc mơ hồ",
+    "grade": 2,
+    "unit": "AI2-prompt",
+    "objectives": [
+      "Chọn lời nhắc nói rõ một việc.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-17",
+    "title": "Đếm theo nhóm hai",
+    "grade": 2,
+    "unit": "AI2-math",
+    "objectives": [
+      "Tự đếm hoặc tính để kiểm tra.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-18",
+    "title": "Kiểm tra phép cộng",
+    "grade": 2,
+    "unit": "AI2-math",
+    "objectives": [
+      "Tự đếm hoặc tính để kiểm tra.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-19",
+    "title": "Tìm quy luật đơn giản",
+    "grade": 2,
+    "unit": "AI2-math",
+    "objectives": [
+      "Tự đếm hoặc tính để kiểm tra.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-20",
+    "title": "Đếm lại bằng tranh",
+    "grade": 2,
+    "unit": "AI2-math",
+    "objectives": [
+      "Tự đếm hoặc tính để kiểm tra.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-21",
+    "title": "Tên đồ vật và tranh",
+    "grade": 2,
+    "unit": "AI2-vietnamese",
+    "objectives": [
+      "Tìm chi tiết trong tranh và lời kể.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-22",
+    "title": "Đầu, giữa, cuối câu chuyện",
+    "grade": 2,
+    "unit": "AI2-vietnamese",
+    "objectives": [
+      "Tìm chi tiết trong tranh và lời kể.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-23",
+    "title": "Chọn câu đúng với tranh",
+    "grade": 2,
+    "unit": "AI2-vietnamese",
+    "objectives": [
+      "Tìm chi tiết trong tranh và lời kể.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-24",
+    "title": "Lời kể của chính em",
+    "grade": 2,
+    "unit": "AI2-vietnamese",
+    "objectives": [
+      "Tìm chi tiết trong tranh và lời kể.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-25",
+    "title": "Hello and goodbye",
+    "grade": 2,
+    "unit": "AI2-english",
+    "objectives": [
+      "Ghép từ tiếng Anh với tranh.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-26",
+    "title": "Fruit picture cards",
+    "grade": 2,
+    "unit": "AI2-english",
+    "objectives": [
+      "Ghép từ tiếng Anh với tranh.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-27",
+    "title": "School things",
+    "grade": 2,
+    "unit": "AI2-english",
+    "objectives": [
+      "Ghép từ tiếng Anh với tranh.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-28",
+    "title": "Count and check",
+    "grade": 2,
+    "unit": "AI2-english",
+    "objectives": [
+      "Ghép từ tiếng Anh với tranh.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-29",
+    "title": "Thiệp cảm ơn bằng hình",
+    "grade": 2,
+    "unit": "AI2-creative",
+    "objectives": [
+      "Chọn một cách làm sản phẩm dễ hiểu.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-30",
+    "title": "Ba tranh kể chuyện",
+    "grade": 2,
+    "unit": "AI2-creative",
+    "objectives": [
+      "Chọn một cách làm sản phẩm dễ hiểu.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-31",
+    "title": "Poster có lời nhắc ngắn",
+    "grade": 2,
+    "unit": "AI2-creative",
+    "objectives": [
+      "Chọn một cách làm sản phẩm dễ hiểu.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-32",
+    "title": "Thử rồi sửa sản phẩm",
+    "grade": 2,
+    "unit": "AI2-creative",
+    "objectives": [
+      "Chọn một cách làm sản phẩm dễ hiểu.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-33",
+    "title": "Chọn vấn đề gần gũi",
+    "grade": 2,
+    "unit": "AI2-project",
+    "objectives": [
+      "Làm thử và nói điều cần sửa.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-34",
+    "title": "Chuẩn bị thẻ có nhãn",
+    "grade": 2,
+    "unit": "AI2-project",
+    "objectives": [
+      "Làm thử và nói điều cần sửa.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-35",
+    "title": "Thử với thẻ khác",
+    "grade": 2,
+    "unit": "AI2-project",
+    "objectives": [
+      "Làm thử và nói điều cần sửa.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-36",
+    "title": "Kể cách em kiểm tra",
+    "grade": 2,
+    "unit": "AI2-project",
+    "objectives": [
+      "Làm thử và nói điều cần sửa.",
+      "Chạm thẻ để thử lựa chọn.",
+      "Thử lại hoặc nhờ người lớn đọc cùng."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-01",
+    "title": "Nêu nhiệm vụ rõ ràng",
+    "grade": 3,
+    "unit": "AI3-prompt",
+    "objectives": [
+      "Giải thích ý chính: Nêu nhiệm vụ rõ ràng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-02",
+    "title": "Nhãn của bộ dữ liệu",
+    "grade": 3,
+    "unit": "AI3-data",
+    "objectives": [
+      "Giải thích ý chính: Nhãn của bộ dữ liệu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-03",
+    "title": "Chọn nhiệm vụ có thể kiểm tra",
+    "grade": 3,
+    "unit": "AI3-project",
+    "objectives": [
+      "Giải thích ý chính: Chọn nhiệm vụ có thể kiểm tra.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-04",
+    "title": "Chỉ đưa dữ liệu cần dùng",
+    "grade": 3,
+    "unit": "AI3-prompt",
+    "objectives": [
+      "Giải thích ý chính: Chỉ đưa dữ liệu cần dùng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-05",
+    "title": "Nói dạng kết quả mong muốn",
+    "grade": 3,
+    "unit": "AI3-prompt",
+    "objectives": [
+      "Giải thích ý chính: Nói dạng kết quả mong muốn.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-06",
+    "title": "Cải thiện lời nhắc",
+    "grade": 3,
+    "unit": "AI3-prompt",
+    "objectives": [
+      "Giải thích ý chính: Cải thiện lời nhắc.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-07",
+    "title": "Sửa mẫu gắn nhãn sai",
+    "grade": 3,
+    "unit": "AI3-data",
+    "objectives": [
+      "Giải thích ý chính: Sửa mẫu gắn nhãn sai.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-08",
+    "title": "Nhìn đủ các nhóm",
+    "grade": 3,
+    "unit": "AI3-data",
+    "objectives": [
+      "Giải thích ý chính: Nhìn đủ các nhóm.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-09",
+    "title": "Tách mẫu học và mẫu thử",
+    "grade": 3,
+    "unit": "AI3-data",
+    "objectives": [
+      "Giải thích ý chính: Tách mẫu học và mẫu thử.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-10",
+    "title": "Chọn bộ mẫu đủ nhóm",
+    "grade": 3,
+    "unit": "AI3-project",
+    "objectives": [
+      "Giải thích ý chính: Chọn bộ mẫu đủ nhóm.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-11",
+    "title": "Ghi điều đúng và sai",
+    "grade": 3,
+    "unit": "AI3-project",
+    "objectives": [
+      "Giải thích ý chính: Ghi điều đúng và sai.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-12",
+    "title": "Trình bày giới hạn sản phẩm",
+    "grade": 3,
+    "unit": "AI3-project",
+    "objectives": [
+      "Giải thích ý chính: Trình bày giới hạn sản phẩm.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-13",
+    "title": "Lệnh cố định và học từ mẫu",
+    "grade": 3,
+    "unit": "AI3-around",
+    "objectives": [
+      "Giải thích ý chính: Lệnh cố định và học từ mẫu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-14",
+    "title": "AI nhận thông tin gì?",
+    "grade": 3,
+    "unit": "AI3-around",
+    "objectives": [
+      "Giải thích ý chính: AI nhận thông tin gì?.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-15",
+    "title": "Dự đoán và bằng chứng",
+    "grade": 3,
+    "unit": "AI3-around",
+    "objectives": [
+      "Giải thích ý chính: Dự đoán và bằng chứng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-16",
+    "title": "Con người chịu trách nhiệm",
+    "grade": 3,
+    "unit": "AI3-around",
+    "objectives": [
+      "Giải thích ý chính: Con người chịu trách nhiệm.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-17",
+    "title": "Kiểm tra phép nhân",
+    "grade": 3,
+    "unit": "AI3-math",
+    "objectives": [
+      "Giải thích ý chính: Kiểm tra phép nhân.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-18",
+    "title": "Tìm phép chia bị nhầm",
+    "grade": 3,
+    "unit": "AI3-math",
+    "objectives": [
+      "Giải thích ý chính: Tìm phép chia bị nhầm.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-19",
+    "title": "Đọc bảng số mẫu",
+    "grade": 3,
+    "unit": "AI3-math",
+    "objectives": [
+      "Giải thích ý chính: Đọc bảng số mẫu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-20",
+    "title": "Kiểm chứng cách giải",
+    "grade": 3,
+    "unit": "AI3-math",
+    "objectives": [
+      "Giải thích ý chính: Kiểm chứng cách giải.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-21",
+    "title": "Từ khóa trong tranh",
+    "grade": 3,
+    "unit": "AI3-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Từ khóa trong tranh.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-22",
+    "title": "Sắp ý đầu, giữa, cuối",
+    "grade": 3,
+    "unit": "AI3-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Sắp ý đầu, giữa, cuối.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-23",
+    "title": "Sự thật và điều tưởng tượng",
+    "grade": 3,
+    "unit": "AI3-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Sự thật và điều tưởng tượng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-24",
+    "title": "Giữ lời kể của mình",
+    "grade": 3,
+    "unit": "AI3-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Giữ lời kể của mình.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-25",
+    "title": "Greetings in pictures",
+    "grade": 3,
+    "unit": "AI3-english",
+    "objectives": [
+      "Giải thích ý chính: Greetings in pictures.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-26",
+    "title": "Animals and their names",
+    "grade": 3,
+    "unit": "AI3-english",
+    "objectives": [
+      "Giải thích ý chính: Animals and their names.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-27",
+    "title": "Singular and plural",
+    "grade": 3,
+    "unit": "AI3-english",
+    "objectives": [
+      "Giải thích ý chính: Singular and plural.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-28",
+    "title": "Check a short sentence",
+    "grade": 3,
+    "unit": "AI3-english",
+    "objectives": [
+      "Giải thích ý chính: Check a short sentence.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-29",
+    "title": "Robot giúp việc gì?",
+    "grade": 3,
+    "unit": "AI3-creative",
+    "objectives": [
+      "Giải thích ý chính: Robot giúp việc gì?.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-30",
+    "title": "Poster một thông điệp",
+    "grade": 3,
+    "unit": "AI3-creative",
+    "objectives": [
+      "Giải thích ý chính: Poster một thông điệp.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-31",
+    "title": "Truyện có ba sự kiện",
+    "grade": 3,
+    "unit": "AI3-creative",
+    "objectives": [
+      "Giải thích ý chính: Truyện có ba sự kiện.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-32",
+    "title": "So sánh trước và sau khi sửa",
+    "grade": 3,
+    "unit": "AI3-creative",
+    "objectives": [
+      "Giải thích ý chính: So sánh trước và sau khi sửa.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-33",
+    "title": "Dữ liệu mẫu và dữ liệu riêng",
+    "grade": 3,
+    "unit": "AI3-safety",
+    "objectives": [
+      "Giải thích ý chính: Dữ liệu mẫu và dữ liệu riêng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-34",
+    "title": "Ảnh chưa đủ làm bằng chứng",
+    "grade": 3,
+    "unit": "AI3-safety",
+    "objectives": [
+      "Giải thích ý chính: Ảnh chưa đủ làm bằng chứng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-35",
+    "title": "Xin phép và ghi nguồn",
+    "grade": 3,
+    "unit": "AI3-safety",
+    "objectives": [
+      "Giải thích ý chính: Xin phép và ghi nguồn.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-36",
+    "title": "Cân bằng học và nghỉ",
+    "grade": 3,
+    "unit": "AI3-safety",
+    "objectives": [
+      "Giải thích ý chính: Cân bằng học và nghỉ.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-01",
+    "title": "Nhãn quyết định điều máy học",
+    "grade": 5,
+    "unit": "AI5-data",
+    "objectives": [
+      "Giải thích ý chính: Nhãn quyết định điều máy học.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-02",
+    "title": "Nêu vấn đề và tiêu chí",
+    "grade": 5,
+    "unit": "AI5-project",
+    "objectives": [
+      "Giải thích ý chính: Nêu vấn đề và tiêu chí.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-03",
+    "title": "Thiết kế bộ mẫu",
+    "grade": 5,
+    "unit": "AI5-project",
+    "objectives": [
+      "Giải thích ý chính: Thiết kế bộ mẫu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-04",
+    "title": "Dữ liệu sai, dự đoán sai",
+    "grade": 5,
+    "unit": "AI5-data",
+    "objectives": [
+      "Giải thích ý chính: Dữ liệu sai, dự đoán sai.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-05",
+    "title": "Đủ nhóm để kiểm tra công bằng",
+    "grade": 5,
+    "unit": "AI5-data",
+    "objectives": [
+      "Giải thích ý chính: Đủ nhóm để kiểm tra công bằng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-06",
+    "title": "Mẫu thử không trùng mẫu học",
+    "grade": 5,
+    "unit": "AI5-data",
+    "objectives": [
+      "Giải thích ý chính: Mẫu thử không trùng mẫu học.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-07",
+    "title": "Thử, ghi lỗi, cải tiến",
+    "grade": 5,
+    "unit": "AI5-project",
+    "objectives": [
+      "Giải thích ý chính: Thử, ghi lỗi, cải tiến.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-08",
+    "title": "Báo cáo cách làm và giới hạn",
+    "grade": 5,
+    "unit": "AI5-project",
+    "objectives": [
+      "Giải thích ý chính: Báo cáo cách làm và giới hạn.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-09",
+    "title": "Quy tắc và dự đoán từ mẫu",
+    "grade": 5,
+    "unit": "AI5-around",
+    "objectives": [
+      "Giải thích ý chính: Quy tắc và dự đoán từ mẫu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-10",
+    "title": "Đầu vào và đầu ra",
+    "grade": 5,
+    "unit": "AI5-around",
+    "objectives": [
+      "Giải thích ý chính: Đầu vào và đầu ra.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-11",
+    "title": "Khi nào cần bằng chứng?",
+    "grade": 5,
+    "unit": "AI5-around",
+    "objectives": [
+      "Giải thích ý chính: Khi nào cần bằng chứng?.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-12",
+    "title": "Quyết định thuộc về con người",
+    "grade": 5,
+    "unit": "AI5-around",
+    "objectives": [
+      "Giải thích ý chính: Quyết định thuộc về con người.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-13",
+    "title": "Nhiệm vụ và tiêu chí rõ",
+    "grade": 5,
+    "unit": "AI5-prompt",
+    "objectives": [
+      "Giải thích ý chính: Nhiệm vụ và tiêu chí rõ.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-14",
+    "title": "Dữ liệu liên quan, không riêng tư",
+    "grade": 5,
+    "unit": "AI5-prompt",
+    "objectives": [
+      "Giải thích ý chính: Dữ liệu liên quan, không riêng tư.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-15",
+    "title": "Định dạng giúp kiểm tra",
+    "grade": 5,
+    "unit": "AI5-prompt",
+    "objectives": [
+      "Giải thích ý chính: Định dạng giúp kiểm tra.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-16",
+    "title": "Sửa yêu cầu sau khi đối chiếu",
+    "grade": 5,
+    "unit": "AI5-prompt",
+    "objectives": [
+      "Giải thích ý chính: Sửa yêu cầu sau khi đối chiếu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-17",
+    "title": "Kiểm tra phép tính thập phân",
+    "grade": 5,
+    "unit": "AI5-math",
+    "objectives": [
+      "Giải thích ý chính: Kiểm tra phép tính thập phân.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-18",
+    "title": "Kiểm chứng phân số",
+    "grade": 5,
+    "unit": "AI5-math",
+    "objectives": [
+      "Giải thích ý chính: Kiểm chứng phân số.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-19",
+    "title": "Đọc tỉ lệ từ dữ liệu mẫu",
+    "grade": 5,
+    "unit": "AI5-math",
+    "objectives": [
+      "Giải thích ý chính: Đọc tỉ lệ từ dữ liệu mẫu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-20",
+    "title": "Phát hiện lập luận sai",
+    "grade": 5,
+    "unit": "AI5-math",
+    "objectives": [
+      "Giải thích ý chính: Phát hiện lập luận sai.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-21",
+    "title": "Ý chính và chi tiết minh họa",
+    "grade": 5,
+    "unit": "AI5-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Ý chính và chi tiết minh họa.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-22",
+    "title": "Bố cục cho câu chuyện",
+    "grade": 5,
+    "unit": "AI5-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Bố cục cho câu chuyện.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-23",
+    "title": "Phân biệt thông tin và hư cấu",
+    "grade": 5,
+    "unit": "AI5-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Phân biệt thông tin và hư cấu.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-24",
+    "title": "Chỉnh văn, giữ ý của em",
+    "grade": 5,
+    "unit": "AI5-vietnamese",
+    "objectives": [
+      "Giải thích ý chính: Chỉnh văn, giữ ý của em.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-25",
+    "title": "Give a clear instruction",
+    "grade": 5,
+    "unit": "AI5-english",
+    "objectives": [
+      "Giải thích ý chính: Give a clear instruction.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-26",
+    "title": "Check picture vocabulary",
+    "grade": 5,
+    "unit": "AI5-english",
+    "objectives": [
+      "Giải thích ý chính: Check picture vocabulary.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-27",
+    "title": "Check noun agreement",
+    "grade": 5,
+    "unit": "AI5-english",
+    "objectives": [
+      "Giải thích ý chính: Check noun agreement.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-28",
+    "title": "Verify a short description",
+    "grade": 5,
+    "unit": "AI5-english",
+    "objectives": [
+      "Giải thích ý chính: Verify a short description.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-29",
+    "title": "Thiết kế cho người sử dụng",
+    "grade": 5,
+    "unit": "AI5-creative",
+    "objectives": [
+      "Giải thích ý chính: Thiết kế cho người sử dụng.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-30",
+    "title": "Poster với tiêu chí kiểm tra",
+    "grade": 5,
+    "unit": "AI5-creative",
+    "objectives": [
+      "Giải thích ý chính: Poster với tiêu chí kiểm tra.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-31",
+    "title": "Kịch bản truyện ngắn",
+    "grade": 5,
+    "unit": "AI5-creative",
+    "objectives": [
+      "Giải thích ý chính: Kịch bản truyện ngắn.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-32",
+    "title": "Cải tiến dựa vào phản hồi",
+    "grade": 5,
+    "unit": "AI5-creative",
+    "objectives": [
+      "Giải thích ý chính: Cải tiến dựa vào phản hồi.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-33",
+    "title": "Tối thiểu thông tin chia sẻ",
+    "grade": 5,
+    "unit": "AI5-safety",
+    "objectives": [
+      "Giải thích ý chính: Tối thiểu thông tin chia sẻ.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-34",
+    "title": "Kiểm chứng hình ảnh và khẳng định",
+    "grade": 5,
+    "unit": "AI5-safety",
+    "objectives": [
+      "Giải thích ý chính: Kiểm chứng hình ảnh và khẳng định.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-35",
+    "title": "Tôn trọng tác giả và nguồn",
+    "grade": 5,
+    "unit": "AI5-safety",
+    "objectives": [
+      "Giải thích ý chính: Tôn trọng tác giả và nguồn.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-36",
+    "title": "Chọn lúc tự làm thay vì dùng AI",
+    "grade": 5,
+    "unit": "AI5-safety",
+    "objectives": [
+      "Giải thích ý chính: Chọn lúc tự làm thay vì dùng AI.",
+      "Thực hiện hoạt động và nêu căn cứ cho lựa chọn.",
+      "Dùng dữ liệu mẫu, kiểm tra kết quả và xin người lớn hỗ trợ khi cần."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-37",
+    "title": "Đếm lại cùng robot",
+    "grade": 1,
+    "unit": "AI1-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-38",
+    "title": "Hai màu của quả táo",
+    "grade": 1,
+    "unit": "AI1-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-37",
+    "title": "Đọc lại lời chỉ dẫn",
+    "grade": 2,
+    "unit": "AI2-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-38",
+    "title": "Nhãn nào cần sửa?",
+    "grade": 2,
+    "unit": "AI2-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-37",
+    "title": "Thử bằng thẻ chưa gặp",
+    "grade": 3,
+    "unit": "AI3-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-38",
+    "title": "Không đoán quả chỉ từ màu",
+    "grade": 3,
+    "unit": "AI3-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-37",
+    "title": "Hai cách kiểm tra phép tính",
+    "grade": 4,
+    "unit": "AI4-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-38",
+    "title": "Bộ mẫu đồ dùng công bằng hơn",
+    "grade": 4,
+    "unit": "AI4-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-37",
+    "title": "Bốn trên năm chưa phải tất cả",
+    "grade": 5,
+    "unit": "AI5-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-38",
+    "title": "Điểm tổng có che một nhóm lỗi?",
+    "grade": 5,
+    "unit": "AI5-verify",
+    "objectives": [
+      "Tìm căn cứ trong thẻ mẫu.",
+      "Chọn cách kiểm tra kết quả.",
+      "Nói khi em chưa chắc."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-39",
+    "title": "Robot tìm sách",
+    "grade": 1,
+    "unit": "AI1-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI1-40",
+    "title": "Thẻ bị che kín",
+    "grade": 1,
+    "unit": "AI1-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-39",
+    "title": "Không chỉ nhìn màu",
+    "grade": 2,
+    "unit": "AI2-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI2-40",
+    "title": "Hỏi rõ trước khi làm",
+    "grade": 2,
+    "unit": "AI2-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 10,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-39",
+    "title": "Hai câu hỏi tìm đồ vật",
+    "grade": 3,
+    "unit": "AI3-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI3-40",
+    "title": "Dừng ở chỗ chưa biết",
+    "grade": 3,
+    "unit": "AI3-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-39",
+    "title": "Lời giải thích có đúng căn cứ?",
+    "grade": 4,
+    "unit": "AI4-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI4-40",
+    "title": "Hai công cụ nói khác nhau",
+    "grade": 4,
+    "unit": "AI4-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-39",
+    "title": "Gợi ý nhiều chưa chắc phù hợp",
+    "grade": 5,
+    "unit": "AI5-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  },
+  {
+    "code": "AI5-40",
+    "title": "Con người duyệt trước khi dùng",
+    "grade": 5,
+    "unit": "AI5-reason",
+    "objectives": [
+      "Tìm chi tiết giúp em lựa chọn.",
+      "Giải thích bằng tranh hoặc lời ngắn.",
+      "Hỏi lại khi thông tin chưa đủ."
+    ],
+    "steps": 7,
+    "checkpoint_questions": 3,
+    "estimated_minutes": 15,
+    "prerequisites": [],
+    "device": "browser, touch or keyboard; no model/GPU required"
+  }
+]

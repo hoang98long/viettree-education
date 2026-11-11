@@ -4,7 +4,7 @@ COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend .
 ARG INTERNAL_API_URL=http://backend:8000
-ENV INTERNAL_API_URL=$INTERNAL_API_URL NEXT_TELEMETRY_DISABLED=1
+ENV INTERNAL_API_URL=$INTERNAL_API_URL NEXT_TELEMETRY_DISABLED=1 NODE_OPTIONS=--max-old-space-size=2048
 RUN npm run build
 
 FROM node:22-alpine AS runner

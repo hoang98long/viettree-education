@@ -10,6 +10,14 @@ from sqlalchemy import func, select
 from app.core.security import now
 from app.db import db
 from app.services import access
+from app.services.catalog import published_lesson
+
+
+def authorized_lesson_progress(conn, user, lesson_id):
+    """Authorize the current lesson without constructing its read-only view."""
+    row = published_lesson(conn, lesson_id, user["id"])
+    access.authorize_content(conn, user, "lesson", lesson_id, row["grade"])
+    return row
 
 
 def list_plans(conn, student_id, grade):

@@ -14,6 +14,7 @@ ANSWER_MODELS = {
     "ordering": OrderAnswer,
     "free_text": TextAnswer,
 }
+DECIMAL_PRESENTATION = re.compile(r"[+-]?(?:\d+|\d{1,3}(?: \d{3})+)[.,]\d+")
 
 
 def normalize(text: str, case_sensitive: bool = False) -> str:
@@ -28,7 +29,7 @@ def numeric_presentation(value: str, decimals=False) -> str:
         return value.replace(" ", "")
     if re.fullmatch(r"[+-]?\d+\s*/\s*[1-9]\d*", value):
         return value.replace(" ", "")
-    if decimals and re.fullmatch(r"[+-]?(?:\d+|\d{1,3}(?: \d{3})+)[.,]\d+", value):
+    if decimals and DECIMAL_PRESENTATION.fullmatch(value):
         number = Decimal(value.replace(" ", "").replace(",", "."))
         return format(number, "f").rstrip("0").rstrip(".")
     return value
@@ -95,7 +96,7 @@ def grade_answer(kind: str, grading: dict, answer: dict | None) -> bool | None:
         accepted = [normalize(value, sensitive) for value in grading["accepted_answers"]]
         candidate = normalize(answer.get("text", ""), sensitive)
         if not sensitive:
-            decimals = any(re.fullmatch(r"[+-]?\d+[.,]\d+", value) for value in accepted)
+            decimals = any(DECIMAL_PRESENTATION.fullmatch(value) for value in accepted)
             accepted = [numeric_presentation(value, decimals) for value in accepted]
             candidate = numeric_presentation(candidate, decimals)
         return candidate in accepted

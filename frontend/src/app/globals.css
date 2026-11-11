@@ -4,8 +4,8 @@
 }
 :root {
   --ink: #203d34;
-  --muted: #6d8179;
-  --green: #23805b;
+  --muted: #566f63;
+  --green: #1f704f;
   --light-green: #eaf5ef;
   --border: #e2ebe5;
   --paper: #f6f9f6;
@@ -642,7 +642,7 @@ dd {
   background: #eef3f0;
   border-radius: 7px;
   padding: 4px 9px;
-  color: #61786b;
+  color: var(--muted);
   white-space: nowrap;
 }
 .badge.success {
@@ -887,7 +887,7 @@ dd {
 .sidebar-label {
   font-size: 9px;
   letter-spacing: 1px;
-  color: #91a198;
+  color: var(--muted);
   margin: 0 15px 14px;
   font-weight: 700;
 }
@@ -905,7 +905,7 @@ dd {
   min-height: 48px;
   padding: 10px 14px;
   border-radius: 10px;
-  color: #74867c;
+  color: var(--muted);
   font-weight: 600;
 }
 .sidebar nav a:hover {
@@ -1623,6 +1623,7 @@ dd {
 }
 .profile-card {
   max-width: 620px;
+  overflow-wrap: anywhere;
 }
 .profile-card dl {
   margin: 25px 0;

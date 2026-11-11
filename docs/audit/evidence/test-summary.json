@@ -1,0 +1,105 @@
+{
+  "backend_unit": {
+    "passed": 992,
+    "deselected": 264,
+    "exit": 0,
+    "coverage_scope": "unit only, app statements",
+    "covered_lines": 3662,
+    "statements": 7095,
+    "coverage_percent": 51.6138125440451
+  },
+  "linux_broad_regression": {
+    "passed": 649,
+    "failed": 0,
+    "skipped": 0,
+    "exit": 0
+  },
+  "linux_progress_regression": {
+    "passed": 72,
+    "failed": 0,
+    "skipped": 0,
+    "exit": 0
+  },
+  "frontend_component": {
+    "passed": 103,
+    "files": 26,
+    "exit": 0
+  },
+  "browser_full_baseline": {
+    "passed": 174,
+    "failed": 5,
+    "skipped": 3,
+    "exit": 1
+  },
+  "browser_target_rerun": {
+    "passed": 12,
+    "failed": 0,
+    "exit": 0
+  },
+  "browser_accessibility": {
+    "passed": 6,
+    "failed": 0,
+    "exit": 0
+  },
+  "browser_final_windows_smoke": {
+    "passed": 33,
+    "failed": 1,
+    "skipped": 0,
+    "exit": 1
+  },
+  "npm_advisories": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "pip_vulnerable_dependencies": 0,
+  "deduplication": "Separate runs overlap; do not sum as unique tests. Full suite not rerun after every final patch.",
+  "browser_production_https_smoke": {
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0,
+    "exit": 0
+  },
+  "browser_production_network": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "exit": 0
+  },
+  "frontend_final_build": {
+    "exit": 0,
+    "api_proxy": "127.0.0.1:8000"
+  },
+  "frontend_final_typecheck": {
+    "exit": 0
+  },
+  "frontend_final_lint": {
+    "exit": 0
+  },
+  "risks": {
+    "total": 24,
+    "P0": 0,
+    "P1": 4,
+    "P2": 20,
+    "fixed_in_scope": 18,
+    "open_or_partial": 6
+  },
+  "frontend_final_format": {
+    "exit": 0
+  },
+  "git_final_diff_check": {
+    "exit": 0
+  },
+  "backend_final_ruff": {
+    "exit": 0,
+    "formatted_python_files": 242
+  },
+  "local_audit_document_links": {
+    "documents": 9,
+    "broken": 0
+  },
+  "cleanup": "After user approval: 11 audit containers, 2 image tags, 2 test volumes, 1 test network and 122 temporary entries removed; application PostgreSQL, backups, code and public evidence preserved"
+}

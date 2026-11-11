@@ -4,6 +4,7 @@ import { useState } from "react";
 import { api } from "@/lib/api";
 import type { Page, Student } from "@/lib/types";
 import { Empty, PageTitle } from "@/components/ui";
+import { Modal } from "@/components/modal";
 import { Data, Pagination } from "@/features/admin/shared";
 
 export function EditStudent({
@@ -16,38 +17,37 @@ export function EditStudent({
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   return (
-    <div className="modal-backdrop">
-      <section
-        className="modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="student-edit-title"
+    <Modal
+      labelledBy="student-edit-title"
+      onClose={onClose}
+      closeDisabled={busy}
+    >
+      <h2 id="student-edit-title">Hồ sơ {student.username}</h2>
+      <form
+        aria-busy={busy}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const fields = new FormData(e.currentTarget);
+          setBusy(true);
+          setError("");
+          try {
+            await api(`/admin/students/${student.id}`, {
+              method: "PATCH",
+              body: JSON.stringify({
+                display_name: fields.get("display_name"),
+                current_grade: Number(fields.get("grade")),
+              }),
+            });
+            onClose();
+          } catch (err) {
+            setError((err as Error).message);
+            setBusy(false);
+          }
+        }}
       >
-        <h2 id="student-edit-title">Hồ sơ {student.username}</h2>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-            const fields = new FormData(e.currentTarget);
-            setBusy(true);
-            setError("");
-            try {
-              await api(`/admin/students/${student.id}`, {
-                method: "PATCH",
-                body: JSON.stringify({
-                  display_name: fields.get("display_name"),
-                  current_grade: Number(fields.get("grade")),
-                }),
-              });
-              onClose();
-            } catch (err) {
-              setError((err as Error).message);
-              setBusy(false);
-            }
-          }}
-        >
+        <fieldset disabled={busy}>
           <label htmlFor="edit-name">Tên hiển thị</label>
           <input
-            autoFocus
             id="edit-name"
             name="display_name"
             defaultValue={student.display_name}
@@ -80,9 +80,9 @@ export function EditStudent({
               {busy ? "Đang lưu…" : "Lưu hồ sơ"}
             </button>
           </div>
-        </form>
-      </section>
-    </div>
+        </fieldset>
+      </form>
+    </Modal>
   );
 }
 

@@ -22,7 +22,9 @@ const activity = {
   ],
 };
 const mockApi = vi.mocked(api);
-beforeEach(() => mockApi.mockReset());
+beforeEach(() => {
+  mockApi.mockReset();
+});
 
 it("chỉ hiện một thẻ, chạm chọn và gửi đủ câu trả lời; đổi đáp án bỏ trạng thái đạt", async () => {
   const onPass = vi.fn(),

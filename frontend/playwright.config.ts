@@ -8,7 +8,7 @@ export default defineConfig({
     baseURL,
     ignoreHTTPSErrors: localTLS,
     timezoneId: process.env.E2E_TIMEZONE || "Asia/Ho_Chi_Minh",
-    channel: "chrome",
+    channel: process.env.E2E_BROWSER_CHANNEL || "chrome",
     trace: "retain-on-failure",
   },
   projects: [

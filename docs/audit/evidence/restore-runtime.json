@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-11",
+  "scope": "isolated synthetic Docker PostgreSQL 18 only",
+  "dump_custom_format": "passed",
+  "pg_restore_list": "passed",
+  "actual_restore": "passed",
+  "tables_with_identical_row_hashes": 83,
+  "production_settings_validation": "passed",
+  "runtime_schema_check": "passed",
+  "runtime_superuser": false,
+  "runtime_schema_create": false,
+  "backup_sha256": "4df8dd0b714771167b21855c96a9699d42c565d8057ec81a4355ccf4a9e91423",
+  "backup": ".tools/backups/audit-synthetic-restore-20261111-viettree-audit-1111-c5e8a17a.dump",
+  "source_application_database_touched": false,
+  "databases_retained": true
+}

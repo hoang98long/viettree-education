@@ -100,6 +100,9 @@ def main():
                             plan == "VIP",
                         )
         for suffix in ("DESKTOP", "MOBILE"):
+            learner(f"E2E_AUDIT_SUBMIT_{suffix}_USERNAME", 4, True)
+            learner(f"E2E_COLOR_{suffix}_USERNAME", 4, True)
+            learner(f"E2E_PICTURE_{suffix}_USERNAME", 1, False)
             for grade in (1, 5):
                 for plan in ("FREE", "VIP"):
                     learner(

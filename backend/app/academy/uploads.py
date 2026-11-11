@@ -21,7 +21,8 @@ def upload(conn, user, payload):
             raise ValueError("size")
         if UPLOAD_SCANNER is not None and not UPLOAD_SCANNER(raw):
             raise ValueError("scan")
-        image = Image.open(BytesIO(raw))
+        # Restrict plugins before parsing any input header, not only after sniffing.
+        image = Image.open(BytesIO(raw), formats=("PNG", "JPEG", "WEBP", "AVIF"))
         if (
             image.format not in {"PNG", "JPEG", "WEBP", "AVIF"}
             or image.width * image.height > 8_000_000

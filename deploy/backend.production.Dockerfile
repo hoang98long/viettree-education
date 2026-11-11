@@ -1,10 +1,11 @@
 FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /workspace
+COPY backend/requirements-runtime-lock.txt /workspace/backend/requirements-runtime-lock.txt
+RUN pip install --no-cache-dir -r /workspace/backend/requirements-runtime-lock.txt
 COPY backend /workspace/backend
 COPY database /workspace/database
-RUN pip install --no-cache-dir -r /workspace/backend/requirements-lock.txt \
-    && pip install --no-cache-dir --no-deps -e /workspace/backend \
+RUN pip install --no-cache-dir --no-deps -e /workspace/backend \
     && useradd --system --uid 10001 --create-home app \
     && mkdir -p /workspace/var/ai-media \
     && chown -R app:app /workspace/var/ai-media

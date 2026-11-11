@@ -1,4 +1,8 @@
 .git
+.aws
+.ssh
+.codex
+.agents
 .env
 .env.*
 **/.env
@@ -17,3 +21,11 @@
 var
 backend/build
 backend/*.egg-info
+docs
+.github
+backend/tests
+frontend/e2e
+frontend/playwright.config.ts
+frontend/vitest.config.ts
+frontend/src/**/*.test.ts
+frontend/src/**/*.test.tsx

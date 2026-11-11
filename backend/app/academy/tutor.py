@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 
 from app.academy.learning import allowed_lesson, event
-from app.academy.safety import moderation_reason
+from app.academy.safety import moderation_message, moderation_reason
 from app.core.config import settings
 from app.core.security import _throttle, digest, now
 from app.db import db
@@ -34,7 +34,11 @@ def consent(conn, student_id):
                 consents.c.purpose_code == "ai_academy_provider",
                 consents.c.policy_version == POLICY,
             )
-            .order_by(consents.c.recorded_at.desc(), consents.c.id.desc())
+            .order_by(
+                consents.c.recorded_at.desc(),
+                consents.c.consent_given.asc(),
+                consents.c.id.desc(),
+            )
             .limit(1)
         )
         .mappings()
@@ -99,9 +103,19 @@ def respond(conn, user, payload):
         event(conn, user["id"], row["id"], "moderation_triggered", {"reason": reason})
         return {
             "mode": "blocked",
-            "message": "Em dùng dữ liệu mẫu của bài, giữ thông tin riêng và nhờ người lớn nếu cần nhé.",
+            "message": moderation_message(reason),
         }
     data = version["payload"]
+    # The player retains the version on which a learner started. A later
+    # publication must not silently switch their hints or approved model context.
+    progress, versions = db.table("ai_progress"), db.table("ai_lesson_versions")
+    pinned = conn.execute(
+        select(versions.c.payload)
+        .join(progress, progress.c.version_id == versions.c.id)
+        .where(progress.c.student_id == user["id"], progress.c.lesson_id == row["id"])
+    ).scalar_one_or_none()
+    if pinned is not None:
+        data = pinned
     level = (
         payload.level
         if "learning.guided_hints" in resolve_membership(conn, user["id"])["features"]

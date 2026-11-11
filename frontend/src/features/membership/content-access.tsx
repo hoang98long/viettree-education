@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useResource } from "@/hooks/use-resource";
 import { api } from "@/lib/api";
 import { ErrorState, Loading, PageTitle } from "@/components/ui";
+import { Modal } from "@/components/modal";
 import { AccessBadge } from "@/features/membership/pages";
 import type { ContentAccess } from "@/lib/types";
 
@@ -24,49 +25,41 @@ function PolicyEditor({ item, close }: { item: Resource; close: () => void }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   return (
-    <div className="modal-backdrop">
-      <section
-        className="modal wide"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="policy-title"
+    <Modal labelledBy="policy-title" onClose={close} closeDisabled={busy} wide>
+      <h2 id="policy-title">Quyền nội dung · {item.title}</h2>
+      <form
+        aria-busy={busy}
+        onSubmit={async (event) => {
+          event.preventDefault();
+          setBusy(true);
+          setError("");
+          try {
+            await api(`/admin/content/${item.kind}/${item.id}/policy`, {
+              method: "PUT",
+              body: JSON.stringify({
+                minimum_plan_code: plan,
+                learning_level: level,
+                preview: {
+                  summary,
+                  goals: goal
+                    .split("\n")
+                    .map((value) => value.trim())
+                    .filter(Boolean),
+                },
+                reason,
+              }),
+            });
+            close();
+          } catch (e) {
+            setError((e as Error).message);
+            setBusy(false);
+          }
+        }}
       >
-        <h2 id="policy-title">Quyền nội dung · {item.title}</h2>
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-            setBusy(true);
-            setError("");
-            try {
-              await api(`/admin/content/${item.kind}/${item.id}/policy`, {
-                method: "PUT",
-                body: JSON.stringify({
-                  minimum_plan_code: plan,
-                  learning_level: level,
-                  preview: {
-                    summary,
-                    goals: goal
-                      .split("\n")
-                      .map((value) => value.trim())
-                      .filter(Boolean),
-                  },
-                  reason,
-                }),
-              });
-              close();
-            } catch (e) {
-              setError((e as Error).message);
-              setBusy(false);
-            }
-          }}
-        >
+        <fieldset disabled={busy}>
           <label>
             Gói tối thiểu
-            <select
-              autoFocus
-              value={plan}
-              onChange={(e) => setPlan(e.target.value)}
-            >
+            <select value={plan} onChange={(e) => setPlan(e.target.value)}>
               <option value="free">Miễn phí</option>
               <option value="vip">VIP</option>
             </select>
@@ -128,9 +121,9 @@ function PolicyEditor({ item, close }: { item: Resource; close: () => void }) {
               {busy ? "Đang lưu…" : "Lưu quyền nội dung"}
             </button>
           </div>
-        </form>
-      </section>
-    </div>
+        </fieldset>
+      </form>
+    </Modal>
   );
 }
 export function ContentAccessPage() {

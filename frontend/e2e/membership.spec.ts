@@ -92,7 +92,27 @@ test("Free → admin cấp/gia hạn VIP → học nâng cao → thu hồi, gi�
       .click();
     await expect(page).toHaveURL(/\/student\/results\//);
     const resultUrl = page.url();
-    await page.goto("/student/learning-plan");
+    const [subjectsResponse, profileResponse] = await Promise.all([
+      page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === "/api/v1/subjects" &&
+          response.request().method() === "GET",
+      ),
+      page.waitForResponse(
+        (response) =>
+          new URL(response.url()).pathname === "/api/v1/students/me/profile" &&
+          response.request().method() === "GET",
+      ),
+      page.goto("/student/learning-plan"),
+    ]);
+    expect(
+      subjectsResponse.status(),
+      "API môn học phải tải thành công trước khi tạo kế hoạch",
+    ).toBe(200);
+    expect(
+      profileResponse.status(),
+      "API hồ sơ phải tải thành công trước khi tạo kế hoạch",
+    ).toBe(200);
     await page.getByLabel("Môn em muốn học").selectOption("VIETNAMESE");
     await page.getByLabel("Kiểu kế hoạch").selectOption("adaptive");
     await page

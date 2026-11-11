@@ -3,7 +3,9 @@
 Đã triển khai trực tiếp toàn bộ monorepo theo prompt. Luồng demo login và học sinh
 làm bài đã kiểm chứng với PostgreSQL thật; không có API điểm/thống kê giả.
 
-Trạng thái mới nhất: [biên tập 232 bài cũ và 200 bài AI 04/11](content-editorial-review-2026-11-04.md),
+Trạng thái mới nhất: [kiểm toán hệ thống 11/11](audit/01-system-inventory.md),
+[kết quả thực chạy](audit/07-test-results.md), [nghiệm thu còn lại](audit/09-acceptance-checklist.md).
+Đợt trước: [biên tập 232 bài cũ và 200 bài AI 04/11](content-editorial-review-2026-11-04.md),
 [kiểm chứng](audits/editorial-quality-2026-11-04.md).
 Đợt trước: [học liệu, thư viện và cấu trúc 04/11](discovery-and-library-2026-11-04.md).
 Rà soát triển khai trước đó: [20/10](pre-deployment-review-2026-10-20.md).

@@ -90,6 +90,8 @@ def test_vps8gb_profile_budget_database_and_private_network(tmp_path):
     assert services["db"]["environment"]["TZ"] == "UTC"
     pg_options = services["db"]["command"]
     assert "shared_buffers=512MB" in pg_options and "max_connections=60" in pg_options
+    assert "temp_file_limit=256MB" in pg_options
+    assert "idle_in_transaction_session_timeout=60s" in pg_options
     assert not any(value in pg_options for value in ("fsync=off", "synchronous_commit=off"))
     assert services["caddy"]["networks"]["app"]["ipv4_address"] == "172.30.40.2"
     assert services["caddy"]["environment"]["MAINTENANCE_MODE"] == "true"

@@ -2,8 +2,10 @@
 
 import argparse
 import json
+import math
 import os
 import platform
+import re
 import secrets
 import ssl
 import time
@@ -25,10 +27,38 @@ from app.services.memberships import change_membership
 def percentile(values, fraction):
     values = sorted(values)
     return (
-        round(values[min(len(values) - 1, int((len(values) - 1) * fraction))], 2)
+        round(values[min(len(values) - 1, max(0, math.ceil(len(values) * fraction) - 1))], 2)
         if values
         else None
     )
+
+
+def endpoint_label(method, path):
+    # Probe routes contain UUIDs; retain the operation, never a learner ID/query.
+    return (
+        method.upper()
+        + " "
+        + re.sub(
+            r"/[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}(?=/|$)",
+            "/{id}",
+            path.split("?", 1)[0],
+            flags=re.I,
+        )
+    )
+
+
+def endpoint_summary(records):
+    result = {}
+    for label in sorted({row[0] for row in records}):
+        samples = [row for row in records if row[0] == label]
+        durations = [row[1] for row in samples]
+        result[label] = {
+            "requests": len(samples),
+            "p50_ms": percentile(durations, 0.5),
+            "p95_ms": percentile(durations, 0.95),
+            "status_counts": dict(Counter(row[2] for row in samples)),
+        }
+    return result
 
 
 def main():
@@ -160,7 +190,11 @@ def main():
         try:
             response = client.request(method, path, **kwargs)
             records.append(
-                (path.split("/")[1], (time.perf_counter() - started) * 1000, response.status_code)
+                (
+                    endpoint_label(method, path),
+                    (time.perf_counter() - started) * 1000,
+                    response.status_code,
+                )
             )
             response.raise_for_status()
             return response.json()
@@ -197,6 +231,7 @@ def main():
             "p95_ms": percentile([r[1] for r in records], 0.95),
             "status_counts": dict(Counter(r[2] for r in records)),
             "errors": dict(Counter(errors)),
+            "endpoints": endpoint_summary(records),
         }
         print(json.dumps(report["authentication"]))
         if not all(authenticated):
@@ -209,7 +244,10 @@ def main():
             def journey(index):
                 learner, client = learners[index], clients[index]
                 call(client, "GET", f"/subjects?grade={learner['grade']}")
-                call(client, "GET", f"/lessons?topic_id={learner['topic']}")
+                reading = call(client, "GET", f"/lessons?topic_id={learner['topic']}")
+                accessible = next(lesson for lesson in reading if not lesson.get("locked"))
+                call(client, "GET", f"/lessons/{accessible['id']}")
+                call(client, "POST", f"/lessons/{accessible['id']}/visit")
                 call(client, "GET", "/students/me/dashboard")
                 assignment = call(
                     client, "POST", f"/students/me/assessments/{learner['assessment']}/assign-self"
@@ -245,6 +283,7 @@ def main():
                 resumed = call(client, "GET", path + "/result")
                 if resumed["answered_count"] != len(selected_items):
                     raise RuntimeError("Sai số câu trả lời đã lưu")
+                call(client, "GET", "/students/me/skills")
 
             started = time.perf_counter()
             with ThreadPoolExecutor(max_workers=level) as pool:
@@ -265,6 +304,7 @@ def main():
                     "status_counts": dict(Counter(row[2] for row in records)),
                     "journeys_completed": sum(outcomes),
                     "errors": dict(Counter(errors)),
+                    "endpoints": endpoint_summary(records),
                 }
             )
             print(json.dumps(report["levels"][-1]))

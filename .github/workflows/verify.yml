@@ -53,6 +53,10 @@ jobs:
           python -m app.cli seed-supplement-content --release discovery-2026-04
           python -m app.cli review-learning-content
       - run: pytest -q
+      - name: Audit locked Python dependencies
+        run: |
+          python -m pip install pip-audit==2.10.1
+          python -m pip_audit -r requirements-lock.txt --disable-pip --no-deps
   frontend:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -69,6 +73,85 @@ jobs:
       - run: npm ci
       - run: npm run test && npm run lint && npm run format:check
       - run: npm run build && npm run typecheck
+      - run: npm audit --audit-level=moderate
+  browser-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_DB: viettree-browser-ci-test
+          POSTGRES_PASSWORD: ci-only-ephemeral-password
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d viettree-browser-ci-test"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      APP_ENV: development
+      DB_NAME: viettree-browser-ci-test
+      DB_USER: postgres
+      DB_PASSWORD: ci-only-ephemeral-password
+      ALLOWED_ORIGINS: http://localhost:3000
+      COOKIE_SECURE: "false"
+      INTERNAL_API_URL: http://127.0.0.1:8000
+      E2E_BASE_URL: http://localhost:3000
+      E2E_BROWSER_CHANNEL: chromium
+      AI_TRAINING_ONLY: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Generate ephemeral learner passwords
+        run: |
+          python - <<'PY'
+          import os, secrets
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              for name in ('SEED_ADMIN_PASSWORD', 'SEED_STUDENT_PASSWORD'):
+                  value = secrets.token_urlsafe(32)
+                  print('::add-mask::' + value)
+                  output.write(name + '=' + value + '\n')
+          PY
+      - name: Prepare synthetic curriculum and isolated users
+        working-directory: backend
+        run: |
+          python -m pip install -r requirements-lock.txt
+          python -m pip install --no-deps -e .
+          python -m app.cli import-schema
+          python -m alembic upgrade head
+          python -m app.cli seed
+          python -m app.cli seed-ai-academy
+          for release in applied-2026-01 explorers-2026-01 review-2026-02 daily-2026-03 discovery-2026-04; do
+            python -m app.cli seed-supplement-content --release "$release"
+          done
+          python -m app.cli review-learning-content --apply
+          mkdir -p ../.artifacts
+          python -m scripts.prepare_e2e > ../.artifacts/browser-fixtures.json
+      - name: Build and run browser smoke
+        working-directory: frontend
+        env:
+          E2E_FIXTURE_FILE: ../.artifacts/browser-fixtures.json
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          npm run build
+          cp -r public .next/standalone/
+          cp -r .next/static .next/standalone/.next/
+          (cd ../backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log) > ../.artifacts/api.log 2>&1 &
+          API_PID=$!
+          PORT=3000 HOSTNAME=127.0.0.1 node .next/standalone/server.js > ../.artifacts/frontend.log 2>&1 &
+          WEB_PID=$!
+          trap 'kill "$WEB_PID" "$API_PID" 2>/dev/null || true' EXIT
+          for endpoint in http://127.0.0.1:8000/ready http://localhost:3000/login; do
+            curl --fail --retry 20 --retry-delay 1 --retry-connrefused "$endpoint" >/dev/null
+          done
+          node e2e/run-audit.mjs --reporter=line
   images:
     runs-on: ubuntu-24.04
     timeout-minutes: 20

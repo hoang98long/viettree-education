@@ -40,12 +40,18 @@ test("Admin kiểm tra hệ thống và làm mới kết quả trên desktop/mob
   const release = page.getByRole("region", {
     name: "Kiểm tra trước khi mở web",
   });
-  await release
-    .getByRole("button", { name: "Kiểm tra trước khi mở web", exact: true })
-    .click();
-  const releaseResponse = await page.request.get(
-    "/api/v1/admin/release-status",
-  );
+  // Assert the snapshot requested by the UI, not a second diagnostic request
+  // that can finish while the rendered report is still loading.
+  const [releaseResponse] = await Promise.all([
+    page.waitForResponse(
+      (response) =>
+        new URL(response.url()).pathname === "/api/v1/admin/release-status" &&
+        response.request().method() === "GET",
+    ),
+    release
+      .getByRole("button", { name: "Kiểm tra trước khi mở web", exact: true })
+      .click(),
+  ]);
   expect(releaseResponse.status()).toBe(200);
   expect(releaseResponse.headers()["cache-control"]).toBe("no-store");
   const releaseReport = await releaseResponse.json();

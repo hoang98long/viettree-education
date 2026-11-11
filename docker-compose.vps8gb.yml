@@ -34,6 +34,10 @@ services:
       - -c
       - max_wal_size=1GB
       - -c
+      - temp_file_limit=256MB
+      - -c
+      - idle_in_transaction_session_timeout=60s
+      - -c
       - timezone=UTC
       - -c
       - log_timezone=UTC

@@ -13,6 +13,12 @@ from app.db import db
 from app.schemas.authoring import QuestionInput
 from app.schemas.lessons import LessonContent
 from app.services.grading import grade_answer, validate_answer
+from tests.curriculum_expectations import (
+    baseline_codes,
+    catalog_inventory,
+    installed_catalog,
+    plan_counts,
+)
 from tests.test_grading import correct_answer
 from tests.test_memberships import admin_login, identities, membership
 
@@ -169,7 +175,8 @@ def grade3_student(client, conn):
 
 @pytest.mark.integration
 def test_inventory_matches_grade4_and_seed_preserves_edits_and_history(conn):
-    assert verify_seed(conn, grade=3) == EXPECTED
+    expected_inventory = catalog_inventory(installed_catalog(conn, 3))
+    assert verify_seed(conn, grade=3) == expected_inventory
     versions, questions = db.table("question_versions"), db.table("questions")
     version = dict(
         conn.execute(select(versions).join(questions).where(questions.c.grade == 3).limit(1))
@@ -182,7 +189,7 @@ def test_inventory_matches_grade4_and_seed_preserves_edits_and_history(conn):
     version["status"] = "draft"
     conn.execute(versions.insert().values(**version))
     # A draft revision does not increase the published-question inventory.
-    assert verify_seed(conn, grade=3) == EXPECTED
+    assert verify_seed(conn, grade=3) == expected_inventory
     grade4 = verify_seed(conn, grade=4)
     assert all(
         grade4[s][key] >= count for s, counts in EXPECTED.items() for key, count in counts.items()
@@ -198,7 +205,7 @@ def test_inventory_matches_grade4_and_seed_preserves_edits_and_history(conn):
         query = (
             select(policies.c.minimum_plan_code, func.count())
             .select_from(table.join(policies, policies.c[f"{kind}_id"] == table.c.id))
-            .where(table.c.code.like("VT3-%"))
+            .where(table.c.code.in_(baseline_codes(3, table.name)))
             .group_by(policies.c.minimum_plan_code)
         )
         assert dict(conn.execute(query).all()) == expected
@@ -209,7 +216,7 @@ def test_inventory_matches_grade4_and_seed_preserves_edits_and_history(conn):
         conn.execute(
             select(qpolicies.c.minimum_plan_code, func.count())
             .select_from(questions.join(versions).join(qpolicies))
-            .where(questions.c.grade == 3)
+            .where(questions.c.code.in_(baseline_codes(3, "questions")))
             .group_by(qpolicies.c.minimum_plan_code)
         ).all()
     ) == {"free": 228, "vip": 156}
@@ -305,14 +312,18 @@ def test_grade3_catalogues_current_grade_and_admin_filters(logged_student, conn)
         assert client.get(f"/api/v1/lessons/{item['id']}").status_code == 403
     admin_login(client)
     report = client.get("/api/v1/admin/curriculum-map?grade=3").json()
+    installed = installed_catalog(conn, 3)
+    plans = plan_counts(installed, "lessons")
     assert report["grade"] == 3 and len(report["rows"]) == 21
-    assert sum(r["free_lessons"] for r in report["rows"]) == 46
-    assert sum(r["vip_lessons"] for r in report["rows"]) == 22
-    assert sum(r["questions"] for r in report["rows"]) == 384
-    assert sum(r["assessments"] for r in report["rows"]) == 56
+    assert sum(r["free_lessons"] for r in report["rows"]) == plans["free"]
+    assert sum(r["vip_lessons"] for r in report["rows"]) == plans["vip"]
+    assert sum(r["questions"] for r in report["rows"]) == len(installed["questions"])
+    assert sum(r["assessments"] for r in report["rows"]) == len(installed["assessments"])
     assert len(client.get("/api/v1/admin/curriculum-map?grade=2").json()["rows"]) == 21
-    assert client.get("/api/v1/admin/questions?grade=3").json()["total"] == 384
-    assert client.get("/api/v1/admin/lessons?grade=3").json()["total"] == 68
+    assert client.get("/api/v1/admin/questions?grade=3").json()["total"] == len(
+        installed["questions"]
+    )
+    assert client.get("/api/v1/admin/lessons?grade=3").json()["total"] == len(installed["lessons"])
 
 
 @pytest.mark.integration

@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    }
+  },
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
     "build": "next build",
@@ -11,31 +16,33 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:audit": "node e2e/run-audit.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "lucide-react": "^0.577.0",
     "next": "16.4.5",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "lucide-react": "^0.577.0"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.55.0",
     "@tailwindcss/postcss": "^4.1.0",
-    "tailwindcss": "^4.1.0",
-    "typescript": "^5.9.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.39.5",
-    "@eslint/js": "^9.39.5",
-    "typescript-eslint": "^8.71.1",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "prettier": "^3.8.0",
-    "vitest": "^5.0.3",
     "jsdom": "^26.0.0",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/jest-dom": "^6.6.0",
-    "@playwright/test": "^1.55.0"
+    "prettier": "^3.8.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.3"
   }
 }

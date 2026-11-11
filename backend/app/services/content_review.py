@@ -36,13 +36,20 @@ def review_learning_content(conn, *, apply=False, grades=None):
     lessons, drafts, logs = (db.table(n) for n in ("lessons", "lesson_drafts", "audit_logs"))
     report = {"release": CATALOG["release"], "applied": apply, "items": []}
     counts = {key: 0 for key in ("updated", "eligible", "current", "customized", "missing")}
-    for entry in CATALOG["lessons"]:
-        if entry["grade"] not in selected:
-            continue
-        statement = select(lessons).where(lessons.c.code == entry["code"])
-        if apply:
-            statement = statement.with_for_update()
-        row = conn.execute(statement).mappings().first()
+    entries = [entry for entry in CATALOG["lessons"] if entry["grade"] in selected]
+    statement = select(lessons).where(lessons.c.code.in_([entry["code"] for entry in entries]))
+    if apply:
+        statement = statement.order_by(lessons.c.code).with_for_update()
+    rows = {row["code"]: row for row in conn.execute(statement).mappings()}
+    drafted = set(
+        conn.execute(
+            select(drafts.c.lesson_id).where(
+                drafts.c.lesson_id.in_([row["id"] for row in rows.values()])
+            )
+        ).scalars()
+    )
+    for entry in entries:
+        row = rows.get(entry["code"])
         status = "missing"
         if row is not None:
             digest = fingerprint(row["content"])
@@ -53,9 +60,7 @@ def review_learning_content(conn, *, apply=False, grades=None):
                 or row["created_by"] is not None
                 or row["title"] != entry["title"]
                 or row["status"] != "published"
-                or conn.execute(
-                    select(drafts.c.lesson_id).where(drafts.c.lesson_id == row["id"])
-                ).first()
+                or row["id"] in drafted
             ):
                 status = "customized"
             else:

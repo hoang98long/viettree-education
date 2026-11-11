@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-11",
+  "schema": {
+    "application_tables": 82,
+    "foreign_keys": 152,
+    "indexes": 174,
+    "migration_head": "0012_lesson_bookmarks"
+  },
+  "api_path_count": 140,
+  "api_operations": 156,
+  "media": {
+    "assets": 2617,
+    "lessons": 200,
+    "categories": {
+      "ui": 12,
+      "hero": 389,
+      "badge": 12,
+      "card": 72,
+      "cover": 55,
+      "mascot": 8,
+      "illustration": 2069
+    }
+  },
+  "tracked_file_scan": {
+    "files": 3246,
+    "tracked_dotenv": false,
+    "high_confidence_findings": [],
+    "scope": "current tracked files, private key/AWS/GitHub token patterns only; not full Git history or entropy proof"
+  },
+  "git_start": "2676328",
+  "branch": "audit/2026-11-11-system-review"
+}

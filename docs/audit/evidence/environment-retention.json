@@ -1,0 +1,32 @@
+{
+  "final_user_requested_cleanup": {
+    "removed_test_containers": 11,
+    "removed_test_networks": 1,
+    "removed_image_tags": [
+      "viettree-backend:audit-20261111",
+      "viettree-frontend:audit-20261111"
+    ],
+    "image_sizes_before": {
+      "viettree-backend:audit-20261111": 395507929,
+      "viettree-frontend:audit-20261111": 337589665
+    },
+    "scope": "synthetic Docker audit only; native PostgreSQL, backups and other projects untouched",
+    "removed_test_volumes": [
+      "viettree-audit-1111-c5e8a17a-caddy-data",
+      "viettree-audit-1111-c5e8a17a-data"
+    ],
+    "removed_temporary_entries": 122,
+    "temporary_payload_mib": 184.5,
+    "approval": "User explicitly approved deletion of deployment-unnecessary audit data after reviewing scope"
+  },
+  "preserved": [
+    "Native application database viettree-education",
+    "Native test databases; no SQL DROP/TRUNCATE",
+    "all .tools/backups",
+    ".env",
+    ".venv",
+    "source and regression tests",
+    "public audit evidence",
+    "other Docker projects"
+  ]
+}

@@ -1,252 +1,137 @@
-# Deploy VPS tại Nhật — 4 vCPU, RAM 8 GB, SSD 100 GB
+# Triển khai VPS 4 vCPU / RAM 8 GB / SSD 100 GB
 
-Cập nhật 04/11: [30 bài mới, bộ lọc và lệnh nạp `discovery-2026-04`](discovery-and-library-2026-11-04.md).
-Không có migration mới. Cài mới xem [bước nạp đủ năm bộ](deploy-vps.md) trong hướng dẫn chung.
+Cấu hình mục tiêu cho khoảng 50 học sinh ban đầu, Ubuntu Server 24.04 LTS
+amd64. Host Nhật vẫn dùng lịch học UTC+7. Chạy Docker Compose production;
+không chạy dev server, stack audit, Redis hoặc mô hình AI trên VPS này.
 
-Cập nhật 20/10: **Quản trị → Kiểm tra hệ thống → Trước khi mở web**, có tải biên
-bản CSV; CLI `check-release` kiểm tài khoản, học liệu và ảnh trước mở công khai.
-[Biên bản và hướng dẫn cập nhật](pre-deployment-review-2026-10-20.md).
+## 1. Cấu hình sử dụng
 
-AI Academy cập nhật 19/10: 200 bài, 11 chủ đề/khối, trò chơi đúng lớp và tìm/học tiếp.
-Local hiện tại đã backup/nạp; khởi động lại hai server. Máy khác/VPS backup, build
-và chạy `seed-ai-academy` theo [hướng dẫn](ai-academy-upgrade-2026-10-19.md).
-Không có migration mới.
+| Dịch vụ           |     Trần RAM | Thiết lập                                               |
+| ----------------- | -----------: | ------------------------------------------------------- |
+| PostgreSQL 18     |        2 GiB | shared_buffers 512 MB, work_mem 4 MB, tối đa 60 kết nối |
+| FastAPI           |      1,5 GiB | 2 worker, pool 4 + 2 mỗi worker, giới hạn concurrency   |
+| Next.js           |        1 GiB | Standalone, Node heap runtime 512 MiB                   |
+| Caddy             |      256 MiB | HTTPS, gzip/zstd, giới hạn body/log và maintenance      |
+| Tổng trần runtime | **4,75 GiB** | Phần còn lại dành Linux/Docker, cache và vận hành       |
 
-Ngày rà soát: **15/10/2026**. Dành cho gói VPS bạn đã chọn và khoảng 50 học
-sinh đồng thời ban đầu. Cấu hình này có thêm dư địa so với profile RAM 2 GB;
-số học sinh thực tế vẫn cần đo trên VPS và mạng Việt Nam sau khi có IP/domain.
+Đây là trần, không phải RAM luôn bị chiếm. PostgreSQL giới hạn file tạm
+256 MB mỗi process và ngắt transaction bỏ quên sau 60 giây; câu lệnh ứng
+dụng vẫn có statement/lock timeout. Không tắt fsync/synchronous_commit.
+Khi maintenance tạo index lớn cần xem xét giới hạn file tạm riêng, không
+tăng mặc định cho mọi kết nối.
 
-Chọn **Ubuntu Server 24.04 LTS x86_64/amd64**. Server đặt tại Nhật không đổi
-ngày học, lịch sử, VIP hoặc thành tích sang giờ Nhật. Chạy app production bằng
-Docker Compose, Caddy HTTPS, FastAPI hai worker, Next standalone và PostgreSQL 18.
-Phân hệ AI tiếp tục chỉ đào tạo/luyện tập nội bộ, không cần GPU hoặc model.
+Image backend cài 36 package runtime, không cài sáu package chỉ dùng
+test/lint. Frontend build giới hạn heap Node 2 GiB, runtime dùng 512 MiB;
+build hai image lần lượt. Test, tài liệu và artifact không vào build context.
 
-Cập nhật học liệu tình huống: sau khi có bộ nền tảng và backup, nạp riêng
-`seed-applied-content`, rồi `verify-applied-content` qua `dc run --rm -T --no-deps backend python -m app.cli`.
-Thêm 30 bài/150 câu/30 đề; xem [hướng dẫn cập nhật](applied-learning.md).
+Mô hình: Internet → Caddy :443 → Next :3000 hoặc API :8000 → PostgreSQL.
+Chỉ Caddy publish 80/443. Có nén/cache tài nguyên công khai; API, điểm,
+session và quyền VIP không đưa vào public cache. Không cần CDN giai đoạn đầu.
 
-Head mới `0012_lesson_bookmarks` thêm lưu bài theo tài khoản. Bộ Khám phá dùng
-`seed-supplement-content --release explorers-2026-01` sau migrate/grant, bổ sung
-15 bài/60 câu/15 đề. [Quy trình cập nhật](bookmarks-and-explorers.md).
+## 2. Chuẩn bị VPS và domain
 
-## 1. Profile dành cho VPS này
+Theo [hướng dẫn đầy đủ](deploy-vps.md) để cài Docker Engine/Compose, DNS,
+firewall và chuyển source lên `/opt/viettree-education`. Bản ghi A trỏ tới
+VPS; bắt đầu DNS only nếu dùng Cloudflare. Chỉ thêm AAAA khi IPv6 hoạt động.
+Mở cổng SSH thực tế trước khi bật firewall, TCP 80/443, UDP 443 cho HTTP/3.
 
-Đợt 17/10 thêm bộ `daily-2026-03`, học tiếp và phản hồi AI dễ sửa hơn;
-không có migration/dịch vụ mới. Sau backup/build, nạp theo
-[hướng dẫn cập nhật](daily-learning-and-resume.md).
-[Báo cáo kiểm thử](audits/daily-quality-2026-10-17.md) có tải 50 học sinh với
-750 request, gồm kiểm tra học tiếp khi đang làm bài; đây là phép đo local.
-
-Copy `.env.production.vps8gb.example` thành `.env.production`. Wrapper
-`deploy/compose.sh` đọc `VIETTREE_DEPLOY_PROFILE=vps8gb` và tự ghép
-`docker-compose.production.yml` với `docker-compose.vps8gb.yml`.
-
-| Dịch vụ      | Trần RAM runtime | Thiết lập chính                                              |
-| ------------ | ---------------: | ------------------------------------------------------------ |
-| PostgreSQL   |            2 GiB | shared_buffers 512 MB; work_mem 4 MB; tối đa 60 kết nối      |
-| API          |          1,5 GiB | 2 worker; pool 4 + 2 mỗi worker; auth counter riêng 1/worker |
-| Next.js      |            1 GiB | Node heap 512 MiB; chạy standalone                           |
-| Caddy        |          256 MiB | nén gzip/zstd; HTTPS/HTTP2/HTTP3; timeout đọc request        |
-| Tổng runtime |     **4,75 GiB** | Dành phần còn lại cho OS/Docker, cache và vận hành           |
-
-Đây là giới hạn trên, không phải dung lượng luôn được cấp/đo tiêu thụ. API có
-tối đa **14 kết nối thường dùng** gồm 12 pool API + 2 counter auth; thêm kết nối
-cho readiness và công cụ quản trị. Không bật `fsync=off` hay bỏ đồng bộ giao dịch.
-`effective_cache_size` là gợi ý cho planner, không phải vùng RAM cấp riêng.
-[Giới hạn Docker](https://docs.docker.com/engine/containers/resource_constraints/),
-[bộ nhớ PostgreSQL](https://www.postgresql.org/docs/18/runtime-config-resource.html).
-
-Profile `small` cũ vẫn có thể sử dụng cho máy 2 GB. Khi chuyển profile, giữ
-project name `viettree`, DB_NAME và các volumes. Không chạy `down -v` hoặc
-`volume prune`. Cập nhật cấu hình PostgreSQL cần recreate container DB; làm
-trong cửa sổ bảo trì, sau backup.
-
-## 2. Cài đặt lần đầu
-
-Dùng [hướng dẫn đầy đủ](deploy-vps.md), với các lựa chọn dưới đây:
-
-1. Trỏ bản ghi **A** của domain về IPv4 VPS. Chỉ thêm AAAA khi IPv6 hoạt động.
-   Bắt đầu bằng DNS trực tiếp/DNS only nếu dùng Cloudflare.
-2. Cài Docker Engine và Compose theo mục 2–3. Mở đúng cổng SSH trước khi bật
-   firewall; mở **TCP 80/443**, **UDP 443** cho HTTP/3 cả ở VPS và firewall nhà
-   cung cấp. Chỉ Caddy publish cổng; DB/API/Next nằm trong mạng Docker.
-3. Đặt múi giờ **hệ điều hành** theo Việt Nam để lịch cron dễ quản lý:
-
-   ```bash
-   timedatectl set-timezone Asia/Ho_Chi_Minh
-   timedatectl status
-   ```
-
-   Kiểm tra NTP đang đồng bộ. Containers của profile dùng UTC; ứng dụng tính
-   ngày học và hiển thị theo UTC+7, tương đương giờ Việt Nam hiện tại.
-
-4. Đưa source lên `/opt/viettree-education` theo mục 4, hoặc dùng bộ image build
-   ngoài VPS ở phần tiếp theo. Không chuyển `.env` local vào container.
-5. Dùng đúng mẫu env mới:
-
-   ```bash
-   cd /opt/viettree-education
-   umask 077
-   cp .env.production.vps8gb.example .env.production
-   chmod 600 .env.production
-   nano .env.production
-   ```
-
-   Thay DOMAIN, ACME_EMAIL, RELEASE và **ba mật khẩu DB khác nhau**, đủ mạnh.
-   Giữ `VIETTREE_DEPLOY_PROFILE=vps8gb`, `COOKIE_SECURE` do Compose cấp,
-   `AI_TRAINING_ONLY=true`. Mật khẩu trong env phải khớp các DB role đã tạo.
-   Mặc định `MAINTENANCE_MODE=true`: chỉ IP trong `MAINTENANCE_ALLOWED_IPS`
-   truy cập được. Đặt allowlist thành IP public/CIDR của máy quản trị đang dùng
-   để đăng nhập/đổi mật khẩu; IP khác nhận 503/no-store, kể cả API. Khi IP mạng
-   thay đổi, cập nhật allowlist qua SSH rồi recreate Caddy. Cấu hình này tin IP
-   kết nối trực tiếp, vì vậy giữ DNS only trong lần triển khai đầu.
-
-6. Dùng wrapper cho **mọi lệnh** trong hướng dẫn chung:
-
-   ```bash
-   dc() { bash /opt/viettree-education/deploy/compose.sh "$@"; }
-   dc config --quiet
-   dc build backend frontend
-   dc pull db caddy
-   dc up -d db
-   ```
-
-7. Theo mục **6–9 của hướng dẫn chung**: tạo owner/runtime roles; **restore DB
-   hiện tại hoặc khởi tạo mới**, chạy migration, cấp `deploy/grant-runtime.sql`,
-   đặt mật khẩu quản trị rồi khởi động web. Giữ head của release, hiện là
-   `0012_lesson_bookmarks`. Không seed demo sau restore.
-
-   Khi chuyển từ local, dump chỉ chứa database. Copy cả thư mục **`var/ai-media`**
-   nếu đã upload ảnh riêng, theo phần Academy trong hướng dẫn chung; không chỉ
-   chuyển dump rồi bỏ mất ảnh. Hình bundled đi cùng image.
-
-8. Xác nhận trước khi mở cho học sinh:
-
-   ```bash
-   dc up -d --no-build --pull never backend frontend caddy
-   dc exec -T backend python -m app.cli check-launch
-   # Chỉ tiếp tục sau khi check-launch đạt và đã rà soát tài khoản:
-   # sửa .env.production: MAINTENANCE_MODE=false
-   dc up -d --no-deps caddy
-   bash deploy/backup.sh
-   bash deploy/smoke.sh --require-backup
-   docker stats --no-stream
-   df -h
-   ```
-
-`check-launch` **chỉ đọc**, kiểm tra hệ thống và thêm các điều kiện mở web:
-production mode; có admin hoạt động đã đặt mật khẩu riêng; tài khoản demo lớp
-1–5/`longnh` đang hoạt động nhưng chưa có ghi nhận đổi mật khẩu; DB runtime
-không có quyền superuser, tạo role/database/schema hoặc sở hữu bảng public.
-Không tự khóa, đổi mật khẩu hay thu hồi VIP. Dùng quản trị tài khoản để đổi mật
-khẩu/khóa đúng các tài khoản cần xử lý; admin legacy cần đổi mật khẩu qua trang
-bảo mật để có ghi nhận, không chỉnh cột bằng SQL cho qua kiểm tra.
-
-Smoke test kiểm tra container running/healthy/OOM, `check-launch`, HTTPS,
-chuyển hướng HTTP, API chưa đăng nhập trả 401/no-store, ảnh tĩnh có cache và
-endpoint vận hành không công khai. Không tạo tài khoản hay bài làm.
-Restart count được in để theo dõi; script không tự restart hoặc sửa DB.
-
-Đối chiếu chỉ đọc DB local hiện tại: **21 tài khoản demo** chưa có ghi nhận đổi
-mật khẩu; admin cũng chưa có ghi nhận đáp ứng kiểm tra mở web. Không khóa hoặc
-đổi mật khẩu local trong đợt này. Sau restore, dùng chế độ bảo trì và allowlist
-để rà soát/khóa demo hoặc đặt mật khẩu riêng; đổi mật khẩu admin tại
-`/account/security`, rồi chạy lại `check-launch`. Không tắt bảo trì chỉ để bỏ
-qua kiểm tra. Các tài khoản demo đã chuyển thành tài khoản thật có thể giữ
-lịch sử/VIP và đổi mật khẩu qua chức năng quản trị.
-
-### Build ở máy khác hoặc CI
-
-VPS 8 GB có thể build, nhưng để giảm cạnh tranh CPU/RAM khi đang có lớp học,
-có thể build trên máy khác bằng Docker Engine Linux đang chạy:
-
-```powershell
-Set-Location 'D:\01_viettree_code\viettree-education'
-./deploy/build-images.ps1 -Release '2026-10-15-vps8gb-v1'
+```bash
+cd /opt/viettree-education
+umask 077
+# Chỉ copy khi chưa có .env.production; giữ env đang dùng nếu nâng cấp.
+test -e .env.production || cp .env.production.vps8gb.example .env.production
+chmod 600 .env.production
+nano .env.production
 ```
 
-Helper tạo image Linux amd64, archive cấu hình có đủ **ba profile**, mẫu env,
-SQL gốc và `database/seeds/verify.sql`, cùng SHA256. Gói không chứa env thật,
-DB dump hoặc ảnh upload riêng. Upload hai archive và hai checksum; xác minh
-`sha256sum -c`, `docker load` rồi giải nén cấu hình theo mục 3–4 của
-[hướng dẫn image ngoài VPS](deploy-small-vps.md). Chọn mẫu **vps8gb**, bỏ lệnh
-build trên server và dùng `--no-build --pull never` khi chạy app. Pull db/caddy
-riêng vì chúng không nằm trong archive image ứng dụng.
+Điền domain/email, release tag và ba mật khẩu riêng cho PostgreSQL admin,
+owner migration và runtime app. Giữ `VIETTREE_DEPLOY_PROFILE=vps8gb`,
+`AI_TRAINING_ONLY=true`. Mặc định `MAINTENANCE_MODE=true`; đặt
+`MAINTENANCE_ALLOWED_IPS` là IP public của quản trị viên để thiết lập.
+Không đưa `.env` local hoặc mật khẩu vào image/repository.
 
-Workflow `.github/workflows/verify.yml` kiểm tra backend trên PostgreSQL test,
-frontend và build hai image trên Linux sau khi repository được push lên GitHub.
-Workflow không publish image hoặc tự deploy. Chưa coi việc thêm workflow là đã
-chạy thành công CI; cần xem kết quả Actions ở repository khi push.
+## 3. Build và chuyển dữ liệu
 
-## 3. Tốc độ từ Việt Nam tới Nhật
+```bash
+dc() { bash /opt/viettree-education/deploy/compose.sh "$@"; }
+dc config --quiet
+dc build backend frontend
+dc pull db caddy
+dc up -d db
+```
 
-Đã thêm cache **1 giờ** cho SVG công khai `/learning/*`, giữ nén của Caddy và
-cache dài theo tên hash của bundle Next. Đổi nội dung ảnh cùng tên có thể cần
-tối đa một giờ để trình duyệt tải lại; dùng tên mới nếu cần cập nhật tức thì.
-Ảnh này không chứa dữ liệu cá nhân. HTML/API/kết quả/VIP và ảnh upload riêng
-không được chuyển sang public cache.
+Sau đó chọn **một nhánh** trong [hướng dẫn đầy đủ](deploy-vps.md):
 
-Hiện dùng DNS trực tiếp là đủ để triển khai ban đầu. Khi muốn thêm CDN sau này,
-chỉ cache nội dung công khai; cấu hình trusted proxy/IP/rate limit và thử lại
-trước khi bật proxy Cloudflare. Không bật “Cache Everything” cho `/api/*`,
-đăng nhập, trang admin hoặc bài làm. Cache không thay thế kiểm tra quyền phía
-server. [Hành vi cache Cloudflare](https://developers.cloudflare.com/cache/concepts/default-cache-behavior/),
-[trusted proxies Caddy](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy).
+- **Mang dữ liệu đang dùng lên VPS:** backup/dump local, tạo DB roles,
+  restore, migrate và cấp `deploy/grant-runtime.sql`. Không seed demo sau
+  restore. Copy cả `var/ai-media` nếu có ảnh upload riêng; SVG bundled theo image.
+- **Cài mới hoàn toàn:** tạo roles, import SQL/migrate, nạp nội dung nền
+  tảng và đủ năm pack/AI, tạo admin production. Không dùng mật khẩu demo.
 
-Vị trí Nhật không cho biết chắc độ trễ: phụ thuộc ISP, tuyến quốc tế, giờ cao
-điểm và mạng điện thoại. Đo từ **máy ở Việt Nam**, cả Wi-Fi và 4G/5G, sau khi
-domain chạy HTTPS:
+Head hiện tại `0012_lesson_bookmarks`. Không import schema/restore đè lên
+database đã vận hành. Với release cập nhật, backup trước; xem preview
+`review-learning-content` và kiểm thay đổi trước khi apply học liệu.
+
+Có thể build ngoài VPS bằng `deploy/build-images.ps1`, chuyển image archive
+và checksum rồi `docker load`. Trên VPS dùng `--no-build --pull never` cho
+app và pull db/caddy riêng. Hạn chế build lúc học sinh đang sử dụng.
+
+## 4. Mở web
+
+```bash
+dc up -d --no-build --pull never backend frontend caddy
+dc exec -T backend python -m app.cli check-launch
+dc exec -T backend python -m app.cli check-release
+```
+
+Hai check chỉ đọc. Đổi mật khẩu admin, khóa hoặc đổi mật khẩu các tài khoản
+demo còn hoạt động qua giao diện, kiểm quyền DB runtime và nội dung còn cảnh
+báo. Khi đạt, sửa `.env.production` thành `MAINTENANCE_MODE=false`, rồi:
+
+```bash
+dc up -d --no-deps caddy
+bash deploy/backup.sh
+bash deploy/smoke.sh --require-backup
+docker stats --no-stream
+df -h
+```
+
+Kiểm HTTPS, login/logout, cấp/thu hồi VIP, đọc/làm/nộp bài, AI Academy và
+upload trước khi phát tài khoản. API đi trực tiếp qua Caddy, không vòng
+qua Next proxy. Đo thêm từ Wi-Fi/4G ở Việt Nam nếu server đặt tại Nhật:
 
 ```powershell
-curl.exe -o NUL -sS -w "DNS=%{time_namelookup}s TLS=%{time_appconnect}s TTFB=%{time_starttransfer}s TOTAL=%{time_total}s\n" https://TEN_MIEN_THAT/health
 curl.exe -o NUL -sS -w "TTFB=%{time_starttransfer}s TOTAL=%{time_total}s\n" https://TEN_MIEN_THAT/login
 ```
 
-Đây là đo thời gian HTTP, không tương đương ping. Thử thêm đăng nhập, ảnh,
-tự lưu, tải lại và nộp một bài thử riêng. Đã có kiểm thử local thêm 250 ms cho
-request trình duyệt; độ trễ đó là mô phỏng, không phải ước lượng tuyến Việt–Nhật.
+Tải local trước đây 50 người không lỗi HTTP, p95 khoảng 2,75 giây; dashboard
+còn tail cao. Đây không phải cam kết hiệu năng VPS hoặc mạng Việt–Nhật.
 
-## 4. Sao lưu và vận hành
+## 5. Vận hành gọn
 
-Script backup mới khóa chống hai lần chạy trùng, dump DB, đọc hết từng file ảnh
-và kiểm tra CRC gzip, tạo SHA256 cho cặp dump/media. File `latest.success`
-chỉ cập nhật sau khi cả cặp hoàn thành. Nếu backup lỗi, dấu thành công cũ được
-giữ; không xóa bản trước. Helper sao lưu ảnh vẫn chạy được khi API dừng bảo trì.
-Chọn các cặp có `.sha256`, kiểm tra trước khi dùng:
+- Sao lưu DB và ảnh upload mỗi ngày bằng `deploy/backup.sh`; kiểm checksum,
+  copy ra ngoài VPS và định kỳ restore vào DB khác. Snapshot duy nhất của
+  nhà cung cấp chỉ là phương án bổ sung.
+- Giữ ít nhất khoảng 20 GB trống cho WAL, image và backup. Theo dõi `df -h`,
+  `docker stats --no-stream`, restart/OOM và `deploy/smoke.sh --require-backup`.
+- Docker log xoay 3 × 10 MB mỗi dịch vụ. Cài `deploy/viettree-logrotate`
+  cho log cron theo hướng dẫn đầy đủ. Không cài hệ log nặng cùng VPS giai đoạn đầu.
+- Đặt lịch backup/smoke theo [hướng dẫn cron](deploy-vps.md); marker backup
+  quá 26 giờ hoặc checksum lỗi phải được xử lý, không bỏ qua.
+- Khi nâng cấp: backup → build/load release → maintenance → migrate/grant
+  nếu cần → up app → check-launch/check-release/smoke → mở lại.
+- Giữ project name `viettree` và volume dữ liệu khi đổi release. Không dùng
+  `docker compose down -v`, `volume prune` hoặc `system prune --volumes`.
 
-```bash
-cd /var/backups/viettree
-sha256sum -c TEN_BAN_SAO_LUU.sha256
-```
+## 6. Trạng thái chuẩn bị
 
-Đặt lịch backup 02:15 giờ Việt Nam như mục 11 của hướng dẫn chung. Snapshot
-duy nhất của nhà cung cấp là một điểm phục hồi bổ sung; vẫn giữ dump/media ở
-kho hoặc máy khác với VPS và thử restore. Giữ env/password trong kho riêng có
-quyền truy cập hạn chế. Duy trì khoảng **20 GB trống** cho image, WAL và backup;
-đây là ngưỡng vận hành ban đầu, cần chỉnh theo kích thước DB thực tế.
+Đã kiểm local: chấm điểm/quyền, Linux image, HTTPS smoke, restore dữ liệu giả
+và tải 50 người. Docker audit đã được dọn khỏi luồng triển khai; regression
+tests vẫn ở repo/CI. Chưa deploy VPS thật, chưa đo WAN hoặc chạy dài ngày.
 
-Có thể kiểm tra mỗi giờ, bao gồm sau backup, với log đã xoay:
+Cần theo dõi thêm timeout ở proxy Windows local, giảm dịch chuyển bố cục
+trang AI, duyệt sư phạm với giáo viên và chốt vòng đời bài làm hết hạn.
+Các việc này không làm phát sinh thêm dịch vụ nền trên VPS.
 
-```bash
-install -m 644 deploy/viettree-logrotate /etc/logrotate.d/viettree
-logrotate -d /etc/logrotate.d/viettree
-# Thêm dòng này trong /etc/cron.d/viettree-backup cùng PATH/SHELL của hướng dẫn chung:
-# 45 * * * * root bash /opt/viettree-education/deploy/smoke.sh --require-backup >> /var/log/viettree-smoke.log 2>&1
-```
-
-`--require-backup` từ chối nếu dấu sao lưu thành công quá **26 giờ**, checksum
-sai hoặc không có backup. Nếu cron của máy không được giám sát thì log không
-tự gửi cảnh báo; dùng công cụ giám sát của nhà cung cấp hoặc kiểm tra định kỳ.
-Không tự xóa backup hay thay cấu hình SSH bằng script này.
-
-## 5. Phạm vi đã kiểm chứng và bước cuối trên VPS
-
-Bản học liệu 16/10 thêm 10 bài AI và 15 bài ba môn; build lại để kèm SVG/code,
-nạp bằng [các lệnh cập nhật](learning-upgrade-2026-10-16.md). Không có migration mới.
-[Kiểm chứng local mới nhất](audits/verification-quality-2026-10-16.md) gồm tải 50
-học sinh; không thay cho kiểm chứng trên VPS đích.
-
-Đọc [báo cáo kiểm chứng](release-readiness-2026-10-15.md) để phân biệt kiểm thử
-local với VPS thật. Sau khi có server, cần chạy bộ image Linux và `smoke.sh`
-trên VPS, kiểm tra chứng chỉ công khai, firewall nhà cung cấp, backup/restore
-với role đích và tốc độ từ mạng Việt Nam trước khi phát tài khoản học sinh.
+Nguồn cấu hình: [Docker resource constraints](https://docs.docker.com/engine/containers/resource_constraints/),
+[PostgreSQL 18 resource consumption](https://www.postgresql.org/docs/18/runtime-config-resource.html).

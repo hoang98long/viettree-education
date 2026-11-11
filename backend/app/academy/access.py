@@ -1,5 +1,7 @@
 """Training access is checked at the server, independently from progress and UI."""
 
+import re
+
 from sqlalchemy import select
 
 from app.db import db
@@ -43,9 +45,26 @@ def media_access(conn, user, row):
         conn.execute(
             select(lessons.c.minimum_plan_code)
             .select_from(usages.join(versions).join(lessons))
-            .where(usages.c.asset_id == row["id"])
+            .where(usages.c.asset_id == row["id"], versions.c.status.in_(["published", "archived"]))
         ).scalars()
     )
+    if not plans and row["bundled"]:
+        # Fresh databases keep bundled historical files without creating their
+        # old lesson versions/usages. Missing usage must not make VIP art free.
+        # The stable lesson prefix covers original, v2 and later review assets.
+        owner = re.match(r"^(AI[1-5]-\d{2})-", row["code"])
+        if owner:
+            plans = list(
+                conn.execute(
+                    select(lessons.c.minimum_plan_code).where(lessons.c.code == owner[1])
+                ).scalars()
+            )
+    if not plans:
+        denied(
+            "MEDIA_NOT_ASSIGNED", "Hình này chưa được gắn với bài học dành cho tài khoản của em."
+        )
+    if "free" in plans:
+        return
     entitled = (
         "student" in user["roles"] and resolve_membership(conn, user["id"])["plan_code"] == "vip"
     )
@@ -59,7 +78,7 @@ def media_access(conn, user, row):
                 )
             ).scalars()
         )
-    if plans and "free" not in plans and not entitled:
+    if not entitled:
         denied(
             message="Minh họa của bài này dành cho VIP; em có thể xem tranh bìa và bài nhập môn miễn phí."
         )

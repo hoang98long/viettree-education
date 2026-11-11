@@ -1,0 +1,9 @@
+{
+  "transaction": "REPEATABLE READ READ ONLY",
+  "tables_before": 83,
+  "tables_after": 83,
+  "unchanged_tables": 83,
+  "changed_tables": [],
+  "all_table_hashes_match": true,
+  "scope": "source public tables only; hashes/rows/private data omitted"
+}

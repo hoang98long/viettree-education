@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import insert
 
 import app.schemas.learning as schemas_learning
 from app.api.routes.assessments import assignments
-from app.api.routes.catalog import lesson, subjects
+from app.api.routes.catalog import subjects
 from app.core.dependencies import database
 from app.core.security import (
     now,
@@ -82,7 +82,7 @@ def create_learning_plan(
 @router.post("/lessons/{lesson_id}/visit", response_model=dict[str, bool], tags=["student"])
 def visit_lesson(lesson_id: UUID, user=Depends(student_user), conn=database):
     profile = service.lock_student(conn, user["id"])
-    record = lesson(lesson_id, user, conn)
+    record = learning.authorized_lesson_progress(conn, user, lesson_id)
     if record["grade"] != profile["current_grade"]:
         raise HTTPException(403, "Bài học không thuộc lớp của em")
     table = db.table("student_lesson_progress")
@@ -105,7 +105,7 @@ def visit_lesson(lesson_id: UUID, user=Depends(student_user), conn=database):
 @router.post("/lessons/{lesson_id}/complete", response_model=dict[str, bool], tags=["student"])
 def complete_lesson(lesson_id: UUID, user=Depends(student_user), conn=database):
     profile = service.lock_student(conn, user["id"])
-    record = lesson(lesson_id, user, conn)
+    record = learning.authorized_lesson_progress(conn, user, lesson_id)
     if record["grade"] != profile["current_grade"]:
         raise HTTPException(403, "Bài học không thuộc lớp của em")
     progress = db.table("student_lesson_progress")

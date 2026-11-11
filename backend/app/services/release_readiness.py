@@ -9,8 +9,10 @@ from app.academy.quality import report as academy_report
 from app.curriculum.registry import SUBJECT_CODES, SUPPORTED_GRADES, get_pack
 from app.db import db
 from app.operations import launch_report
+from app.services.content_review import review_learning_content
 
 REMEDIES = {
+    "editorial_content": "Sao lưu, chạy review-learning-content để xem trước rồi --apply cho bài nguồn chưa tùy chỉnh; không reset dữ liệu.",
     "migrations": "Người vận hành chạy migration đúng release, sau khi sao lưu.",
     "lesson_policies": "Rà soát quyền truy cập của các bài đã xuất bản trong quản trị nội dung.",
     "assessment_policies": "Bổ sung chính sách Free/VIP cho đề đã xuất bản.",
@@ -95,6 +97,7 @@ def release_report(conn):
     report = launch_report(conn)
     inventory = curriculum_inventory(conn)
     academy = academy_report(conn)
+    editorial = review_learning_content(conn)["counts"]
     try:
         media = {**validate_manifest(), "valid": True}
     except (OSError, ValueError, KeyError, ParseError):
@@ -102,6 +105,12 @@ def release_report(conn):
         media = {"valid": False, "assets": None, "lessons": None}
     report["checks"].extend(
         [
+            {
+                "code": "editorial_content",
+                "label": "Bài nguồn đã nhận bản biên tập được kiểm chứng",
+                "ok": editorial["eligible"] == 0,
+                "count": editorial["eligible"],
+            },
             {
                 "code": "curriculum_coverage",
                 "label": "Học liệu năm khối, ba môn đạt số lượng tối thiểu",

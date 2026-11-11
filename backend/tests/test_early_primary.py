@@ -12,6 +12,12 @@ from app.db import db
 from app.schemas.authoring import QuestionInput
 from app.schemas.lessons import LessonContent
 from app.services.grading import grade_answer
+from tests.curriculum_expectations import (
+    baseline_codes,
+    catalog_inventory,
+    installed_catalog,
+    plan_counts,
+)
 from tests.test_grading import correct_answer
 from tests.test_memberships import admin_login, identities, membership
 
@@ -139,7 +145,8 @@ def test_all_lessons_have_valid_support_and_unambiguous_grading(grade, subject, 
 @pytest.mark.parametrize("grade", [1, 2])
 @pytest.mark.integration
 def test_inventory_plans_short_lessons_and_repeat_seed_preserves_edits(conn, grade):
-    assert verify_seed(conn, grade) == EXPECTED
+    installed = installed_catalog(conn, grade)
+    assert verify_seed(conn, grade) == catalog_inventory(installed)
     lessons, topics, policies = (
         db.table(n) for n in ("lessons", "topics", "content_access_policies")
     )
@@ -151,7 +158,7 @@ def test_inventory_plans_short_lessons_and_repeat_seed_preserves_edits(conn, gra
         actual = conn.execute(
             select(policies.c.minimum_plan_code, func.count())
             .select_from(table.join(policies, policies.c[f"{kind}_id"] == table.c.id))
-            .where(table.c.code.like(f"VT{grade}-%"))
+            .where(table.c.code.in_(baseline_codes(grade, table.name)))
             .group_by(policies.c.minimum_plan_code)
         ).all()
         assert dict(actual) == expected
@@ -245,10 +252,12 @@ def test_free_vip_hints_expiry_revocation_grade_scope_and_admin_map(logged_stude
     assert client.get("/api/v1/students/me/thinking").json()["grade"] == grade
     admin_login(client)
     report = client.get(f"/api/v1/admin/curriculum-map?grade={grade}").json()
+    installed = installed_catalog(conn, grade)
+    plans = plan_counts(installed, "lessons")
     assert len(report["rows"]) == 21
-    assert sum(r["free_lessons"] for r in report["rows"]) == 46
-    assert sum(r["vip_lessons"] for r in report["rows"]) == 22
-    assert sum(r["questions"] for r in report["rows"]) == 384
+    assert sum(r["free_lessons"] for r in report["rows"]) == plans["free"]
+    assert sum(r["vip_lessons"] for r in report["rows"]) == plans["vip"]
+    assert sum(r["questions"] for r in report["rows"]) == len(installed["questions"])
 
 
 @pytest.mark.parametrize("grade", [1, 2])
@@ -267,6 +276,9 @@ def test_every_assessment_can_save_resume_submit_and_keep_result(
     )
     membership(conn, student, admin)
     assessments = client.get(f"/api/v1/assessments?grade={grade}&subject_code={subject}").json()
+    expected_codes = baseline_codes(grade, "assessments", subject)
+    assert expected_codes <= {row["code"] for row in assessments}
+    assessments = [row for row in assessments if row["code"] in expected_codes]
     assert len(assessments) == EXPECTED[subject]["assessments"]
     for assessment in assessments:
         assigned = client.post(f"/api/v1/students/me/assessments/{assessment['id']}/assign-self")

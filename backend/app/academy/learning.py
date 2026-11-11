@@ -1,4 +1,5 @@
 from copy import deepcopy
+from unicodedata import normalize
 
 from fastapi import HTTPException
 from sqlalchemy import func, select, update
@@ -165,14 +166,21 @@ def grade_step(step, answers, level=2):
         raise HTTPException(422, "Bước này không chấm tự động")
     if set(answers) != set(correct):
         raise HTTPException(422, "Cần trả lời đủ và đúng các mục trong bước học")
-    matches = {key: value.strip() == correct[key] for key, value in answers.items()}
+    normalized_answers = {key: normalize("NFC", value).strip() for key, value in answers.items()}
+    matches = {
+        key: value == normalize("NFC", correct[key]).strip()
+        for key, value in normalized_answers.items()
+    }
     if step["kind"] == "quiz":
         valid_choices = {
             q["id"]: {str(i) for i in range(len(q["options"]))} for q in step["questions"]
         }
     else:
-        valid_choices = {item["id"]: set(step["activity"]["choices"]) for item in items}
-    if any(value not in valid_choices[key] for key, value in answers.items()):
+        valid_choices = {
+            item["id"]: {normalize("NFC", choice).strip() for choice in step["activity"]["choices"]}
+            for item in items
+        }
+    if any(value not in valid_choices[key] for key, value in normalized_answers.items()):
         raise HTTPException(
             422, "Chỉ chọn đáp án có sẵn trong hoạt động, không nhập thông tin riêng"
         )

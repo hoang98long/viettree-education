@@ -1,0 +1,9 @@
+dialog.dialog {
+  margin: auto;
+  border: 0;
+  width: calc(100% - 48px);
+}
+
+.dialog::backdrop {
+  background: #163d3070;
+}

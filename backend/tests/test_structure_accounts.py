@@ -18,6 +18,7 @@ from app.services.memberships import change_membership
 
 
 @pytest.mark.parametrize("grade", SUPPORTED_GRADES)
+@pytest.mark.integration
 def test_registered_pack_inventory_and_repeat_seed(conn, grade):
     expected_pack = get_pack(grade).expected
     assert inventory(grade) == expected_pack
@@ -31,6 +32,7 @@ def test_registered_pack_inventory_and_repeat_seed(conn, grade):
     assert all(pack.topic_map[subject] for subject in EXPECTED)
 
 
+@pytest.mark.integration
 def test_demo_accounts_all_grades_and_real_access(client, conn):
     rows = seed_demo_learners(conn)
     assert len(rows) == 20 and all(row["created"] for row in rows)
@@ -65,6 +67,7 @@ def test_demo_accounts_all_grades_and_real_access(client, conn):
     assert all(not row["created"] for row in seed_demo_learners(conn))
 
 
+@pytest.mark.integration
 def test_demo_repeat_preserves_password_grade_lock_and_vip_revoke(conn):
     seed_demo_learners(conn, [2])
     users, profiles = db.table("users"), db.table("student_profiles")
@@ -94,6 +97,7 @@ def test_demo_repeat_preserves_password_grade_lock_and_vip_revoke(conn):
     assert resolve_membership(conn, user["id"])["status"] == "revoked"
 
 
+@pytest.mark.integration
 def test_demo_denies_production_without_writes(conn, monkeypatch):
     monkeypatch.setattr(
         "app.fixtures.learners.settings",
@@ -106,6 +110,7 @@ def test_demo_denies_production_without_writes(conn, monkeypatch):
     assert conn.execute(select(func.count()).select_from(users)).scalar_one() == before
 
 
+@pytest.mark.integration
 def test_demo_refuses_role_collision(conn):
     identifier = uuid4()
     conn.execute(

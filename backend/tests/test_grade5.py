@@ -14,6 +14,12 @@ from app.db import db
 from app.schemas.authoring import QuestionInput
 from app.schemas.lessons import Illustration, LessonContent
 from app.services.grading import grade_answer, validate_answer
+from tests.curriculum_expectations import (
+    baseline_codes,
+    catalog_inventory,
+    installed_catalog,
+    library_summary,
+)
 from tests.test_grading import correct_answer
 from tests.test_memberships import admin_login, identities, membership
 
@@ -143,7 +149,8 @@ def grade5_student(client, conn):
 
 @pytest.mark.integration
 def test_seed_inventory_idempotent_and_preserves_editor_revision(conn):
-    assert verify_seed(conn, 5) == EXPECTED
+    expected_inventory = catalog_inventory(installed_catalog(conn, 5))
+    assert verify_seed(conn, 5) == expected_inventory
     lessons, topics = db.table("lessons"), db.table("topics")
     original = dict(
         conn.execute(select(lessons).join(topics).where(topics.c.grade == 5).limit(1))
@@ -155,7 +162,7 @@ def test_seed_inventory_idempotent_and_preserves_editor_revision(conn):
     conn.execute(lessons.update().where(lessons.c.id == original["id"]).values(content=changed))
     grade4_before = verify_seed(conn, 4)
     seed_grade_content(conn, 5)
-    assert verify_seed(conn, 5) == EXPECTED
+    assert verify_seed(conn, 5) == expected_inventory
     assert verify_seed(conn, 4) == grade4_before
     assert (
         conn.execute(select(lessons.c.content).where(lessons.c.id == original["id"])).scalar_one()
@@ -170,6 +177,9 @@ def test_every_assessment_save_resume_submit_and_history(logged_student, conn, s
     student, admin = grade5_student(client, conn)
     membership(conn, student, admin)
     assessments = client.get(f"/api/v1/assessments?grade=5&subject_code={subject}").json()
+    expected_codes = baseline_codes(5, "assessments", subject)
+    assert expected_codes <= {row["code"] for row in assessments}
+    assessments = [row for row in assessments if row["code"] in expected_codes]
     assert len(assessments) == EXPECTED[subject]["assessments"]
     versions = db.table("question_versions")
     for assessment in assessments:
@@ -214,26 +224,47 @@ def test_library_own_grade_pagination_filters_hints_live_membership(logged_stude
     assert first.status_code == 200, first.text
     assert "no-store" in first.headers["cache-control"]
     data = first.json()
-    assert data["grade"] == 5 and data["summary"] == dict(
-        total=68, completed=0, in_progress=0, free=46, vip=22, bookmarked=0
-    )
-    assert len(data["items"]) == 12
+    installed = installed_catalog(conn, 5)
+    expected_summary = library_summary(installed)
+    assert data["grade"] == 5 and data["summary"] == expected_summary
+    assert data["page_size"] == len(data["items"]) == 12
+    pages = (expected_summary["total"] + 11) // 12
     seen = []
-    for page in range(1, 7):
+    for page in range(1, pages + 1):
         response = client.get(base, params={"page": page})
         assert all(s not in response.text for s in ["grading", "blocks", "hints", "explanation"])
         seen.extend(item["id"] for item in response.json()["items"])
-    assert len(seen) == len(set(seen)) == 68
-    assert client.get(base, params={"page": 7}).json()["items"] == []
-    for subject, count in [("MATH", 25), ("VIETNAMESE", 23), ("ENGLISH", 20)]:
+    assert len(seen) == len(set(seen)) == expected_summary["total"]
+    lesson_table = db.table("lessons")
+    expected_ids = {
+        str(identifier)
+        for identifier in conn.execute(
+            select(lesson_table.c.id).where(lesson_table.c.code.in_(installed["lessons"]))
+        ).scalars()
+    }
+    assert set(seen) == expected_ids
+    assert client.get(base, params={"page": pages + 1}).json()["items"] == []
+    for subject, expected in catalog_inventory(installed).items():
         assert (
-            client.get(base, params={"subject_code": subject}).json()["summary"]["total"] == count
+            client.get(base, params={"subject_code": subject}).json()["summary"]["total"]
+            == expected["lessons"]
         )
-    assert client.get(base, params={"plan": "free"}).json()["summary"]["total"] == 46
-    assert client.get(base, params={"category": "thinking"}).json()["summary"]["total"] == 22
+    assert (
+        client.get(base, params={"plan": "free"}).json()["summary"]["total"]
+        == expected_summary["free"]
+    )
+    expected_thinking = sum(row["category"] == "thinking" for row in installed["lessons"].values())
+    assert (
+        client.get(base, params={"category": "thinking"}).json()["summary"]["total"]
+        == expected_thinking
+    )
+    expected_charts = sum(
+        "biểu đồ" in row["title"].lower() or "biểu đồ" in row["topic_title"].lower()
+        for row in installed["lessons"].values()
+    )
     for word in ["bieu do", "BIỂU ĐỒ", "  biểu đồ  "]:
         result = client.get(base, params={"search": word}).json()
-        assert result["summary"]["total"] == 3
+        assert result["summary"]["total"] == expected_charts
     for word in ["%", "_", "\\", "' OR 1=1 --"]:
         assert client.get(base, params={"search": word}).json()["summary"]["total"] == 0
     for params in [
@@ -254,7 +285,7 @@ def test_library_own_grade_pagination_filters_hints_live_membership(logged_stude
     assert client.get(base, params={"progress": "completed"}).json()["items"][0]["id"] == free["id"]
     membership(conn, student, admin)
     vip_library = client.get("/api/v1/students/me/vip/library").json()
-    assert vip_library["grade"] == 5 and len(vip_library["lessons"]) == 22
+    assert vip_library["grade"] == 5 and len(vip_library["lessons"]) == expected_summary["vip"]
     adaptive = client.post(
         "/api/v1/students/me/learning-plans", json={"subject_code": "MATH", "mode": "adaptive"}
     )
@@ -273,7 +304,7 @@ def test_library_own_grade_pagination_filters_hints_live_membership(logged_stude
     assert client.get(base).status_code == 403
     mapping = client.get("/api/v1/admin/curriculum-map?grade=5").json()
     assert len(mapping["rows"]) == 22
-    assert sum(row["questions"] for row in mapping["rows"]) == 384
+    assert sum(row["questions"] for row in mapping["rows"]) == len(installed["questions"])
     assert client.get("/api/v1/admin/curriculum-map?grade=6").status_code == 422
     client.cookies.clear()
     assert client.get(base).status_code == 401
@@ -287,7 +318,11 @@ def test_library_hides_unpublished_inactive_and_other_student_progress(logged_st
     lessons, topics, progress = (
         db.table(n) for n in ("lessons", "topics", "student_lesson_progress")
     )
-    rows = client.get(base).json()["items"]
+    installed = installed_catalog(conn, 5)
+    initial = client.get(base).json()
+    total = len(installed["lessons"])
+    assert initial["summary"]["total"] == total
+    rows = initial["items"]
     identifier = UUID(rows[0]["id"])
     other = conn.execute(
         select(db.table("users").c.id).where(db.table("users").c.username == "longnh")
@@ -297,12 +332,17 @@ def test_library_hides_unpublished_inactive_and_other_student_progress(logged_st
     )
     assert client.get(base, params={"progress": "completed"}).json()["items"] == []
     conn.execute(lessons.update().where(lessons.c.id == identifier).values(status="draft"))
-    assert client.get(base).json()["summary"]["total"] == 67
+    assert client.get(base).json()["summary"]["total"] == total - 1
     topic = conn.execute(select(lessons.c.topic_id).where(lessons.c.id == identifier)).scalar_one()
+    code = conn.execute(select(lessons.c.code).where(lessons.c.id == identifier)).scalar_one()
+    topic_code = installed["lessons"][code]["topic_code"]
+    topic_lesson_count = sum(
+        row["topic_code"] == topic_code for row in installed["lessons"].values()
+    )
     conn.execute(topics.update().where(topics.c.id == topic).values(is_active=False))
     active = client.get(base).json()
-    assert active["summary"]["total"] < 67
+    assert active["summary"]["total"] == total - topic_lesson_count < total - 1
     profiles = db.table("student_profiles")
     conn.execute(profiles.update().where(profiles.c.student_id == student).values(current_grade=1))
-    assert client.get(base).json()["summary"]["total"] == 68
+    assert client.get(base).json()["summary"] == library_summary(installed_catalog(conn, 1))
     assert client.get(f"/api/v1/lessons/{rows[2]['id']}").status_code == 403

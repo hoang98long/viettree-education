@@ -3,7 +3,7 @@ import { login } from "./helpers";
 
 test("minh họa VIP: màu đỏ đúng với nhãn ở lớp 1–3", async ({ page }, info) => {
   const username =
-    process.env[`E2E_ACADEMY_${info.project.name.toUpperCase()}_USERNAME`];
+    process.env[`E2E_COLOR_${info.project.name.toUpperCase()}_USERNAME`];
   const password = process.env.E2E_STUDENT_PASSWORD;
   test.skip(!username || !password, "Cần fixture VIP test riêng");
   await login(page, username!, password!);
@@ -29,7 +29,8 @@ test("minh họa VIP: màu đỏ đúng với nhãn ở lớp 1–3", async ({ p
     const card = data.content.steps[3].activity.items.find(
       (item: { text: string }) => item.text === "Cặp đỏ",
     );
-    expect(card.asset).toContain("color-v3");
+    expect(card.asset).toMatch(new RegExp(`^${code}-`));
+    expect(data.content.cards).toContain(card.asset);
     const illustration = await page.request.get(
       `/api/v1/ai-academy/media/${card.asset}`,
     );

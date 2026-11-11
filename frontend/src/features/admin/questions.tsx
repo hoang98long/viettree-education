@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import type { Page, Question } from "@/lib/types";
 import { Empty, PageTitle } from "@/components/ui";
+import { Modal } from "@/components/modal";
 import { Data, Pagination } from "@/features/admin/shared";
 
 export function QuestionDetail({
@@ -14,42 +15,35 @@ export function QuestionDetail({
   onClose: () => void;
 }) {
   return (
-    <div className="modal-backdrop">
-      <section
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="question-detail-title"
-        className="modal wide"
-      >
-        <button autoFocus className="button secondary small" onClick={onClose}>
-          Đóng chi tiết
-        </button>
-        <Data<Question> path={`/admin/questions/${id}`}>
-          {(question) => (
-            <>
-              <h2 id="question-detail-title">Nội dung câu hỏi</h2>
-              <span className="badge">
-                {question.question_type} · Độ khó {question.difficulty} ·{" "}
-                {question.status}
-              </span>
-              <p className="question-prompt">{question.content.prompt}</p>
-              <ul>
-                {question.content.options?.map((option) => (
-                  <li key={option.id}>
-                    <strong>{option.id.toUpperCase()}.</strong> {option.text}
-                  </li>
-                ))}
-              </ul>
-              <div className="explanation">
-                <h3>Đáp án · Chỉ quản trị viên</h3>
-                <pre>{JSON.stringify(question.grading, null, 2)}</pre>
-                <p>{question.explanation?.text}</p>
-              </div>
-            </>
-          )}
-        </Data>
-      </section>
-    </div>
+    <Modal labelledBy="question-detail-title" onClose={onClose} wide>
+      <h2 id="question-detail-title">Nội dung câu hỏi</h2>
+      <button className="button secondary small" onClick={onClose}>
+        Đóng chi tiết
+      </button>
+      <Data<Question> path={`/admin/questions/${id}`}>
+        {(question) => (
+          <>
+            <span className="badge">
+              {question.question_type} · Độ khó {question.difficulty} ·{" "}
+              {question.status}
+            </span>
+            <p className="question-prompt">{question.content.prompt}</p>
+            <ul>
+              {question.content.options?.map((option) => (
+                <li key={option.id}>
+                  <strong>{option.id.toUpperCase()}.</strong> {option.text}
+                </li>
+              ))}
+            </ul>
+            <div className="explanation">
+              <h3>Đáp án · Chỉ quản trị viên</h3>
+              <pre>{JSON.stringify(question.grading, null, 2)}</pre>
+              <p>{question.explanation?.text}</p>
+            </div>
+          </>
+        )}
+      </Data>
+    </Modal>
   );
 }
 

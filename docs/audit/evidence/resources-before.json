@@ -1,0 +1,34 @@
+{
+  "scope": "sampled local Docker containers during HTTPS workload; not VPS/WAN",
+  "interval": "approximately 1-3 seconds; sampled peak is not an absolute maximum",
+  "container_limits": {
+    "backend_cpu": 2,
+    "backend_memory_mib": 768,
+    "frontend_cpu": 2,
+    "frontend_memory_mib": 768,
+    "db_memory_mib": 768,
+    "caddy_memory_mib": 128
+  },
+  "containers": {
+    "viettree-audit-1111-c5e8a17a-db": {
+      "samples": 19,
+      "peak_cpu_percent": 87.77,
+      "peak_memory_bytes": 208352051
+    },
+    "viettree-audit-1111-c5e8a17a-backend": {
+      "samples": 19,
+      "peak_cpu_percent": 207.24,
+      "peak_memory_bytes": 265918874
+    },
+    "viettree-audit-1111-c5e8a17a-frontend": {
+      "samples": 19,
+      "peak_cpu_percent": 0.02,
+      "peak_memory_bytes": 32841400
+    },
+    "viettree-audit-1111-c5e8a17a-caddy": {
+      "samples": 19,
+      "peak_cpu_percent": 15.9,
+      "peak_memory_bytes": 39573258
+    }
+  }
+}

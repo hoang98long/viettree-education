@@ -1,0 +1,393 @@
+{
+  "environment": "local HTTPS / real PostgreSQL / synthetic learners",
+  "transport": {
+    "workload_scheme": "https",
+    "private_readiness": true,
+    "certificate_verification": true,
+    "custom_ca": true
+  },
+  "host": {
+    "os": "Linux",
+    "logical_cpus": 12
+  },
+  "learners": 50,
+  "plans": {
+    "free": 25,
+    "vip": 25
+  },
+  "answer_all": true,
+  "levels": [
+    {
+      "concurrent_learners": 10,
+      "seconds": 5.56,
+      "requests": 180,
+      "requests_per_second": 32.37,
+      "mean_ms": 255.51,
+      "p50_ms": 159.83,
+      "p95_ms": 822.62,
+      "p99_ms": 1120.0,
+      "max_ms": 1392.42,
+      "status_counts": {
+        "200": 180
+      },
+      "journeys_completed": 10,
+      "errors": {},
+      "endpoints": {
+        "GET /attempts/{id}": {
+          "requests": 10,
+          "p50_ms": 56.71,
+          "p95_ms": 191.66,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "GET /attempts/{id}/result": {
+          "requests": 10,
+          "p50_ms": 38.45,
+          "p95_ms": 657.31,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "GET /lessons": {
+          "requests": 10,
+          "p50_ms": 202.59,
+          "p95_ms": 344.04,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "GET /lessons/{id}": {
+          "requests": 10,
+          "p50_ms": 549.28,
+          "p95_ms": 1392.42,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "GET /students/me/dashboard": {
+          "requests": 20,
+          "p50_ms": 622.07,
+          "p95_ms": 1080.53,
+          "status_counts": {
+            "200": 20
+          }
+        },
+        "GET /students/me/skills": {
+          "requests": 10,
+          "p50_ms": 71.98,
+          "p95_ms": 215.67,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "GET /subjects": {
+          "requests": 10,
+          "p50_ms": 608.69,
+          "p95_ms": 649.6,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "POST /attempts": {
+          "requests": 10,
+          "p50_ms": 140.44,
+          "p95_ms": 279.93,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "POST /attempts/{id}/submit": {
+          "requests": 20,
+          "p50_ms": 108.72,
+          "p95_ms": 365.25,
+          "status_counts": {
+            "200": 20
+          }
+        },
+        "POST /lessons/{id}/visit": {
+          "requests": 10,
+          "p50_ms": 224.9,
+          "p95_ms": 583.48,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "POST /students/me/assessments/{id}/assign-self": {
+          "requests": 10,
+          "p50_ms": 153.29,
+          "p95_ms": 259.05,
+          "status_counts": {
+            "200": 10
+          }
+        },
+        "PUT /attempts/{id}/answers/{id}": {
+          "requests": 50,
+          "p50_ms": 138.77,
+          "p95_ms": 289.39,
+          "status_counts": {
+            "200": 50
+          }
+        }
+      }
+    },
+    {
+      "concurrent_learners": 25,
+      "seconds": 13.02,
+      "requests": 445,
+      "requests_per_second": 34.17,
+      "mean_ms": 647.41,
+      "p50_ms": 609.83,
+      "p95_ms": 1478.01,
+      "p99_ms": 1867.07,
+      "max_ms": 2121.07,
+      "status_counts": {
+        "200": 445
+      },
+      "journeys_completed": 25,
+      "errors": {},
+      "endpoints": {
+        "GET /attempts/{id}": {
+          "requests": 25,
+          "p50_ms": 551.52,
+          "p95_ms": 1008.87,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "GET /attempts/{id}/result": {
+          "requests": 25,
+          "p50_ms": 176.06,
+          "p95_ms": 584.15,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "GET /lessons": {
+          "requests": 25,
+          "p50_ms": 422.29,
+          "p95_ms": 737.17,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "GET /lessons/{id}": {
+          "requests": 25,
+          "p50_ms": 1109.17,
+          "p95_ms": 2082.21,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "GET /students/me/dashboard": {
+          "requests": 50,
+          "p50_ms": 1203.72,
+          "p95_ms": 1867.07,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "GET /students/me/skills": {
+          "requests": 25,
+          "p50_ms": 137.61,
+          "p95_ms": 638.37,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "GET /subjects": {
+          "requests": 25,
+          "p50_ms": 137.77,
+          "p95_ms": 172.43,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "POST /attempts": {
+          "requests": 25,
+          "p50_ms": 739.84,
+          "p95_ms": 1109.49,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "POST /attempts/{id}/submit": {
+          "requests": 50,
+          "p50_ms": 434.67,
+          "p95_ms": 934.66,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "POST /lessons/{id}/visit": {
+          "requests": 25,
+          "p50_ms": 616.28,
+          "p95_ms": 1425.34,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "POST /students/me/assessments/{id}/assign-self": {
+          "requests": 25,
+          "p50_ms": 651.11,
+          "p95_ms": 1175.45,
+          "status_counts": {
+            "200": 25
+          }
+        },
+        "PUT /attempts/{id}/answers/{id}": {
+          "requests": 120,
+          "p50_ms": 639.05,
+          "p95_ms": 960.49,
+          "status_counts": {
+            "200": 120
+          }
+        }
+      }
+    },
+    {
+      "concurrent_learners": 50,
+      "seconds": 27.11,
+      "requests": 900,
+      "requests_per_second": 33.2,
+      "mean_ms": 1304.9,
+      "p50_ms": 1239.79,
+      "p95_ms": 2753.4,
+      "p99_ms": 4319.45,
+      "max_ms": 4973.48,
+      "status_counts": {
+        "200": 900
+      },
+      "journeys_completed": 50,
+      "errors": {},
+      "endpoints": {
+        "GET /attempts/{id}": {
+          "requests": 50,
+          "p50_ms": 1531.41,
+          "p95_ms": 1849.53,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "GET /attempts/{id}/result": {
+          "requests": 50,
+          "p50_ms": 527.04,
+          "p95_ms": 1706.49,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "GET /lessons": {
+          "requests": 50,
+          "p50_ms": 721.61,
+          "p95_ms": 1301.12,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "GET /lessons/{id}": {
+          "requests": 50,
+          "p50_ms": 1944.61,
+          "p95_ms": 3098.16,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "GET /students/me/dashboard": {
+          "requests": 100,
+          "p50_ms": 2182.3,
+          "p95_ms": 4378.7,
+          "status_counts": {
+            "200": 100
+          }
+        },
+        "GET /students/me/skills": {
+          "requests": 50,
+          "p50_ms": 458.06,
+          "p95_ms": 1437.26,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "GET /subjects": {
+          "requests": 50,
+          "p50_ms": 187.61,
+          "p95_ms": 354.92,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "POST /attempts": {
+          "requests": 50,
+          "p50_ms": 1390.13,
+          "p95_ms": 1810.41,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "POST /attempts/{id}/submit": {
+          "requests": 100,
+          "p50_ms": 770.73,
+          "p95_ms": 1888.6,
+          "status_counts": {
+            "200": 100
+          }
+        },
+        "POST /lessons/{id}/visit": {
+          "requests": 50,
+          "p50_ms": 1513.88,
+          "p95_ms": 2474.08,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "POST /students/me/assessments/{id}/assign-self": {
+          "requests": 50,
+          "p50_ms": 1808.8,
+          "p95_ms": 3942.8,
+          "status_counts": {
+            "200": 50
+          }
+        },
+        "PUT /attempts/{id}/answers/{id}": {
+          "requests": 250,
+          "p50_ms": 1280.04,
+          "p95_ms": 1940.99,
+          "status_counts": {
+            "200": 250
+          }
+        }
+      }
+    }
+  ],
+  "readiness": {
+    "status": 200,
+    "seconds": 0.57
+  },
+  "authentication": {
+    "parallel": false,
+    "seconds": 5.74,
+    "successes": 50,
+    "p95_ms": 136.86,
+    "status_counts": {
+      "200": 50
+    },
+    "errors": {},
+    "endpoints": {
+      "POST /auth/login": {
+        "requests": 50,
+        "p50_ms": 109.96,
+        "p95_ms": 136.86,
+        "status_counts": {
+          "200": 50
+        }
+      }
+    }
+  },
+  "consistency": {
+    "question_statistic_mismatches": 0,
+    "graded_attempts": 85,
+    "daily_assessments_completed": 85,
+    "expected_attempts": 85
+  }
+}

@@ -1,8 +1,53 @@
-"""Shared assessment catalogue query; routes own authorization."""
+"""Shared catalogue lookups; routes and write services own authorization."""
 
+from fastapi import HTTPException
 from sqlalchemy import func, select
 
 from app.db import db
+
+
+def published_lesson(conn, lesson_id, student_id, *, detail=False):
+    """Use the same visibility and owner-scoped progress for read/write paths.
+
+    Progress updates need only identity, grade and prior status. Do not read
+    lesson JSON, resolve related practice or render hints on that hot path.
+    """
+    lessons, topics, subjects, progress = (
+        db.table(name) for name in ("lessons", "topics", "subjects", "student_lesson_progress")
+    )
+    columns = [lessons if detail else lessons.c.id, topics.c.grade]
+    if detail:
+        columns.extend(
+            [
+                topics.c.title.label("topic_title"),
+                subjects.c.code.label("subject_code"),
+                subjects.c.name_vi.label("subject_name"),
+            ]
+        )
+    columns.append(
+        func.coalesce(
+            select(progress.c.status)
+            .where(progress.c.student_id == student_id, progress.c.lesson_id == lessons.c.id)
+            .scalar_subquery(),
+            "not_started",
+        ).label("progress_status")
+    )
+    row = (
+        conn.execute(
+            select(*columns)
+            .select_from(lessons.join(topics).join(subjects))
+            .where(
+                lessons.c.id == lesson_id,
+                lessons.c.status == "published",
+                topics.c.is_active.is_(True),
+            )
+        )
+        .mappings()
+        .first()
+    )
+    if not row:
+        raise HTTPException(404, "Không tìm thấy bài học")
+    return row
 
 
 def assessment_list(conn, grade, subject_code=None, published_only=True):
